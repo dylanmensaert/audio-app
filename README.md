@@ -1,4 +1,9 @@
-# My-app
+# Audio-app
+
+[![Build Status](https://travis-ci.org/dylanmensaert/audio-app.png)](https://travis-ci.org/dylanmensaert/audio-app)
+[![Code Climate](https://codeclimate.com/github/dylanmensaert/audio-app.png)](https://codeclimate.com/github/dylanmensaert/audio-app)
+[![Dependency Status](https://www.versioneye.com/user/projects/55c2641f653762002000287d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c2641f653762002000287d)
+[![Dependency Status](https://www.versioneye.com/user/projects/55c2641f6537620017002a0b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55c2641f6537620017002a0b)
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
@@ -50,4 +55,3 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
