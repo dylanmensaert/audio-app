@@ -1,0 +1,55 @@
+{{#action-bar models=snippets deselect='exitEdit'}}
+    <div class="col-xs-2 outer-label">
+        {{#link-to 'labels' tagName='div' class='inner-label'}}
+            <i class="mdi-maps-local-offer"></i>
+        {{/link-to}}
+    </div>
+
+    <div class="col-xs-2 outer-label">
+        {{#if undownloadedSnippets}}
+            <div {{action 'download'}} class="inner-label">
+                {{#unless isEveryUndownloaded}}
+                    <span class="menu-text">
+                        {{undownloadedSnippets.length}}
+                    </span>
+                {{/unless}}
+
+                <i class="mdi-file-file-download"></i>
+            </div>
+        {{else}}
+            &nbsp;
+        {{/if}}
+    </div>
+
+    <div class="col-xs-2 outer-label">
+        {{#if hasSingle}}
+            {{#if isEditMode}}
+                <div {{action 'exitEdit'}} class="inner-label">
+                    <i class="mdi-content-clear"></i>
+                </div>
+            {{else}}
+                <div {{action 'setupEdit'}} class="inner-label">
+                    <i class="mdi-editor-mode-edit"></i>
+                </div>
+            {{/if}}
+        {{else}}
+            &nbsp;
+        {{/if}}
+    </div>
+
+    <div class="col-xs-2 outer-label">
+        {{#if offlineSnippets}}
+            <div {{action 'remove'}} class="inner-label">
+                {{#unless isEveryOffline}}
+                    <span class="menu-text">
+                        {{offlineSnippets.length}}
+                    </span>
+                {{/unless}}
+
+                <i class="mdi-action-delete"></i>
+            </div>
+        {{else}}
+            &nbsp;
+        {{/if}}
+    </div>
+{{/action-bar}}

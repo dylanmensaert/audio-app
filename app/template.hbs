@@ -1,0 +1,26 @@
+{{#if isLoading}}
+    <div class="progress loading-bar">
+        <div class="progress-bar progress-bar-striped progress-bar-info active" style="width: inherit;" />
+    </div>
+{{/if}}
+
+{{#if error}}
+    <div class="alert alert-danger alert-dismissable error-bar">
+        <button type="button" class="close" aria-hidden="true" {{action 'dismissAlert'}}>&times;</button>
+        <strong>Error:</strong> {{{error.message}}}
+    </div>
+{{/if}}
+
+<div class="menu-placeholder" />
+
+{{outlet}}
+
+{{message-bar showMessage=cache.showMessage}}
+
+{{#if audio.snippet}}
+    <div class="audio-slider">
+        {{slider-component slider=cache.slider}}
+    </div>
+{{/if}}
+
+{{audio-component audio=audio}}

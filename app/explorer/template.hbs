@@ -1,0 +1,51 @@
+<div class="row menu-bar text-center">
+    <div class="col-xs-10 outer-btn-group">
+        <div class="btn-group btn-group-justified inner-btn-group">
+            {{#link-to 'labels' class='btn' properties=linkToProperties}}
+                Labels
+            {{/link-to}}
+
+            {{#link-to 'explorer.index' class='btn' properties=linkToProperties}}
+                Explore
+            {{/link-to}}
+        </div>
+    </div>
+
+    <div class="col-xs-2 outer-label action-top">
+        <div {{action 'scrollToTop'}} class="inner-label">
+            <i class="mdi-navigation-expand-less"></i>
+        </div>
+    </div>
+</div>
+
+{{outlet}}
+
+{{#if audio.snippet}}
+    <div class="audio-stamp" />
+
+    <div class="container audio-bar">
+        <div class="row">
+            <div {{action 'transitionToQueue'}} class="col-xs-9 audio-name-outer">
+                <div class="audio-name">
+                    {{audio.snippet.name}}
+                </div>
+            </div>
+
+            <div class='col-xs-3 text-center'>
+                <div class="audio-icon-large">
+                    {{#if audio.isLoading}}
+                        <i class="fa fa-spinner fa-pulse"></i>
+                    {{/if}}
+
+                    {{#if audio.isPlaying}}
+                        <i class="fa fa-pause" {{action 'pause'}}></i>
+                    {{/if}}
+
+                    {{#if audio.isIdle}}
+                        <i class="fa fa-play" {{action 'play'}}></i>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}

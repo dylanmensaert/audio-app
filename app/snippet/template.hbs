@@ -1,0 +1,41 @@
+<div {{action 'click'}} class="media-left media-middle snippet-part">
+    <div class="outer-image">
+        <img class="media-object inner-image" src={{model.thumbnail}} draggable="false" />
+    </div>
+</div>
+
+<div {{action 'click'}} class="media-body snippet-part">
+    <div>
+        {{model.name}}
+    </div>
+</div>
+
+<div class="media-right media-top snippet-part status-icons {{if model.isSelected 'active'}}">
+    {{#if model.isPlaying}}
+        <div>
+            <i class="glyphicon glyphicon-headphones"></i>
+        </div>
+    {{else}}
+        {{#if showQueued}}
+            <div>
+                <i class="fa fa-clock-o"></i>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{#if model.isDownloading}}
+        <div>
+            <i class="fa fa-spinner fa-pulse"></i>
+        </div>
+    {{/if}}
+
+    {{#if model.isDownloaded}}
+        <div>
+            <i class="fa fa-download"></i>
+        </div>
+    {{/if}}
+</div>
+
+<div {{action 'toggleSelection'}} class="media-right media-middle snippet-part">
+    <i class="mdi-navigation-more-vert"></i>
+</div>

@@ -1,0 +1,235 @@
+@audio-height: 50px;
+@menu-height: 45px;
+
+.bar {
+    position: fixed;
+    width: 100%;
+    /* TODO: z-index needed? */
+    z-index: 3;
+}
+
+.message-bar {
+    .bar;
+    bottom: @audio-height + 5px;
+}
+
+.toast-message {
+    border-radius: 200px;
+    padding: 10px 13px 10px 13px;
+    background-color: #323232;
+    color: #FFFFFF;
+}
+
+.action-bar {
+    .bar;
+    top: 0;
+    height: @menu-height;
+    font-size: 22px;
+    padding-right: 15px;
+}
+
+.btn-material-amber-A700, .btn-material-orange-200 {
+    color: rgba(255,255,255,.84) !important;
+}
+
+.action-cancel {
+    float: right;
+}
+
+.loading-bar {
+    .bar;
+    height: 4px;
+    margin: 0;
+}
+
+.inner-image {
+    width: 120px;
+    height: 90px;
+    top: -11px;
+    position: absolute;
+}
+
+.outer-image {
+    overflow: hidden;
+    position: relative;
+    width: 120px;
+    height: 68px;
+}
+
+.audio-stamp {
+    height: @audio-height;
+}
+
+.audio-slider {
+    .bar;
+    z-index: 4;
+    bottom: @audio-height - 15px;
+}
+
+.audio-bar {
+    .bar;
+    bottom: 0;
+    height: @audio-height;
+    background: white;
+}
+
+.audio-name, .audio-icon {
+    line-height: @audio-height;
+}
+
+.audio-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    white-space: nowrap;
+}
+
+.audio-icon {
+    padding: 0;
+    font-size: 24px;
+}
+
+.audio-icon-large {
+    .audio-icon;
+
+    font-size: 34px;
+}
+
+.audio-timer {
+    padding-top: 8px;
+    font-size: 12px;
+}
+
+.highlight {
+    color: #ef6c00;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+
+    input[type=file] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: inherit;
+
+        &::-webkit-file-upload-button {
+            display: none;
+        }
+    }
+}
+
+.list-group-separator.snippet-separator {
+    margin: 0;
+}
+
+.text-large {
+    font-size: 52px;
+}
+
+.snippet-part {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.list-group-item.snippet-item {
+    padding: 0;
+}
+
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.menu-bar {
+    .bar;
+    margin: 0 0 10px 0;
+    padding: 0;
+    top: 0;
+
+    .btn.btn-default {
+        &, &:hover {
+            background-color: #eeeeee;
+        }
+    }
+}
+
+.menu-placeholder {
+    height: @menu-height + 5px;
+}
+
+.grid-label {
+    margin: 3px 2px 3px 2px;
+}
+
+.spaced-top {
+    margin-top: 10px;
+}
+
+.btn-inline {
+    padding: 4px 15px 4px 15px;
+}
+
+.outer-label {
+    height: @menu-height;
+    padding: 0;
+}
+
+.inner-label {
+    margin-top: 11px;
+}
+
+.menu-text {
+    font-size: 15px;
+    color: white;
+}
+
+.outer-btn-group {
+    padding: 0;
+}
+
+.inner-btn-group {
+    margin: 0;
+    height: @menu-height;
+}
+
+.audio-name-outer {
+    padding-right: 0;
+}
+
+.text-active {
+    color: #ff9800;
+}
+
+.action-top {
+    background-color: #eeeeee;
+}
+
+.action-badge {
+    background-color: white;
+    color: #ffab00;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.undercover {
+    visibility: hidden;
+}
+
+.status-icons {
+    color: #ffb74d;
+    font-size: 18px;
+}
+
+.status-icons.active {
+    color: white;
+}
