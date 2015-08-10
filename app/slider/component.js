@@ -1,36 +1,25 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['slider', 'shor', 'slider-material-orange'],
+    tagName: 'input',
+    classNames: ['mdl-slider', 'mdl-js-slider'],
+    attributesBindings: ['type', 'min', 'max', 'value'],
+    type: 'range',
+    min: 0,
+    max: 0,
+    value: 0,
     slider: null,
-    didInsertElement: function() {
-        var element = this.$().noUiSlider({
-                start: 0,
-                range: {
-                    'min': 0,
-                    'max': 0
-                },
-                connect: 'lower'
-            }),
-            slider;
-
-        element.on('slide', function() {
+    didInsertElement: function () {
+        var element = this.$(),
             slider = this.get('slider');
 
+        element.on('input', function () {
             slider.set('value', element.val());
 
-            if (!slider.get('isDragged')) {
-                slider.set('isDragged', true);
-            }
+            slider.set('isDragged', true);
         }.bind(this));
 
-        element.on('set', function() {
-            this.set('slider.value', element.val());
-        }.bind(this));
-
-        element.on('change', function() {
-            slider = this.get('slider');
-
+        element.on('change', function () {
             slider.onSlideStop(element.val());
 
             slider.set('isDragged', false);
@@ -38,7 +27,10 @@ export default Ember.Component.extend({
 
         this.set('slider.element', element);
     },
-    willDestroyElement: function() {
-        this.$().destroy();
+    willDestroyElement: function () {
+        var element = this.$();
+
+        element.off('input');
+        element.off('change');
     }
 });
