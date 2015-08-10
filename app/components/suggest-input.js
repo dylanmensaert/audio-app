@@ -2,8 +2,7 @@ import Ember from 'ember';
 
 // TODO: send action on suggestion click
 export default Ember.TextField.extend({
-    classNames: ['form-control', 'floating-label'],
-    attributeBindings: ['placeholder'],
+    classNames: ['mdl-textfield__input'],
     focus: false,
     insertNewline: function() {
         this.sendAction('insert-newline');

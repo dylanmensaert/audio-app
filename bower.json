@@ -15,7 +15,8 @@
     "moment": "2.10.3",
     "typeahead.js": "0.10.5",
     "jquery-mobile": "1.4.5",
-    "material-design-lite": "1.0.2"
+    "material-design-lite": "1.0.2",
+    "material-design-icons": "2.0"
   },
   "resolutions": {
     "jquery": "2.1.3"

@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
   selected: null,
   originals: null,
   isEditMode: false,
-  editPlaceholder: null,
+  editLabel: null,
   actions: {
       search: function() {
           this.set('query', this.get('liveQuery'));
@@ -26,7 +26,7 @@ export default Ember.Mixin.create({
           var name = this.get('selected.firstObject.name');
 
           this.set('liveQuery', name);
-          this.set('editPlaceholder', 'Edit: ' + name);
+          this.set('editLabel', 'Edit: ' + name);
           this.set('isEditMode', true);
       },
       saveEdit: function() {
