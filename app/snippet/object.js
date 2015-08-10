@@ -8,13 +8,13 @@ var signateUrl,
     extractExtension,
     pluralizations;
 
-signateUrl = function(url) {
+signateUrl = function (url) {
     var host = 'http://www.youtube-mp3.org';
 
     return meta.downloadHost + url + '&s=' + ytMp3.createSignature(host + url);
 };
 
-extractExtension = function(source) {
+extractExtension = function (source) {
     return source.substr(source.lastIndexOf('.') + 1, source.length);
 };
 
@@ -25,7 +25,7 @@ pluralizations = {
 };
 
 export default Ember.Object.extend({
-    init: function() {
+    init: function () {
         this._super();
 
         this.set('labels', []);
@@ -39,28 +39,31 @@ export default Ember.Object.extend({
     fileSystem: null,
     isSelected: false,
     status: null,
-    isOffline: function() {
+    isOffline: function () {
         return this.get('fileSystem.snippets').isAny('id', this.get('id'));
     }.property('fileSystem.snippets.@each'),
-    isDownloading: function() {
+    isDownloading: function () {
         return this.get('status') === 'downloading';
     }.property('status'),
-    isPlaying: function() {
+    isPlaying: function () {
         return this.get('fileSystem.playingSnippetId') === this.get('id');
     }.property('fileSystem.playingSnippetId', 'id'),
-    isDownloaded: function() {
+    isDownloaded: function () {
         return this.get('labels').contains('downloaded');
     }.property('labels.@each'),
-    isQueued: function() {
+    isQueued: function () {
         return this.get('fileSystem.queue').contains(this.get('id'));
     }.property('fileSystem.queue.@each', 'id'),
-    createFilePath: function(type, extension) {
+    isDownloadLater: function () {
+        return this.get('labels').contains('download-later');
+    }.property('labels.@each'),
+    createFilePath: function (type, extension) {
         var fileName = this.get('id') + '.' + extension,
             directory = pluralizations[type];
 
         return directory + '/' + fileName;
     },
-    fetchDownload: function() {
+    fetchDownload: function () {
         var videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
             url;
 
@@ -69,13 +72,13 @@ export default Ember.Object.extend({
         url += '&el=na&bf=false';
         url += '&r=' + new Date().getTime();
 
-        return Ember.$.ajax(signateUrl(url)).then(function(videoId) {
+        return Ember.$.ajax(signateUrl(url)).then(function (videoId) {
             url = '/a/itemInfo/?';
             url += 'video_id=' + videoId;
             url += '&ac=www&t=grp';
             url += '&r=' + new Date().getTime();
 
-            return Ember.$.ajax(signateUrl(url)).then(function(info) {
+            return Ember.$.ajax(signateUrl(url)).then(function (info) {
                 info = info.substring(7, info.length - 1);
                 info = JSON.parse(info);
 
@@ -91,12 +94,12 @@ export default Ember.Object.extend({
             }.bind(this));
         }.bind(this));
     },
-    download: function() {
+    download: function () {
         this.set('status', 'downloading');
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
+        return new Ember.RSVP.Promise(function (resolve, reject) {
             if (Ember.isEmpty(this.get('audio'))) {
-                this.fetchDownload().then(function() {
+                this.fetchDownload().then(function () {
                     this.insert().then(resolve, reject);
                 }.bind(this));
             } else {
@@ -104,7 +107,7 @@ export default Ember.Object.extend({
             }
         }.bind(this));
     },
-    insert: function() {
+    insert: function () {
         var audio = this.createFilePath('audio', this.get('extension')),
             thumbnail = this.createFilePath('thumbnail', extractExtension(this.get('thumbnail'))),
             promises;
@@ -116,12 +119,15 @@ export default Ember.Object.extend({
             thumbnail: this._download(this.get('thumbnail'), thumbnail)
         };
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.RSVP.hash(promises).then(function(hash) {
+        return new Ember.RSVP.Promise(function (resolve, reject) {
+            Ember.RSVP.hash(promises).then(function (hash) {
+                var labels = this.get('labels');
+
                 this.set('audio', hash.audio);
                 this.set('thumbnail', hash.thumbnail);
 
-                this.get('labels').pushObject('downloaded');
+                labels.removeObject('download-later');
+                labels.pushObject('downloaded');
 
                 // TODO: update offline labels and snippets in 1 write action
                 // TODO: only perform this
@@ -132,12 +138,12 @@ export default Ember.Object.extend({
                 this.set('status', null);
 
                 resolve();
-            }.bind(this), function(reason) {
+            }.bind(this), function (reason) {
                 reject(reason.message);
             });
         }.bind(this));
     },
-    _download: function(url, source) {
+    _download: function (url, source) {
         var fileSystem = this.get('fileSystem'),
             xhr = new XMLHttpRequest(),
             response;
@@ -145,15 +151,15 @@ export default Ember.Object.extend({
         xhr.open('GET', url, true);
         xhr.responseType = 'arraybuffer';
 
-        return new Ember.RSVP.Promise(function(resolve) {
-            xhr.onload = function() {
+        return new Ember.RSVP.Promise(function (resolve) {
+            xhr.onload = function () {
                 response = this.response;
 
                 fileSystem.get('instance').root.getFile(source, {
                     create: true
-                }, function(fileEntry) {
-                    fileEntry.createWriter(function(fileWriter) {
-                        fileWriter.onwriteend = function() {
+                }, function (fileEntry) {
+                    fileEntry.createWriter(function (fileWriter) {
+                        fileWriter.onwriteend = function () {
                             resolve(fileEntry.toURL());
                         };
 
@@ -165,7 +171,7 @@ export default Ember.Object.extend({
             xhr.send();
         });
     },
-    remove: function() {
+    remove: function () {
         var fileSystem = this.get('fileSystem'),
             promises;
 
@@ -174,15 +180,15 @@ export default Ember.Object.extend({
             thumbnail: fileSystem.remove(this.get('thumbnail'))
         };
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.RSVP.all(promises).then(function() {
+        return new Ember.RSVP.Promise(function (resolve, reject) {
+            Ember.RSVP.all(promises).then(function () {
                 fileSystem.get('snippets').removeObject(this);
 
                 resolve();
             }.bind(this), reject);
         });
     },
-    strip: function() {
+    strip: function () {
         return this.getProperties('id', 'name', 'extension', 'labels', 'thumbnail');
     }
 });

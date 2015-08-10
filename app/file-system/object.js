@@ -8,12 +8,12 @@ var write,
 
 window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
-write = function() {
+write = function () {
     var json = this.toJSON();
 
-    this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
-        fileEntry.createWriter(function(fileWriter) {
-            fileWriter.onwriteend = function() {
+    this.get('instance').root.getFile('data.json', {}, function (fileEntry) {
+        fileEntry.createWriter(function (fileWriter) {
+            fileWriter.onwriteend = function () {
                 if (!fileWriter.length) {
                     fileWriter.write(new Blob([json], {
                         type: 'application/json'
@@ -27,7 +27,7 @@ write = function() {
 };
 
 export default Ember.Object.extend({
-    init: function() {
+    init: function () {
         this._super();
 
         this.forge();
@@ -38,10 +38,13 @@ export default Ember.Object.extend({
     queue: [],
     history: [],
     playingSnippetId: null,
+    setOfflineOnMobile: true,
+    setDownloadLaterOnMobile: true,
+    setDownloadBeforePlaying: false,
     didParseJSON: null,
     // TODO: http://stackoverflow.com/questions/30109066/html-5-file-system-how-to-increase-persistent-storage
-    forge: function() {
-        navigator.webkitPersistentStorage.queryUsageAndQuota(function(usage, quota) {
+    forge: function () {
+        navigator.webkitPersistentStorage.queryUsageAndQuota(function (usage, quota) {
             if (quota > usage) {
                 this.create(quota).then(this.createFiles.bind(this));
             } else {
@@ -49,56 +52,56 @@ export default Ember.Object.extend({
             }
         }.bind(this));
     },
-    increaseQuota: function() {
-        return new Ember.RSVP.Promise(function(resolve) {
-            navigator.webkitPersistentStorage.requestQuota(Number.MAX_SAFE_INTEGER, function(bytes) {
+    increaseQuota: function () {
+        return new Ember.RSVP.Promise(function (resolve) {
+            navigator.webkitPersistentStorage.requestQuota(Number.MAX_SAFE_INTEGER, function (bytes) {
                 this.create(bytes).then(resolve);
             }.bind(this));
         }.bind(this));
     },
-    create: function(bytes) {
-        return new Ember.RSVP.Promise(function(resolve) {
-            requestFileSystem(PERSISTENT, bytes, function(fileSystem) {
+    create: function (bytes) {
+        return new Ember.RSVP.Promise(function (resolve) {
+            requestFileSystem(PERSISTENT, bytes, function (fileSystem) {
                 this.set('instance', fileSystem);
 
                 resolve(fileSystem);
             }.bind(this));
         }.bind(this));
     },
-    write: function() {
+    write: function () {
         Ember.run.cancel(lastWriter);
 
         lastWriter = Ember.run.later(this, write, 100);
         /*TODO: snippets.@each.labels.@each needed?*/
     }.observes('playingSnippetId', 'queue.@each', 'history.@each', 'labels.@each', 'snippets.@each',
         'snippets.@each.labels.@each'),
-    remove: function(source) {
-        return new Ember.RSVP.Promise(function(resolve) {
-            this.get('instance').root.getFile(source, {}, function(fileEntry) {
-                fileEntry.remove(function() {
+    remove: function (source) {
+        return new Ember.RSVP.Promise(function (resolve) {
+            this.get('instance').root.getFile(source, {}, function (fileEntry) {
+                fileEntry.remove(function () {
                     resolve();
                 });
             });
         }.bind(this));
     },
-    createFiles: function(instance) {
+    createFiles: function (instance) {
         var reader,
             parseJSON = this.parseJSON.bind(this);
 
-        instance.root.getFile('data.json', {}, function(fileEntry) {
-            fileEntry.file(function(file) {
+        instance.root.getFile('data.json', {}, function (fileEntry) {
+            fileEntry.file(function (file) {
                 reader = new FileReader();
 
-                reader.onloadend = function() {
+                reader.onloadend = function () {
                     parseJSON(this.result);
                 };
 
                 reader.readAsText(file);
             });
-        }, function() {
+        }, function () {
             instance.root.getFile('data.json', {
                 create: true
-            }, function() {
+            }, function () {
                 this.get('labels').pushObject(Label.create({
                     name: 'downloaded',
                     permission: 'hidden'
@@ -119,14 +122,14 @@ export default Ember.Object.extend({
             create: true
         });
     },
-    parseJSON: function(json) {
+    parseJSON: function (json) {
         var parsedJSON = JSON.parse(json);
 
-        parsedJSON.labels = parsedJSON.labels.map(function(label) {
+        parsedJSON.labels = parsedJSON.labels.map(function (label) {
             return Label.create(label);
         });
 
-        parsedJSON.snippets = parsedJSON.snippets.map(function(snippet) {
+        parsedJSON.snippets = parsedJSON.snippets.map(function (snippet) {
             snippet.fileSystem = this;
 
             return Snippet.create(snippet);
@@ -138,18 +141,18 @@ export default Ember.Object.extend({
             this.didParseJSON();
         }
     },
-    toJSON: function() {
+    toJSON: function () {
         var data = {
             playingSnippetId: this.get('playingSnippetId'),
             queue: this.get('queue'),
             history: this.get('history')
         };
 
-        data.labels = this.get('labels').map(function(label) {
+        data.labels = this.get('labels').map(function (label) {
             return label.strip();
         });
 
-        data.snippets = this.get('snippets').map(function(snippet) {
+        data.snippets = this.get('snippets').map(function (snippet) {
             return snippet.strip();
         });
 
