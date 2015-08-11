@@ -1,11 +1,10 @@
-/* global Connection */
+/* global Connection, setInterval */
 
 import Ember from 'ember';
 
 export default Ember.Object.extend({
     init: function() {
-        var updateConnectionType,
-            getType;
+        var getType;
 
         this._super();
 
@@ -27,13 +26,9 @@ export default Ember.Object.extend({
             };
         }
 
-        updateConnectionType = Ember.run.later(this, function() {
+        setInterval(function() {
             this.set('type', getType());
-
-            updateConnectionType();
-        }, 2000);
-
-        updateConnectionType();
+        }.bind(this), 5000);
     },
     isMobile: !Ember.isEmpty(navigator.connection),
     selectedSnippets: [],
