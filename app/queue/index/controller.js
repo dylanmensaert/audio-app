@@ -32,7 +32,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
 
             callback(suggestions);
         }.bind(this);
-    }.property('fileSystem.snippets.@each.name', 'fileSystem.queue.@each'),
+    }.property('fileSystem.snippets.@each.name', 'fileSystem.queue.[]'),
     sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),
@@ -48,7 +48,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 return result;
             }.bind(this)
         }).create();
-    }.property('snippets.@each', 'fileSystem.queue.@each'),
+    }.property('snippets.[]', 'fileSystem.queue.[]'),
     snippets: function () {
         var query = this.get('query'),
             matchAnyLabel;
@@ -60,7 +60,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
 
             return snippet.get('isQueued') && (matchAnyLabel || logic.isMatch(snippet.get('name'), query));
         });
-    }.property('query', 'fileSystem.snippets.@each.name', 'fileSystem.queue.@each'),
+    }.property('query', 'fileSystem.snippets.@each.name', 'fileSystem.queue.[]'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('snippets.length')) {

@@ -47,7 +47,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
 
             callback(suggestions);
 
-            if (this.get('searchOnline') && suggestions.get('length') < 10) {
+            if (!this.get('searchDownloadedOnly') && suggestions.get('length') < 10) {
                 url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + query;
 
                 (function (oldQuery) {
@@ -67,7 +67,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 })(lastQuery);
             }
         }.bind(this);
-    }.property('searchOnline', 'fileSystem.snippets.@each.name'),
+    }.property('searchDownloadedOnly', 'fileSystem.snippets.@each.name'),
     sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),
@@ -76,7 +76,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 var snippets = this.get('snippets'),
                     result = -1;
 
-                if (this.get('searchOnline')) {
+                if (!this.get('searchDownloadedOnly')) {
                     if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
                         result = 1;
                     }
@@ -87,16 +87,16 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 return result;
             }.bind(this)
         }).create();
-    }.property('snippets.@each', 'offlineSnippets.@each.id'),
+    }.property('snippets.[]', 'offlineSnippets.@each.id'),
     // TODO: save label state in fileSystem someway
-    searchOnline: function () {
-        return !this.get('cache.isOffline') && (!this.get('cache.isMobileConnection') || !this.get('fileSystem.setOfflineOnMobile'));
-    }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setOfflineOnMobile'),
+    searchDownloadedOnly: function () {
+        return this.get('cache.isOffline') || (this.get('cache.isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
+    }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
     snippets: function () {
         var snippets = this.get('offlineSnippets'),
             id;
 
-        if (this.get('searchOnline')) {
+        if (!this.get('searchDownloadedOnly')) {
             snippets = this.get('onlineSnippets').map(function (snippet) {
                 id = snippet.get('id');
 
@@ -107,8 +107,9 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 return snippet;
             });
         }
+
         return snippets;
-    }.property('offlineSnippets.@each', 'onlineSnippets.@each'),
+    }.property('offlineSnippets.[]', 'onlineSnippets.[]', 'searchDownloadedOnly'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('snippets.length')) {
@@ -116,22 +117,19 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         }
     }.observes('snippets.length'),*/
     offlineSnippets: function () {
-        var snippets = [],
-            query,
+        var searchDownloadedOnly = this.get('searchDownloadedOnly'),
+            query = this.get('query'),
             matchAnyLabel;
 
-        query = this.get('query');
-
-        snippets = this.get('fileSystem.snippets').filter(function (snippet) {
+        return this.get('fileSystem.snippets').filter(function (snippet) {
+            // TODO: create separate result for matchAnyLabel
             matchAnyLabel = snippet.get('labels').any(function (label) {
                 return logic.isMatch(label, query);
             });
 
-            return matchAnyLabel || logic.isMatch(snippet.get('name'), query);
+            return (!searchDownloadedOnly || snippet.get('isDownloaded')) && (matchAnyLabel || logic.isMatch(snippet.get('name'), query));
         });
-
-        return snippets;
-    }.property('query', 'fileSystem.snippets.@each.name'),
+    }.property('query', 'fileSystem.snippets.@each.name', 'searchDownloadedOnly'),
     nextPageToken: null,
     isLoading: false,
     onlineSnippets: [],
@@ -139,7 +137,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         var snippets = [],
             url;
 
-        if (this.get('searchOnline')) {
+        if (!this.get('searchDownloadedOnly')) {
             url = meta.searchHost + '/youtube/v3/search?part=snippet&order=viewCount&type=video&maxResults=50';
             this.set('isLoading', true);
 
@@ -186,7 +184,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     },
     scheduleUpdateOnlineSnippets: function () {
         Ember.run.once(this, this.updateOnlineSnippets);
-    }.observes('query', 'searchOnline'),
+    }.observes('query', 'searchDownloadedOnly'),
     /*TODO: Implement another way?*/
     updateSelectedSnippets: function () {
         var selectedSnippets = this.get('snippets').filterBy('isSelected');

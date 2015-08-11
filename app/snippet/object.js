@@ -41,7 +41,7 @@ export default Ember.Object.extend({
     status: null,
     isOffline: function () {
         return this.get('fileSystem.snippets').isAny('id', this.get('id'));
-    }.property('fileSystem.snippets.@each'),
+    }.property('fileSystem.snippets.[]'),
     isDownloading: function () {
         return this.get('status') === 'downloading';
     }.property('status'),
@@ -50,13 +50,13 @@ export default Ember.Object.extend({
     }.property('fileSystem.playingSnippetId', 'id'),
     isDownloaded: function () {
         return this.get('labels').contains('downloaded');
-    }.property('labels.@each'),
+    }.property('labels.[]'),
     isQueued: function () {
         return this.get('fileSystem.queue').contains(this.get('id'));
-    }.property('fileSystem.queue.@each', 'id'),
+    }.property('fileSystem.queue.[]', 'id'),
     isDownloadLater: function () {
         return this.get('labels').contains('download-later');
-    }.property('labels.@each'),
+    }.property('labels.[]'),
     createFilePath: function (type, extension) {
         var fileName = this.get('id') + '.' + extension,
             directory = pluralizations[type];

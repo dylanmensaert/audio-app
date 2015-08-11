@@ -38,7 +38,7 @@ export default Ember.Object.extend({
     queue: [],
     history: [],
     playingSnippetId: null,
-    setOfflineOnMobile: true,
+    setDownloadedOnlyOnMobile: true,
     setDownloadLaterOnMobile: true,
     setDownloadBeforePlaying: false,
     didParseJSON: null,
@@ -73,8 +73,8 @@ export default Ember.Object.extend({
 
         lastWriter = Ember.run.later(this, write, 100);
         /*TODO: snippets.@each.labels.@each needed?*/
-    }.observes('playingSnippetId', 'queue.@each', 'history.@each', 'labels.@each', 'snippets.@each',
-        'snippets.@each.labels.@each'),
+    }.observes('playingSnippetId', 'queue.[]', 'history.[]', 'labels.[]', 'snippets.[]',
+        'snippets.@each.labels.[]'),
     remove: function (source) {
         return new Ember.RSVP.Promise(function (resolve) {
             this.get('instance').root.getFile(source, {}, function (fileEntry) {

@@ -21,7 +21,7 @@ export default Ember.Controller.extend(controllerMixin, {
 
             callback(suggestions);
         }.bind(this);
-    }.property('fileSystem.labels.@each'),
+    }.property('fileSystem.labels.[]'),
     sortedLabels: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('labels'),
@@ -54,7 +54,7 @@ export default Ember.Controller.extend(controllerMixin, {
         }.bind(this));
 
         return labels;
-    }.property('fileSystem.labels.@each.name', 'cache.selectedSnippets.@each', 'query'),
+    }.property('fileSystem.labels.@each.name', 'cache.selectedSnippets.[]', 'query'),
     originals: Ember.computed.alias('fileSystem.labels'),
     selected: function () {
         return this.get('labels').filterBy('isSelected');
