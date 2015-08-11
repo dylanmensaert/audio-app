@@ -10,7 +10,7 @@ var Router = Ember.Router.extend({
 
 Router.map(function () {
     this.resource('explorer', function () {
-
+        this.resource('labels');
     });
 
     this.resource('queue', function () {

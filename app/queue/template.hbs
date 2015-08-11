@@ -12,7 +12,7 @@
             </div>
 
             <div {{action 'previous'}} class='col-xs-2 text-left audio-icon'>
-                <i class="fa fa-step-backward"></i>
+                <i class="material-icons">skip_previous</i>
             </div>
 
             <div class='col-xs-2 audio-icon'>
@@ -21,16 +21,16 @@
                 {{/if}}
 
                 {{#if audio.isPlaying}}
-                    <i class="fa fa-pause" {{action 'pause'}}></i>
+                    <i class="material-icons" {{action 'pause'}}>pause</i>
                 {{/if}}
 
                 {{#if audio.isIdle}}
-                    <i class="fa fa-play" {{action 'play'}}></i>
+                    <i class="material-icons" {{action 'play'}}>play_arrow</i>
                 {{/if}}
             </div>
 
             <div {{action 'next'}} class='col-xs-2 text-right audio-icon'>
-                <i class="fa fa-step-forward"></i>
+                <i class="material-icons">skip_next</i>
             </div>
 
             <div class="col-xs-3 text-right">

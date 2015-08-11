@@ -4,13 +4,13 @@ import controllerMixin from 'my-app/utils/controller-mixin';
 import snippetActionsMixin from 'my-app/snippet/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
-    fetchSuggestions: function() {
-        return function(query, callback) {
+    fetchSuggestions: function () {
+        return function (query, callback) {
             var suggestions = [],
                 key;
 
             // TODO: check if label contains a snippet which is queued?
-            this.get('fileSystem.labels').forEach(function(label) {
+            this.get('fileSystem.labels').forEach(function (label) {
                 key = label.get('name');
 
                 if (!label.get('isHidden') && logic.isMatch(key, query)) {
@@ -20,7 +20,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 }
             });
 
-            this.get('fileSystem.snippets').forEach(function(snippet) {
+            this.get('fileSystem.snippets').forEach(function (snippet) {
                 key = snippet.get('name');
 
                 if (snippet.get('isQueued') && logic.isMatch(key, query)) {
@@ -33,11 +33,11 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             callback(suggestions);
         }.bind(this);
     }.property('fileSystem.snippets.@each.name', 'fileSystem.queue.@each'),
-    sortedSnippets: function() {
+    sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),
             sortProperties: ['name', 'id'],
-            orderBy: function(snippet, other) {
+            orderBy: function (snippet, other) {
                 var queue = this.get('fileSystem.queue'),
                     result = -1;
 
@@ -49,12 +49,12 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             }.bind(this)
         }).create();
     }.property('snippets.@each', 'fileSystem.queue.@each'),
-    snippets: function() {
+    snippets: function () {
         var query = this.get('query'),
             matchAnyLabel;
 
-        return this.get('fileSystem.snippets').filter(function(snippet) {
-            matchAnyLabel = snippet.get('labels').any(function(label) {
+        return this.get('fileSystem.snippets').filter(function (snippet) {
+            matchAnyLabel = snippet.get('labels').any(function (label) {
                 return logic.isMatch(label, query);
             });
 
@@ -67,14 +67,14 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.get('cache').showMessage('No songs found');
         }
     }.observes('snippets.length'),*/
-    didUpdate: function(snippetIds) {
+    didUpdate: function (snippetIds) {
         var firstSnippetId = snippetIds.get('firstObject'),
             hasChangedFirst = this.get('fileSystem.queue.firstObject') !== firstSnippetId,
             firstSnippet;
 
         this.set('fileSystem.queue', snippetIds);
 
-        this.get('snippets').forEach(function(snippet) {
+        this.get('snippets').forEach(function (snippet) {
             if (hasChangedFirst && snippet.get('id') === firstSnippetId) {
                 firstSnippet = snippet;
             }
@@ -85,7 +85,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         }
     },
     /*TODO: Implement another way?*/
-    updateSelectedSnippets: function() {
+    updateSelectedSnippets: function () {
         var selectedSnippets = this.get('snippets').filterBy('isSelected');
 
         this.set('cache.selectedSnippets', selectedSnippets);
@@ -93,7 +93,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     originals: Ember.computed.alias('fileSystem.snippets'),
     selected: Ember.computed.alias('cache.selectedSnippets'),
     actions: {
-        removeFromQueue: function(snippet) {
+        removeFromQueue: function (snippet) {
             if (snippet.get('isPlaying')) {
                 this.send('next');
             }
@@ -101,6 +101,9 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.get('fileSystem.queue').removeObject(snippet.get('id'));
 
             this.get('cache').showMessage('Removed from queue');
+        },
+        selectAll: function () {
+            // TODO: select all
         }
     }
 });

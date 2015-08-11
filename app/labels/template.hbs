@@ -1,0 +1,67 @@
+{{#if cache.selectedSnippets}}
+    {{#action-bar models=cache.selectedSnippets}}
+        <div class="col-xs-2 outer-label">
+            {{#link-to 'explorer.index' tagName='div' class='inner-label'}}
+                <i class="mdi-navigation-arrow-back"></i>
+            {{/link-to}}
+        </div>
+
+        <div class="col-xs-6">
+            &nbsp;
+        </div>
+    {{/action-bar}}
+{{else}}
+    {{#if selected}}
+        {{#action-bar models=selected deselect='exitEdit'}}
+            <div class="col-xs-2">
+                &nbsp;
+            </div>
+
+            <div class="col-xs-2 outer-label">
+                {{#if hasSingle}}
+                    <div {{action 'explore'}} class="inner-label">
+                        <i class="mdi-action-search"></i>
+                    </div>
+                {{else}}
+                    &nbsp;
+                {{/if}}
+            </div>
+
+            <div class="col-xs-2 outer-label">
+                {{#if hasSingle}}
+                    {{#if isEditMode}}
+                        <div {{action 'exitEdit'}} class="inner-label">
+                            <i class="mdi-content-clear"></i>
+                        </div>
+                    {{else}}
+                        <div {{action 'setupEdit'}} class="inner-label">
+                            <i class="mdi-editor-mode-edit"></i>
+                        </div>
+                    {{/if}}
+                {{else}}
+                    &nbsp;
+                {{/if}}
+            </div>
+
+            <div class="col-xs-2 outer-label">
+                <div {{action 'remove'}} class="inner-label">
+                    <i class="mdi-action-delete"></i>
+                </div>
+            </div>
+        {{/action-bar}}
+    {{/if}}
+{{/if}}
+
+{{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
+
+<div class="text-right">
+    <div {{action 'create'}} class="btn btn-material-orange-200 btn-inline {{if isEditMode 'undercover'}}">
+        <i class="fa fa-plus"></i>
+    </div>
+</div>
+
+<div class="container">
+    {{#each sortedLabels as |label|}}
+        {{app-label model=label action='toggle' param=label}}
+    {{/each}}
+</div>

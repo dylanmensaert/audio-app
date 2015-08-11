@@ -12,8 +12,8 @@
     </div>
 
     <div class="col-xs-2 outer-label action-top">
-        <div {{action 'scrollToTop'}} class="inner-label">
-            <i class="mdi-navigation-expand-less"></i>
+        <div {{action 'selectAll'}} class="inner-label">
+            <i class="material-icons">more_vert</i>
         </div>
     </div>
 </div>
@@ -38,11 +38,11 @@
                     {{/if}}
 
                     {{#if audio.isPlaying}}
-                        <i class="fa fa-pause" {{action 'pause'}}></i>
+                        <i class="material-icons" {{action 'pause'}}>pause</i>
                     {{/if}}
 
                     {{#if audio.isIdle}}
-                        <i class="fa fa-play" {{action 'play'}}></i>
+                        <i class="material-icons" {{action 'play'}}>play_arrow</i>
                     {{/if}}
                 </div>
             </div>

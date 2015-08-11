@@ -1,7 +1,7 @@
 <div class="row menu-bar text-center action-top">
     <div class="col-xs-2 outer-label">
         {{#link-to 'explorer.index' tagName='div' class='inner-label'}}
-            <i class="mdi-navigation-arrow-back"></i>
+            <i class="material-icons">arrow_back</i>
         {{/link-to}}
     </div>
 
@@ -12,8 +12,8 @@
     </div>
 
     <div class="col-xs-2 outer-label">
-        <div {{action 'scrollToTop'}} class="inner-label">
-            <i class="mdi-navigation-expand-less"></i>
+        <div {{action 'selectAll'}} class="inner-label">
+            <i class="material-icons">more_vert</i>
         </div>
     </div>
 </div>

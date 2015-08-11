@@ -116,7 +116,7 @@ export default Ember.Route.extend(updateTitle, {
 
             if (snippets.get('length')) {
                 // TODO: Better message?
-                cache.showMessage('Downloading');
+                cache.showMessage('Downloading download-later');
 
                 // TODO: Handle multiple 'observe' calls before download finishes
                 snippets.forEach(function (snippet) {
@@ -151,13 +151,6 @@ export default Ember.Route.extend(updateTitle, {
         },
         pause: function () {
             this.get('audio').pause();
-        },
-        scrollToTop: function () {
-            if (Ember.$(window).scrollTop()) {
-                window.scrollTo(0, 0);
-            } else {
-                this.get('cache').showMessage('Already at top');
-            }
         },
         previous: function () {
             this.previous();

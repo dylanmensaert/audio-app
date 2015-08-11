@@ -67,7 +67,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 })(lastQuery);
             }
         }.bind(this);
-    }.property('fileSystem.downloadOnly', 'fileSystem.snippets.@each.name'),
+    }.property('searchOnline', 'fileSystem.snippets.@each.name'),
     sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),

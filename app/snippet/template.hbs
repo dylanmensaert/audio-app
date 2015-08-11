@@ -13,12 +13,12 @@
 <div class="media-right media-top snippet-part status-icons {{if model.isSelected 'active'}}">
     {{#if model.isPlaying}}
         <div>
-            <i class="glyphicon glyphicon-headphones"></i>
+            <i class="material-icons">headset</i>
         </div>
     {{else}}
         {{#if showQueued}}
             <div>
-                <i class="fa fa-clock-o"></i>
+                <i class="material-icons">schedule</i>
             </div>
         {{/if}}
     {{/if}}
@@ -31,11 +31,11 @@
 
     {{#if model.isDownloaded}}
         <div>
-            <i class="fa fa-download"></i>
+            <i class="material-icons">file_download</i>
         </div>
     {{/if}}
 </div>
 
 <div {{action 'toggleSelection'}} class="media-right media-middle snippet-part">
-    <i class="mdi-navigation-more-vert"></i>
+    <i class="material-icons">more_vert</i>
 </div>

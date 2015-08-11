@@ -1,7 +1,7 @@
 {{#action-bar models=snippets deselect='exitEdit'}}
     <div class="col-xs-2 outer-label">
         {{#link-to 'labels' tagName='div' class='inner-label'}}
-            <i class="mdi-maps-local-offer"></i>
+            <i class="material-icons">local_offer</i>
         {{/link-to}}
     </div>
 
@@ -14,7 +14,7 @@
                     </span>
                 {{/unless}}
 
-                <i class="mdi-file-file-download"></i>
+                <i class="material-icons">file_download</i>
             </div>
         {{else}}
             &nbsp;
@@ -25,11 +25,11 @@
         {{#if hasSingle}}
             {{#if isEditMode}}
                 <div {{action 'exitEdit'}} class="inner-label">
-                    <i class="mdi-content-clear"></i>
+                    <i class="material-icons">close</i>
                 </div>
             {{else}}
                 <div {{action 'setupEdit'}} class="inner-label">
-                    <i class="mdi-editor-mode-edit"></i>
+                    <i class="material-icons">mode_edit</i>
                 </div>
             {{/if}}
         {{else}}
@@ -46,7 +46,7 @@
                     </span>
                 {{/unless}}
 
-                <i class="mdi-action-delete"></i>
+                <i class="material-icons">delete</i>
             </div>
         {{else}}
             &nbsp;
