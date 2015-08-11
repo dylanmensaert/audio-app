@@ -1,3 +1,5 @@
+{{search-bar title='Settings'}}
+
 <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="downloaded-only">
   <input type="checkbox" id="downloaded-only" class="mdl-switch__input" checked={{fileSystem.setDownloadedOnlyOnMobile}} />
 
@@ -26,3 +28,5 @@
     Import audio
     {{file-input}}
 </button>
+
+{{audio-bar audio=audio transitionToQueue=transitionToQueue play=play pause=pause}}

@@ -12,10 +12,7 @@ Ember.MODEL_FACTORY_INJECTIONS = true;
 App = Ember.Application.extend({
     modulePrefix: config.modulePrefix,
     podModulePrefix: config.podModulePrefix,
-    Resolver: Resolver,
-    ready: function() {
-        Ember.$('.loading-bar').remove();
-    }
+    Resolver: Resolver
 });
 
 loadInitializers(App, config.modulePrefix);

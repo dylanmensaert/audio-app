@@ -1,6 +1,6 @@
 /* global document: true */
 import Ember from 'ember';
-import Slider from 'audio-app/slider/object';
+import Slider from 'audio-app/my-slider/object';
 import updateTitle from 'audio-app/utils/update-title';
 
 var generateRandom = function(min, max) {
@@ -182,7 +182,11 @@ export default Ember.Route.extend(updateTitle, {
             audio.set('didEnd', this.next.bind(this));
 
             this.set('fileSystem.didParseJSON', function() {
-                audio.load(this.get('snippets').findBy('id', this.get('playingSnippetId')));
+                var snippet = this.get('snippets').findBy('id', this.get('playingSnippetId'));
+
+                if (!Ember.isEmpty(snippet)) {
+                    audio.load(snippet);
+                }
             });
         },
         transitionToQueue: function() {

@@ -9,7 +9,7 @@
 
     <div class="list-group spaced-top">
         {{#each sortedSnippets as |snippet|}}
-            {{app-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' param=snippet showQueued=snippet.isQueued}}
+            {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' param=snippet showQueued=snippet.isQueued}}
 
             <div class="list-group-separator snippet-separator" />
         {{/each}}

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import injectAudio from 'audio-app/audio/inject';
+import injectAudio from 'audio-app/my-audio/inject';
 import injectFileSystem from 'audio-app/file-system/inject';
 import injectCache from 'audio-app/cache/inject';
 

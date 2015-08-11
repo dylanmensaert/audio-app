@@ -9,25 +9,25 @@ export default Ember.Component.extend({
     max: 0,
     value: 0,
     slider: null,
-    didInsertElement: function () {
+    didInsertElement: function() {
         var element = this.$(),
             slider = this.get('slider');
 
-        element.on('input', function () {
+        element.on('input', function() {
             slider.set('value', element.val());
 
             slider.set('isDragged', true);
         }.bind(this));
 
-        element.on('change', function () {
+        element.on('change', function() {
             slider.onSlideStop(element.val());
 
             slider.set('isDragged', false);
         }.bind(this));
 
-        this.set('slider.element', element);
+        this.set('slider.component', this);
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         var element = this.$();
 
         element.off('input');

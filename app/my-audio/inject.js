@@ -1,4 +1,4 @@
-import Audio from 'audio-app/audio/object';
+import Audio from 'audio-app/my-audio/object';
 
 export default function(Application) {
     Application.initializer({

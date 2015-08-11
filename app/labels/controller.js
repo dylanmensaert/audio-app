@@ -116,6 +116,9 @@ export default Ember.Controller.extend(controllerMixin, {
                     query: this.get('selected.firstObject.name')
                 }
             });
+        },
+        selectAll: function() {
+            this.get('labels').setEach('isSelected', true);
         }
     }
 });

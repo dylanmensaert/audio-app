@@ -12,6 +12,8 @@ Router.map(function() {
     this.resource('labels');
 
     this.resource('queue');
+
+    this.resource('settings');
 });
 
 export default Router;
