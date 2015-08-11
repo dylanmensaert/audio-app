@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Snippet from 'my-app/snippet/object';
+import Snippet from 'audio-app/snippet/object';
 
 var split = function(fileName) {
     var lastIndex = fileName.lastIndexOf('.');

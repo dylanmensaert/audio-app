@@ -1,4 +1,4 @@
-import fileSystem from 'my-app/file-system/object';
+import fileSystem from 'audio-app/file-system/object';
 
 export default function(Application) {
     Application.initializer({

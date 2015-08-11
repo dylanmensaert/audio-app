@@ -1,15 +1,15 @@
 /* global document: true */
 import Ember from 'ember';
-import Slider from 'my-app/slider/object';
-import updateTitle from 'my-app/utils/update-title';
+import Slider from 'audio-app/slider/object';
+import updateTitle from 'audio-app/utils/update-title';
 
-var generateRandom = function (min, max) {
+var generateRandom = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 export default Ember.Route.extend(updateTitle, {
     title: 'music',
-    previous: function () {
+    previous: function() {
         var queue,
             currentIndex,
             previousIndex,
@@ -30,13 +30,13 @@ export default Ember.Route.extend(updateTitle, {
 
         this.play(previousSnippet);
     },
-    next: function () {
+    next: function() {
         var queue = this.get('fileSystem.queue'),
             snippetId,
             nextSnippet,
             unplayedSnippetIds;
 
-        unplayedSnippetIds = queue.filter(function (snippetId) {
+        unplayedSnippetIds = queue.filter(function(snippetId) {
             return !this.get('cache.playedSnippetIds').contains(snippetId);
         }.bind(this));
 
@@ -54,7 +54,7 @@ export default Ember.Route.extend(updateTitle, {
 
         this.play(nextSnippet);
     },
-    play: function (snippet) {
+    play: function(snippet) {
         var fileSystem = this.get('fileSystem'),
             offlineSnippets = fileSystem.get('snippets'),
             audio = this.get('audio'),
@@ -99,14 +99,14 @@ export default Ember.Route.extend(updateTitle, {
         }
 
         if (!Ember.isEmpty(snippet) && fileSystem.get('setDownloadBeforePlaying') && !snippet.get('isDownloaded')) {
-            snippet.download().then(function () {
+            snippet.download().then(function() {
                 audio.play(snippet);
             });
         } else {
             audio.play(snippet);
         }
     },
-    downloadSnippets: function () {
+    downloadSnippets: function() {
         var fileSystem = this.get('fileSystem'),
             cache = this.get('cache'),
             snippets;
@@ -119,61 +119,61 @@ export default Ember.Route.extend(updateTitle, {
                 cache.showMessage('Downloading download-later');
 
                 // TODO: Handle multiple 'observe' calls before download finishes
-                snippets.forEach(function (snippet) {
+                snippets.forEach(function(snippet) {
                     snippet.download();
                 });
             }
         }
     }.observes('fileSystem.setDownloadLaterOnMobile', 'cache.isMobileConnection', 'snippets.@each.isDownloadLater'),
     actions: {
-        loading: function () {
+        loading: function() {
             if (this.get('controller')) {
                 this.set('controller.isLoading', true);
 
-                this.router.one('didTransition', function () {
+                this.router.one('didTransition', function() {
                     this.set('controller.isLoading', false);
                 }.bind(this));
             }
         },
-        error: function (error) {
+        error: function(error) {
             if (this.get('controller')) {
                 this.set('controller.error', error);
             }
         },
-        updateTitle: function (tokens) {
+        updateTitle: function(tokens) {
             this._super(tokens);
 
             tokens.reverse();
             document.title = tokens.join(' - ');
         },
-        play: function (snippet) {
+        play: function(snippet) {
             this.play(snippet);
         },
-        pause: function () {
+        pause: function() {
             this.get('audio').pause();
         },
-        previous: function () {
+        previous: function() {
             this.previous();
         },
-        next: function () {
+        next: function() {
             this.next();
         },
-        didTransition: function () {
+        didTransition: function() {
             var audio = this.get('audio'),
                 cache = this.get('cache'),
                 slider;
 
             slider = Slider.create({
-                onSlideStop: function (value) {
+                onSlideStop: function(value) {
                     audio.setCurrentTime(value);
                 }
             });
 
-            audio.addObserver('currentTime', audio, function () {
+            audio.addObserver('currentTime', audio, function() {
                 slider.setValue(this.get('currentTime'));
             });
 
-            audio.addObserver('duration', audio, function () {
+            audio.addObserver('duration', audio, function() {
                 slider.set('max', this.get('duration'));
             });
 
@@ -181,9 +181,14 @@ export default Ember.Route.extend(updateTitle, {
 
             audio.set('didEnd', this.next.bind(this));
 
-            this.set('fileSystem.didParseJSON', function () {
+            this.set('fileSystem.didParseJSON', function() {
                 audio.load(this.get('snippets').findBy('id', this.get('playingSnippetId')));
             });
+        },
+        transitionToQueue: function() {
+            this.get('fileSystem.snippets').setEach('isSelected', false);
+
+            this.transitionToRoute('queue.index');
         }
     }
 });

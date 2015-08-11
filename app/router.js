@@ -3,19 +3,15 @@ import config from './config/environment';
 
 var Router = Ember.Router.extend({
     location: config.locationType,
-    updateTitle: function () {
+    updateTitle: function() {
         this.send('updateTitle', []);
     }.on('didTransition')
 });
 
-Router.map(function () {
-    this.resource('explorer', function () {
-        this.resource('labels');
-    });
+Router.map(function() {
+    this.resource('labels');
 
-    this.resource('queue', function () {
-
-    });
+    this.resource('queue');
 });
 
 export default Router;

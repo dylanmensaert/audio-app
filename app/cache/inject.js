@@ -1,4 +1,4 @@
-import Cache from 'my-app/cache/object';
+import Cache from 'audio-app/cache/object';
 
 export default function(Application) {
     Application.initializer({

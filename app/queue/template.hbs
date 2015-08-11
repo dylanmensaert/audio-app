@@ -1,4 +1,36 @@
-{{outlet}}
+<div class="row menu-bar text-center action-top">
+    <div class="col-xs-2 outer-label">
+        {{#link-to 'explorer.index' tagName='div' class='inner-label'}}
+            <i class="material-icons">arrow_back</i>
+        {{/link-to}}
+    </div>
+
+    <div class="col-xs-8">
+        <div class="audio-name">
+            {{audio.snippet.name}}
+        </div>
+    </div>
+
+    <div class="col-xs-2 outer-label">
+        <div {{action 'selectAll'}} class="inner-label">
+            <i class="material-icons">more_vert</i>
+        </div>
+    </div>
+</div>
+
+{{#if cache.selectedSnippets}}
+    {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
+{{/if}}
+
+{{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
+
+<div class="list-group">
+    {{#each sortedSnippets as |snippet|}}
+        {{app-snippet model=snippet action='play' swipeleft='removeFromQueue' param=snippet}}
+
+        <div class="list-group-separator snippet-separator" />
+    {{/each}}
+</div>
 
 {{#if audio.snippet}}
     <div class="audio-stamp" />
@@ -41,6 +73,3 @@
         </div>
     </div>
 {{/if}}
-
-
-

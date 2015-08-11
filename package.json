@@ -1,7 +1,7 @@
 {
-    "name": "my-app",
+    "name": "audio-app",
     "version": "0.0.0",
-    "description": "Small description for my-app goes here",
+    "description": "Small description for audio-app goes here",
     "private": true,
     "directories": {
         "doc": "doc",
