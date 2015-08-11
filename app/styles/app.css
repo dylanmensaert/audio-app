@@ -1,6 +1,5 @@
 @audio-height: 50px;
 @menu-height: 45px;
-
 .bar {
     position: fixed;
     width: 100%;
@@ -28,8 +27,9 @@
     padding-right: 15px;
 }
 
-.btn-material-amber-A700, .btn-material-orange-200 {
-    color: rgba(255,255,255,.84) !important;
+.btn-material-amber-A700,
+.btn-material-orange-200 {
+    color: rgba(255, 255, 255, .84) !important;
 }
 
 .action-cancel {
@@ -73,7 +73,8 @@
     background: white;
 }
 
-.audio-name, .audio-icon {
+.audio-name,
+.audio-icon {
     line-height: @audio-height;
 }
 
@@ -91,7 +92,6 @@
 
 .audio-icon-large {
     .audio-icon;
-
     font-size: 34px;
 }
 
@@ -107,14 +107,12 @@
 .btn-file {
     position: relative;
     overflow: hidden;
-
     input[type=file] {
         position: absolute;
         top: 0;
         left: 0;
         opacity: 0;
         cursor: inherit;
-
         &::-webkit-file-upload-button {
             display: none;
         }
@@ -152,9 +150,9 @@
     margin: 0 0 10px 0;
     padding: 0;
     top: 0;
-
     .btn.btn-default {
-        &, &:hover {
+        &,
+        &:hover {
             background-color: #eeeeee;
         }
     }
@@ -232,4 +230,39 @@
 
 .status-icons.active {
     color: white;
+}
+
+
+/* TODO: Put in seperate mdl.css file if possible */
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(assets/MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(assets/MaterialIcons-Regular.woff2) format('woff2'), url(assets/MaterialIcons-Regular.woff) format('woff'), url(assets/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: 'liga';
 }

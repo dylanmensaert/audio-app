@@ -8,7 +8,7 @@ var generateRandom = function(min, max) {
 };
 
 export default Ember.Route.extend(updateTitle, {
-    title: 'music',
+    title: 'audio',
     previous: function() {
         var queue,
             currentIndex,
