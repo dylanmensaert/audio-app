@@ -1,0 +1,23 @@
+<div class="mdl-layout__header-row">
+  <span class="mdl-layout-title">
+    <!-- TODO: title probably bugged, fix: http://www.getmdl.io/templates/android-dot-com/index.html -->
+    {{title}}
+  </span>
+
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+    <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+      <i class="material-icons">search</i>
+    </label>
+
+    <div class="mdl-textfield__expandable-holder">
+      <!-- TODO: Implement TransitionToIndex -->
+      <input class="mdl-textfield__input" type="text" id="search" />
+
+      <label class="mdl-textfield__label" for="search"></label>
+    </div>
+  </div>
+
+  <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons">more_vert</i>
+  </button>
+</div>

@@ -7,15 +7,16 @@
 
     <div class="col-xs-2 outer-label">
         {{#if undownloadedSnippets}}
-            <div {{action 'download'}} class="inner-label">
-                {{#unless isEveryUndownloaded}}
-                    <span class="menu-text">
-                        {{undownloadedSnippets.length}}
-                    </span>
-                {{/unless}}
-
-                <i class="material-icons">file_download</i>
+          {{#if isEveryUndownloaded}}
+            <!-- TODO: Further refactored if else? -->
+            <div {{action 'download'}} class="material-icons">
+              file_download
             </div>
+          {{else}}
+            <div {{action 'download'}} class="material-icons mdl-badge" data-badge={{undownloadedSnippets.length}}>
+              file_download
+            </div>
+          {{/if}}
         {{else}}
             &nbsp;
         {{/if}}
@@ -39,15 +40,16 @@
 
     <div class="col-xs-2 outer-label">
         {{#if offlineSnippets}}
-            <div {{action 'remove'}} class="inner-label">
-                {{#unless isEveryOffline}}
-                    <span class="menu-text">
-                        {{offlineSnippets.length}}
-                    </span>
-                {{/unless}}
-
-                <i class="material-icons">delete</i>
+          {{#if isEveryOffline}}
+            <!-- TODO: Further refactored if else? -->
+            <div {{action 'remove'}} class="material-icons">
+              delete
             </div>
+          {{else}}
+            <div {{action 'remove'}} class="material-icons mdl-badge" data-badge={{offlineSnippets.length}}>
+              delete
+            </div>
+          {{/if}}
         {{else}}
             &nbsp;
         {{/if}}

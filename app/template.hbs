@@ -13,14 +13,38 @@
 
 <div class="menu-placeholder" />
 
-{{outlet}}
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+  <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+    <!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
 
-{{message-bar showMessage=cache.showMessage}}
+    <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+      {{#link-to 'labels' class='mdl-navigation__link' properties=linkToProperties}}
+        <i class="mdl-color-text--blue-grey-400 material-icons">
+          local_offer
+        </i>
 
-{{#if audio.snippet}}
-    <div class="audio-slider">
-        {{slider-component slider=cache.slider}}
-    </div>
-{{/if}}
+        Labels
+      {{/link-to}}
 
-{{audio-component audio=audio}}
+      {{#link-to 'settings' class='mdl-navigation__link' properties=linkToProperties}}
+        <i class="mdl-color-text--blue-grey-400 material-icons">
+          settings
+        </i>
+
+        Settings
+      {{/link-to}}
+    </nav>
+  </div>
+
+  {{outlet}}
+
+  {{message-bar showMessage=cache.showMessage}}
+
+  {{#if audio.snippet}}
+      <div class="audio-slider">
+          {{slider-component slider=cache.slider}}
+      </div>
+  {{/if}}
+
+  {{audio-component audio=audio}}
+</div>

@@ -1,16 +1,11 @@
+{{search-bar title='Explorer' selectAll=selectAll}}
+
 {{#endless-scroll didScrollToBottom=didScrollToBottom}}
     {{#if cache.selectedSnippets}}
         {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
     {{/if}}
 
     {{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
-
-    <div class="container">
-        <button class="btn btn-default btn-file btn-raised">
-            Import audio
-            {{file-input}}
-        </button>
-    </div>
 
     <div class="list-group spaced-top">
         {{#each sortedSnippets as |snippet|}}

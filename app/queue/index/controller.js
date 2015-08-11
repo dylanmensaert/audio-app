@@ -103,7 +103,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.get('cache').showMessage('Removed from queue');
         },
         selectAll: function () {
-            // TODO: select all
+            this.get('snippets').setEach('isSelected', true);
         }
     }
 });

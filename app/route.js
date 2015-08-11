@@ -1,4 +1,4 @@
-/* global window: true, document: true */
+/* global document: true */
 import Ember from 'ember';
 import Slider from 'my-app/slider/object';
 import updateTitle from 'my-app/utils/update-title';

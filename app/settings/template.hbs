@@ -1,0 +1,28 @@
+<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="downloaded-only">
+  <input type="checkbox" id="downloaded-only" class="mdl-switch__input" checked={{fileSystem.setDownloadedOnlyOnMobile}} />
+
+  <span class="mdl-switch__label">
+    Downloaded only on mobile
+  </span>
+</label>
+
+<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-later">
+  <input type="checkbox" id="download-later" class="mdl-switch__input" checked={{fileSystem.setDownloadLaterOnMobile}} />
+
+  <span class="mdl-switch__label">
+    Download later on mobile
+  </span>
+</label>
+
+<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-before">
+  <input type="checkbox" id="download-before" class="mdl-switch__input" checked={{fileSystem.setDownloadBeforePlaying}} />
+
+  <span class="mdl-switch__label">
+    Download before playing
+  </span>
+</label>
+
+<button class="mdl-button mdl-js-button mdl-js-ripple-effect">
+    Import audio
+    {{file-input}}
+</button>

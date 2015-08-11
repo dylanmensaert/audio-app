@@ -230,6 +230,9 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             } else {
                 cache.showMessage('Already in queue');
             }
+        },
+        selectAll: function () {
+            this.get('snippets').setEach('isSelected', true);
         }
     }
 });
