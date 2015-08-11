@@ -3,41 +3,54 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend({
-    init: function () {
-        var updateConnectionType;
+    init: function() {
+        var updateConnectionType,
+            getType;
 
         this._super();
 
-        if (!Ember.isEmpty(navigator.connection)) {
-            document.addEventListener('offline', function () {
+        if (this.get('isMobile')) {
+            document.addEventListener('offline', function() {
                 this.set('type', navigator.connection.type);
             }.bind(this), false);
 
-            document.addEventListener('online', function () {
+            document.addEventListener('online', function() {
                 this.set('type', navigator.connection.type);
             }.bind(this), false);
 
-            updateConnectionType = Ember.run.later(this, function () {
-                this.set('type', navigator.connection.type);
+            getType = function() {
+                return navigator.connection.type;
+            };
+        } else {
+            getType = function() {
+                return navigator.onLine;
+            };
+        }
 
-                updateConnectionType();
-            }, 2000);
+        updateConnectionType = Ember.run.later(this, function() {
+            this.set('type', getType());
 
             updateConnectionType();
-        }
+        }, 2000);
+
+        updateConnectionType();
     },
+    isMobile: !Ember.isEmpty(navigator.connection),
     selectedSnippets: [],
     playedSnippetIds: [],
     showMessage: null,
     slider: null,
     type: null,
-    isOffline: function () {
-        return this.get('type') === Connection.NONE;
-    }.property('type'),
-    isMobileConnection: function () {
+    isOffline: function() {
+        var isMobile = this.get('isMobile'),
+            type = this.get('type');
+
+        return (isMobile && type === Connection.NONE) || (!isMobile && !type);
+    }.property('type', 'isMobile'),
+    isMobileConnection: function() {
         var type = this.get('type');
 
-        return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
-            Connection.CELL;
-    }.property('type')
+        return this.get('isMobile') && (type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
+            Connection.CELL);
+    }.property('type', 'isMobile')
 });

@@ -22,10 +22,10 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
-  app.import('bower_components/material-design-icons/MaterialIcons-Regular.eot');
+  /*app.import('bower_components/material-design-icons/MaterialIcons-Regular.eot');
   app.import('bower_components/material-design-icons/MaterialIcons-Regular.ttf');
   app.import('bower_components/material-design-icons/MaterialIcons-Regular.woff');
-  app.import('bower_components/material-design-icons/MaterialIcons-Regular.woff2');
+  app.import('bower_components/material-design-icons/MaterialIcons-Regular.woff2');*/
 
   app.import('bower_components/material-design-lite/material.css');
   app.import('bower_components/material-design-lite/material.js');
