@@ -56,16 +56,19 @@
 
 {{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
 
-<div class="text-right">
-    <div {{action 'create'}} class="btn btn-material-orange-200 btn-inline {{if isEditMode 'undercover'}}">
-        <i class="fa fa-plus"></i>
+<main class="mdl-layout__content mdl-color--grey-100">
+  <div class="mdl-grid demo-content">
+    <div class="text-right">
+        <div {{action 'create'}} class="btn btn-material-orange-200 btn-inline {{if isEditMode 'undercover'}}">
+            <i class="fa fa-plus"></i>
+        </div>
     </div>
-</div>
 
-<div class="container">
-    {{#each sortedLabels as |label|}}
-        {{app-label model=label action='toggle' param=label}}
-    {{/each}}
-</div>
-
+    <div class="container">
+        {{#each sortedLabels as |label|}}
+            {{app-label model=label action='toggle' param=label}}
+        {{/each}}
+    </div>
+  </div>
+</main>
 {{audio-bar audio=audio transitionToQueue=transitionToQueue play=play pause=pause}}

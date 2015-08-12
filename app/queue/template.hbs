@@ -24,13 +24,17 @@
 
 {{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
 
-<div class="list-group">
-    {{#each sortedSnippets as |snippet|}}
-        {{my-snippet model=snippet action='play' swipeleft='removeFromQueue' param=snippet}}
+<main class="mdl-layout__content mdl-color--grey-100">
+  <div class="mdl-grid demo-content">
+    <div class="list-group">
+        {{#each sortedSnippets as |snippet|}}
+            {{my-snippet model=snippet action='play' swipeleft='removeFromQueue' param=snippet}}
 
-        <div class="list-group-separator snippet-separator" />
-    {{/each}}
-</div>
+            <div class="list-group-separator snippet-separator" />
+        {{/each}}
+    </div>
+  </div>
+</main>
 
 {{#if audio.snippet}}
     <div class="audio-stamp" />

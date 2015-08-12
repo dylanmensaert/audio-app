@@ -1,5 +1,17 @@
 /* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var EmberApp = require('ember-cli/lib/broccoli/ember-app'),
+    Funnel = require('broccoli-funnel'),
+    extraAssets = [];
+
+extraAssets.push(new Funnel('bower_components/material-design-icons/iconfont', {
+    srcDir: '/',
+    destDir: '/assets/fonts'
+}));
+
+extraAssets.push(new Funnel('vendor/fonts', {
+    srcDir: '/',
+    destDir: '/assets/fonts'
+}));
 
 module.exports = function(defaults) {
     var app = new EmberApp(defaults, {
@@ -22,20 +34,10 @@ module.exports = function(defaults) {
     // please specify an object with the list of modules as keys
     // along with the exports of each module as its value.
 
-    app.import('bower_components/material-design-icons/iconfont/MaterialIcons-Regular.eot', {
-        destDir: 'assets'
-    });
-    app.import('bower_components/material-design-icons/iconfont/MaterialIcons-Regular.ttf', {
-        destDir: 'assets'
-    });
-    app.import('bower_components/material-design-icons/iconfont/MaterialIcons-Regular.woff', {
-        destDir: 'assets'
-    });
-    app.import('bower_components/material-design-icons/iconfont/MaterialIcons-Regular.woff2', {
-        destDir: 'assets'
-    });
-
     app.import('bower_components/material-design-lite/material.css');
+    app.import('vendor/styles/mdl.css');
+    app.import('vendor/styles/c-mdl.css');
+
     app.import('bower_components/material-design-lite/material.js');
 
     app.import('bower_components/moment/moment.js', {
@@ -65,5 +67,5 @@ module.exports = function(defaults) {
         exports: 'meta-data'
     });
 
-    return app.toTree();
+    return app.toTree(extraAssets);
 };
