@@ -4,13 +4,17 @@
 
 <!-- TODO: Implement error handling? -->
 
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-  <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
 
-    <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">
+      Menu
+    </span>
+
+    <nav class="mdl-navigation">
       {{#link-to 'labels' class='mdl-navigation__link' properties=linkToProperties}}
-        <i class="mdl-color-text--blue-grey-400 material-icons">
+        <i class="material-icons">
           local_offer
         </i>
 
@@ -18,7 +22,7 @@
       {{/link-to}}
 
       {{#link-to 'settings' class='mdl-navigation__link' properties=linkToProperties}}
-        <i class="mdl-color-text--blue-grey-400 material-icons">
+        <i class="material-icons">
           settings
         </i>
 

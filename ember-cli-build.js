@@ -36,7 +36,6 @@ module.exports = function(defaults) {
 
     app.import('bower_components/material-design-lite/material.css');
     app.import('vendor/styles/mdl.css');
-    app.import('vendor/styles/c-mdl.css');
 
     app.import('bower_components/material-design-lite/material.js');
 

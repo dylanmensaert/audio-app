@@ -2,11 +2,18 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     tagName: 'header',
-    classNames: ['demo-header', 'mdl-layout__header', 'mdl-color--white', 'mdl-color--grey-100', 'mdl-color-text--grey-600', 'is-casting-shadow'],
+    classNames: ['mdl-layout__header'],
     title: null,
+    isSearchMode: false,
     actions: {
         selectAll: function() {
             this.sendAction('selectAll');
+        },
+        startSearchMode: function() {
+            this.set('isSearchMode', true);
+        },
+        endSearchMode: function() {
+            this.set('isSearchMode', false);
         }
     }
 });

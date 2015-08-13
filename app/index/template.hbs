@@ -1,7 +1,7 @@
 {{search-bar title='Explorer' selectAll=selectAll}}
 
 <main class="mdl-layout__content mdl-color--grey-100">
-  <div class="mdl-grid demo-content">
+  <div class="mdl-grid">
     {{#endless-scroll didScrollToBottom=didScrollToBottom}}
         {{#if cache.selectedSnippets}}
             {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
