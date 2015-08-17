@@ -13,7 +13,7 @@ export default Ember.Component.extend({
       label = this.get('editLabel');
     }
 
-    return label;
+    return label + '...';
   }.property('editLabel', 'isEditMode'),
   actions: {
       // TODO: Clearing input does not work. Seems like bug regarding material design.

@@ -1,4 +1,32 @@
-{{menu-bar title='Explorer' selectAll=selectAll}}
+<div class="mdl-layout__header-row suggest-header {{unless isSearchMode 'display-none'}}">
+  <label {{endSearchMode}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+    <i class="material-icons">
+      arrow_back
+    </i>
+  </label>
+
+  {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions isFocussed=isSearchMode insert-newline='search'}}
+
+  <div class="mdl-layout-spacer"></div>
+
+  {{#if liveQuery}}
+    <button {{action 'clear'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">close</i>
+    </button>
+  {{/if}}
+</div>
+
+<header class="mdl-layout__header {{if isSearchMode 'display-none'}}">
+  <div class="mdl-layout__header-row">
+    {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions isFocussed=isSearchMode insert-newline='search'}}
+
+    <div class="mdl-layout-spacer"></div>
+
+    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+    </button>
+  </div>
+</header>
 
 <main class="mdl-layout__content mdl-color--grey-100">
   <div class="mdl-grid">
@@ -6,8 +34,6 @@
         {{#if cache.selectedSnippets}}
             {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
-
-        {{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
 
         <div class="list-group spaced-top">
             {{#each sortedSnippets as |snippet|}}

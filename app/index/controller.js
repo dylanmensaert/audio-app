@@ -193,6 +193,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     }.observes('snippets.@each.isSelected'),
     originals: Ember.computed.alias('fileSystem.snippets'),
     selected: Ember.computed.alias('cache.selectedSnippets'),
+    isSearchMode: false,
     actions: {
         pushToDownload: function(snippet) {
             var cache = this.get('cache');
@@ -233,6 +234,14 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         },
         selectAll: function() {
             this.get('snippets').setEach('isSelected', true);
+        },
+        clear: function() {
+          Ember.$('input').focus();
+
+          this.set('liveQuery', '');
+        },
+        endSearchMode: function() {
+          this.set('isSearchMode', false);
         }
     }
 });

@@ -1,6 +1,6 @@
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
     {{#if isEditMode}}
-        {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions insert-newline='saveEdit' focus=true}}
+        {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions insert-newline='saveEdit' isFocussed=true}}
     {{else}}
         {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions insert-newline='search'}}
     {{/if}}

@@ -6,9 +6,9 @@
 
   <div class="mdl-layout-spacer"></div>
 
-  <a {{action 'startSearchMode'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+  {{#link-to 'index' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
     <i class="material-icons">search</i>
-  </a>
+  {{/link-to}}
 
   <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
     <i class="material-icons">more_vert</i>
