@@ -237,18 +237,14 @@ $menu-height: 45px;
 }
 
 .suggest-header {
-  padding-left: 0;
+    padding-left: 0;
 }
 
 .mdl-layout--fixed-drawer:not(.is-small-screen) > .suggest-header {
-  margin-left: 240px;
+    margin-left: 240px;
 }
 
 .menu-icon {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.display-none {
-  display: none !important;
+    margin-left: 10px;
+    margin-right: 10px;
 }

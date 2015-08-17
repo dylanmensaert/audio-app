@@ -4,42 +4,14 @@
 
 <!-- TODO: Implement error handling? -->
 
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-  <!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
+{{outlet}}
 
-  <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">
-      Menu
-    </span>
+{{message-bar showMessage=cache.showMessage}}
 
-    <nav class="mdl-navigation">
-      {{#link-to 'labels' class='mdl-navigation__link' properties=linkToProperties}}
-        <i class="material-icons">
-          local_offer
-        </i>
+{{#if audio.snippet}}
+    <div class="audio-slider">
+        {{my-slider slider=cache.slider}}
+    </div>
+{{/if}}
 
-        Labels
-      {{/link-to}}
-
-      {{#link-to 'settings' class='mdl-navigation__link' properties=linkToProperties}}
-        <i class="material-icons">
-          settings
-        </i>
-
-        Settings
-      {{/link-to}}
-    </nav>
-  </div>
-
-  {{outlet}}
-
-  {{message-bar showMessage=cache.showMessage}}
-
-  {{#if audio.snippet}}
-      <div class="audio-slider">
-          {{my-slider slider=cache.slider}}
-      </div>
-  {{/if}}
-
-  {{my-audio audio=audio}}
-</div>
+{{my-audio audio=audio}}

@@ -1,0 +1,31 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+  <!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
+
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">
+      Menu
+    </span>
+
+    <nav class="mdl-navigation">
+      {{#link-to 'labels' class='mdl-navigation__link' properties=linkToProperties}}
+        <i class="material-icons">
+          local_offer
+        </i>
+
+        Labels
+      {{/link-to}}
+
+      {{#link-to 'settings' class='mdl-navigation__link' properties=linkToProperties}}
+        <i class="material-icons">
+          settings
+        </i>
+
+        Settings
+      {{/link-to}}
+
+      <a class="mdl-navigation__link" href="">Link</a>
+    </nav>
+  </div>
+
+  {{yield}}
+</div>

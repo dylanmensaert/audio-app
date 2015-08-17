@@ -1,55 +1,67 @@
-<div class="mdl-layout__header-row suggest-header {{unless isSearchMode 'display-none'}}">
-  <label {{endSearchMode}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-    <i class="material-icons">
-      arrow_back
-    </i>
-  </label>
+{{#mdl-layout}}
+  {{#if isSearchMode}}
+    {{#my-mdl class='mdl-layout__header-row suggest-header'}}
+      <label {{action 'endSearchMode'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+        <i class="material-icons">
+          arrow_back
+        </i>
+      </label>
 
-  {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions isFocussed=isSearchMode insert-newline='search'}}
+      <div class="mdl-textfield mdl-js-textfield">
+        {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions isFocussed=isSearchMode insert-newline='search'}}
 
-  <div class="mdl-layout-spacer"></div>
+        <label class="mdl-textfield__label"></label>
+      </div>
 
-  {{#if liveQuery}}
-    <button {{action 'clear'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-      <i class="material-icons">close</i>
-    </button>
-  {{/if}}
-</div>
+      <div class="mdl-layout-spacer"></div>
 
-<header class="mdl-layout__header {{if isSearchMode 'display-none'}}">
-  <div class="mdl-layout__header-row">
-    {{suggest-input value=liveQuery fetchSuggestions=fetchSuggestions isFocussed=isSearchMode insert-newline='search'}}
+      {{#if liveQuery}}
+        <button {{action 'clear'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <i class="material-icons">close</i>
+        </button>
+      {{/if}}
+    {{/my-mdl}}
+  {{else}}
+    {{#mdl-header tagName='header' class='mdl-layout__header'}}
+      <div class="mdl-layout__header-row">
+        <div class="mdl-textfield mdl-js-textfield">
+          <input value={{liveQuery}} {{action 'startSearchMode'}} class="mdl-textfield__input">
 
-    <div class="mdl-layout-spacer"></div>
-
-    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-      <i class="material-icons">more_vert</i>
-    </button>
-  </div>
-</header>
-
-<main class="mdl-layout__content mdl-color--grey-100">
-  <div class="mdl-grid">
-    {{#endless-scroll didScrollToBottom=didScrollToBottom}}
-        {{#if cache.selectedSnippets}}
-            {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
-        {{/if}}
-
-        <div class="list-group spaced-top">
-            {{#each sortedSnippets as |snippet|}}
-                {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' param=snippet showQueued=snippet.isQueued}}
-
-                <div class="list-group-separator snippet-separator" />
-            {{/each}}
+          <label class="mdl-textfield__label"></label>
         </div>
 
-        {{#if isLoading}}
-            <div class="text-center audio-icon-large">
-                <i class="mdl-spinner mdl-js-spinner is-active"></i>
-            </div>
-        {{/if}}
-    {{/endless-scroll}}
-  </div>
-</main>
+        <div class="mdl-layout-spacer"></div>
+
+        <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <i class="material-icons">more_vert</i>
+        </button>
+      </div>
+    {{/mdl-header}}
+  {{/if}}
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-grid">
+      {{#endless-scroll didScrollToBottom=didScrollToBottom}}
+          {{#if cache.selectedSnippets}}
+              {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
+          {{/if}}
+
+          <div class="list-group spaced-top">
+              {{#each sortedSnippets as |snippet|}}
+                  {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' param=snippet showQueued=snippet.isQueued}}
+
+                  <div class="list-group-separator snippet-separator" />
+              {{/each}}
+          </div>
+
+          {{#if isLoading}}
+              <div class="text-center">
+                  <div class="mdl-spinner mdl-js-spinner is-active"></div>
+              </div>
+          {{/if}}
+      {{/endless-scroll}}
+    </div>
+  </main>
+{{/mdl-layout}}
 
 {{audio-bar audio=audio transitionToQueue=transitionToQueue play=play pause=pause}}

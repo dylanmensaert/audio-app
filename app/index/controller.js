@@ -5,27 +5,27 @@ import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 import snippetActionsMixin from 'audio-app/snippet/actions-mixin';
 
-var convertImageUrl = function(url) {
+var convertImageUrl = function (url) {
     return meta.imageHost + new URL(url).pathname;
 };
 
 export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
-    didScrollToBottom: function() {
-        return function() {
+    didScrollToBottom: function () {
+        return function () {
             this.updateOnlineSnippets(this.get('nextPageToken'));
         }.bind(this);
     }.property('nextPageToken'),
-    fetchSuggestions: function() {
+    fetchSuggestions: function () {
         var url,
             lastQuery;
 
-        return function(query, callback) {
+        return function (query, callback) {
             var suggestions = [],
                 key;
 
             lastQuery = query;
 
-            this.get('fileSystem.labels').forEach(function(label) {
+            this.get('fileSystem.labels').forEach(function (label) {
                 key = label.get('name');
 
                 if (!label.get('isHidden') && logic.isMatch(key, query)) {
@@ -35,7 +35,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 }
             });
 
-            this.get('fileSystem.snippets').forEach(function(snippet) {
+            this.get('fileSystem.snippets').forEach(function (snippet) {
                 key = snippet.get('name');
 
                 if (logic.isMatch(key, query)) {
@@ -50,10 +50,10 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             if (!this.get('searchDownloadedOnly') && suggestions.get('length') < 10) {
                 url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + query;
 
-                (function(oldQuery) {
-                    Ember.$.getJSON(url).then(function(response) {
+                (function (oldQuery) {
+                    Ember.$.getJSON(url).then(function (response) {
                         if (oldQuery === lastQuery) {
-                            response[1].forEach(function(suggestion) {
+                            response[1].forEach(function (suggestion) {
                                 if (!suggestions.isAny('value', suggestion)) {
                                     suggestions.pushObject({
                                         value: suggestion
@@ -68,11 +68,11 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             }
         }.bind(this);
     }.property('searchDownloadedOnly', 'fileSystem.snippets.@each.name'),
-    sortedSnippets: function() {
+    sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),
             sortProperties: ['name', 'id'],
-            orderBy: function(snippet, other) {
+            orderBy: function (snippet, other) {
                 var snippets = this.get('snippets'),
                     result = -1;
 
@@ -89,15 +89,15 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         }).create();
     }.property('snippets.[]', 'offlineSnippets.@each.id'),
     // TODO: save label state in fileSystem someway
-    searchDownloadedOnly: function() {
+    searchDownloadedOnly: function () {
         return this.get('cache.isOffline') || (this.get('cache.isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
     }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
-    snippets: function() {
+    snippets: function () {
         var snippets = this.get('offlineSnippets'),
             id;
 
         if (!this.get('searchDownloadedOnly')) {
-            snippets = this.get('onlineSnippets').map(function(snippet) {
+            snippets = this.get('onlineSnippets').map(function (snippet) {
                 id = snippet.get('id');
 
                 if (snippets.isAny('id', id)) {
@@ -116,14 +116,14 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.get('cache').showMessage('No songs found');
         }
     }.observes('snippets.length'),*/
-    offlineSnippets: function() {
+    offlineSnippets: function () {
         var searchDownloadedOnly = this.get('searchDownloadedOnly'),
             query = this.get('query'),
             matchAnyLabel;
 
-        return this.get('fileSystem.snippets').filter(function(snippet) {
+        return this.get('fileSystem.snippets').filter(function (snippet) {
             // TODO: create separate result for matchAnyLabel
-            matchAnyLabel = snippet.get('labels').any(function(label) {
+            matchAnyLabel = snippet.get('labels').any(function (label) {
                 return logic.isMatch(label, query);
             });
 
@@ -133,7 +133,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     nextPageToken: null,
     isLoading: false,
     onlineSnippets: [],
-    updateOnlineSnippets: function(nextPageToken) {
+    updateOnlineSnippets: function (nextPageToken) {
         var snippets = [],
             url;
 
@@ -150,8 +150,8 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 url += '&pageToken=' + nextPageToken;
             }
 
-            Ember.$.getJSON(url).then(function(response) {
-                snippets = response.items.map(function(item) {
+            Ember.$.getJSON(url).then(function (response) {
+                snippets = response.items.map(function (item) {
                     return Snippet.create({
                         id: item.id.videoId,
                         name: item.snippet.title,
@@ -182,11 +182,11 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.set('onlineSnippets', snippets);
         }
     },
-    scheduleUpdateOnlineSnippets: function() {
+    scheduleUpdateOnlineSnippets: function () {
         Ember.run.once(this, this.updateOnlineSnippets);
     }.observes('query', 'searchDownloadedOnly'),
     /*TODO: Implement another way?*/
-    updateSelectedSnippets: function() {
+    updateSelectedSnippets: function () {
         var selectedSnippets = this.get('snippets').filterBy('isSelected');
 
         this.set('cache.selectedSnippets', selectedSnippets);
@@ -195,14 +195,14 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     selected: Ember.computed.alias('cache.selectedSnippets'),
     isSearchMode: false,
     actions: {
-        pushToDownload: function(snippet) {
+        pushToDownload: function (snippet) {
             var cache = this.get('cache');
 
             if (!snippet.get('isDownloaded')) {
                 if (!cache.isMobileConnection()) {
-                    snippet.download().then(function() {
+                    snippet.download().then(function () {
 
-                    }, function() {
+                    }, function () {
                         // TODO: show error?
                         cache.showMessage('download aborted');
                     });
@@ -213,13 +213,13 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 cache.showMessage('already downloaded');
             }
         },
-        pushToQueue: function(snippet) {
+        pushToQueue: function (snippet) {
             var queue = this.get('fileSystem.queue'),
                 cache = this.get('cache');
 
             if (!queue.contains(snippet.get('id'))) {
                 if (!snippet.get('isDownloaded')) {
-                    snippet.download().then(function() {}, function() {
+                    snippet.download().then(function () {}, function () {
                         // TODO: show error?
                         cache.showMessage('Download aborted');
                     }.bind(this));
@@ -232,16 +232,19 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
                 cache.showMessage('Already in queue');
             }
         },
-        selectAll: function() {
+        selectAll: function () {
             this.get('snippets').setEach('isSelected', true);
         },
-        clear: function() {
-          Ember.$('input').focus();
+        clear: function () {
+            this.set('liveQuery', '');
 
-          this.set('liveQuery', '');
+            Ember.$('input').focus();
         },
-        endSearchMode: function() {
-          this.set('isSearchMode', false);
+        startSearchMode: function () {
+            this.set('isSearchMode', true);
+        },
+        endSearchMode: function () {
+            this.set('isSearchMode', false);
         }
     }
 });
