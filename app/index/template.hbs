@@ -16,28 +16,28 @@
       <div class="mdl-layout-spacer"></div>
 
       {{#if liveQuery}}
-        <button {{action 'clear'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        {{#my-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
           <i class="material-icons">close</i>
-        </button>
+        {{/my-mdl}}
       {{/if}}
     {{/my-mdl}}
-  {{else}}
-    {{#mdl-header tagName='header' class='mdl-layout__header'}}
-      <div class="mdl-layout__header-row">
-        <div class="mdl-textfield mdl-js-textfield">
-          <input value={{liveQuery}} {{action 'startSearchMode'}} class="mdl-textfield__input">
-
-          <label class="mdl-textfield__label"></label>
-        </div>
-
-        <div class="mdl-layout-spacer"></div>
-
-        <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-          <i class="material-icons">more_vert</i>
-        </button>
-      </div>
-    {{/mdl-header}}
   {{/if}}
+
+  <header class="mdl-layout__header {{if isSearchMode 'hidden'}}">
+    <div class="mdl-layout__header-row">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input value={{liveQuery}} {{action 'startSearchMode'}} class="mdl-textfield__input">
+
+        <label class="mdl-textfield__label"></label>
+      </div>
+
+      <div class="mdl-layout-spacer"></div>
+
+      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+      </button>
+    </div>
+  </header>
 
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid">

@@ -11,6 +11,9 @@ export default Ember.TextField.extend({
         this.$().typeahead('close');
     },
     fetchSuggestions: null,
+    focus: function () {
+        this.focus();
+    },
     didInsertElement: function () {
         this.$().typeahead({
             highlight: true,
@@ -19,9 +22,9 @@ export default Ember.TextField.extend({
             source: this.get('fetchSuggestions')
         });
 
-        componentHandler.upgradeElement(this.$().closest('.mdl-textfield')[0]);
+        /*componentHandler.upgradeElement(this.$().closest('.mdl-textfield')[0]);*/
 
-        this.$().focus();
+        Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
     },
     willDestroyElement: function () {
         this.$().typeahead('destroy');
