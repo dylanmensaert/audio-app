@@ -10,6 +10,7 @@ var convertImageUrl = function (url) {
 };
 
 export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
+    queryParams: ['query', 'isSearchMode'],
     didScrollToBottom: function () {
         return function () {
             this.updateOnlineSnippets(this.get('nextPageToken'));

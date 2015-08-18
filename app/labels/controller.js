@@ -4,12 +4,12 @@ import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 
 export default Ember.Controller.extend(controllerMixin, {
-    fetchSuggestions: function() {
-        return function(query, callback) {
+    fetchSuggestions: function () {
+        return function (query, callback) {
             var suggestions = [],
                 name;
 
-            this.get('fileSystem.labels').forEach(function(label) {
+            this.get('fileSystem.labels').forEach(function (label) {
                 name = label.get('name');
 
                 if (this.showLabel(label) && logic.isMatch(name, query)) {
@@ -22,25 +22,25 @@ export default Ember.Controller.extend(controllerMixin, {
             callback(suggestions);
         }.bind(this);
     }.property('fileSystem.labels.[]'),
-    sortedLabels: function() {
+    sortedLabels: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('labels'),
             sortProperties: ['name']
         }).create();
     }.property('labels'),
-    labels: function() {
+    labels: function () {
         var selectedSnippets = this.get('cache.selectedSnippets'),
             labels = [],
             name,
             isSelected;
 
-        this.get('fileSystem.labels').forEach(function(label) {
+        this.get('fileSystem.labels').forEach(function (label) {
             name = label.get('name');
 
             if (this.showLabel(label) && logic.isMatch(
                     name, this.get('query'))) {
                 if (selectedSnippets.get('length')) {
-                    isSelected = selectedSnippets.every(function(snippet) {
+                    isSelected = selectedSnippets.every(function (snippet) {
                         return snippet.get('labels').contains(name);
                     });
                 } else {
@@ -56,17 +56,17 @@ export default Ember.Controller.extend(controllerMixin, {
         return labels;
     }.property('fileSystem.labels.@each.name', 'cache.selectedSnippets.[]', 'query'),
     originals: Ember.computed.alias('fileSystem.labels'),
-    selected: function() {
+    selected: function () {
         return this.get('labels').filterBy('isSelected');
     }.property('labels.@each.isSelected'),
-    hasSingle: function() {
+    hasSingle: function () {
         return this.get('selected.length') === 1;
     }.property('selected.length'),
-    showLabel: function(label) {
+    showLabel: function (label) {
         return !label.get('isHidden') && (!label.get('isReadOnly') || this.get('cache.selectedSnippets.length'));
     },
     actions: {
-        create: function() {
+        create: function () {
             var liveQuery = this.get('liveQuery'),
                 labels = this.get('fileSystem.labels');
 
@@ -82,13 +82,13 @@ export default Ember.Controller.extend(controllerMixin, {
 
             this.set('liveQuery', '');
         },
-        toggle: function(label) {
+        toggle: function (label) {
             var selectedSnippets = this.get('cache.selectedSnippets'),
                 snippets = this.get('fileSystem.snippets'),
                 cache = this.get('cache'),
                 labels;
 
-            selectedSnippets.forEach(function(snippet) {
+            selectedSnippets.forEach(function (snippet) {
                 labels = snippet.get('labels');
 
                 if (label.get('isSelected')) {
@@ -110,14 +110,7 @@ export default Ember.Controller.extend(controllerMixin, {
                 this.send('exitEdit');
             }
         },
-        explore: function() {
-            this.transitionToRoute('index', {
-                queryParams: {
-                    query: this.get('selected.firstObject.name')
-                }
-            });
-        },
-        selectAll: function() {
+        selectAll: function () {
             this.get('labels').setEach('isSelected', true);
         }
     }

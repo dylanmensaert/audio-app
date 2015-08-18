@@ -6,7 +6,7 @@
 
   <div class="mdl-layout-spacer"></div>
 
-  {{#link-to 'index' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+  {{#link-to 'index' (query-params isSearchMode=true) class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
     <i class="material-icons">search</i>
   {{/link-to}}
 

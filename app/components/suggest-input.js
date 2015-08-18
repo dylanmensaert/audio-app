@@ -1,10 +1,10 @@
+/* global componentHandler: true */
 import Ember from 'ember';
 
 // TODO: send action on suggestion click
 export default Ember.TextField.extend({
     classNames: ['mdl-textfield__input'],
     attributeBindings: ['suggest'],
-    isFocussed: false,
     insertNewline: function () {
         this.sendAction('insert-newline');
 
@@ -19,15 +19,9 @@ export default Ember.TextField.extend({
             source: this.get('fetchSuggestions')
         });
 
-        this.$().focusin(function () {
-            this.set('isFocussed', true);
-        }.bind(this));
+        componentHandler.upgradeElement(this.$().closest('.mdl-textfield')[0]);
 
-        Ember.run.scheduleOnce('afterRender', function () {
-            if (this.get('isFocussed')) {
-                this.$().focus();
-            }
-        }.bind(this));
+        this.$().focus();
     },
     willDestroyElement: function () {
         this.$().typeahead('destroy');

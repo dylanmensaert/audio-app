@@ -22,9 +22,9 @@
 
               <div class="col-xs-2 outer-label">
                   {{#if hasSingle}}
-                      <div {{action 'explore'}} class="inner-label">
+                      {{#link-to 'index' (query-params isSearchMode=true query=selected.firstObject.name) class='inner-label'}}
                           <i class="mdi-action-search"></i>
-                      </div>
+                      {{/link-to}}
                   {{else}}
                       &nbsp;
                   {{/if}}
