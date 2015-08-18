@@ -1,4 +1,3 @@
-/* global componentHandler: true */
 import Ember from 'ember';
 
 // TODO: send action on suggestion click
@@ -21,8 +20,6 @@ export default Ember.TextField.extend({
         }, {
             source: this.get('fetchSuggestions')
         });
-
-        /*componentHandler.upgradeElement(this.$().closest('.mdl-textfield')[0]);*/
 
         Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
     },
