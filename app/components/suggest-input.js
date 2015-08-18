@@ -2,12 +2,16 @@ import Ember from 'ember';
 
 // TODO: send action on suggestion click
 export default Ember.TextField.extend({
+    value: null,
     classNames: ['mdl-textfield__input'],
     attributeBindings: ['suggest'],
     insertNewline: function () {
         this.sendAction('insert-newline');
 
         this.$().typeahead('close');
+    },
+    change: function() {
+      this.attrs.value.update(this.get('value'));
     },
     fetchSuggestions: null,
     focus: function () {

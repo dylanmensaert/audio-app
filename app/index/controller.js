@@ -239,7 +239,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         clear: function () {
             this.set('liveQuery', '');
 
-            Ember.$('input').focus();
+            Ember.$('.mdl-textfield__input').focus();
         },
         startSearchMode: function () {
             this.set('isSearchMode', true);
