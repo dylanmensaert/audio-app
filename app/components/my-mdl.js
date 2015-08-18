@@ -3,6 +3,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     didInsertElement: function () {
-        componentHandler.upgradeAllRegistered();
+        componentHandler.upgradeElements(this.get('element'));
     }
 });

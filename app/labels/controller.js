@@ -111,7 +111,7 @@ export default Ember.Controller.extend(controllerMixin, {
             }
         },
         explore: function() {
-            this.transitionToRoute('explorer.index', {
+            this.transitionToRoute('index', {
                 queryParams: {
                     query: this.get('selected.firstObject.name')
                 }
