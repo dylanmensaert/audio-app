@@ -13,7 +13,7 @@ extraAssets.push(new Funnel('vendor/fonts', {
     destDir: '/assets/fonts'
 }));
 
-module.exports = function(defaults) {
+module.exports = function (defaults) {
     var app = new EmberApp(defaults, {
         // Add options here
         vendorFiles: {
@@ -50,9 +50,6 @@ module.exports = function(defaults) {
         exports: 'jQuery'
     });
     app.import('bower_components/jquery-mobile/js/events/touch.js', {
-        exports: 'jQuery'
-    });
-    app.import('bower_components/typeahead.js/dist/typeahead.jquery.js', {
         exports: 'jQuery'
     });
 

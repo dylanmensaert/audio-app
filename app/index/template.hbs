@@ -8,9 +8,17 @@
       </label>
 
       <div class="mdl-textfield mdl-js-textfield">
-        {{suggest-input value=(mut liveQuery) fetchSuggestions=fetchSuggestions insert-newline='search'}}
+        {{mdl-input value=(mut liveQuery) fetchSuggestions=fetchSuggestions insert-newline='search'}}
 
         <label class="mdl-textfield__label"></label>
+
+        {{#if suggestions}}
+          <div class="suggest">
+            {{#each suggestions as |suggestion|}}
+              {{suggestion}}
+            {{/each}}
+          </div>
+        {{/if}}
       </div>
 
       <div class="mdl-layout-spacer"></div>

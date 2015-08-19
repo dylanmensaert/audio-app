@@ -16,59 +16,74 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.updateOnlineSnippets(this.get('nextPageToken'));
         }.bind(this);
     }.property('nextPageToken'),
-    fetchSuggestions: function () {
-        var url,
-            lastQuery;
+    suggestions: function () {
+        var suggestions = this.get('offlineSuggestions');
 
-        return function (query, callback) {
-            var suggestions = [],
-                key;
+        this.get('onlineSuggestions').any(function (suggestion) {
+            var doBreak = suggestions.get('length') >= 10;
 
-            lastQuery = query;
-
-            this.get('fileSystem.labels').forEach(function (label) {
-                key = label.get('name');
-
-                if (!label.get('isHidden') && logic.isMatch(key, query)) {
-                    suggestions.pushObject({
-                        value: key
-                    });
+            if (!doBreak) {
+                if (!suggestions.contains(suggestion)) {
+                    suggestions.pushObject(suggestion);
                 }
-            });
-
-            this.get('fileSystem.snippets').forEach(function (snippet) {
-                key = snippet.get('name');
-
-                if (logic.isMatch(key, query)) {
-                    suggestions.pushObject({
-                        value: key
-                    });
-                }
-            });
-
-            callback(suggestions);
-
-            if (!this.get('searchDownloadedOnly') && suggestions.get('length') < 10) {
-                url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + query;
-
-                (function (oldQuery) {
-                    Ember.$.getJSON(url).then(function (response) {
-                        if (oldQuery === lastQuery) {
-                            response[1].forEach(function (suggestion) {
-                                if (!suggestions.isAny('value', suggestion)) {
-                                    suggestions.pushObject({
-                                        value: suggestion
-                                    });
-                                }
-                            });
-
-                            callback(suggestions);
-                        }
-                    });
-                })(lastQuery);
             }
-        }.bind(this);
-    }.property('searchDownloadedOnly', 'fileSystem.snippets.@each.name'),
+
+            return doBreak;
+        });
+
+        return suggestions;
+    }.property('offlineSuggestions.[]', 'onlineSuggestions.[]'),
+    offlineSuggestions: function () {
+        var liveQuery = this.get('liveQuery'),
+            suggestions = [],
+            doBreak,
+            suggestion;
+
+        if (!Ember.isEmpty(liveQuery)) {
+            this.get('fileSystem.labels').any(function (label) {
+                var doBreak = suggestions.get('length') >= 10;
+
+                if (!doBreak) {
+                    suggestion = label.get('name');
+
+                    if (!label.get('isHidden') && logic.isMatch(suggestion, liveQuery)) {
+                        suggestions.pushObject(suggestion);
+                    }
+                }
+
+                return doBreak;
+            });
+
+            this.get('fileSystem.snippets').any(function (snippet) {
+                var doBreak = suggestions.get('length') >= 10;
+
+                if (!doBreak) {
+                    suggestion = snippet.get('name');
+
+                    if (logic.isMatch(suggestion, liveQuery)) {
+                        suggestions.pushObject(suggestion);
+                    }
+                }
+
+                return doBreak;
+            });
+        }
+
+        return suggestions;
+    }.property('fileSystem.snippets.@each.name', 'fileSystem.labels.@each.name', 'liveQuery'),
+    onlineSuggestions: [],
+    updateOnlineSuggestions: function () {
+        var liveQuery = this.get('liveQuery'),
+            url;
+
+        if (!this.get('searchDownloadedOnly') && !Ember.isEmpty(liveQuery)) {
+            url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
+
+            Ember.$.getJSON(url).then(function (response) {
+                this.set('onlineSuggestions', response[1]);
+            }.bind(this));
+        }
+    }.observes('searchDownloadedOnly', 'liveQuery'),
     sortedSnippets: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('snippets'),
@@ -130,7 +145,7 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
 
             return (!searchDownloadedOnly || snippet.get('isDownloaded')) && (matchAnyLabel || logic.isMatch(snippet.get('name'), query));
         });
-    }.property('query', 'fileSystem.snippets.@each.name', 'searchDownloadedOnly'),
+    }.property('query', 'fileSystem.snippets.isDownloaded', 'searchDownloadedOnly'),
     nextPageToken: null,
     isLoading: false,
     onlineSnippets: [],
