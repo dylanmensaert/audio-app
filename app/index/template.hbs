@@ -15,7 +15,9 @@
         {{#if suggestions}}
           <div class="suggest">
             {{#each suggestions as |suggestion|}}
-              {{suggestion}}
+              {{#my-mdl model=suggestion action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect suggest-item'}}
+                {{suggestion}}
+              {{/my-mdl}}
             {{/each}}
           </div>
         {{/if}}

@@ -36,7 +36,6 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
     offlineSuggestions: function () {
         var liveQuery = this.get('liveQuery'),
             suggestions = [],
-            doBreak,
             suggestion;
 
         if (!Ember.isEmpty(liveQuery)) {
@@ -261,6 +260,11 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
+        },
+        searchSuggestion: function(suggestion) {
+          this.set('liveQuery', suggestion);
+
+          this.set('query', this.get('liveQuery'));
         }
     }
 });
