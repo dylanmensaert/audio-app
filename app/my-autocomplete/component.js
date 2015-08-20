@@ -5,15 +5,24 @@ export default MyMdlComponent.extend({
     classNames: ['mdl-textfield', 'mdl-js-textfield'],
     liveQuery: '',
     suggestions: null,
-    keyUp: function () {
-        this.selectAdjacent(function (selectedIndex) {
-            return selectedIndex - 1;
-        });
-    },
-    keyDown: function () {
-        this.selectAdjacent(function (selectedIndex) {
-            return selectedIndex + 1;
-        });
+    keyDown: function (event) {
+      if(event.keyCode === 38) {
+          this.selectAdjacent(function (selectedIndex) {
+                return selectedIndex - 1;
+          });
+      } else if(event.keyCode === 40) {
+           this.selectAdjacent(function (selectedIndex) {
+              return selectedIndex + 1;
+          });
+      }
+
+      if(event.keyCode === 13) {
+          this.sendAction('updateSuggestions');
+      }
+
+      if(event.keyCode === 27) {
+          this.get('suggestions').clear();
+      }
     },
     selectAdjacent: function (getAdjacentIndex) {
         var suggestions = this.get('suggestions'),
@@ -36,6 +45,8 @@ export default MyMdlComponent.extend({
 
                 selectedSuggestion.set('isSelected', false);
             }
+        } else {
+          this.send('searchSelected')
         }
     },
     actions: {

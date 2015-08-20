@@ -288,6 +288,9 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
+        },
+        updateSuggestions: function() {
+          this.updateSuggestions();
         }
     }
 });
