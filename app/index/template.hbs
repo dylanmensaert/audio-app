@@ -1,27 +1,13 @@
 {{#mdl-layout}}
   {{#if isSearchMode}}
-    {{#my-mdl class='mdl-layout__header-row suggest-header'}}
+    {{#my-mdl class='mdl-layout__header-row autocomplete-header'}}
       <label {{action 'endSearchMode'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
         </i>
       </label>
 
-      <div class="mdl-textfield mdl-js-textfield">
-        {{mdl-input value=(mut liveQuery) fetchSuggestions=fetchSuggestions insert-newline='search'}}
-
-        <label class="mdl-textfield__label"></label>
-
-        {{#if suggestions}}
-          <div class="suggest">
-            {{#each suggestions as |suggestion|}}
-              {{#my-mdl model=suggestion action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect suggest-item'}}
-                {{suggestion}}
-              {{/my-mdl}}
-            {{/each}}
-          </div>
-        {{/if}}
-      </div>
+      {{my-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
 
       <div class="mdl-layout-spacer"></div>
 
@@ -58,7 +44,7 @@
 
           <div class="list-group spaced-top">
               {{#each sortedSnippets as |snippet|}}
-                  {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' param=snippet showQueued=snippet.isQueued}}
+                  {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=snippet.isQueued}}
 
                   <div class="list-group-separator snippet-separator" />
               {{/each}}

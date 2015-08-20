@@ -28,7 +28,7 @@
   <div class="mdl-grid">
     <div class="list-group">
         {{#each sortedSnippets as |snippet|}}
-            {{my-snippet model=snippet action='play' swipeleft='removeFromQueue' param=snippet}}
+            {{my-snippet model=snippet action='play' swipeleft='removeFromQueue'}}
 
             <div class="list-group-separator snippet-separator" />
         {{/each}}

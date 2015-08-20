@@ -236,11 +236,11 @@ $menu-height: 45px;
     }
 }
 
-.suggest-header {
+.autocomplete-header {
     padding-left: 0;
 }
 
-.mdl-layout--fixed-drawer:not(.is-small-screen) > .suggest-header {
+.mdl-layout--fixed-drawer:not(.is-small-screen) > .autocomplete-header {
     margin-left: 240px;
 }
 
@@ -249,22 +249,19 @@ $menu-height: 45px;
     margin-right: 10px;
 }
 
-.suggest {
+.autocomplete {
     position: absolute;
     z-index: 2;
     width: 100%;
-
-    .suggest-item {
-      width: inherit;
-      text-align: inherit;
-      text-transform: inherit;
-      bottom: inherit;
-      background: white;
-
-      &.isSelected {
-        background: #b3d4fc;
-      }
+    .suggestion {
+        width: inherit;
+        text-align: inherit;
+        text-transform: inherit;
+        bottom: inherit;
+        background: white;
+        &.active,
+        &:hover {
+            background: #b3d4fc;
+        }
     }
 }
-
-
