@@ -17,27 +17,6 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
             this.updateOnlineSnippets(this.get('nextPageToken'));
         }.bind(this);
     }.property('nextPageToken'),
-    // TODO: implement via observes or rethink how to clear suggestions
-    /*suggestions: [],
-    updateSuggestions: function () {
-        var suggestions = this.get('offlineSuggestions');
-
-        this.get('onlineSuggestions').any(function (suggestion) {
-            var doBreak = suggestions.get('length') >= 10;
-
-            if (!doBreak) {
-                if (!suggestions.contains(suggestion)) {
-                    suggestions.pushObject(Suggestion.create({
-                        value: suggestion
-                    }));
-                }
-            }
-
-            return doBreak;
-        });
-
-        this.set('suggestions', suggestions);
-    }.observes('offlineSuggestions.[]', 'onlineSuggestions.[]'),*/
     suggestions: function () {
         var suggestions = this.get('offlineSuggestions');
 
@@ -288,9 +267,6 @@ export default Ember.Controller.extend(controllerMixin, snippetActionsMixin, {
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
-        },
-        updateSuggestions: function() {
-          this.updateSuggestions();
         }
     }
 });

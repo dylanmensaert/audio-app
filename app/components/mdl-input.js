@@ -14,6 +14,9 @@ export default Ember.TextField.extend({
     focus: function () {
         this.focus();
     },
+    focusOut: function () {
+        this.sendAction('didFocusOut');
+    },
     didInsertElement: function () {
         Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
     }
