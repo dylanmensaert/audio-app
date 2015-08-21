@@ -1,28 +1,33 @@
 import Ember from 'ember';
 import MyMdlComponent from 'audio-app/components/my-mdl';
 
+var keyCodeUp = 38,
+    keyCodeDown = 40,
+    keyCodeEnter = 13,
+    keyCodeEscape = 27;
+
 export default MyMdlComponent.extend({
     classNames: ['mdl-textfield', 'mdl-js-textfield'],
     liveQuery: '',
     suggestions: null,
     keyDown: function (event) {
-      if(event.keyCode === 38) {
-          this.selectAdjacent(function (selectedIndex) {
+        if (event.keyCode === keyCodeUp) {
+            this.selectAdjacent(function (selectedIndex) {
                 return selectedIndex - 1;
-          });
-      } else if(event.keyCode === 40) {
-           this.selectAdjacent(function (selectedIndex) {
-              return selectedIndex + 1;
-          });
-      }
+            });
+        } else if (event.keyCode === keyCodeDown) {
+            this.selectAdjacent(function (selectedIndex) {
+                return selectedIndex + 1;
+            });
+        }
 
-      if(event.keyCode === 13) {
-          this.sendAction('updateSuggestions');
-      }
+        if (event.keyCode === keyCodeEnter) {
+            this.sendAction('updateSuggestions');
+        }
 
-      if(event.keyCode === 27) {
-          this.get('suggestions').clear();
-      }
+        if (event.keyCode === keyCodeEscape) {
+            this.get('suggestions').clear();
+        }
     },
     selectAdjacent: function (getAdjacentIndex) {
         var suggestions = this.get('suggestions'),
@@ -46,7 +51,7 @@ export default MyMdlComponent.extend({
                 selectedSuggestion.set('isSelected', false);
             }
         } else {
-          this.send('searchSelected')
+            this.send('searchSelected')
         }
     },
     actions: {
