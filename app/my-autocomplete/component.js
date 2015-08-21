@@ -15,10 +15,14 @@ export default MyMdlComponent.extend({
             this.selectAdjacent(function (selectedIndex) {
                 return selectedIndex - 1;
             });
+
+            event.preventDefault();
         } else if (event.keyCode === keyCodeDown) {
             this.selectAdjacent(function (selectedIndex) {
                 return selectedIndex + 1;
             });
+
+            event.preventDefault();
         }
 
         if (event.keyCode === keyCodeEnter) {
@@ -51,7 +55,7 @@ export default MyMdlComponent.extend({
                 selectedSuggestion.set('isSelected', false);
             }
         } else {
-            this.send('searchSelected')
+            this.send('searchSelected');
         }
     },
     actions: {
