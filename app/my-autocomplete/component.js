@@ -3,7 +3,6 @@ import MyMdlComponent from 'audio-app/components/my-mdl';
 
 var keyCodeUp = 38,
     keyCodeDown = 40,
-    /*keyCodeEnter = 13,*/
     keyCodeEscape = 27;
 
 export default MyMdlComponent.extend({
