@@ -90,8 +90,9 @@ export default MyMdlComponent.extend({
 
             this.sendAction('action');
         },
-        hideSuggestions: function () {
-            this.hideSuggestions();
+        // TODO: Could cause asyncrounous problems since click event needs to be registered first..
+        didFocusOut: function () {
+            Ember.run.later(this, this.hideSuggestions, 100);
         }
     }
 });
