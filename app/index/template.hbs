@@ -42,11 +42,9 @@
               {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
           {{/if}}
 
-          <div class="list-group spaced-top">
+          <div class="mdl-grid">
               {{#each sortedSnippets as |snippet|}}
                   {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=snippet.isQueued}}
-
-                  <div class="list-group-separator snippet-separator" />
               {{/each}}
           </div>
 

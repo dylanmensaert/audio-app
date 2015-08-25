@@ -1,41 +1,39 @@
-<div {{action 'click'}} class="media-left media-middle snippet-part">
-    <div class="outer-image">
-        <img class="media-object inner-image" src={{model.thumbnail}} draggable="false" />
-    </div>
+<div {{action 'click'}} class="outer-image">
+  <img class="inner-image" src={{model.thumbnail}} draggable="false" />
 </div>
 
-<div {{action 'click'}} class="media-body snippet-part">
-    <div>
-        {{model.name}}
+<div class="mdl-grid my-card-grid">
+  <div class="my-card-text">
+    <div class="mdl-card__supporting-text">
+      {{model.name}}
     </div>
+  </div>
+
+  <div {{action 'toggleSelection'}} class="my-card-vert">
+    <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+    </div>
+  </div>
 </div>
 
-<div class="media-right media-top snippet-part status-icons {{if model.isSelected 'active'}}">
+{{#if hasStatus}}
+  <div class="my-card-actions-placeholder" />
+
+  <div class="mdl-card__actions mdl-card--border">
     {{#if model.isPlaying}}
-        <div>
-            <i class="material-icons">headset</i>
-        </div>
+      <i class="material-icons">headset</i>
     {{else}}
         {{#if showQueued}}
-            <div>
-                <i class="material-icons">schedule</i>
-            </div>
+            <i class="material-icons">schedule</i>
         {{/if}}
     {{/if}}
 
     {{#if model.isDownloading}}
-        <div>
-            {{my-mdl tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
-        </div>
+        {{my-mdl tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
     {{/if}}
 
     {{#if model.isDownloaded}}
-        <div>
-            <i class="material-icons">file_download</i>
-        </div>
+        <i class="material-icons">file_download</i>
     {{/if}}
-</div>
-
-<div {{action 'toggleSelection'}} class="media-right media-middle snippet-part">
-    <i class="material-icons">more_vert</i>
-</div>
+  </div>
+ {{/if}}

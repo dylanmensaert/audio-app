@@ -40,17 +40,17 @@ $menu-height: 45px;
 }
 
 .inner-image {
-    width: 120px;
-    height: 90px;
-    top: -11px;
+    width: 240px;
+    height: 180px;
+    top: -22px;
     position: absolute;
 }
 
 .outer-image {
     overflow: hidden;
     position: relative;
-    width: 120px;
-    height: 68px;
+    width: 240px;
+    height: 136px;
 }
 
 .audio-stamp {
@@ -270,4 +270,30 @@ $menu-height: 45px;
 .mdl-layout__header-row > * {
     webkit-flex-shrink: initial;
     flex-shrink: initial;
+}
+
+.my-card {
+    width: 240px;
+}
+
+.my-card-text {
+    width: 205px;
+}
+
+.my-card-vert {
+    width: 35px;
+    padding-top: 16px;
+}
+
+.my-card-grid {
+    padding: 0;
+}
+
+.my-card-actions {
+    position: absolute;
+    bottom: 0;
+}
+
+.my-card-actions-placeholder {
+    height: 45px;
 }
