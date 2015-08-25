@@ -265,3 +265,9 @@ $menu-height: 45px;
         }
     }
 }
+
+// Fix for fixed heading bar
+.mdl-layout__header-row > * {
+    webkit-flex-shrink: initial;
+    flex-shrink: initial;
+}
