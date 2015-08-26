@@ -2,6 +2,8 @@
 
 $audio-height: 50px;
 $menu-height: 45px;
+$card-size: 5 / 4;
+$vert-width: 35px;
 .bar {
     position: fixed;
     width: 100%;
@@ -40,17 +42,19 @@ $menu-height: 45px;
 }
 
 .inner-image {
-    width: 240px;
-    height: 180px;
-    top: -22px;
+    width: 100%;
+    /* width: 120px * $card-size;
+    height: 90px * $card-size;
+    top: -11px * $card-size; */
     position: absolute;
 }
 
 .outer-image {
     overflow: hidden;
     position: relative;
-    width: 240px;
-    height: 136px;
+    width: 100%;
+    /* width: 120px * $card-size;
+    height: 68px * $card-size; */
 }
 
 .audio-stamp {
@@ -273,20 +277,25 @@ $menu-height: 45px;
 }
 
 .my-card {
-    width: 240px;
+    /* width: 120px * $card-size; */
+    min-height: initial;
 }
 
 .my-card-text {
-    width: 205px;
+    width: calc(100% - #{$vert-width} - 16px);
+    height: 39px;
+    position: relative;
+    padding: 0;
 }
 
 .my-card-vert {
-    width: 35px;
-    padding-top: 16px;
+    width: $vert-width;
 }
 
 .my-card-grid {
-    padding: 0;
+    padding: 16px;
+    padding-right: 0;
+    margin: 0;
 }
 
 .my-card-actions {
@@ -295,5 +304,16 @@ $menu-height: 45px;
 }
 
 .my-card-actions-placeholder {
-    height: 45px;
+    width: 45px;
+}
+
+.my-paragraph-end {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 25px;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));
+    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 }
