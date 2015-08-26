@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     layoutName: 'snippet',
-    classNames: ['mdl-card', 'mdl-cell', 'mdl-shadow--2dp', 'my-card', 'mdl-cell--2-col-phone', 'mdl-cell--4-col-tablet'],
+    // TODO: add placeholder left and right to row of cells that can help fix cell width layout
+    classNames: ['mdl-card', 'mdl-cell', 'mdl-shadow--2dp', 'my-card', 'mdl-cell--2-col-phone', 'mdl-cell--4-col-tablet', 'mdl-cell--3-col-desktop'],
     classNameBindings: ['model.isSelected:active'],
     attributeBindings: ['name'],
     model: null,
