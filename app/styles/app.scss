@@ -290,7 +290,7 @@ $vert-width: 35px;
 }
 
 .my-card-text {
-    width: calc(100% - #{$vert-width} - 16px);
+    width: calc(100% - #{$vert-width});
     height: 39px;
     position: relative;
     padding: 0;
