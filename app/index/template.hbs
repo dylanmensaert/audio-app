@@ -1,22 +1,22 @@
 {{#mdl-layout}}
   {{#if isSearchMode}}
-    {{#my-mdl class='mdl-layout__header-row autocomplete-header'}}
+    {{#mdl-component class='mdl-layout__header-row autocomplete-header'}}
       <label {{action 'endSearchMode'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
         </i>
       </label>
 
-      {{my-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
+      {{audio-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
 
       <div class="mdl-layout-spacer"></div>
 
       {{#if liveQuery}}
-        {{#my-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+        {{#mdl-component tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
           <i class="material-icons">close</i>
-        {{/my-mdl}}
+        {{/mdl-component}}
       {{/if}}
-    {{/my-mdl}}
+    {{/mdl-component}}
   {{/if}}
 
   <header class="mdl-layout__header {{if isSearchMode 'hidden'}}">
@@ -37,23 +37,23 @@
 
   <main class="mdl-layout__content mdl-color--grey-100">
     {{#endless-scroll didScrollToBottom=didScrollToBottom}}
-        {{#if cache.selectedSnippets}}
-            {{snippet-action-bar snippets=cache.selectedSnippets isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
+        {{#if cache.selectedRecordings}}
+            {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
 
-        <div class="mdl-grid">
-            {{#each sortedSnippets as |snippet|}}
-                {{my-snippet model=snippet action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=snippet.isQueued}}
+        <div class="mdl-grid my-grid">
+            {{#each sortedRecordings as |recording|}}
+                {{audio-album model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
             {{/each}}
         </div>
 
         {{#if isLoading}}
             <div class="text-center">
-                {{my-mdl tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
+                {{mdl-component tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
             </div>
         {{/if}}
     {{/endless-scroll}}
   </main>
 {{/mdl-layout}}
 
-{{audio-bar audio=audio transitionToQueue=transitionToQueue play=play pause=pause}}
+{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

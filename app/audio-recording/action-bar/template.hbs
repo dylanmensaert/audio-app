@@ -1,19 +1,21 @@
-{{#action-bar models=snippets deselect='exitEdit'}}
+{{#action-bar models=recordings deselect='exitEdit'}}
     <div class="col-xs-2 outer-label">
-        {{#link-to 'labels' tagName='div' class='inner-label'}}
-            <i class="material-icons">local_offer</i>
+        {{#link-to 'albums' tagName='div' class='inner-label'}}
+            <i class="material-icons">
+              library_music
+            </i>
         {{/link-to}}
     </div>
 
     <div class="col-xs-2 outer-label">
-        {{#if undownloadedSnippets}}
+        {{#if undownloadedRecordings}}
           {{#if isEveryUndownloaded}}
             <!-- TODO: Further refactored if else? -->
             <div {{action 'download'}} class="material-icons">
               file_download
             </div>
           {{else}}
-            <div {{action 'download'}} class="material-icons mdl-badge" data-badge={{undownloadedSnippets.length}}>
+            <div {{action 'download'}} class="material-icons mdl-badge" data-badge={{undownloadedRecordings.length}}>
               file_download
             </div>
           {{/if}}
@@ -39,14 +41,14 @@
     </div>
 
     <div class="col-xs-2 outer-label">
-        {{#if offlineSnippets}}
+        {{#if offlineRecordings}}
           {{#if isEveryOffline}}
             <!-- TODO: Further refactored if else? -->
             <div {{action 'remove'}} class="material-icons">
               delete
             </div>
           {{else}}
-            <div {{action 'remove'}} class="material-icons mdl-badge" data-badge={{offlineSnippets.length}}>
+            <div {{action 'remove'}} class="material-icons mdl-badge" data-badge={{offlineRecordings.length}}>
               delete
             </div>
           {{/if}}

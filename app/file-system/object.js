@@ -1,7 +1,7 @@
 /* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
 import Ember from 'ember';
-import Label from 'audio-app/label/object';
-import Snippet from 'audio-app/snippet/object';
+import Album from 'audio-app/audio-album/object';
+import Recording from 'audio-app/audio-recording/object';
 
 var write,
     lastWriter;
@@ -34,10 +34,10 @@ export default Ember.Object.extend({
     },
     instance: null,
     albums: [],
-    snippets: [],
+    recordings: [],
     queue: [],
     history: [],
-    playingSnippetId: null,
+    playingRecordingId: null,
     setDownloadedOnlyOnMobile: true,
     setDownloadLaterOnMobile: true,
     setDownloadBeforePlaying: false,
@@ -72,9 +72,7 @@ export default Ember.Object.extend({
         Ember.run.cancel(lastWriter);
 
         lastWriter = Ember.run.later(this, write, 100);
-        /*TODO: snippets.@each.labels.@each needed?*/
-    }.observes('playingSnippetId', 'queue.[]', 'history.[]', 'labels.[]', 'snippets.[]',
-        'snippets.@each.labels.[]'),
+    }.observes('playingRecordingId', 'queue.[]', 'history.[]', 'albums.@each.recordings.[]', 'recordings.[]'),
     remove: function (source) {
         return new Ember.RSVP.Promise(function (resolve) {
             this.get('instance').root.getFile(source, {}, function (fileEntry) {
@@ -102,13 +100,18 @@ export default Ember.Object.extend({
             instance.root.getFile('data.json', {
                 create: true
             }, function () {
-                this.get('labels').pushObject(Label.create({
-                    name: 'downloaded',
-                    permission: 'hidden'
+                this.get('albums').pushObject(Album.create({
+                    name: 'Download later',
+                    permission: 'push-only'
                 }));
 
-                this.get('labels').pushObject(Label.create({
-                    name: 'download-later',
+                this.get('albums').pushObject(Album.create({
+                    name: 'Queue',
+                    permission: 'push-only'
+                }));
+
+                this.get('albums').pushObject(Album.create({
+                    name: 'History',
                     permission: 'read-only'
                 }));
             }.bind(this));
@@ -125,14 +128,14 @@ export default Ember.Object.extend({
     parseJSON: function (json) {
         var parsedJSON = JSON.parse(json);
 
-        parsedJSON.labels = parsedJSON.labels.map(function (label) {
-            return Label.create(label);
+        parsedJSON.albums = parsedJSON.albums.map(function (album) {
+            return Album.create(album);
         });
 
-        parsedJSON.snippets = parsedJSON.snippets.map(function (snippet) {
-            snippet.fileSystem = this;
+        parsedJSON.recordings = parsedJSON.recordings.map(function (recording) {
+            recording.fileSystem = this;
 
-            return Snippet.create(snippet);
+            return Recording.create(recording);
         }.bind(this));
 
         this.setProperties(parsedJSON);
@@ -143,7 +146,7 @@ export default Ember.Object.extend({
     },
     toJSON: function () {
         var data = {
-            playingSnippetId: this.get('playingSnippetId'),
+            playingRecordingId: this.get('playingRecordingId'),
             queue: this.get('queue'),
             history: this.get('history')
         };
@@ -152,8 +155,8 @@ export default Ember.Object.extend({
             return album.strip();
         });
 
-        data.snippets = this.get('snippets').map(function (snippet) {
-            return snippet.strip();
+        data.recordings = this.get('recordings').map(function (recording) {
+            return recording.strip();
         });
 
         return JSON.stringify(data);

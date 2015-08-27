@@ -34,14 +34,14 @@ export default Ember.Object.extend({
     isSelected: false,
     status: null,
     isOffline: function () {
-        return this.get('fileSystem.snippets').isAny('id', this.get('id'));
-    }.property('fileSystem.snippets.[]'),
+        return this.get('fileSystem.recordings').isAny('id', this.get('id'));
+    }.property('fileSystem.recordings.[]'),
     isDownloading: function () {
         return this.get('status') === 'downloading';
     }.property('status'),
     isPlaying: function () {
-        return this.get('fileSystem.playingSnippetId') === this.get('id');
-    }.property('fileSystem.playingSnippetId', 'id'),
+        return this.get('fileSystem.playingRecordingId') === this.get('id');
+    }.property('fileSystem.playingRecordingId', 'id'),
     isDownloaded: function () {
         return new Ember.RSVP.Promise(function (resolve) {
             return this.get('fileSystem').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function () {
@@ -115,7 +115,7 @@ export default Ember.Object.extend({
         promises = {
             // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
             audio: this._download(this.get('audio'), audio),
-            // TODO: write to filesystem on snippet property change
+            // TODO: write to filesystem on recording property change
             thumbnail: this._download(this.get('thumbnail'), thumbnail)
         };
 
@@ -126,10 +126,10 @@ export default Ember.Object.extend({
 
                 this.get('fileSystem.albums').findBy('name', 'Download later').get('audios').removeObject(this.get('id'));
 
-                // TODO: update offline labels and snippets in 1 write action
+                // TODO: update offline albums and recordings in 1 write action
                 // TODO: only perform this
                 if (!this.get('isOffline')) {
-                    this.get('fileSystem.snippets').pushObject(this);
+                    this.get('fileSystem.recordings').pushObject(this);
                 }
 
                 this.set('status', null);
@@ -179,7 +179,7 @@ export default Ember.Object.extend({
 
         return new Ember.RSVP.Promise(function (resolve, reject) {
             Ember.RSVP.all(promises).then(function () {
-                fileSystem.get('snippets').removeObject(this);
+                fileSystem.get('recordings').removeObject(this);
 
                 resolve();
             }.bind(this), reject);

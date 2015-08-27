@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import injectAudio from 'audio-app/my-audio/inject';
+import injectAudioPlayer from 'audio-app/audio-player/inject';
 import injectFileSystem from 'audio-app/file-system/inject';
 import injectCache from 'audio-app/cache/inject';
 
 Ember.onLoad('Ember.Application', function(Application) {
-    injectAudio(Application);
+    injectAudioPlayer(Application);
     injectFileSystem(Application);
     injectCache(Application);
 });

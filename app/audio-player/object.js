@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Object.extend({
     element: null,
-    snippet: null,
+    recording: null,
     currentTime: null,
     duration: null,
     buffered: null,
@@ -20,13 +20,13 @@ export default Ember.Object.extend({
     setCurrentTime: function(currentTime) {
         this.get('element').currentTime = currentTime;
     },
-    play: function(snippet) {
+    play: function(recording) {
         var element = this.get('element');
 
-        if (Ember.isEmpty(snippet)) {
+        if (Ember.isEmpty(recording)) {
             element.play();
         } else {
-            this.load(snippet).then(function() {
+            this.load(recording).then(function() {
                 element.play();
             });
         }
@@ -34,15 +34,15 @@ export default Ember.Object.extend({
     pause: function() {
         this.get('element').pause();
     },
-    load: function(snippet) {
-        var audio = snippet.get('audio');
+    load: function(recording) {
+        var audio = recording.get('audio');
 
         this.set('status', 'loading');
-        this.set('snippet', snippet);
+        this.set('recording', recording);
 
         return new Ember.RSVP.Promise(function(resolve) {
             if (Ember.isEmpty(audio)) {
-                snippet.fetchDownload().then(function(url) {
+                recording.fetchDownload().then(function(url) {
                     this.loadSource(url);
 
                     resolve();

@@ -31,8 +31,8 @@ export default Ember.Object.extend({
         }.bind(this), 5000);
     },
     isMobile: !Ember.isEmpty(navigator.connection),
-    selectedSnippets: [],
-    playedSnippetIds: [],
+    selectedRecordings: [],
+    playedRecordingIds: [],
     showMessage: null,
     slider: null,
     type: null,

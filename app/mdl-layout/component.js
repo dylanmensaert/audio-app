@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import MyMdlComponent from 'audio-app/components/my-mdl';
+import MdlComponent from 'audio-app/components/mdl-component';
 
-export default MyMdlComponent.extend({
+export default MdlComponent.extend({
     classNames: ['mdl-layout', 'mdl-js-layout', 'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header'],
     didInsertElement: function () {
         Ember.$(window).resize(function () {
-            // TODO: duplicate with my-snippet/component
+            // TODO: duplicate with audio-recording/component
             this.$('.outer-image').each(function () {
                 Ember.$(this).height(Ember.$(this).width() / 30 * 17);
             });

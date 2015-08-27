@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Label from 'audio-app/label/object';
+import Album from 'audio-app/audio-album/object';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 
@@ -9,10 +9,10 @@ export default Ember.Controller.extend(controllerMixin, {
             var suggestions = [],
                 name;
 
-            this.get('fileSystem.labels').forEach(function (label) {
-                name = label.get('name');
+            this.get('fileSystem.albums').forEach(function (album) {
+                name = album.get('name');
 
-                if (this.showLabel(label) && logic.isMatch(name, query)) {
+                if (this.showAlbum(album) && logic.isMatch(name, query)) {
                     suggestions.pushObject({
                         value: name
                     });
@@ -21,88 +21,88 @@ export default Ember.Controller.extend(controllerMixin, {
 
             callback(suggestions);
         }.bind(this);
-    }.property('fileSystem.labels.[]'),
-    sortedLabels: function () {
+    }.property('fileSystem.albums.[]'),
+    sortedAlbums: function () {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
-            content: this.get('labels'),
+            content: this.get('albums'),
             sortProperties: ['name']
         }).create();
-    }.property('labels'),
-    labels: function () {
-        var selectedSnippets = this.get('cache.selectedSnippets'),
-            labels = [],
+    }.property('albums'),
+    albums: function () {
+        var selectedRecordings = this.get('cache.selectedRecordings'),
+            albums = [],
             name,
             isSelected;
 
-        this.get('fileSystem.labels').forEach(function (label) {
-            name = label.get('name');
+        this.get('fileSystem.albums').forEach(function (album) {
+            name = album.get('name');
 
-            if (this.showLabel(label) && logic.isMatch(
+            if (this.showAlbum(album) && logic.isMatch(
                     name, this.get('query'))) {
-                if (selectedSnippets.get('length')) {
-                    isSelected = selectedSnippets.every(function (snippet) {
-                        return snippet.get('labels').contains(name);
+                if (selectedRecordings.get('length')) {
+                    isSelected = selectedRecordings.every(function (recording) {
+                        return recording.get('albums').contains(name);
                     });
                 } else {
                     isSelected = false;
                 }
 
-                label.set('isSelected', isSelected);
+                album.set('isSelected', isSelected);
 
-                labels.pushObject(label);
+                albums.pushObject(album);
             }
         }.bind(this));
 
-        return labels;
-    }.property('fileSystem.labels.@each.name', 'cache.selectedSnippets.[]', 'query'),
-    originals: Ember.computed.alias('fileSystem.labels'),
+        return albums;
+    }.property('fileSystem.albums.@each.name', 'cache.selectedRecordings.[]', 'query'),
+    originals: Ember.computed.alias('fileSystem.albums'),
     selected: function () {
-        return this.get('labels').filterBy('isSelected');
-    }.property('labels.@each.isSelected'),
+        return this.get('albums').filterBy('isSelected');
+    }.property('albums.@each.isSelected'),
     hasSingle: function () {
         return this.get('selected.length') === 1;
     }.property('selected.length'),
-    showLabel: function (label) {
-        return !label.get('isHidden') && (!label.get('isReadOnly') || this.get('cache.selectedSnippets.length'));
+    showAlbum: function (album) {
+        return !album.get('isReadOnly') || this.get('cache.selectedRecordings.length');
     },
     actions: {
         create: function () {
             var liveQuery = this.get('liveQuery'),
-                labels = this.get('fileSystem.labels');
+                albums = this.get('fileSystem.albums');
 
             if (!Ember.isEmpty(liveQuery)) {
-                if (!labels.isAny('name', liveQuery)) {
-                    labels.pushObject(Label.create({
+                if (!albums.isAny('name', liveQuery)) {
+                    albums.pushObject(Album.create({
                         name: liveQuery
                     }));
                 } else {
-                    this.get('cache').showMessage('Label already exists');
+                    this.get('cache').showMessage('Album already exists');
                 }
             }
 
             this.set('liveQuery', '');
         },
-        toggle: function (label) {
-            var selectedSnippets = this.get('cache.selectedSnippets'),
-                snippets = this.get('fileSystem.snippets'),
+        toggle: function (album) {
+            var selectedRecordings = this.get('cache.selectedRecordings'),
+                recordings = this.get('fileSystem.recordings'),
                 cache = this.get('cache'),
-                labels;
+                albums;
 
-            selectedSnippets.forEach(function (snippet) {
-                labels = snippet.get('labels');
+            selectedRecordings.forEach(function (recording) {
+                albums = recording.get('albums');
 
-                if (label.get('isSelected')) {
-                    labels.pushObject(label.get('name'));
+                if (album.get('isSelected')) {
+                    albums.pushObject(album.get('name'));
 
-                    if (!snippets.isAny('id', snippet.get('id'))) {
-                        snippets.pushObject(snippet);
+                    if (!recordings.isAny('id', recording.get('id'))) {
+                        recordings.pushObject(recording);
                     }
 
-                    cache.showMessage('Added to label');
+                    cache.showMessage('Added to album');
                 } else {
-                    labels.removeObject(label.get('name'));
+                    albums.removeObject(album.get('name'));
 
-                    cache.showMessage('Removed from label');
+                    cache.showMessage('Removed from album');
                 }
             }.bind(this));
 
@@ -111,7 +111,7 @@ export default Ember.Controller.extend(controllerMixin, {
             }
         },
         selectAll: function () {
-            this.get('labels').setEach('isSelected', true);
+            this.get('albums').setEach('isSelected', true);
         }
     }
 });

@@ -1,8 +1,8 @@
 {{#mdl-layout}}
-  {{menu-bar title='Labels' selectAll=selectAll}}
+  {{menu-bar title='Albums' selectAll=selectAll}}
 
-  {{#if cache.selectedSnippets}}
-      {{#action-bar models=cache.selectedSnippets}}
+  {{#if cache.selectedRecordings}}
+      {{#action-bar models=cache.selectedRecordings}}
           <div class="col-xs-2 outer-label">
               {{#link-to 'index' tagName='div' class='inner-label'}}
                   <i class="mdi-navigation-arrow-back"></i>
@@ -66,12 +66,12 @@
       </div>
 
       <div class="container">
-          {{#each sortedLabels as |label|}}
-              {{app-label model=label action='toggle'}}
+          {{#each sortedAlbums as |album|}}
+              {{audio-album model=album action='toggle'}}
           {{/each}}
       </div>
     </div>
   </main>
 {{/mdl-layout}}
 
-{{audio-bar audio=audio transitionToQueue=transitionToQueue play=play pause=pause}}
+{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

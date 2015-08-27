@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import MyMdlComponent from 'audio-app/components/my-mdl';
+import MdlComponent from 'audio-app/components/mdl-component';
 
 var keyCodeUp = 38,
     keyCodeDown = 40,
     keyCodeEscape = 27;
 
-export default MyMdlComponent.extend({
+export default MdlComponent.extend({
     classNames: ['mdl-textfield', 'mdl-js-textfield'],
     liveQuery: '',
     suggestions: null,

@@ -1,6 +1,6 @@
 /* global document: true */
 import Ember from 'ember';
-import Slider from 'audio-app/my-slider/object';
+import Slider from 'audio-app/audio-slider/object';
 import updateTitle from 'audio-app/utils/update-title';
 
 var generateRandom = function(min, max) {
@@ -13,11 +13,11 @@ export default Ember.Route.extend(updateTitle, {
         var queue,
             currentIndex,
             previousIndex,
-            snippetId,
-            previousSnippet;
+            recordingId,
+            previousRecording;
 
         queue = this.get('fileSystem.queue');
-        currentIndex = queue.indexOf(this.get('audio.snippet.id'));
+        currentIndex = queue.indexOf(this.get('audioPlayer.recording.id'));
 
         if (currentIndex > 0) {
             previousIndex = currentIndex - 1;
@@ -25,52 +25,52 @@ export default Ember.Route.extend(updateTitle, {
             previousIndex = queue.get('length');
         }
 
-        snippetId = queue.objectAt(previousIndex);
-        previousSnippet = this.get('fileSystem.snippets').findBy('id', snippetId);
+        recordingId = queue.objectAt(previousIndex);
+        previousRecording = this.get('fileSystem.recordings').findBy('id', recordingId);
 
-        this.play(previousSnippet);
+        this.play(previousRecording);
     },
     next: function() {
         var queue = this.get('fileSystem.queue'),
-            snippetId,
-            nextSnippet,
-            unplayedSnippetIds;
+            recordingId,
+            nextRecording,
+            unplayedRecordingIds;
 
-        unplayedSnippetIds = queue.filter(function(snippetId) {
-            return !this.get('cache.playedSnippetIds').contains(snippetId);
+        unplayedRecordingIds = queue.filter(function(recordingId) {
+            return !this.get('cache.playedRecordingIds').contains(recordingId);
         }.bind(this));
 
-        if (!unplayedSnippetIds.get('length')) {
-            this.set('cache.playedSnippetIds', []);
+        if (!unplayedRecordingIds.get('length')) {
+            this.set('cache.playedRecordingIds', []);
 
-            unplayedSnippetIds.pushObjects(queue);
+            unplayedRecordingIds.pushObjects(queue);
 
-            unplayedSnippetIds.removeObject(this.get('audio.snippet.id'));
+            unplayedRecordingIds.removeObject(this.get('audioPlayer.recording.id'));
         }
 
-        snippetId = unplayedSnippetIds.objectAt(generateRandom(0, unplayedSnippetIds.get('length') - 1));
+        recordingId = unplayedRecordingIds.objectAt(generateRandom(0, unplayedRecordingIds.get('length') - 1));
 
-        nextSnippet = this.get('fileSystem.snippets').findBy('id', snippetId);
+        nextRecording = this.get('fileSystem.recordings').findBy('id', recordingId);
 
-        this.play(nextSnippet);
+        this.play(nextRecording);
     },
-    play: function(snippet) {
+    play: function(recording) {
         var fileSystem = this.get('fileSystem'),
-            offlineSnippets = fileSystem.get('snippets'),
-            audio = this.get('audio'),
+            offlineRecordings = fileSystem.get('recordings'),
+            audioPlayer = this.get('audioPlayer'),
             history,
             queue,
-            playedSnippetIds,
+            playedRecordingIds,
             id;
 
-        if (!Ember.isEmpty(snippet)) {
-            id = snippet.get('id');
+        if (!Ember.isEmpty(recording)) {
+            id = recording.get('id');
             history = fileSystem.get('history');
             queue = fileSystem.get('queue');
-            playedSnippetIds = this.get('cache.playedSnippetIds');
+            playedRecordingIds = this.get('cache.playedRecordingIds');
 
-            if (!offlineSnippets.isAny('id', id)) {
-                offlineSnippets.pushObject(snippet);
+            if (!offlineRecordings.isAny('id', id)) {
+                offlineRecordings.pushObject(recording);
             }
 
             if (history.contains(id)) {
@@ -84,47 +84,47 @@ export default Ember.Route.extend(updateTitle, {
             history.pushObject(id);
 
             if (!queue.contains(id)) {
-                if (Ember.isEmpty(audio.get('snippet.id'))) {
+                if (Ember.isEmpty(audioPlayer.get('recording.id'))) {
                     queue.pushObject(id);
                 } else {
-                    queue.insertAt(queue.indexOf(audio.get('snippet.id')) + 1, id);
+                    queue.insertAt(queue.indexOf(audioPlayer.get('recording.id')) + 1, id);
                 }
             }
 
-            if (!playedSnippetIds.contains(id)) {
-                playedSnippetIds.pushObject(id);
+            if (!playedRecordingIds.contains(id)) {
+                playedRecordingIds.pushObject(id);
             }
 
-            fileSystem.set('playingSnippetId', id);
+            fileSystem.set('playingRecordingId', id);
         }
 
-        if (!Ember.isEmpty(snippet) && fileSystem.get('setDownloadBeforePlaying') && !snippet.get('isDownloaded')) {
-            snippet.download().then(function() {
-                audio.play(snippet);
+        if (!Ember.isEmpty(recording) && fileSystem.get('setDownloadBeforePlaying') && !recording.get('isDownloaded')) {
+            recording.download().then(function() {
+                audioPlayer.play(recording);
             });
         } else {
-            audio.play(snippet);
+            audioPlayer.play(recording);
         }
     },
-    downloadSnippets: function() {
+    downloadRecordings: function() {
         var fileSystem = this.get('fileSystem'),
             cache = this.get('cache'),
-            snippets;
+            recordings;
 
         if (fileSystem.get('setDownloadLaterOnMobile') && !cache.get('isMobileConnection')) {
-            snippets = fileSystem.get('snippets').filterBy('isDownloadLater');
+            recordings = fileSystem.get('recordings').filterBy('isDownloadLater');
 
-            if (snippets.get('length')) {
+            if (recordings.get('length')) {
                 // TODO: Better message?
                 cache.showMessage('Downloading download-later');
 
                 // TODO: Handle multiple 'observe' calls before download finishes
-                snippets.forEach(function(snippet) {
-                    snippet.download();
+                recordings.forEach(function(recording) {
+                    recording.download();
                 });
             }
         }
-    }.observes('fileSystem.setDownloadLaterOnMobile', 'cache.isMobileConnection', 'snippets.@each.isDownloadLater'),
+    }.observes('fileSystem.setDownloadLaterOnMobile', 'cache.isMobileConnection', 'recordings.@each.isDownloadLater'),
     actions: {
         loading: function() {
             if (this.get('controller')) {
@@ -146,11 +146,11 @@ export default Ember.Route.extend(updateTitle, {
             tokens.reverse();
             document.title = tokens.join(' - ');
         },
-        play: function(snippet) {
-            this.play(snippet);
+        play: function(recording) {
+            this.play(recording);
         },
         pause: function() {
-            this.get('audio').pause();
+            this.get('audioPlayer').pause();
         },
         previous: function() {
             this.previous();
@@ -159,38 +159,38 @@ export default Ember.Route.extend(updateTitle, {
             this.next();
         },
         didTransition: function() {
-            var audio = this.get('audio'),
+            var audioPlayer = this.get('audioPlayer'),
                 cache = this.get('cache'),
                 slider;
 
             slider = Slider.create({
                 onSlideStop: function(value) {
-                    audio.setCurrentTime(value);
+                    audioPlayer.setCurrentTime(value);
                 }
             });
 
-            audio.addObserver('currentTime', audio, function() {
+            audioPlayer.addObserver('currentTime', audioPlayer, function() {
                 slider.setValue(this.get('currentTime'));
             });
 
-            audio.addObserver('duration', audio, function() {
+            audioPlayer.addObserver('duration', audioPlayer, function() {
                 slider.set('max', this.get('duration'));
             });
 
             cache.set('slider', slider);
 
-            audio.set('didEnd', this.next.bind(this));
+            audioPlayer.set('didEnd', this.next.bind(this));
 
             this.set('fileSystem.didParseJSON', function() {
-                var snippet = this.get('snippets').findBy('id', this.get('playingSnippetId'));
+                var recording = this.get('recordings').findBy('id', this.get('playingRecordingId'));
 
-                if (!Ember.isEmpty(snippet)) {
-                    audio.load(snippet);
+                if (!Ember.isEmpty(recording)) {
+                    audioPlayer.load(recording);
                 }
             });
         },
         transitionToQueue: function() {
-            this.get('fileSystem.snippets').setEach('isSelected', false);
+            this.get('fileSystem.recordings').setEach('isSelected', false);
 
             this.transitionToRoute('queue.index');
         }

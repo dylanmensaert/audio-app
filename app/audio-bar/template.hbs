@@ -1,25 +1,25 @@
-{{#if audio.snippet}}
+{{#if audioPlayer.recording}}
     <div class="audio-stamp" />
 
     <div class="container audio-bar">
         <div class="row">
             <div {{action 'transitionToQueue'}} class="col-xs-9 audio-name-outer">
                 <div class="audio-name">
-                    {{audio.snippet.name}}
+                    {{audioPlayer.recording.name}}
                 </div>
             </div>
 
             <div class='col-xs-3 text-center'>
                 <div class="audio-icon-large">
-                    {{#if audio.isLoading}}
-                        {{my-mdl tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
+                    {{#if audioPlayer.isLoading}}
+                        {{mdl-component tagName='i' class='mdl-spinner mdl-js-spinner is-active'}}
                     {{/if}}
 
-                    {{#if audio.isPlaying}}
+                    {{#if audioPlayer.isPlaying}}
                         <i class="material-icons" {{action 'pause'}}>pause</i>
                     {{/if}}
 
-                    {{#if audio.isIdle}}
+                    {{#if audioPlayer.isIdle}}
                         <i class="material-icons" {{action 'play'}}>play_arrow</i>
                     {{/if}}
                 </div>

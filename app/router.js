@@ -9,7 +9,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.resource('labels');
+    this.resource('albums');
 
     this.resource('queue');
 
