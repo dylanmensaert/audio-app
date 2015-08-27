@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     layoutName: 'snippet',
     // TODO: add placeholder left and right to row of cells that can help fix cell width layout
-    classNames: ['mdl-card', 'mdl-cell', 'mdl-shadow--2dp', 'my-card', 'mdl-cell--2-col-phone', 'mdl-cell--4-col-tablet', 'mdl-cell--3-col-desktop'],
+    classNames: ['mdl-cell', 'mdl-cell--2-col-phone', 'mdl-cell--2-col-tablet', 'mdl-cell--3-col-desktop', 'my-card-cell'],
     classNameBindings: ['model.isSelected:active'],
     attributeBindings: ['name'],
     model: null,

@@ -276,9 +276,17 @@ $vert-width: 35px;
     flex-shrink: initial;
 }
 
+.my-card-cell {
+    max-width: 300px;
+    min-width: 160px;
+    margin: 0 auto;
+}
+
 .my-card {
     /* width: 120px * $card-size; */
+    margin: 8px;
     min-height: initial;
+    width: calc(100% - 16px);
 }
 
 .my-card-text {
