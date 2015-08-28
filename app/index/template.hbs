@@ -41,9 +41,9 @@
             {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
 
-        <div class="mdl-grid my-grid">
+        <div class="mdl-grid">
             {{#each sortedRecordings as |recording|}}
-                {{audio-album model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+                {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
             {{/each}}
         </div>
 

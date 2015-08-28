@@ -44,13 +44,13 @@ export default Ember.Object.extend({
     }.property('fileSystem.playingRecordingId', 'id'),
     isDownloaded: function () {
         return new Ember.RSVP.Promise(function (resolve) {
-            return this.get('fileSystem').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function () {
+            return this.get('fileSystem.instance').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function () {
                 resolve(true);
             }, function () {
                 resolve(false);
             });
-        });
-    }.property('audio'),
+        }.bind(this));
+    }.property('audio', 'fileSystem.instance'),
     isQueued: function () {
         return this.get('fileSystem.queue').contains(this.get('id'));
     }.property('fileSystem.queue.[]', 'id'),

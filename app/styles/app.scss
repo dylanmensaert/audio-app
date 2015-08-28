@@ -2,7 +2,7 @@
 
 $audio-height: 50px;
 $menu-height: 45px;
-$card-size: 5 / 4;
+/* $card-size: 5 / 4; */
 $vert-width: 35px;
 .bar {
     position: fixed;
@@ -126,11 +126,6 @@ $vert-width: 35px;
 
 .text-large {
     font-size: 52px;
-}
-
-.recording-part {
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .list-group-item.recording-item {
@@ -313,6 +308,10 @@ $vert-width: 35px;
 
 .my-card-actions-placeholder {
     width: 45px;
+}
+
+.my-recording {
+  width: 100%;
 }
 
 .my-paragraph-end {
