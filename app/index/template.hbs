@@ -44,6 +44,10 @@
         <div class="mdl-grid">
             {{#each sortedRecordings as |recording|}}
                 {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+
+                <div class="my-recording-separator">
+                  <div class="my-recording-line" />
+                </div>
             {{/each}}
         </div>
 

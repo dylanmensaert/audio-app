@@ -3,7 +3,6 @@ import Ember from 'ember';
 // TODO: duplication with audio-album/component
 export default Ember.Component.extend({
     layoutName: 'audio_recording',
-    classNames: ['my-recording'],
     classNameBindings: ['model.isSelected:active'],
     model: null,
     showQueued: false,

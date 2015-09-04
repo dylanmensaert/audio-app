@@ -1,8 +1,13 @@
 /* TODO: remove unused css */
 
+
+/* TODO: prefix everything with my- / audio-? */
+
 $audio-height: 50px;
 $menu-height: 45px;
+
 /* $card-size: 5 / 4; */
+
 $vert-width: 35px;
 .bar {
     position: fixed;
@@ -219,15 +224,6 @@ $vert-width: 35px;
     visibility: hidden;
 }
 
-.status-icons {
-    color: #ffb74d;
-    font-size: 18px;
-}
-
-.status-icons.active {
-    color: white;
-}
-
 // Fix for fixed heading title
 @media screen and (max-width: 1024px) {
     .mdl-layout--fixed-drawer > .mdl-layout__header .mdl-layout__header-row {
@@ -310,10 +306,6 @@ $vert-width: 35px;
     width: 45px;
 }
 
-.my-recording {
-  width: 100%;
-}
-
 .my-paragraph-end {
     position: absolute;
     right: 0;
@@ -323,4 +315,41 @@ $vert-width: 35px;
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));
     background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.my-recording-part {
+    display: table-cell;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.my-recording-body {
+    @extend .my-recording-part;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+}
+
+.my-recording-middle {
+    @extend .my-recording-part;
+    vertical-align: middle;
+}
+
+.my-static-image {
+    width: 120px;
+    height: 68px;
+}
+
+.my-recording-line {
+    width: calc(100% - 90px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    float: right;
+}
+
+.my-recording-separator {
+    width: 100%;
+}
+
+.my-vertical-status-bar {
+    font-size: 18px;
 }

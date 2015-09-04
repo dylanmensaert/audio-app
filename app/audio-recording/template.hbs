@@ -1,16 +1,18 @@
-<div {{action 'click'}}>
-    <div class="outer-image">
-        <img class="inner-image" {{bind-attr src=model.thumbnail}} draggable="false" />
+<div {{action 'click'}} class="my-recording-middle">
+    <div class="my-static-image">
+      <div class="outer-image">
+          <img class="inner-image" src={{model.thumbnail}} draggable="false" />
+      </div>
     </div>
 </div>
 
-<div {{action 'click'}}>
+<div {{action 'click'}} class="my-recording-body">
   {{model.name}}
 
   <div class="my-paragraph-end" />
 </div>
 
-<div class="status-icons">
+<div class="my-recording-middle my-vertical-status-bar">
     {{#if model.isPlaying}}
         <div>
             <i class="material-icons">headset</i>
@@ -36,7 +38,7 @@
     {{/if}}
 </div>
 
-<div>
+<div class="my-recording-middle">
   <div {{action 'toggleSelection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
       <i class="material-icons">more_vert</i>
   </div>
