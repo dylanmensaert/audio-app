@@ -11,8 +11,6 @@ var Router = Ember.Router.extend({
 Router.map(function() {
     this.resource('albums');
 
-    this.resource('queue');
-
     this.resource('settings');
 });
 

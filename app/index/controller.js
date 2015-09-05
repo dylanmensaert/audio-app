@@ -1,26 +1,28 @@
 import Ember from 'ember';
 import meta from 'meta-data';
 import Recording from 'audio-app/audio-recording/object';
+import Album from 'audio-app/audio-album/object';
 import Suggestion from 'audio-app/audio-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
-var convertImageUrl = function (url) {
+// use function convertImageUrl instead var convertImageUrl = .. Do the same for all variables?.
+var convertImageUrl = function(url) {
     return meta.imageHost + new URL(url).pathname;
 };
 
 export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     queryParams: ['query', 'isSearchMode'],
-    didScrollToBottom: function () {
-        return function () {
+    /*didScrollToBottom: function() {
+        return function() {
             this.updateOnlineRecordings(this.get('nextPageToken'));
         }.bind(this);
-    }.property('nextPageToken'),
-    suggestions: function () {
+    }.property('nextPageToken'),*/
+    suggestions: function() {
         var suggestions = this.get('offlineSuggestions');
 
-        this.get('onlineSuggestions').any(function (suggestion) {
+        this.get('onlineSuggestions').any(function(suggestion) {
             var doBreak = suggestions.get('length') >= 10;
 
             if (!doBreak) {
@@ -36,13 +38,13 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
 
         return suggestions;
     }.property('offlineSuggestions.[]', 'onlineSuggestions.[]'),
-    offlineSuggestions: function () {
+    offlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             suggestions = [],
             suggestion;
 
         if (!Ember.isEmpty(liveQuery)) {
-            this.get('fileSystem.albums').any(function (album) {
+            this.get('fileSystem.albums').any(function(album) {
                 var doBreak = suggestions.get('length') >= 10;
 
                 if (!doBreak) {
@@ -58,7 +60,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 return doBreak;
             });
 
-            this.get('fileSystem.recordings').any(function (recording) {
+            this.get('fileSystem.recordings').any(function(recording) {
                 var doBreak = suggestions.get('length') >= 10;
 
                 if (!doBreak) {
@@ -78,23 +80,23 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
         return suggestions;
     }.property('fileSystem.recordings.@each.name', 'fileSystem.albums.@each.name', 'liveQuery'),
     onlineSuggestions: [],
-    updateOnlineSuggestions: function () {
+    updateOnlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             url;
 
         if (!this.get('searchDownloadedOnly') && !Ember.isEmpty(liveQuery)) {
             url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
 
-            Ember.$.getJSON(url).then(function (response) {
+            Ember.$.getJSON(url).then(function(response) {
                 this.set('onlineSuggestions', response[1]);
             }.bind(this));
         }
     }.observes('searchDownloadedOnly', 'liveQuery'),
-    sortedRecordings: function () {
+    sortedRecordings: function() {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('recordings'),
             sortProperties: ['name', 'id'],
-            orderBy: function (recording, other) {
+            orderBy: function(recording, other) {
                 var recordings = this.get('recordings'),
                     result = -1;
 
@@ -111,54 +113,71 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
         }).create();
     }.property('recordings.[]', 'offlineRecordings.@each.id'),
     // TODO: save state in fileSystem someway
-    searchDownloadedOnly: function () {
+    searchDownloadedOnly: function() {
         return this.get('cache.isOffline') || (this.get('cache.isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
     }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
-    recordings: function () {
-        var recordings = this.get('offlineRecordings'),
+    getSnippets: function(offlineSnippets, onlineSnippets) {
+        var snippets = this.get(offlineSnippets),
             id;
 
         if (!this.get('searchDownloadedOnly')) {
-            recordings = this.get('onlineRecordings').map(function (recording) {
+            snippets = this.get(onlineSnippets).map(function(recording) {
                 id = recording.get('id');
 
-                if (recordings.isAny('id', id)) {
-                    recording = recordings.findBy('id', id);
+                if (snippets.isAny('id', id)) {
+                    recording = snippets.findBy('id', id);
                 }
 
                 return recording;
             });
         }
 
-        return recordings;
+        return snippets;
+    },
+    getOfflineSnippets: function(offlineSnippets) {
+        var searchDownloadedOnly = this.get('searchDownloadedOnly'),
+            query = this.get('query');
+
+        return this.get(offlineSnippets).filter(function(snippet) {
+            // TODO: create separate result for matchAnyAlbum
+            return (!searchDownloadedOnly || snippet.get('isDownloaded')) && logic.isMatch(snippet.get('name'), query);
+        });
+    },
+    recordings: function() {
+        return this.getSnippets('offlineRecordings', 'onlineRecordings');
     }.property('offlineRecordings.[]', 'onlineRecordings.[]', 'searchDownloadedOnly'),
+    albums: function() {
+        return this.getSnippets('offlineAlbums', 'onlineAlbums');
+    }.property('offlineAlbums.[]', 'onlineAlbums.[]', 'searchDownloadedOnly'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
             this.get('cache').showMessage('No songs found');
         }
     }.observes('recordings.length'),*/
-    offlineRecordings: function () {
-        var searchDownloadedOnly = this.get('searchDownloadedOnly'),
-            query = this.get('query');
-
-        return this.get('fileSystem.recordings').filter(function (recording) {
-            // TODO: create separate result for matchAnyAlbum
-            return (!searchDownloadedOnly || recording.get('isDownloaded')) && logic.isMatch(recording.get('name'), query);
-        });
+    offlineRecordings: function() {
+        return this.getOfflineSnippets('fileSystem.recordings');
     }.property('query', 'fileSystem.recordings.isDownloaded', 'searchDownloadedOnly'),
+    offlineAlbums: function() {
+        return this.getOfflineSnippets('fileSystem.albums');
+    }.property('query', 'fileSystem.albums.isDownloaded', 'searchDownloadedOnly'),
     nextPageToken: null,
     isLoading: false,
+    onlineAlbums: [],
+    updateOnlineAlbums: function(nextPageToken) {
+        this.updateOnlineSnippets(Album, 'playlist', 'onlineAlbums', nextPageToken);
+    },
     onlineRecordings: [],
-    updateOnlineRecordings: function (nextPageToken) {
-        var recordings = [],
+    updateOnlineRecordings: function(nextPageToken) {
+        this.updateOnlineSnippets(Recording, 'video', 'onlineRecordings', nextPageToken);
+    },
+    updateOnlineSnippets: function(object, type, property, nextPageToken) {
+        var snippets = [],
             url;
 
         if (!this.get('searchDownloadedOnly')) {
-            url = meta.searchHost + '/youtube/v3/search?part=snippet&order=viewCount&type=video&maxResults=50';
+            url = meta.searchHost + '/youtube/v3/search?part=snippet&order=viewCount&type=' + type + '&maxResults=50';
             this.set('isLoading', true);
-
-            // TODO: url += '&relatedToVideoId=' + this.get('videoId');
 
             url += '&key=' + meta.key;
             url += '&q=' + this.get('query');
@@ -167,10 +186,11 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 url += '&pageToken=' + nextPageToken;
             }
 
-            Ember.$.getJSON(url).then(function (response) {
-                recordings = response.items.map(function (item) {
-                    return Recording.create({
-                        id: item.id.videoId,
+            Ember.$.getJSON(url).then(function(response) {
+                snippets = response.items.map(function(item) {
+                    // TODO: duplication in Recording vs Album, use extend?
+                    return object.create({
+                        id: item.id[type + 'Id'],
                         name: item.snippet.title,
                         extension: 'mp3',
                         thumbnail: convertImageUrl(item.snippet.thumbnails.high.url),
@@ -180,9 +200,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 }.bind(this));
 
                 if (Ember.isEmpty(nextPageToken)) {
-                    this.set('onlineRecordings', recordings);
+                    this.set(property, snippets);
                 } else {
-                    this.get('onlineRecordings').pushObjects(recordings);
+                    this.get(property).pushObjects(snippets);
                 }
 
                 if (Ember.isEmpty(response.nextPageToken)) {
@@ -196,14 +216,15 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 this.set('isLoading', false);
             }.bind(this));
         } else {
-            this.set('onlineRecordings', recordings);
+            this.set(property, snippets);
         }
     },
-    scheduleUpdateOnlineRecordings: function () {
+    scheduleUpdateOnlineSnippets: function() {
         Ember.run.once(this, this.updateOnlineRecordings);
-    }.observes('query', 'searchDownloadedOnly'),
+        Ember.run.once(this, this.updateOnlineAlbums);
+    }.observes('query', 'searchDownloadedOnly').on('init'),
     /*TODO: Implement another way?*/
-    updateSelectedRecordings: function () {
+    updateSelectedRecordings: function() {
         var selectedRecordings = this.get('recordings').filterBy('isSelected');
 
         this.set('cache.selectedRecordings', selectedRecordings);
@@ -212,31 +233,31 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     selected: Ember.computed.alias('cache.selectedRecordings'),
     isSearchMode: false,
     actions: {
-        pushToDownload: function (recording) {
+        pushToDownload: function(recording) {
             var cache = this.get('cache');
 
             if (!recording.get('isDownloaded')) {
                 if (!cache.isMobileConnection()) {
-                    recording.download().then(function () {
+                    recording.download().then(function() {
 
-                    }, function () {
+                    }, function() {
                         // TODO: show error?
                         cache.showMessage('download aborted');
                     });
                 } else {
-                  this.get('fileSystem.albums').findBy('name', 'Download later').pushObject(recording.get('id'));
+                    this.get('fileSystem.albums').findBy('name', 'Download later').get('recordings').pushObject(recording.get('id'));
                 }
             } else {
                 cache.showMessage('already downloaded');
             }
         },
-        pushToQueue: function (recording) {
-            var queue = this.get('fileSystem.queue'),
+        pushToQueue: function(recording) {
+            var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings'),
                 cache = this.get('cache');
 
             if (!queue.contains(recording.get('id'))) {
                 if (!recording.get('isDownloaded')) {
-                    recording.download().then(function () {}, function () {
+                    recording.download().then(function() {}, function() {
                         // TODO: show error?
                         cache.showMessage('Download aborted');
                     }.bind(this));
@@ -249,18 +270,18 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 cache.showMessage('Already in queue');
             }
         },
-        selectAll: function () {
+        selectAll: function() {
             this.get('recordings').setEach('isSelected', true);
         },
-        clear: function () {
+        clear: function() {
             this.set('liveQuery', '');
 
             Ember.$('.mdl-textfield__input').focus();
         },
-        startSearchMode: function () {
+        startSearchMode: function() {
             this.set('isSearchMode', true);
         },
-        endSearchMode: function () {
+        endSearchMode: function() {
             this.set('isSearchMode', false);
         }
     }

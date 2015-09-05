@@ -16,7 +16,7 @@ export default Ember.Route.extend(updateTitle, {
             recordingId,
             previousRecording;
 
-        queue = this.get('fileSystem.queue');
+        queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings');
         currentIndex = queue.indexOf(this.get('audioPlayer.recording.id'));
 
         if (currentIndex > 0) {
@@ -31,7 +31,7 @@ export default Ember.Route.extend(updateTitle, {
         this.play(previousRecording);
     },
     next: function() {
-        var queue = this.get('fileSystem.queue'),
+        var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings'),
             recordingId,
             nextRecording,
             unplayedRecordingIds;
@@ -65,8 +65,8 @@ export default Ember.Route.extend(updateTitle, {
 
         if (!Ember.isEmpty(recording)) {
             id = recording.get('id');
-            history = fileSystem.get('history');
-            queue = fileSystem.get('queue');
+            history = fileSystem.get('albums').findBy('name', 'History').get('recordings');
+            queue = fileSystem.get('albums').findBy('name', 'Queue').get('recordings');
             playedRecordingIds = this.get('cache.playedRecordingIds');
 
             if (!offlineRecordings.isAny('id', id)) {
