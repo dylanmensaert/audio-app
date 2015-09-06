@@ -55,7 +55,7 @@
             {{/each}}
         </div>
 
-        <!-- <h3>
+        <h3>
           Albums
         </h3>
 
@@ -63,7 +63,7 @@
             {{#each albums as |album|}}
                 {{audio-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
             {{/each}}
-        </div> -->
+        </div>
 
         {{#if isLoading}}
             {{mdl-component class='mdl-spinner mdl-js-spinner is-active my-loading'}}
