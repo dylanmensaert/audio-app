@@ -41,28 +41,32 @@
             {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
 
-        <h3>
-          Recordings
-        </h3>
+        <div class="my-panel">
+            <h4 class="my-title">
+              Top Recordings
+            </h4>
 
-        <div class="mdl-grid">
-            {{#each recordings as |recording|}}
-                {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+            <div class="mdl-grid">
+                {{#each recordings as |recording|}}
+                    {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
 
-                <div class="my-recording-separator">
-                    <div class="my-recording-line" />
-                </div>
-            {{/each}}
+                    <div class="my-recording-separator">
+                        <div class="my-recording-line" />
+                    </div>
+                {{/each}}
+            </div>
         </div>
 
-        <h3>
-          Albums
-        </h3>
+        <div class="my-panel">
+            <h4 class="my-title">
+              Top Albums
+            </h4>
 
-        <div class="mdl-grid">
-            {{#each albums as |album|}}
-                {{audio-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
-            {{/each}}
+            <div class="mdl-grid my-album-grid">
+                {{#each albums as |album|}}
+                    {{audio-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
+                {{/each}}
+            </div>
         </div>
 
         {{#if isLoading}}
