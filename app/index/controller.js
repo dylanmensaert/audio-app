@@ -176,7 +176,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
             url;
 
         if (!this.get('searchDownloadedOnly')) {
-            url = meta.searchHost + '/youtube/v3/search?part=snippet&order=viewCount&type=' + type + '&maxResults=5';
+            url = meta.searchHost + '/youtube/v3/search?part=snippet&order=viewCount&type=' + type + '&maxResults=6';
             this.set('isLoading', true);
 
             url += '&key=' + meta.key;
