@@ -79,6 +79,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
 
         return suggestions;
     }.property('fileSystem.recordings.@each.name', 'fileSystem.albums.@each.name', 'liveQuery'),
+    hasSnippets: function() {
+        return this.get('recordings.length') || this.get('albums.length');
+    }.property('recordings', 'albums'),
     onlineSuggestions: [],
     updateOnlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
