@@ -42,9 +42,19 @@
         {{/if}}
 
         <div class="my-panel">
-            <h4 class="my-title">
-              Top Recordings
-            </h4>
+            <div class="mdl-grid my-title-grid">
+                <div class="my-title-cell--10-col">
+                    <h4 class="my-title-text">
+                        Recordings
+                    </h4>
+                </div>
+
+                <div class="my-title-cell--2-col">
+                    <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
+                        more
+                    </div>
+                </div>
+            </div>
 
             <div class="mdl-grid">
                 {{#each recordings as |recording|}}
@@ -58,9 +68,19 @@
         </div>
 
         <div class="my-panel">
-            <h4 class="my-title">
-              Top Albums
-            </h4>
+            <div class="mdl-grid my-title-grid">
+                <div class="my-title-cell--10-col">
+                    <h4 class="my-title-text">
+                        Albums
+                    </h4>
+                </div>
+
+                <div class="my-title-cell--2-col">
+                    <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
+                        more
+                    </div>
+                </div>
+            </div>
 
             <div class="mdl-grid my-album-grid">
                 {{#each albums as |album|}}

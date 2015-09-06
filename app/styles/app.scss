@@ -355,10 +355,6 @@ $vert-width: 35px;
     font-size: 13px;
 }
 
-.my-title {
-    margin: 16px 8px 0 8px;
-}
-
 .my-album-grid {
     padding: 14px 4px;
 }
@@ -366,5 +362,42 @@ $vert-width: 35px;
 @media screen and (min-width: 479px) {
     .my-panel {
         margin: 16px;
+    }
+}
+
+.my-title-btn {
+    text-transform: none;
+}
+
+.my-title-grid {
+    padding: 16px 8px 0 8px;
+}
+
+.my-title-text {
+    margin-top: 0;
+}
+
+.my-title-cell--10-col {
+    @media (max-width: 479px) {
+        width: calc(50%);
+    }
+    @media (max-width: 839px) and (min-width: 480px) {
+        width: calc(75%);
+    }
+    @media (min-width: 840px) {
+        width: calc(83.3333333333%);
+    }
+}
+
+.my-title-cell--2-col {
+    text-align: right;
+    @media (max-width: 479px) {
+        width: calc(50%);
+    }
+    @media (max-width: 839px) and (min-width: 480px) {
+        width: calc(25%);
+    }
+    @media (min-width: 840px) {
+        width: calc(16.6666666667%);
     }
 }
