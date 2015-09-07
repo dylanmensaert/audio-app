@@ -13,11 +13,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     }.observes('query'),
     liveQuery: '',
     query: '',
-    /*didScrollToBottom: function() {
-        return function() {
-            this.updateOnlineRecordings(this.get('nextPageToken'));
-        }.bind(this);
-    }.property('nextPageToken'),*/
     suggestions: function () {
         var suggestions = this.get('offlineSuggestions');
 
@@ -115,19 +110,21 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }).create();
     }.property('recordings.[]', 'offlineRecordings.@each.id'),
     // TODO: save state in fileSystem someway
-    getSnippets: function (offlineSnippets, onlineSnippets) {
-        var snippets = this.get(offlineSnippets),
-            id;
+    getSnippets: function (offlineProperty, onlineProperty) {
+        var offlineSnippets = this.get(offlineProperty),
+            snippets = [];
 
-        if (!this.get('searchDownloadedOnly')) {
-            snippets = this.get(onlineSnippets).map(function (recording) {
-                id = recording.get('id');
+        if (this.get('searchDownloadedOnly')) {
+            snippets = offlineSnippets;
+        } else {
+            snippets = this.get(onlineProperty).map(function (snippet) {
+                var id = snippet.get('id');
 
-                if (snippets.isAny('id', id)) {
-                    recording = snippets.findBy('id', id);
+                if (offlineSnippets.isAny('id', id)) {
+                    snippet = offlineSnippets.findBy('id', id);
                 }
 
-                return recording;
+                return snippet;
             });
         }
 
@@ -175,8 +172,10 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
     },
     scheduleUpdateOnlineSnippets: function () {
-        Ember.run.once(this, this.updateOnlineRecordings);
-        Ember.run.once(this, this.updateOnlineAlbums);
+        if (!this.get('searchDownloadedOnly')) {
+            Ember.run.once(this, this.updateOnlineRecordings);
+            Ember.run.once(this, this.updateOnlineAlbums);
+        }
     }.observes('query', 'searchDownloadedOnly').on('init'),
     /*TODO: Implement another way?*/
     updateSelectedRecordings: function () {

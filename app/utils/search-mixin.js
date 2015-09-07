@@ -5,6 +5,7 @@ export default Ember.Mixin.create({
         return this.get('cache.isOffline') || (this.get('cache.isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
     }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
     updateOnlineSnippets: function (findSnippetsPromise, property, pageToken) {
+        // TODO: check if searchDownloadedOnly is implemented correctly everywhere. Because I am using it kinda at random now.
         if (!this.get('searchDownloadedOnly')) {
             this.set('isLoading', true);
 

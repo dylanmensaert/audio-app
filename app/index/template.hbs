@@ -36,71 +36,69 @@
   </header>
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    {{#endless-scroll didScrollToBottom=didScrollToBottom}}
-        {{#if cache.selectedRecordings}}
-            {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
-        {{/if}}
+      {{#if cache.selectedRecordings}}
+          {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
+      {{/if}}
 
-        {{#if showNotFound}}
-          No records found
-        {{/if}}
+      {{#if showNotFound}}
+        No records found
+      {{/if}}
 
-        {{#if recordings}}
-          <div class="my-panel">
-              <div class="mdl-grid my-title-grid">
-                  <div class="my-title-cell--10-col">
-                      <h4 class="my-title-text">
-                          Recordings
-                      </h4>
-                  </div>
+      {{#if recordings}}
+        <div class="my-panel">
+            <div class="mdl-grid my-title-grid">
+                <div class="my-title-cell--10-col">
+                    <h4 class="my-title-text">
+                        Recordings
+                    </h4>
+                </div>
 
-                  <div class="my-title-cell--2-col">
-                      <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
-                          more
-                      </div>
-                  </div>
-              </div>
+                <div class="my-title-cell--2-col">
+                    <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
+                        more
+                    </div>
+                </div>
+            </div>
 
-              <div class="mdl-grid">
-                  {{#each recordings as |recording|}}
-                      {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+            <div class="mdl-grid">
+                {{#each recordings as |recording|}}
+                    {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
 
-                      <div class="my-recording-separator">
-                          <div class="my-recording-line" />
-                      </div>
-                  {{/each}}
-              </div>
-          </div>
-        {{/if}}
+                    <div class="my-recording-separator">
+                        <div class="my-recording-line" />
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+      {{/if}}
 
-        {{#if albums}}
-          <div class="my-panel">
-              <div class="mdl-grid my-title-grid">
-                  <div class="my-title-cell--10-col">
-                      <h4 class="my-title-text">
-                          Albums
-                      </h4>
-                  </div>
+      {{#if albums}}
+        <div class="my-panel">
+            <div class="mdl-grid my-title-grid">
+                <div class="my-title-cell--10-col">
+                    <h4 class="my-title-text">
+                        Albums
+                    </h4>
+                </div>
 
-                  <div class="my-title-cell--2-col">
-                      <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
-                          more
-                      </div>
-                  </div>
-              </div>
+                <div class="my-title-cell--2-col">
+                    <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
+                        more
+                    </div>
+                </div>
+            </div>
 
-              <div class="mdl-grid my-album-grid">
-                  {{#each albums as |album|}}
-                      {{audio-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
-                  {{/each}}
-              </div>
-          </div>
-        {{/if}}
+            <div class="mdl-grid my-album-grid">
+                {{#each albums as |album|}}
+                    {{audio-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
+                {{/each}}
+            </div>
+        </div>
+      {{/if}}
 
-        {{#if isLoading}}
-            {{mdl-component class='mdl-spinner mdl-js-spinner is-active my-loading'}}
-        {{/if}}
-    {{/endless-scroll}}
+      {{#if isLoading}}
+          {{mdl-component class='mdl-spinner mdl-js-spinner is-active my-loading'}}
+      {{/if}}
   </main>
 {{/mdl-layout}}
 
