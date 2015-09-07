@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+// TODO: create snippet object
 export default Ember.Object.extend({
     name: null,
     recordings: [],

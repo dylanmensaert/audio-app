@@ -41,9 +41,9 @@
             {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
 
-        {{#unless hasSnippets}}
+        {{#if showNotFound}}
           No records found
-        {{/unless}}
+        {{/if}}
 
         {{#if recordings}}
           <div class="my-panel">
