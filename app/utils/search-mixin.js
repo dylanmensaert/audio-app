@@ -4,24 +4,15 @@ export default Ember.Mixin.create({
     searchDownloadedOnly: function () {
         return this.get('cache.isOffline') || (this.get('cache.isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
     }.property('cache.isOffline', 'cache.isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
-    updateOnlineSnippets: function (findSnippetsPromise, property, nextPageToken) {
-        var snippets = [],
-            url;
-
+    updateOnlineSnippets: function (findSnippetsPromise, property, pageToken) {
         if (!this.get('searchDownloadedOnly')) {
             this.set('isLoading', true);
 
-            findSnippetsPromise.then(function (snippets) {
-                if (Ember.isEmpty(nextPageToken)) {
+            findSnippetsPromise.then(function (snippets, nextPageToken) {
+                if (Ember.isEmpty(pageToken)) {
                     this.set(property, snippets);
                 } else {
                     this.get(property).pushObjects(snippets);
-                }
-
-                if (Ember.isEmpty(response.nextPageToken)) {
-                    nextPageToken = null;
-                } else {
-                    nextPageToken = response.nextPageToken;
                 }
 
                 this.set('nextPageToken', nextPageToken);
@@ -29,7 +20,7 @@ export default Ember.Mixin.create({
                 this.set('isLoading', false);
             });
         } else {
-            this.set(property, snippets);
+            this.set(property, []);
         }
     }
 });

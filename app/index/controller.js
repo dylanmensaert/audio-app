@@ -1,11 +1,12 @@
 import Ember from 'ember';
+import meta from 'meta-data';
 import Suggestion from 'audio-app/audio-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
-import findMixin from 'audio-app/utils/find-mixin';
+import searchMixin from 'audio-app/utils/search-mixin';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
-export default Ember.Controller.extend(controllerMixin, findMixin, recordingActionsMixin, {
+export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     queryParams: ['query', 'isSearchMode'],
     updateLiveQuery: function () {
         this.set('liveQuery', this.get('query'));

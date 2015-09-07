@@ -1,25 +1,26 @@
+import Ember from 'ember';
 import meta from 'meta-data';
 import Recording from 'audio-app/audio-recording/object';
 import Album from 'audio-app/audio-album/object';
 
 // use function convertImageUrl instead var convertImageUrl = .. Do the same for all variables?.
-var convertImageUrl = function (url) {
+function convertImageUrl(url) {
     return meta.imageHost + new URL(url).pathname;
-};
+}
 
 function buildUrl(endpoint, maxResults, nextPageToken) {
-    var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet' + +'&maxResults=' + maxResults + '&key=' + meta.key;
+    var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet&maxResults=' + maxResults + '&key=' + meta.key;
 
     if (!Ember.isEmpty(nextPageToken)) {
         url += '&pageToken=' + nextPageToken;
     }
 
     return url;
-};
+}
 
 function buildUrlByType(type, maxResults, query, nextPageToken) {
     return this.buildUrl('search', maxResults, nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query;
-};
+}
 
 function find(url, createSnippet) {
     return new Ember.RSVP(function (resolve, reject) {
@@ -33,11 +34,12 @@ function find(url, createSnippet) {
                 return createSnippet(snippet, item);
             });
 
-            resolve(snippets);
+            resolve(snippets, response.nextPageToken);
         }, reject);
     });
-};
+}
 
+// TODO: return different modules so not all dependencies are loaded unnecessarily
 export default {
     isMatch: function (value, query) {
         return query.trim().split(' ').every(function (queryPart) {
@@ -57,7 +59,7 @@ export default {
             return Recording.create(snippet);
         };
 
-        return this.find(url, createSnippet);
+        return find(url, createSnippet);
     },
     findRecordings: function (maxResults, query, nextPageToken, fileSystem) {
         var url = buildUrlByType('video', maxResults, query, nextPageToken),
@@ -72,7 +74,7 @@ export default {
             return Recording.create(snippet);
         };
 
-        return this.find(url, createSnippet);
+        return find(url, createSnippet);
     },
     findAlbums: function (maxResults, query, nextPageToken, fileSystem) {
         var url = buildUrlByType('playlist', maxResults, query, nextPageToken),
@@ -86,6 +88,6 @@ export default {
             return Album.create(snippet);
         };
 
-        return this.find(url, createSnippet);
+        return find(url, createSnippet);
     }
 };
