@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
                 this.set('nextPageToken', nextPageToken);
 
                 this.set('isLoading', false);
-            });
+            }.bind(this));
         } else {
             this.set(property, []);
         }

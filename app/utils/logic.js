@@ -19,11 +19,11 @@ function buildUrl(endpoint, maxResults, nextPageToken) {
 }
 
 function buildUrlByType(type, maxResults, query, nextPageToken) {
-    return this.buildUrl('search', maxResults, nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query;
+    return buildUrl('search', maxResults, nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query;
 }
 
 function find(url, createSnippet) {
-    return new Ember.RSVP(function (resolve, reject) {
+    return new Ember.RSVP.Promise(function (resolve, reject) {
         Ember.$.getJSON(url).then(function (response) {
             var snippets = response.items.map(function (item) {
                 var snippet = {

@@ -164,13 +164,13 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     isLoading: false,
     onlineAlbums: [],
     updateOnlineAlbums: function (nextPageToken) {
-        var findAlbumsPromise = logic.findAlbums(5, this.get('query'), nextPageToken);
+        var findAlbumsPromise = logic.findAlbums(5, this.get('query'), nextPageToken, this.get('fileSystem'));
 
         this.updateOnlineSnippets(findAlbumsPromise, 'onlineAlbums', nextPageToken);
     },
     onlineRecordings: [],
     updateOnlineRecordings: function (nextPageToken) {
-        var findRecordingsPromise = logic.findRecordings(5, this.get('query'), nextPageToken);
+        var findRecordingsPromise = logic.findRecordings(5, this.get('query'), nextPageToken, this.get('fileSystem'));
 
         this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
     },
