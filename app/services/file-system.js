@@ -26,7 +26,7 @@ write = function () {
     });
 };
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
     init: function () {
         this._super();
 
