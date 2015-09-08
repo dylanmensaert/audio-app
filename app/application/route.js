@@ -8,6 +8,9 @@ var generateRandom = function (min, max) {
 };
 
 export default Ember.Route.extend(updateTitle, {
+    audioPlayer: Ember.inject.service(),
+    fileSystem: Ember.inject.service(),
+    cache: Ember.inject.service(),
     title: 'audio',
     previous: function () {
         var queue,

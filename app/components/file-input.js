@@ -11,6 +11,7 @@ var split = function (fileName) {
 };
 
 export default Ember.TextField.extend({
+    fileSystem: Ember.inject.service(),
     attributeBindings: ['type', 'multiple', 'accept', 'title'],
     title: ' ',
     type: 'file',

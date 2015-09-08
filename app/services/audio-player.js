@@ -8,41 +8,41 @@ export default Ember.Object.extend({
     buffered: null,
     status: null,
     didEnd: null,
-    isLoading: function() {
+    isLoading: function () {
         return this.get('status') === 'loading';
     }.property('status'),
-    isPlaying: function() {
+    isPlaying: function () {
         return this.get('status') === 'playing';
     }.property('status'),
-    isIdle: function() {
+    isIdle: function () {
         return this.get('status') === 'idle';
     }.property('status'),
-    setCurrentTime: function(currentTime) {
+    setCurrentTime: function (currentTime) {
         this.get('element').currentTime = currentTime;
     },
-    play: function(recording) {
+    play: function (recording) {
         var element = this.get('element');
 
         if (Ember.isEmpty(recording)) {
             element.play();
         } else {
-            this.load(recording).then(function() {
+            this.load(recording).then(function () {
                 element.play();
             });
         }
     },
-    pause: function() {
+    pause: function () {
         this.get('element').pause();
     },
-    load: function(recording) {
+    load: function (recording) {
         var audio = recording.get('audio');
 
         this.set('status', 'loading');
         this.set('recording', recording);
 
-        return new Ember.RSVP.Promise(function(resolve) {
+        return new Ember.RSVP.Promise(function (resolve) {
             if (Ember.isEmpty(audio)) {
-                recording.fetchDownload().then(function(url) {
+                recording.fetchDownload().then(function (url) {
                     this.loadSource(url);
 
                     resolve();
@@ -54,7 +54,7 @@ export default Ember.Object.extend({
             }
         }.bind(this));
     },
-    loadSource: function(source) {
+    loadSource: function (source) {
         var element = this.get('element');
 
         if (!Ember.isEmpty(element)) {

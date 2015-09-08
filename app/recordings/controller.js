@@ -5,6 +5,8 @@ import searchMixin from 'audio-app/utils/search-mixin';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
+    fileSystem: Ember.inject.service(),
+    cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
     showNotFound: function () {

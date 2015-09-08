@@ -4,6 +4,8 @@ import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 
 export default Ember.Controller.extend(controllerMixin, {
+    fileSystem: Ember.inject.service(),
+    cache: Ember.inject.service(),
     fetchSuggestions: function () {
         return function (query, callback) {
             var suggestions = [],

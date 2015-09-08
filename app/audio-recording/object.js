@@ -26,6 +26,7 @@ pluralizations = {
 };
 
 export default Snippet.extend({
+    fileSystem: Ember.inject.service(),
     extension: null,
     audio: null,
     status: null,

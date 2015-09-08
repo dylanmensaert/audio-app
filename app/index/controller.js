@@ -7,6 +7,8 @@ import searchMixin from 'audio-app/utils/search-mixin';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
+    fileSystem: Ember.inject.service(),
+    cache: Ember.inject.service(),
     queryParams: ['query', 'isSearchMode'],
     updateLiveQuery: function () {
         this.set('liveQuery', this.get('query'));
@@ -240,6 +242,20 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
+        },
+        transitionToRecordings: function () {
+            this.transitionToRoute('recordings', null, {
+                queryParams: {
+                    query: this.get('query')
+                }
+            });
+        },
+        transitionToAlbums: function () {
+            this.transitionToRoute('albums', null, {
+                queryParams: {
+                    query: this.get('query')
+                }
+            });
         }
     }
 });
