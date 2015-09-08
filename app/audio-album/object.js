@@ -1,6 +1,6 @@
 import Snippet from 'audio-app/utils/snippet';
 
-export default Snippet.Object.extend({
+export default Snippet.extend({
     recordingIds: [],
     permission: null,
     isReadOnly: function () {

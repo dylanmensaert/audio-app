@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import meta from 'meta-data';
-import Suggestion from 'audio-app/audio-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/utils/controller-mixin';
 import searchMixin from 'audio-app/utils/search-mixin';
@@ -46,14 +44,14 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
             if (album.get('isSelected')) {
                 if (!Ember.isEmpty(this.get('nextPageToken'))) {
-                    findAllRecordingsByAlbum(id, this.get('recordings'), this.get('nextPageToken'));
+                    this.findAllRecordingsByAlbum(album.get('id'), this.get('recordings'), this.get('nextPageToken'));
                 }
 
                 album.get('recordingIds').clear();
 
                 this.get('fileSystem.albums').pushObject(album);
 
-                downloadAllRecordings(this.get('album'), 0);
+                this.downloadAllRecordings(this.get('album'), 0);
             } else {
                 // TODO: super references recordingActionsMixin. Should I use this method since not really OOP
                 this._super();
@@ -76,7 +74,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
                 if (!recording.get('isDownloaded')) {
                     recording.download().then(function () {
-                        downloadAllRecordings(album, index + 1)
+                        this.downloadAllRecordings(album, index + 1);
                     });
                 }
 
@@ -91,7 +89,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 recordings.pushObjects(snippets);
 
                 if (!Ember.isEmpty(nextPageToken)) {
-                    findAllRecordingsByAlbum(id, recordings, nextPageToken);
+                    this.findAllRecordingsByAlbum(id, recordings, nextPageToken);
                 }
             });
         }
