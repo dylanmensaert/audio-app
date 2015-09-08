@@ -3,7 +3,7 @@ import MdlComponent from 'audio-app/components/mdl-component';
 export default MdlComponent.extend({
     tagName: 'input',
     classNames: ['mdl-slider', 'mdl-js-slider'],
-    attributesBindings: ['type', 'min', 'max', 'value'],
+    attributeBindings: ['type', 'min', 'max', 'value'],
     type: 'range',
     min: 0,
     max: 0,
