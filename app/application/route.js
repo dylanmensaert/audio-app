@@ -3,20 +3,20 @@ import Ember from 'ember';
 import Slider from 'audio-app/audio-slider/object';
 import updateTitle from 'audio-app/utils/update-title';
 
-var generateRandom = function(min, max) {
+var generateRandom = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 export default Ember.Route.extend(updateTitle, {
     title: 'audio',
-    previous: function() {
+    previous: function () {
         var queue,
             currentIndex,
             previousIndex,
             recordingId,
             previousRecording;
 
-        queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings');
+        queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds');
         currentIndex = queue.indexOf(this.get('audioPlayer.recording.id'));
 
         if (currentIndex > 0) {
@@ -30,13 +30,13 @@ export default Ember.Route.extend(updateTitle, {
 
         this.play(previousRecording);
     },
-    next: function() {
-        var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings'),
+    next: function () {
+        var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
             recordingId,
             nextRecording,
             unplayedRecordingIds;
 
-        unplayedRecordingIds = queue.filter(function(recordingId) {
+        unplayedRecordingIds = queue.filter(function (recordingId) {
             return !this.get('cache.playedRecordingIds').contains(recordingId);
         }.bind(this));
 
@@ -54,7 +54,7 @@ export default Ember.Route.extend(updateTitle, {
 
         this.play(nextRecording);
     },
-    play: function(recording) {
+    play: function (recording) {
         var fileSystem = this.get('fileSystem'),
             offlineRecordings = fileSystem.get('recordings'),
             audioPlayer = this.get('audioPlayer'),
@@ -65,8 +65,8 @@ export default Ember.Route.extend(updateTitle, {
 
         if (!Ember.isEmpty(recording)) {
             id = recording.get('id');
-            history = fileSystem.get('albums').findBy('name', 'History').get('recordings');
-            queue = fileSystem.get('albums').findBy('name', 'Queue').get('recordings');
+            history = fileSystem.get('albums').findBy('name', 'History').get('recordingIds');
+            queue = fileSystem.get('albums').findBy('name', 'Queue').get('recordingIds');
             playedRecordingIds = this.get('cache.playedRecordingIds');
 
             if (!offlineRecordings.isAny('id', id)) {
@@ -99,14 +99,14 @@ export default Ember.Route.extend(updateTitle, {
         }
 
         if (!Ember.isEmpty(recording) && fileSystem.get('setDownloadBeforePlaying') && !recording.get('isDownloaded')) {
-            recording.download().then(function() {
+            recording.download().then(function () {
                 audioPlayer.play(recording);
             });
         } else {
             audioPlayer.play(recording);
         }
     },
-    downloadRecordings: function() {
+    downloadRecordings: function () {
         var fileSystem = this.get('fileSystem'),
             cache = this.get('cache'),
             recordings;
@@ -119,61 +119,61 @@ export default Ember.Route.extend(updateTitle, {
                 cache.showMessage('Downloading download-later');
 
                 // TODO: Handle multiple 'observe' calls before download finishes
-                recordings.forEach(function(recording) {
+                recordings.forEach(function (recording) {
                     recording.download();
                 });
             }
         }
     }.observes('fileSystem.setDownloadLaterOnMobile', 'cache.isMobileConnection', 'recordings.@each.isDownloadLater'),
     actions: {
-        loading: function() {
+        loading: function () {
             if (this.get('controller')) {
                 this.set('controller.isLoading', true);
 
-                this.router.one('didTransition', function() {
+                this.router.one('didTransition', function () {
                     this.set('controller.isLoading', false);
                 }.bind(this));
             }
         },
-        error: function(error) {
+        error: function (error) {
             if (this.get('controller')) {
                 this.set('controller.error', error);
             }
         },
-        updateTitle: function(tokens) {
+        updateTitle: function (tokens) {
             this._super(tokens);
 
             tokens.reverse();
             document.title = tokens.join(' - ');
         },
-        play: function(recording) {
+        play: function (recording) {
             this.play(recording);
         },
-        pause: function() {
+        pause: function () {
             this.get('audioPlayer').pause();
         },
-        previous: function() {
+        previous: function () {
             this.previous();
         },
-        next: function() {
+        next: function () {
             this.next();
         },
-        didTransition: function() {
+        didTransition: function () {
             var audioPlayer = this.get('audioPlayer'),
                 cache = this.get('cache'),
                 slider;
 
             slider = Slider.create({
-                onSlideStop: function(value) {
+                onSlideStop: function (value) {
                     audioPlayer.setCurrentTime(value);
                 }
             });
 
-            audioPlayer.addObserver('currentTime', audioPlayer, function() {
+            audioPlayer.addObserver('currentTime', audioPlayer, function () {
                 slider.setValue(this.get('currentTime'));
             });
 
-            audioPlayer.addObserver('duration', audioPlayer, function() {
+            audioPlayer.addObserver('duration', audioPlayer, function () {
                 slider.set('max', this.get('duration'));
             });
 
@@ -181,7 +181,7 @@ export default Ember.Route.extend(updateTitle, {
 
             audioPlayer.set('didEnd', this.next.bind(this));
 
-            this.set('fileSystem.didParseJSON', function() {
+            this.set('fileSystem.didParseJSON', function () {
                 var recording = this.get('recordings').findBy('id', this.get('playingRecordingId'));
 
                 if (!Ember.isEmpty(recording)) {
@@ -189,7 +189,7 @@ export default Ember.Route.extend(updateTitle, {
                 }
             });
         },
-        transitionToQueue: function() {
+        transitionToQueue: function () {
             this.get('fileSystem.recordings').setEach('isSelected', false);
 
             this.transitionToRoute('queue.index');

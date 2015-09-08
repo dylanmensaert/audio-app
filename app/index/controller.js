@@ -202,14 +202,14 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                         cache.showMessage('download aborted');
                     });
                 } else {
-                    this.get('fileSystem.albums').findBy('name', 'Download later').get('recordings').pushObject(recording.get('id'));
+                    this.get('fileSystem.albums').findBy('name', 'Download later').get('recordingIds').pushObject(recording.get('id'));
                 }
             } else {
                 cache.showMessage('already downloaded');
             }
         },
         pushToQueue: function (recording) {
-            var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordings'),
+            var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
                 cache = this.get('cache');
 
             if (!queue.contains(recording.get('id'))) {

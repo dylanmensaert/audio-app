@@ -3,13 +3,14 @@ import config from './config/environment';
 
 var Router = Ember.Router.extend({
     location: config.locationType,
-    updateTitle: function() {
+    updateTitle: function () {
         this.send('updateTitle', []);
     }.on('didTransition')
 });
 
-Router.map(function() {
+Router.map(function () {
     this.resource('albums');
+    this.resource('album');
 
     this.resource('settings');
 });

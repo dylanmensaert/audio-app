@@ -1,9 +1,7 @@
-import Ember from 'ember';
+import Snippet from 'audio-app/utils/snippet';
 
-// TODO: create snippet object
-export default Ember.Object.extend({
-    name: null,
-    recordings: [],
+export default Snippet.Object.extend({
+    recordingIds: [],
     permission: null,
     isReadOnly: function () {
         return this.get('permission') === 'read-only';
@@ -11,8 +9,11 @@ export default Ember.Object.extend({
     isPushOnly: function () {
         return this.get('permission') === 'push-only';
     }.property('permission'),
-    isSelected: false,
-    strip: function () {
-        return this.getProperties('name', 'recordings', 'permission');
+    getPropertyNamesToSave: function () {
+        var propertyNames = this._super();
+
+        propertyNames.pushObjects(['recordingIds', 'permission']);
+
+        return propertyNames;
     }
 });

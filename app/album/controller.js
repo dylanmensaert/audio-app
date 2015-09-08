@@ -42,30 +42,58 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         },
         download: function () {
             // TODO: implement if album selected
-            /*var album = this.get('album');
+            var album = this.get('album');
 
             if (album.get('isSelected')) {
                 if (!Ember.isEmpty(this.get('nextPageToken'))) {
-                    logic.findRecordingsByAlbum(album.get('id'), this.get('nextPageToken'), this.get('fileSystem')).then(function (snippets,
-                        nextPageToken) {
-                        album.get('recordings').pushObjects(snippets);
+                    findAllRecordingsByAlbum(id, this.get('recordings'), this.get('nextPageToken'));
+                }
 
-                        if (Ember.isEmpty(pageToken)) {
-                            this.set(property, snippets);
-                        } else {
-                            this.get(property).pushObjects(snippets);
-                        }
+                album.get('recordingIds').clear();
 
-                        this.set('nextPageToken', nextPageToken);
+                this.get('fileSystem.albums').pushObject(album);
 
-                        this.get(property).pushObjects(snippets);
+                downloadAllRecordings(this.get('album'), 0);
+            } else {
+                // TODO: super references recordingActionsMixin. Should I use this method since not really OOP
+                this._super();
+            }
+        },
+        downloadAllRecordings: function (album, index) {
+            // TODO: this will be undefined when switching routes while downloading
+            var recordings = this.get('recordings'),
+                recording = recordings.objectAt(index),
+                id,
+                offlineRecording;
+
+            if (!Ember.isEmpty(recording)) {
+                id = recording.get('id');
+                offlineRecording = this.get('fileSystem.recordings').findBy('id', id);
+
+                if (!Ember.isEmpty(offlineRecording)) {
+                    recording = offlineRecording;
+                }
+
+                if (!recording.get('isDownloaded')) {
+                    recording.download().then(function () {
+                        downloadAllRecordings(album, index + 1)
                     });
                 }
 
-            } else {*/
-            // TODO: super references recordingActionsMixin. Should I use this method since not really OOP
-            this._super();
-            /*}*/
+                if (!album.get('recordingIds').contains(id)) {
+                    album.get('recordingIds').pushObject(id);
+                }
+            }
+        },
+        findAllRecordingsByAlbum: function (id, recordings, pageToken) {
+            logic.findRecordingsByAlbum(id, pageToken, this.get('fileSystem')).then(function (snippets,
+                nextPageToken) {
+                recordings.pushObjects(snippets);
+
+                if (!Ember.isEmpty(nextPageToken)) {
+                    findAllRecordingsByAlbum(id, recordings, nextPageToken);
+                }
+            });
         }
     }
 });
