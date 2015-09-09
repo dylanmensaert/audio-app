@@ -96,10 +96,8 @@
         </div>
       {{/if}}
 
-      {{#if isLoading}}
-          {{mdl-component class='mdl-spinner mdl-js-spinner is-active my-loading'}}
-      {{/if}}
+          {{mdl-component class='mdl-spinner mdl-js-spinner is-active'}}
   </main>
-{{/mdl-layout}}
 
-{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+  {{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{/mdl-layout}}

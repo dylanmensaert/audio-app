@@ -8,9 +8,15 @@ $menu-height: 45px;
 $vert-width: 35px;
 .bar {
     position: fixed;
-    width: 100%;
+    @media screen and (min-width: 1024px) {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+    }
+    @media screen and (max-width: 1024px) {
+        width: 100%;
+    }
     /* TODO: z-index needed? */
-    z-index: 3;
+    /* z-index: 3; */
 }
 
 .message-bar {
@@ -73,7 +79,9 @@ $vert-width: 35px;
 
 .audio-name,
 .audio-icon {
-    line-height: $audio-height;
+    display: table-cell;
+    vertical-align: middle;
+    height: $audio-height - 16px;
 }
 
 .audio-name {
@@ -84,7 +92,6 @@ $vert-width: 35px;
 }
 
 .audio-icon {
-    padding: 0;
     font-size: 24px;
 }
 
@@ -188,10 +195,6 @@ $vert-width: 35px;
 .inner-btn-group {
     margin: 0;
     height: $menu-height;
-}
-
-.audio-name-outer {
-    padding-right: 0;
 }
 
 .text-active {
@@ -346,6 +349,7 @@ $vert-width: 35px;
 }
 
 .my-loading {
+    position: fixed;
     margin: 40% auto;
     display: block;
 }

@@ -9,6 +9,7 @@ import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),
+    audioPlayer: Ember.inject.service(),
     queryParams: ['query', 'isSearchMode'],
     updateLiveQuery: function () {
         this.set('liveQuery', this.get('query'));
