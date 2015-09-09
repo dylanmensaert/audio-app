@@ -41,7 +41,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             this.transitionToRoute(this.get('returnRoute'));
         },
         download: function () {
-            // TODO: implement if album selected
             var album = this.get('album');
 
             if (album.get('isSelected')) {
