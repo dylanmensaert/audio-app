@@ -1,13 +1,13 @@
 /* global document: true */
 import Ember from 'ember';
 import Slider from 'audio-app/audio-slider/object';
-import updateTitle from 'audio-app/utils/update-title';
+import updateTitleMixin from 'audio-app/mixins/update-title';
 
 var generateRandom = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export default Ember.Route.extend(updateTitle, {
+export default Ember.Route.extend(updateTitleMixin, {
     audioPlayer: Ember.inject.service(),
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),

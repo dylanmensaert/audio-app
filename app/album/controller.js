@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
-import controllerMixin from 'audio-app/utils/controller-mixin';
-import searchMixin from 'audio-app/utils/search-mixin';
+import controllerMixin from 'audio-app/mixins/controller';
+import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
@@ -28,7 +28,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         var findRecordingsPromise;
 
         if (!this.get('searchDownloadedOnly')) {
-            findRecordingsPromise = logic.findRecordingsByAlbum(this.get('album.id'), nextPageToken, this.get('fileSystem'));
+            findRecordingsPromise = logic.findRecordingsByAlbum(this.get('album.id'), nextPageToken);
 
             this.updateOnlineSnippets(findRecordingsPromise, 'album.onlineRecordings', nextPageToken);
         }
@@ -85,7 +85,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             }
         },
         findAllRecordingsByAlbum: function (id, recordings, pageToken) {
-            logic.findRecordingsByAlbum(id, pageToken, this.get('fileSystem')).then(function (snippets,
+            logic.findRecordingsByAlbum(id, pageToken).then(function (snippets,
                 nextPageToken) {
                 recordings.pushObjects(snippets);
 

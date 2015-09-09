@@ -9,6 +9,8 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
+    this.resource('recordings');
+
     this.resource('albums');
     this.resource('album');
 

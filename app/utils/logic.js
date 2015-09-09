@@ -46,44 +46,38 @@ export default {
             return value.toLowerCase().includes(queryPart.toLowerCase());
         });
     },
-    findRecordingsByAlbum: function (playlistId, nextPageToken, fileSystem) {
+    findRecordingsByAlbum: function (playlistId, nextPageToken) {
         var url = buildUrl('playlistItems', 50, nextPageToken) + '&playlistId=' + playlistId,
             createSnippet;
 
         createSnippet = function (snippet, item) {
             snippet.id = item.snippet.resourceId.videoId;
             snippet.extension = 'mp3';
-            // TODO: Remove if possible
-            snippet.fileSystem = fileSystem;
 
             return Recording.create(snippet);
         };
 
         return find(url, createSnippet);
     },
-    findRecordings: function (maxResults, query, nextPageToken, fileSystem) {
+    findRecordings: function (maxResults, query, nextPageToken) {
         var url = buildUrlByType('video', maxResults, query, nextPageToken),
             createSnippet;
 
         createSnippet = function (snippet, item) {
             snippet.id = item.id.videoId;
             snippet.extension = 'mp3';
-            // TODO: Remove if possible
-            snippet.fileSystem = fileSystem;
 
             return Recording.create(snippet);
         };
 
         return find(url, createSnippet);
     },
-    findAlbums: function (maxResults, query, nextPageToken, fileSystem) {
+    findAlbums: function (maxResults, query, nextPageToken) {
         var url = buildUrlByType('playlist', maxResults, query, nextPageToken),
             createSnippet;
 
         createSnippet = function (snippet, item) {
             snippet.id = item.id.playlistId;
-            // TODO: Remove if possible
-            snippet.fileSystem = fileSystem;
 
             return Album.create(snippet);
         };

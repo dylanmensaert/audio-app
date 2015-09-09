@@ -3,7 +3,6 @@
 import Ember from 'ember';
 import meta from 'meta-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
-import Snippet from 'audio-app/utils/snippet';
 
 var signateUrl,
     extractExtension,
@@ -25,7 +24,8 @@ pluralizations = {
     thumbnail: 'thumbnails'
 };
 
-export default Snippet.extend({
+// TODO: Implement correctly
+export default App.container.lookup('snippet:main').extend({
     fileSystem: Ember.inject.service(),
     extension: null,
     audio: null,

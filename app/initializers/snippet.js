@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
-// injection reference: http://discuss.emberjs.com/t/dependency-injection-into-ember-object/5997
-export default Ember.Object.extend({
+var Snippet = Ember.Object.extend({
     fileSystem: Ember.inject.service(),
     id: null,
     name: null,
@@ -15,3 +14,13 @@ export default Ember.Object.extend({
         return this.getProperties(this.getPropertyNamesToSave());
     }
 });
+
+export default {
+    name: 'snippet',
+    initialize: function (registry, application) {
+        application.register("snippet:main", Snippet, {
+            singleton: false,
+            instantiate: false
+        });
+    }
+};

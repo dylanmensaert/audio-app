@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
-import controllerMixin from 'audio-app/utils/controller-mixin';
-import searchMixin from 'audio-app/utils/search-mixin';
+import controllerMixin from 'audio-app/mixins/controller';
+import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
@@ -9,6 +9,11 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
+    didScrollToBottom: function () {
+        return function () {
+            this.updateOnlineRecordings(this.get('nextPageToken'));
+        }.bind(this);
+    }.property('nextPageToken'),
     showNotFound: function () {
         return !this.get('isLoading') && !this.get('recordings.length');
     }.property('isLoading', 'recordings'),
@@ -58,7 +63,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     isLoading: false,
     onlineRecordings: [],
     updateOnlineRecordings: function (nextPageToken) {
-        var findRecordingsPromise = logic.findRecordings(5, this.get('query'), nextPageToken, this.get('fileSystem'));
+        var findRecordingsPromise = logic.findRecordings(50, this.get('query'), nextPageToken);
 
         this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
     },

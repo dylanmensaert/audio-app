@@ -2,8 +2,8 @@ import Ember from 'ember';
 import meta from 'meta-data';
 import Suggestion from 'audio-app/audio-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
-import controllerMixin from 'audio-app/utils/controller-mixin';
-import searchMixin from 'audio-app/utils/search-mixin';
+import controllerMixin from 'audio-app/mixins/controller';
+import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
@@ -164,13 +164,13 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     isLoading: false,
     onlineAlbums: [],
     updateOnlineAlbums: function (nextPageToken) {
-        var findAlbumsPromise = logic.findAlbums(5, this.get('query'), nextPageToken, this.get('fileSystem'));
+        var findAlbumsPromise = logic.findAlbums(4, this.get('query'), nextPageToken);
 
         this.updateOnlineSnippets(findAlbumsPromise, 'onlineAlbums', nextPageToken);
     },
     onlineRecordings: [],
     updateOnlineRecordings: function (nextPageToken) {
-        var findRecordingsPromise = logic.findRecordings(5, this.get('query'), nextPageToken, this.get('fileSystem'));
+        var findRecordingsPromise = logic.findRecordings(4, this.get('query'), nextPageToken);
 
         this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
     },
@@ -243,20 +243,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
-        },
-        transitionToRecordings: function () {
-            this.transitionToRoute('recordings', null, {
-                queryParams: {
-                    query: this.get('query')
-                }
-            });
-        },
-        transitionToAlbums: function () {
-            this.transitionToRoute('albums', null, {
-                queryParams: {
-                    query: this.get('query')
-                }
-            });
         }
     }
 });

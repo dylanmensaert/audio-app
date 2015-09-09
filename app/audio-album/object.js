@@ -1,6 +1,5 @@
-import Snippet from 'audio-app/utils/snippet';
-
-export default Snippet.extend({
+// TODO: Implement correctly
+export default App.container.lookup('snippet:main').extend({
     recordingIds: [],
     permission: null,
     isReadOnly: function () {
