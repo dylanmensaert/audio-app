@@ -66,7 +66,7 @@ $vert-width: 35px;
 
 .audio-slider {
     @extend .bar;
-    z-index: 4;
+    z-index: 1;
     bottom: $audio-height - 15px;
 }
 
@@ -404,4 +404,8 @@ $vert-width: 35px;
     @media (min-width: 840px) {
         width: calc(16.6666666667%);
     }
+}
+
+.my-slider {
+    margin: 0;
 }

@@ -96,7 +96,9 @@
         </div>
       {{/if}}
 
+      {{#if isLoading}}
           {{mdl-component class='mdl-spinner mdl-js-spinner is-active'}}
+      {{/if}}
   </main>
 
   {{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

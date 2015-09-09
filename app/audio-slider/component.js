@@ -2,7 +2,7 @@ import MdlComponent from 'audio-app/components/mdl-component';
 
 export default MdlComponent.extend({
     tagName: 'input',
-    classNames: ['mdl-slider', 'mdl-js-slider'],
+    classNames: ['mdl-slider', 'mdl-js-slider', 'my-slider'],
     attributeBindings: ['type', 'min', 'max', 'value'],
     type: 'range',
     min: 0,
@@ -26,6 +26,8 @@ export default MdlComponent.extend({
         }.bind(this));
 
         this.set('slider.component', this);
+
+        this._super();
     },
     willDestroyElement: function () {
         var element = this.$();
