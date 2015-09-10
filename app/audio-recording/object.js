@@ -25,7 +25,7 @@ pluralizations = {
 };
 
 // TODO: Implement correctly
-export default application.container.lookup('snippet:main').extend({
+export default application.__container__.lookup('snippet:main').extend({
     fileSystem: Ember.inject.service(),
     extension: null,
     audio: null,
