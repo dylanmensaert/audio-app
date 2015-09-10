@@ -1,3 +1,4 @@
+/* global window: true */
 import Ember from 'ember';
 
 var Snippet = Ember.Object.extend({
@@ -5,7 +6,6 @@ var Snippet = Ember.Object.extend({
     id: null,
     name: null,
     thumbnail: null,
-    fileSystem: null,
     isSelected: false,
     getPropertyNamesToSave: function () {
         return ['id', 'name'];
@@ -18,6 +18,9 @@ var Snippet = Ember.Object.extend({
 export default {
     name: 'snippet',
     initialize: function (registry, application) {
+        // TODO: needed to lookup from container for now: http://stackoverflow.com/questions/32488957/how-to-access-app-container-in-ember-cli
+        window.application = application;
+
         application.register("snippet:main", Snippet, {
             singleton: false,
             instantiate: false

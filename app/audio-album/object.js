@@ -1,5 +1,7 @@
+/* global application: true */
+
 // TODO: Implement correctly
-export default App.container.lookup('snippet:main').extend({
+export default application.container.lookup('snippet:main').extend({
     recordingIds: [],
     permission: null,
     isReadOnly: function () {

@@ -1,4 +1,4 @@
-/* global escape */
+/* global escape, application */
 
 import Ember from 'ember';
 import meta from 'meta-data';
@@ -25,7 +25,7 @@ pluralizations = {
 };
 
 // TODO: Implement correctly
-export default App.container.lookup('snippet:main').extend({
+export default application.container.lookup('snippet:main').extend({
     fileSystem: Ember.inject.service(),
     extension: null,
     audio: null,
