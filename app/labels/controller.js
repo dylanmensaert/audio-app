@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Album from 'audio-app/audio-album/object';
+import Album from 'audio-app/album/object';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/mixins/controller';
 

@@ -1,5 +1,5 @@
-{{#mdl-layout}}
-  {{menu-bar title='Settings'}}
+{{#c-mdl-layout}}
+  {{c-menu-bar title='Settings'}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid">
@@ -33,10 +33,10 @@
         </i>
 
         Import audio
-        {{file-input}}
+        {{c-file-input}}
       </button>
     </div>
   </main>
-{{/mdl-layout}}
+{{/c-mdl-layout}}
 
-{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

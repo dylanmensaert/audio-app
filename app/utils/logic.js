@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import meta from 'meta-data';
-import Recording from 'audio-app/audio-recording/object';
-import Album from 'audio-app/audio-album/object';
+import Recording from 'audio-app/recording/object';
+import Album from 'audio-app/album/object';
 
 // use function convertImageUrl instead var convertImageUrl = .. Do the same for all variables?.
 function convertImageUrl(url) {

@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import MdlComponent from 'audio-app/components/mdl-component';
+import ComponentMdl from 'audio-app/components/c-mdl';
 
-export default MdlComponent.extend({
+export default ComponentMdl.extend({
     classNames: ['mdl-layout', 'mdl-js-layout', 'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header'],
     didInsertElement: function () {
         Ember.$(window).resize(function () {

@@ -1,6 +1,6 @@
-import MdlComponent from 'audio-app/components/mdl-component';
+import ComponentMdl from 'audio-app/components/c-mdl';
 
-export default MdlComponent.extend({
+export default ComponentMdl.extend({
     tagName: 'input',
     classNames: ['mdl-slider', 'mdl-js-slider', 'my-slider'],
     attributeBindings: ['type', 'min', 'max', 'value'],

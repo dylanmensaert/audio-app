@@ -1,11 +1,14 @@
 import Ember from 'ember';
 
-// TODO: duplication with audio-album/component
+// TODO: duplication with audio-recording/component
 export default Ember.Component.extend({
-    layoutName: 'audio_recording',
+    // TODO: add placeholder left and right to row of cells that can help fix cell width layout
+    classNames: ['mdl-cell', 'mdl-cell--2-col-phone', 'mdl-cell--2-col-tablet', 'mdl-cell--3-col-desktop', 'my-card-cell'],
     classNameBindings: ['model.isSelected:active'],
     model: null,
     showQueued: false,
+    // TODO: transition via another way?
+    transitionToRoute: null,
     didInsertElement: function () {
         var outerImage = this.$('.outer-image'),
             innerImage = this.$('.inner-image');
@@ -27,12 +30,15 @@ export default Ember.Component.extend({
         this.$().off('swipeleft');
         this.$().off('swiperight');
     },
+    hasStatus: function () {
+        return this.get('model.isPlaying') || this.get('showQueued') || this.get('model.isDownloading') || this.get('model.isDownloaded');
+    }.property('model.isPlaying', 'showQueued', 'model.isDownloading', 'model.isDownloaded'),
     actions: {
         toggleSelection: function () {
             this.get('model').toggleProperty('isSelected');
         },
         click: function () {
-            this.sendAction('action', this.get('model'));
+            this.transitionToRoute('album', this.get('model'));
         }
     }
 });

@@ -1,8 +1,8 @@
-{{#mdl-layout}}
-  {{menu-bar title='Albums' selectAll=selectAll}}
+{{#c-mdl-layout}}
+  {{c-menu-bar title='Albums' selectAll=selectAll}}
 
   {{#if cache.selectedRecordings}}
-      {{#action-bar models=cache.selectedRecordings}}
+      {{#c-action-bar models=cache.selectedRecordings}}
           <div class="col-xs-2 outer-label">
               {{#link-to 'index' tagName='div' class='inner-label'}}
                   <i class="mdi-navigation-arrow-back"></i>
@@ -12,10 +12,10 @@
           <div class="col-xs-6">
               &nbsp;
           </div>
-      {{/action-bar}}
+      {{/c-action-bar}}
   {{else}}
       {{#if selected}}
-          {{#action-bar models=selected deselect='exitEdit'}}
+          {{#c-action-bar models=selected deselect='exitEdit'}}
               <div class="col-xs-2">
                   &nbsp;
               </div>
@@ -51,11 +51,11 @@
                       <i class="mdi-action-delete"></i>
                   </div>
               </div>
-          {{/action-bar}}
+          {{/c-action-bar}}
       {{/if}}
   {{/if}}
 
-  {{suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
+  {{c-suggest-input-group liveQuery=liveQuery editLabel=editLabel fetchSuggestions=fetchSuggestions isEditMode=isEditMode saveEdit='saveEdit' search='search'}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid">
@@ -67,11 +67,11 @@
 
       <div class="container">
           {{#each sortedAlbums as |album|}}
-              {{audio-album model=album action='toggle'}}
+              {{c-album model=album action='toggle'}}
           {{/each}}
       </div>
     </div>
   </main>
-{{/mdl-layout}}
+{{/c-mdl-layout}}
 
-{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

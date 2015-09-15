@@ -2,7 +2,7 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/mixins/controller';
 import searchMixin from 'audio-app/mixins/search';
-import recordingActionsMixin from 'audio-app/audio-recording/actions-mixin';
+import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     fileSystem: Ember.inject.service(),

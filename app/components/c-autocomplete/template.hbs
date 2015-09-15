@@ -1,0 +1,13 @@
+{{c-mdl-input value=(mut liveQuery) insert-newline='searchSelected' didFocusOut='didFocusOut'}}
+
+<label class="mdl-textfield__label"></label>
+
+{{#if showAutoComplete}}
+  <div class="autocomplete">
+    {{#each suggestions as |suggestion|}}
+      {{#c-mdl action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect suggestion' classNameBindings='suggestion.isSelected:active'}}
+        {{suggestion.value}}
+      {{/c-mdl}}
+    {{/each}}
+  </div>
+{{/if}}

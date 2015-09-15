@@ -1,5 +1,5 @@
-{{#mdl-layout}}
-    {{#mdl-component class='mdl-layout__header-row autocomplete-header'}}
+{{#c-mdl-layout}}
+    {{#c-mdl class='mdl-layout__header-row autocomplete-header'}}
       <label {{action 'transitionBack'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
@@ -15,10 +15,10 @@
       <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
         <i class="material-icons">more_vert</i>
       </button>
-    {{/mdl-component}}
+    {{/c-mdl}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    {{#endless-scroll didScrollToBottom=didScrollToBottom}}
+    {{#c-endless-scroll didScrollToBottom=didScrollToBottom}}
         {{#if cache.selectedRecordings}}
             {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
         {{/if}}
@@ -45,7 +45,7 @@
 
               <div class="mdl-grid">
                   {{#each recordings as |recording|}}
-                      {{audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+                      {{c-audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
 
                       <div class="my-recording-separator">
                           <div class="my-recording-line" />
@@ -56,10 +56,10 @@
         {{/if}}
 
         {{#if isLoading}}
-            {{mdl-component class='mdl-spinner mdl-js-spinner is-active my-loading'}}
+            {{c-mdl class='mdl-spinner mdl-js-spinner is-active my-loading'}}
         {{/if}}
-    {{/endless-scroll}}
+    {{/c-endless-scroll}}
   </main>
-{{/mdl-layout}}
+{{/c-mdl-layout}}
 
-{{audio-bar audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

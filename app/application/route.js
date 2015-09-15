@@ -1,6 +1,6 @@
 /* global document: true */
 import Ember from 'ember';
-import Slider from 'audio-app/audio-slider/object';
+import AudioSlider from 'audio-app/components/c-audio-slider/object';
 import updateTitleMixin from 'audio-app/mixins/update-title';
 
 var generateRandom = function (min, max) {
@@ -164,23 +164,23 @@ export default Ember.Route.extend(updateTitleMixin, {
         didTransition: function () {
             var audioPlayer = this.get('audioPlayer'),
                 cache = this.get('cache'),
-                slider;
+                audioSlider;
 
-            slider = Slider.create({
+            audioSlider = AudioSlider.create({
                 onSlideStop: function (value) {
                     audioPlayer.setCurrentTime(value);
                 }
             });
 
             audioPlayer.addObserver('currentTime', audioPlayer, function () {
-                slider.setValue(this.get('currentTime'));
+                audioSlider.setValue(this.get('currentTime'));
             });
 
             audioPlayer.addObserver('duration', audioPlayer, function () {
-                slider.set('max', this.get('duration'));
+                audioSlider.set('max', this.get('duration'));
             });
 
-            cache.set('slider', slider);
+            cache.set('audioSlider', audioSlider);
 
             audioPlayer.set('didEnd', this.next.bind(this));
 

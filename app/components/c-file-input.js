@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Recording from 'audio-app/audio-recording/object';
+import Recording from 'audio-app/recording/object';
 
 var split = function (fileName) {
     var lastIndex = fileName.lastIndexOf('.');

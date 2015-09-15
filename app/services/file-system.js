@@ -1,7 +1,7 @@
 /* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
 import Ember from 'ember';
-import Album from 'audio-app/audio-album/object';
-import Recording from 'audio-app/audio-recording/object';
+import Album from 'audio-app/album/object';
+import Recording from 'audio-app/recording/object';
 
 var write,
     lastWriter;

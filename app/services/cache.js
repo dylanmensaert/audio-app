@@ -36,7 +36,7 @@ export default Ember.Service.extend({
     selectedRecordings: [],
     playedRecordingIds: [],
     showMessage: null,
-    slider: null,
+    audioSlider: null,
     type: null,
     isOffline: function () {
         var isMobile = this.get('isMobile'),

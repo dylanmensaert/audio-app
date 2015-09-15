@@ -1,16 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    layoutName: 'audio_bar',
     audioPlayer: null,
     actions: {
-        transitionToQueue: function() {
+        transitionToQueue: function () {
             this.sendAction('transitionToQueue');
         },
-        play: function() {
+        play: function () {
             this.sendAction('play');
         },
-        pause: function() {
+        pause: function () {
             this.sendAction('pause');
         }
     }

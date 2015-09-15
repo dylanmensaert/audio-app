@@ -1,17 +1,17 @@
 {{#if isLoading}}
-    {{mdl-component class='mdl-spinner mdl-js-spinner is-active'}}
+    {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
 {{/if}}
 
 <!-- TODO: Implement error handling? -->
 
 {{outlet}}
 
-{{message-bar showMessage=cache.showMessage}}
+{{c-toast showMessage=cache.showMessage}}
 
 {{#if audioPlayer.recording}}
     <div class="audio-slider">
-        {{audio-slider slider=cache.slider}}
+        {{c-audio-slider slider=cache.audioSlider}}
     </div>
 {{/if}}
 
-{{audio-player audioPlayer=audioPlayer}}
+{{c-audio audioPlayer=audioPlayer}}
