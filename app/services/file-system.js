@@ -1,7 +1,8 @@
 /* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
 import Ember from 'ember';
-import Album from 'audio-app/album/object';
-import Recording from 'audio-app/recording/object';
+// TODO: implement correctly
+/*import Album from 'audio-app/album/model';
+import Recording from 'audio-app/recording/model';*/
 
 var write,
     lastWriter;
@@ -98,7 +99,8 @@ export default Ember.Service.extend({
             instance.root.getFile('data.json', {
                 create: true
             }, function () {
-                this.get('albums').pushObject(Album.create({
+                // TODO: implement correctly
+                /*this.get('albums').pushObject(Album.create({
                     name: 'Download later',
                     permission: 'push-only'
                 }));
@@ -111,7 +113,7 @@ export default Ember.Service.extend({
                 this.get('albums').pushObject(Album.create({
                     name: 'History',
                     permission: 'read-only'
-                }));
+                }));*/
             }.bind(this));
         }.bind(this));
 
@@ -126,7 +128,8 @@ export default Ember.Service.extend({
     parseJSON: function (json) {
         var parsedJSON = JSON.parse(json);
 
-        parsedJSON.albums = parsedJSON.albums.map(function (album) {
+        // TODO: implement correctly
+        /*parsedJSON.albums = parsedJSON.albums.map(function (album) {
             return Album.create(album);
         });
 
@@ -134,7 +137,7 @@ export default Ember.Service.extend({
             recording.fileSystem = this;
 
             return Recording.create(recording);
-        }.bind(this));
+        }.bind(this));*/
 
         this.setProperties(parsedJSON);
 

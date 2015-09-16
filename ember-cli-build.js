@@ -16,9 +16,6 @@ extraAssets.push(new Funnel('vendor/fonts', {
 module.exports = function (defaults) {
     var app = new EmberApp(defaults, {
         // Add options here
-        vendorFiles: {
-            'ember-data.js': false
-        }
     });
 
     // Use `app.import` to add additional libraries to the generated

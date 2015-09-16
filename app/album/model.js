@@ -1,7 +1,7 @@
-/* global application: true */
+import Snippet from 'audio-app/snippet/model';
 
 // TODO: Implement correctly
-export default application.__container__.lookup('snippet:main').extend({
+export default Snippet.extend({
     recordingIds: [],
     permission: null,
     isReadOnly: function () {
@@ -10,11 +10,5 @@ export default application.__container__.lookup('snippet:main').extend({
     isPushOnly: function () {
         return this.get('permission') === 'push-only';
     }.property('permission'),
-    getPropertyNamesToSave: function () {
-        var propertyNames = this._super();
-
-        propertyNames.pushObjects(['recordingIds', 'permission']);
-
-        return propertyNames;
-    }
+    propertyNames: ['recordingIds', 'permission']
 });

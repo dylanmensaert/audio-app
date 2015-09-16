@@ -5,15 +5,13 @@ import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
-    fileSystem: Ember.inject.service(),
-    cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
     didScrollToBottom: function () {
         return function () {
-            this.updateOnlineRecordings(this.get('nextPageToken'));
+            this.updateOnlineRecordings(this.get('cache.nextPageToken'));
         }.bind(this);
-    }.property('nextPageToken'),
+    }.property('cache.nextPageToken'),
     showNotFound: function () {
         return !this.get('isLoading') && !this.get('recordings.length');
     }.property('isLoading', 'recordings'),
@@ -22,7 +20,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         var offlineSnippets = this.get(offlineProperty),
             snippets = [];
 
-        if (this.get('searchDownloadedOnly')) {
+        if (this.get('cache.searchDownloadedOnly')) {
             snippets = offlineSnippets;
         } else {
             snippets = this.get(onlineProperty).map(function (snippet) {
@@ -39,7 +37,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         return snippets;
     },
     getOfflineSnippets: function (offlineSnippets) {
-        var searchDownloadedOnly = this.get('searchDownloadedOnly'),
+        var searchDownloadedOnly = this.get('cache.searchDownloadedOnly'),
             query = this.get('query');
 
         return this.get(offlineSnippets).filter(function (snippet) {
@@ -49,7 +47,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     },
     recordings: function () {
         return this.getSnippets('offlineRecordings', 'onlineRecordings');
-    }.property('offlineRecordings.[]', 'onlineRecordings.[]', 'searchDownloadedOnly'),
+    }.property('offlineRecordings.[]', 'onlineRecordings.[]', 'cache.searchDownloadedOnly'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
@@ -58,20 +56,24 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     }.observes('recordings.length'),*/
     offlineRecordings: function () {
         return this.getOfflineSnippets('fileSystem.recordings');
-    }.property('query', 'fileSystem.recordings.isDownloaded', 'searchDownloadedOnly'),
+    }.property('query', 'fileSystem.recordings.isDownloaded', 'cache.searchDownloadedOnly'),
     nextPageToken: null,
     isLoading: false,
     onlineRecordings: [],
     updateOnlineRecordings: function (nextPageToken) {
-        var findRecordingsPromise = logic.findRecordings(50, this.get('query'), nextPageToken);
+        var findRecordingsPromise = this.get('store').query('recording', {
+            maxResults: 50,
+            query: this.get('query'),
+            nextPageToken: nextPageToken
+        });
 
         this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
     },
     scheduleUpdateOnlineSnippets: function () {
-        if (!this.get('searchDownloadedOnly')) {
+        if (!this.get('cache.searchDownloadedOnly')) {
             Ember.run.once(this, this.updateOnlineRecordings);
         }
-    }.observes('searchDownloadedOnly').on('init'),
+    }.observes('cache.searchDownloadedOnly').on('init'),
     /*TODO: Implement another way?*/
     updateSelectedRecordings: function () {
         var selectedRecordings = this.get('recordings').filterBy('isSelected');

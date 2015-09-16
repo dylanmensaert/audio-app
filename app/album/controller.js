@@ -1,12 +1,9 @@
 import Ember from 'ember';
-import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/mixins/controller';
 import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
-    fileSystem: Ember.inject.service(),
-    cache: Ember.inject.service(),
     init: function () {
         this._super();
 
@@ -14,12 +11,11 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     },
     queryParams: ['returnRoute'],
     returnRoute: null,
-    nextPageToken: null,
     didScrollToBottom: function () {
         return function () {
-            this.updateOnlineRecordings(this.get('nextPageToken'));
+            this.updateOnlineRecordings(this.get('cache.nextPageToken'));
         }.bind(this);
-    }.property('nextPageToken'),
+    }.property('cache.nextPageToken'),
     album: function () {
         // TODO: put this in model and work via id. Should keep a cache of all fetched records. Work with ember-data!?
         return this.get('cache.selectedSnippets.firstObject');
@@ -27,8 +23,12 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     updateOnlineRecordings: function (nextPageToken) {
         var findRecordingsPromise;
 
-        if (!this.get('searchDownloadedOnly')) {
-            findRecordingsPromise = logic.findRecordingsByAlbum(this.get('album.id'), nextPageToken);
+        if (!this.get('cache.searchDownloadedOnly')) {
+            findRecordingsPromise = this.get('store').query('recording', {
+                albumId: this.get('album.id'),
+                nextPageToken: nextPageToken,
+                requestType: 'byAlbum'
+            });
 
             this.updateOnlineSnippets(findRecordingsPromise, 'album.onlineRecordings', nextPageToken);
         }
@@ -44,8 +44,8 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             var album = this.get('album');
 
             if (album.get('isSelected')) {
-                if (!Ember.isEmpty(this.get('nextPageToken'))) {
-                    this.findAllRecordingsByAlbum(album.get('id'), this.get('recordings'), this.get('nextPageToken'));
+                if (!Ember.isEmpty(this.get('cache.nextPageToken'))) {
+                    this.findAllRecordingsByAlbum(album.get('id'), this.get('recordings'), this.get('cache.nextPageToken'));
                 }
 
                 album.get('recordingIds').clear();
@@ -85,14 +85,19 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             }
         },
         findAllRecordingsByAlbum: function (id, recordings, pageToken) {
-            logic.findRecordingsByAlbum(id, pageToken).then(function (snippets,
-                nextPageToken) {
+            this.get('store').query('recording', {
+                albumId: id,
+                nextPageToken: pageToken,
+                requestType: 'byAlbum'
+            }).then(function (snippets) {
+                var nextPageToken = this.get('cache.nextPageToken');
+
                 recordings.pushObjects(snippets);
 
                 if (!Ember.isEmpty(nextPageToken)) {
                     this.findAllRecordingsByAlbum(id, recordings, nextPageToken);
                 }
-            });
+            }.bind(this));
         }
     }
 });

@@ -30,6 +30,11 @@ export default Ember.Service.extend({
             this.set('type', getType());
         }.bind(this), 5000);
     },
+    fileSystem: null,
+    // TODO: duplicate with controller atm
+    searchDownloadedOnly: function () {
+        return this.get('isOffline') || (this.get('isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
+    }.property('isOffline', 'isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
     isMobile: !Ember.isEmpty(navigator.connection),
     selectedSnippets: [],
     // TODO: deprecate selectedRecordings in favor of selectedSnippets

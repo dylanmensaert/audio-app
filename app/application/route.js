@@ -181,6 +181,8 @@ export default Ember.Route.extend(updateTitleMixin, {
             });
 
             cache.set('audioSlider', audioSlider);
+            // TODO: implement fileSystem via inject?
+            cache.set('fileSystem', this.get('fileSystem'));
 
             audioPlayer.set('didEnd', this.next.bind(this));
 

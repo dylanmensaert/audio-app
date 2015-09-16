@@ -1,6 +1,7 @@
-/* global escape, application */
+/* global escape */
 
 import Ember from 'ember';
+import Snippet from 'audio-app/snippet/model';
 import meta from 'meta-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 
@@ -24,9 +25,8 @@ pluralizations = {
     thumbnail: 'thumbnails'
 };
 
-// TODO: Implement correctly
-export default application.__container__.lookup('snippet:main').extend({
-    fileSystem: Ember.inject.service(),
+// TODO: change filesystem to store where needed
+export default Snippet.extend({
     extension: null,
     audio: null,
     status: null,
@@ -49,10 +49,14 @@ export default application.__container__.lookup('snippet:main').extend({
         }.bind(this));
     }.property('audio', 'fileSystem.instance'),
     isQueued: function () {
-        return this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds').contains(this.get('id'));
+        // TODO: implement
+        return false;
+        /*return this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds').contains(this.get('id'));*/
     }.property('fileSystem.albums.@each.recordingIds.[]', 'id'),
     isDownloadLater: function () {
-        return this.get('fileSystem.albums').findBy('name', 'Download later').get('recordingIds').contains(this.get('id'));
+        // TODO: implement
+        return false;
+        /*return this.get('fileSystem.albums').findBy('name', 'Download later').get('recordingIds').contains(this.get('id'));*/
     }.property('fileSystem.albums.@each.recordingIds.[]', 'id'),
     createFilePath: function (type, extension) {
         var fileName = this.get('id') + '.' + extension,
@@ -182,11 +186,5 @@ export default application.__container__.lookup('snippet:main').extend({
             }.bind(this), reject);
         });
     },
-    getPropertyNamesToSave: function () {
-        var propertyNames = this._super();
-
-        propertyNames.pushObjects(['extension', 'thumbnail']);
-
-        return propertyNames;
-    }
+    propertyNames: 'extension'
 });
