@@ -1,7 +1,8 @@
-import Snippet from 'audio-app/snippet/model';
+import DS from 'ember-data';
+import modelMixin from 'audio-app/mixins/model';
 
 // TODO: Implement correctly
-export default Snippet.extend({
+export default DS.Model.extend(modelMixin, {
     recordingIds: [],
     permission: null,
     isReadOnly: function () {

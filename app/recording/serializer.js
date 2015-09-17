@@ -1,6 +1,7 @@
-import snippetSerializer from 'audio-app/snippet/serializer';
+import DS from 'ember-data';
+import serializerMixin from 'audio-app/mixins/serializer';
 
-export default snippetSerializer.extend({
+export default DS.Serializer.extend(serializerMixin, {
     normalizeResponse: function (store, primaryModelClass, payload) {
         var data = payload.items.map(function (item) {
             var id,

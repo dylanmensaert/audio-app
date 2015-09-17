@@ -110,81 +110,27 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             }.bind(this)
         }).create();
     }.property('recordings.[]', 'offlineRecordings.@each.id'),
-    // TODO: save state in fileSystem someway
-    getSnippets: function (offlineProperty, onlineProperty) {
-        var offlineSnippets = this.get(offlineProperty),
-            snippets = [];
-
-        if (this.get('cache.searchDownloadedOnly')) {
-            snippets = offlineSnippets;
-        } else {
-            snippets = this.get(onlineProperty).map(function (snippet) {
-                var id = snippet.get('id');
-
-                if (offlineSnippets.isAny('id', id)) {
-                    snippet = offlineSnippets.findBy('id', id);
-                }
-
-                return snippet;
-            });
-        }
-
-        return snippets;
-    },
-    getOfflineSnippets: function (offlineSnippets) {
-        var searchDownloadedOnly = this.get('cache.searchDownloadedOnly'),
-            query = this.get('query');
-
-        return this.get(offlineSnippets).filter(function (snippet) {
-            // TODO: create separate result for matchAnyAlbum
-            return (!searchDownloadedOnly || snippet.get('isDownloaded')) && logic.isMatch(snippet.get('name'), query);
+    // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
+    find: function (type, snippets) {
+        this._super(type, snippets, {
+            maxResults: 4,
+            query: this.get('query'),
+            nextPageToken: this.get('cache.nextPageToken'),
         });
     },
     recordings: function () {
-        return this.getSnippets('offlineRecordings', 'onlineRecordings');
-    }.property('offlineRecordings.[]', 'onlineRecordings.[]', 'cache.searchDownloadedOnly'),
+        return this.find('recording', this.get('recordings'));
+    }.property('query', 'cache.nextPageToken', 'cache.searchDownloadedOnly'),
     albums: function () {
-        return this.getSnippets('offlineAlbums', 'onlineAlbums');
-    }.property('offlineAlbums.[]', 'onlineAlbums.[]', 'cache.searchDownloadedOnly'),
+        return this.find('album', this.get('albums'));
+    }.property('query', 'cache.nextPageToken', 'cache.searchDownloadedOnly'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
             this.get('cache').showMessage('No songs found');
         }
     }.observes('recordings.length'),*/
-    offlineRecordings: function () {
-        return this.getOfflineSnippets('fileSystem.recordings');
-    }.property('query', 'fileSystem.recordings.isDownloaded', 'cache.searchDownloadedOnly'),
-    offlineAlbums: function () {
-        return this.getOfflineSnippets('fileSystem.albums');
-    }.property('query', 'fileSystem.albums.isDownloaded', 'cache.searchDownloadedOnly'),
     isLoading: false,
-    onlineAlbums: [],
-    updateOnlineAlbums: function (nextPageToken) {
-        var findAlbumsPromise = this.get('store').query('album', {
-            maxResults: 4,
-            query: this.get('query'),
-            nextPageToken: nextPageToken
-        });
-
-        this.updateOnlineSnippets(findAlbumsPromise, 'onlineAlbums', nextPageToken);
-    },
-    onlineRecordings: [],
-    updateOnlineRecordings: function (nextPageToken) {
-        var findRecordingsPromise = this.get('store').query('recording', {
-            maxResults: 4,
-            query: this.get('query'),
-            nextPageToken: nextPageToken
-        });
-
-        this.updateOnlineSnippets(findRecordingsPromise, 'onlineRecordings', nextPageToken);
-    },
-    scheduleUpdateOnlineSnippets: function () {
-        if (!this.get('cache.searchDownloadedOnly')) {
-            Ember.run.once(this, this.updateOnlineRecordings);
-            Ember.run.once(this, this.updateOnlineAlbums);
-        }
-    }.observes('query', 'cache.searchDownloadedOnly').on('init'),
     /*TODO: Implement another way?*/
     updateSelectedRecordings: function () {
         var selectedRecordings = this.get('recordings').filterBy('isSelected');

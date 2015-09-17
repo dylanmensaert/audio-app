@@ -9,12 +9,12 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
-    this.resource('recordings');
+    this.route('recordings');
 
-    this.resource('albums');
-    this.resource('album');
+    this.route('albums');
+    this.route('album');
 
-    this.resource('settings');
+    this.route('settings');
 });
 
 export default Router;

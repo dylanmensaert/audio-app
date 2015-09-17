@@ -1,7 +1,8 @@
 /* global escape */
 
+import DS from 'ember-data';
 import Ember from 'ember';
-import Snippet from 'audio-app/snippet/model';
+import modelMixin from 'audio-app/mixins/model';
 import meta from 'meta-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 
@@ -26,7 +27,7 @@ pluralizations = {
 };
 
 // TODO: change filesystem to store where needed
-export default Snippet.extend({
+export default DS.Model.extend(modelMixin, {
     extension: null,
     audio: null,
     status: null,

@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Ember from 'ember';
 import meta from 'meta-data';
 
 // TODO: convert all functions to this format
@@ -6,9 +6,7 @@ function convertImageUrl(url) {
     return meta.imageHost + new URL(url).pathname;
 }
 
-// TODO: If POD structure works auto for Serializers, than make sure this file is not configured as a Serializer -> implement as mixin?
-export default DS.Serializer.extend({
-    isNewSerializerAPI: true,
+export default Ember.Mixin.create({
     peekSnippet: function (store, modelName, id, item) {
         var snippet = store.peekRecord(modelName, id);
 

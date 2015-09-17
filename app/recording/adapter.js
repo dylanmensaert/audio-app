@@ -1,6 +1,7 @@
-import snippetAdapter from 'audio-app/snippet/adapter';
+import DS from 'ember-data';
+import adapterMixin from 'audio-app/mixins/adapter';
 
-export default snippetAdapter.extend({
+export default DS.Adapter.extend(adapterMixin, {
     buildUrl: function (modelName, id, snapshot, requestType, query) {
         var url;
 

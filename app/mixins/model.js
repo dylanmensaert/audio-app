@@ -1,8 +1,6 @@
-import DS from 'ember-data';
 import Ember from 'ember';
 
-// TODO: If POD structure works auto for Models, than make sure this file is not configured as a model -> implement as mixin?
-export default DS.Model.extend({
+export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     concatenatedProperties: ['propertyNames'],
     id: null,

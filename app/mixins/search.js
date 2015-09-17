@@ -1,24 +1,29 @@
 import Ember from 'ember';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),
-    updateOnlineSnippets: function (findSnippetsPromise, property, pageToken) {
-        // TODO: check if searchDownloadedOnly is implemented correctly everywhere. Because I am using it kinda at random now.
-        if (!this.get('cache.searchDownloadedOnly')) {
+    // TODO: implement as separate mixin since also needed in some routes?
+    find: function (modelName, snippets, query) {
+        if (this.get('cache.searchDownloadedOnly')) {
+            snippets = this.get('store').peekAll(modelName).filter(function (snippet) {
+                return logic.isMatch(snippet.get('name'), query.query);
+            });
+        } else {
             this.set('isLoading', true);
 
-            findSnippetsPromise.then(function (snippets) {
-                if (Ember.isEmpty(pageToken)) {
-                    this.set(property, snippets);
+            this.get('store').query(modelName, query).then(function (loadedSnippets) {
+                if (Ember.isEmpty(this.get('cache.nextPageToken'))) {
+                    snippets = loadedSnippets;
                 } else {
-                    this.get(property).pushObjects(snippets);
+                    snippets.pushObjects(loadedSnippets);
                 }
 
                 this.set('isLoading', false);
             }.bind(this));
-        } else {
-            this.set(property, []);
         }
+
+        return snippets;
     }
 });

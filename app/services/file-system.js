@@ -126,10 +126,10 @@ export default Ember.Service.extend({
         });
     },
     parseJSON: function (json) {
-        var parsedJSON = JSON.parse(json);
-
         // TODO: implement correctly
-        /*parsedJSON.albums = parsedJSON.albums.map(function (album) {
+        /*var parsedJSON = JSON.parse(json);
+
+        parsedJSON.albums = parsedJSON.albums.map(function (album) {
             return Album.create(album);
         });
 
@@ -137,9 +137,9 @@ export default Ember.Service.extend({
             recording.fileSystem = this;
 
             return Recording.create(recording);
-        }.bind(this));*/
+        }.bind(this));
 
-        this.setProperties(parsedJSON);
+        this.setProperties(parsedJSON);*/
 
         if (!Ember.isEmpty(this.get('didParseJSON'))) {
             this.didParseJSON();
