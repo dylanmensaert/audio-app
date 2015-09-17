@@ -1,3 +1,5 @@
+import pluralize from 'ember-inflector';
+import DS from 'ember-data';
 import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
@@ -5,25 +7,34 @@ export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),
     // TODO: implement as separate mixin since also needed in some routes?
-    find: function (modelName, snippets, query) {
+    find: function(modelName, query, pageToken) {
+        var result,
+            promise;
+
         if (this.get('cache.searchDownloadedOnly')) {
-            snippets = this.get('store').peekAll(modelName).filter(function (snippet) {
+            result = this.get('store').peekAll(modelName).filter(function(snippet) {
                 return logic.isMatch(snippet.get('name'), query.query);
             });
         } else {
-            this.set('isLoading', true);
+            query.setNextPageToken = function(nextPageToken) {
+                this.set('nextPageToken', nextPageToken);
+            }.bind(this);
 
-            this.get('store').query(modelName, query).then(function (loadedSnippets) {
-                if (Ember.isEmpty(this.get('cache.nextPageToken'))) {
-                    snippets = loadedSnippets;
-                } else {
-                    snippets.pushObjects(loadedSnippets);
-                }
+            promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                this.get('store').query(modelName, query).then(function(snippets) {
+                    if (!Ember.isEmpty(pageToken)) {
+                        snippets.unshiftObjects(this.get(pluralize(modelName + 's')));
+                    }
 
-                this.set('isLoading', false);
+                    resolve(snippets);
+                }.bind(this), reject);
             }.bind(this));
+
+            result = DS.PromiseArray.create({
+                promise: promise
+            });
         }
 
-        return snippets;
+        return result;
     }
 });

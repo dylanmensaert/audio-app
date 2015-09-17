@@ -7,7 +7,16 @@ function convertImageUrl(url) {
 }
 
 export default Ember.Mixin.create({
-    peekSnippet: function (store, modelName, id, item) {
+    normalizeResponse: function(store, primaryModelClass, payload) {
+        var data = payload.items.map(function(item) {
+            return this.normalize(store, primaryModelClass, item);
+        }.bind(this));
+
+        return {
+            data: data
+        };
+    },
+    peekSnippet: function(store, modelName, id, item) {
         var snippet = store.peekRecord(modelName, id);
 
         if (snippet) {
@@ -21,7 +30,8 @@ export default Ember.Mixin.create({
 
         return snippet;
     },
-    serialize: function (record) {
-        return record;
+    // TODO: implement
+    serialize: function(snapshot) {
+        return snapshot;
     }
 });

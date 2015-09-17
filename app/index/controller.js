@@ -9,15 +9,15 @@ import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     audioPlayer: Ember.inject.service(),
     queryParams: ['query', 'isSearchMode'],
-    updateLiveQuery: function () {
+    updateLiveQuery: function() {
         this.set('liveQuery', this.get('query'));
     }.observes('query'),
     liveQuery: '',
     query: '',
-    suggestions: function () {
+    suggestions: function() {
         var suggestions = this.get('offlineSuggestions');
 
-        this.get('onlineSuggestions').any(function (suggestion) {
+        this.get('onlineSuggestions').any(function(suggestion) {
             var doBreak = suggestions.get('length') >= 10;
 
             if (!doBreak) {
@@ -33,13 +33,13 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
         return suggestions;
     }.property('offlineSuggestions.[]', 'onlineSuggestions.[]'),
-    offlineSuggestions: function () {
+    offlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             suggestions = [],
             suggestion;
 
         if (!Ember.isEmpty(liveQuery)) {
-            this.get('fileSystem.albums').any(function (album) {
+            this.get('fileSystem.albums').any(function(album) {
                 var doBreak = suggestions.get('length') >= 10;
 
                 if (!doBreak) {
@@ -55,7 +55,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 return doBreak;
             });
 
-            this.get('fileSystem.recordings').any(function (recording) {
+            this.get('fileSystem.recordings').any(function(recording) {
                 var doBreak = suggestions.get('length') >= 10;
 
                 if (!doBreak) {
@@ -74,27 +74,27 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
         return suggestions;
     }.property('fileSystem.recordings.@each.name', 'fileSystem.albums.@each.name', 'liveQuery'),
-    showNotFound: function () {
+    showNotFound: function() {
         return !this.get('isLoading') && !this.get('recordings.length') && !this.get('albums.length');
     }.property('isLoading', 'recordings', 'albums'),
     onlineSuggestions: [],
-    updateOnlineSuggestions: function () {
+    updateOnlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             url;
 
         if (!this.get('cache.searchDownloadedOnly') && !Ember.isEmpty(liveQuery)) {
             url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
 
-            Ember.$.getJSON(url).then(function (response) {
+            Ember.$.getJSON(url).then(function(response) {
                 this.set('onlineSuggestions', response[1]);
             }.bind(this));
         }
     }.observes('cache.searchDownloadedOnly', 'liveQuery'),
-    sortedRecordings: function () {
+    sortedRecordings: function() {
         return Ember.ArrayProxy.extend(Ember.SortableMixin, {
             content: this.get('recordings'),
             sortProperties: ['name', 'id'],
-            orderBy: function (recording, other) {
+            orderBy: function(recording, other) {
                 var recordings = this.get('recordings'),
                     result = -1;
 
@@ -111,19 +111,20 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }).create();
     }.property('recordings.[]', 'offlineRecordings.@each.id'),
     // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
-    find: function (type, snippets) {
-        this._super(type, snippets, {
+    find: function(type) {
+        var query = {
             maxResults: 4,
-            query: this.get('query'),
-            nextPageToken: this.get('cache.nextPageToken'),
-        });
+            query: this.get('query')
+        };
+
+        return this._super(type, query);
     },
-    recordings: function () {
-        return this.find('recording', this.get('recordings'));
-    }.property('query', 'cache.nextPageToken', 'cache.searchDownloadedOnly'),
-    albums: function () {
-        return this.find('album', this.get('albums'));
-    }.property('query', 'cache.nextPageToken', 'cache.searchDownloadedOnly'),
+    recordings: function() {
+        return this.find('recording');
+    }.property('query', 'cache.searchDownloadedOnly'),
+    albums: function() {
+        return this.find('album');
+    }.property('query', 'cache.searchDownloadedOnly'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
@@ -132,7 +133,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     }.observes('recordings.length'),*/
     isLoading: false,
     /*TODO: Implement another way?*/
-    updateSelectedRecordings: function () {
+    updateSelectedRecordings: function() {
         var selectedRecordings = this.get('recordings').filterBy('isSelected');
 
         this.set('cache.selectedRecordings', selectedRecordings);
@@ -141,17 +142,17 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     selected: Ember.computed.alias('cache.selectedRecordings'),
     isSearchMode: false,
     actions: {
-        search: function () {
+        search: function() {
             this.set('query', this.get('liveQuery'));
         },
-        pushToDownload: function (recording) {
+        pushToDownload: function(recording) {
             var cache = this.get('cache');
 
             if (!recording.get('isDownloaded')) {
                 if (!cache.isMobileConnection()) {
-                    recording.download().then(function () {
+                    recording.download().then(function() {
 
-                    }, function () {
+                    }, function() {
                         // TODO: show error?
                         cache.showMessage('download aborted');
                     });
@@ -162,13 +163,13 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 cache.showMessage('already downloaded');
             }
         },
-        pushToQueue: function (recording) {
+        pushToQueue: function(recording) {
             var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
                 cache = this.get('cache');
 
             if (!queue.contains(recording.get('id'))) {
                 if (!recording.get('isDownloaded')) {
-                    recording.download().then(function () {}, function () {
+                    recording.download().then(function() {}, function() {
                         // TODO: show error?
                         cache.showMessage('Download aborted');
                     }.bind(this));
@@ -181,18 +182,18 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 cache.showMessage('Already in queue');
             }
         },
-        selectAll: function () {
+        selectAll: function() {
             this.get('recordings').setEach('isSelected', true);
         },
-        clear: function () {
+        clear: function() {
             this.set('liveQuery', '');
 
             Ember.$('.mdl-textfield__input').focus();
         },
-        startSearchMode: function () {
+        startSearchMode: function() {
             this.set('isSearchMode', true);
         },
-        endSearchMode: function () {
+        endSearchMode: function() {
             this.set('isSearchMode', false);
         }
     }

@@ -2,19 +2,13 @@ import DS from 'ember-data';
 import serializerMixin from 'audio-app/mixins/serializer';
 
 export default DS.Serializer.extend(serializerMixin, {
-    normalizeResponse: function (store, primaryModelClass, payload) {
-        var data = payload.items.map(function (item) {
-            var id = item.id.playlistId;
-
-            return {
-                type: primaryModelClass.modelName,
-                id: id,
-                attributes: this.peekSnippet(store, primaryModelClass.modelName, id, item)
-            };
-        }.bind(this));
+    normalize: function(store, typeClass, item) {
+        var id = item.id.playlistId;
 
         return {
-            data: data
+            type: typeClass.modelName,
+            id: id,
+            attributes: this.peekSnippet(store, typeClass.modelName, id, item)
         };
     }
 });

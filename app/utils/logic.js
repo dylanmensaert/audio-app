@@ -1,6 +1,7 @@
+// TODO: rename logic file?
 export default {
-    isMatch: function (value, query) {
-        return query.trim().split(' ').every(function (queryPart) {
+    isMatch: function(value, query) {
+        return query.trim().split(' ').every(function(queryPart) {
             return value.toLowerCase().includes(queryPart.toLowerCase());
         });
     }

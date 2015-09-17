@@ -5,15 +5,15 @@ export default Ember.Component.extend({
     classNameBindings: ['model.isSelected:active'],
     model: null,
     showQueued: false,
-    didInsertElement: function () {
+    didInsertElement: function() {
         var outerImage = this.$('.outer-image'),
             innerImage = this.$('.inner-image');
 
-        this.$().on('swipeleft', function () {
+        this.$().on('swipeleft', function() {
             this.sendAction('swipeleft', this.get('model'));
         }.bind(this));
 
-        this.$().on('swiperight', function () {
+        this.$().on('swiperight', function() {
             this.sendAction('swiperight', this.get('model'));
         }.bind(this));
 
@@ -22,15 +22,15 @@ export default Ember.Component.extend({
         innerImage.height(innerImage.width() / 12 * 9);
         innerImage.css('top', -Math.floor((innerImage.height() - outerImage.height()) / 2));
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         this.$().off('swipeleft');
         this.$().off('swiperight');
     },
     actions: {
-        toggleSelection: function () {
+        toggleSelection: function() {
             this.get('model').toggleProperty('isSelected');
         },
-        click: function () {
+        click: function() {
             this.sendAction('action', this.get('model'));
         }
     }
