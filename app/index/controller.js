@@ -68,25 +68,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     showNotFound: function () {
         return !this.get('isLoading') && !this.get('recordings.length') && !this.get('albums.length');
     }.property('isLoading', 'recordings.length', 'albums.length'),
-    sortSnippet: function (snippets, snippet, other) {
-        var result = -1;
-
-        if (!this.get('cache.searchDownloadedOnly')) {
-            if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
-                result = 1;
-            }
-        } else if (snippet.get('name') > other.get('name')) {
-            result = 1;
-        }
-
-        return result;
-    },
-    sortedRecordings: Ember.computed.sort('recordings', function (snippet, other) {
-        return this.sortSnippet(this.get('recordings'), snippet, other);
-    }),
-    sortedAlbums: Ember.computed.sort('albums', function (snippet, other) {
-        return this.sortSnippet(this.get('albums'), snippet, other);
-    }),
     // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
     find: function (type) {
         var query = {
@@ -102,12 +83,19 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     albums: function () {
         return this.find('album');
     }.property('query', 'cache.searchDownloadedOnly'),
+    sortedRecordings: Ember.computed.sort('recordings', function (snippet, other) {
+        return this.sortSnippet(this.get('recordings'), snippet, other);
+    }),
+    sortedAlbums: Ember.computed.sort('albums', function (snippet, other) {
+        return this.sortSnippet(this.get('albums'), snippet, other);
+    }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
             this.get('cache').showMessage('No songs found');
         }
     }.observes('recordings.length'),*/
+    // TODO: implement isLoading correctly since removed from snippets fetch
     isLoading: false,
     /*TODO: Implement another way?*/
     updateSelectedRecordings: function () {
