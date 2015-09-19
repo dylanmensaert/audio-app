@@ -9,15 +9,15 @@ export default Ember.Component.extend({
     showQueued: false,
     // TODO: transition via another way?
     transitionToRoute: null,
-    didInsertElement: function () {
+    didInsertElement: function() {
         var outerImage = this.$('.outer-image'),
             innerImage = this.$('.inner-image');
 
-        this.$().on('swipeleft', function () {
+        this.$().on('swipeleft', function() {
             this.sendAction('swipeleft', this.get('model'));
         }.bind(this));
 
-        this.$().on('swiperight', function () {
+        this.$().on('swiperight', function() {
             this.sendAction('swiperight', this.get('model'));
         }.bind(this));
 
@@ -26,18 +26,22 @@ export default Ember.Component.extend({
         innerImage.height(innerImage.width() / 12 * 9);
         innerImage.css('top', -Math.floor((innerImage.height() - outerImage.height()) / 2));
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         this.$().off('swipeleft');
         this.$().off('swiperight');
     },
-    hasStatus: function () {
+    hasStatus: function() {
         return this.get('model.isPlaying') || this.get('showQueued') || this.get('model.isDownloading') || this.get('model.isDownloaded');
     }.property('model.isPlaying', 'showQueued', 'model.isDownloading', 'model.isDownloaded'),
     actions: {
-        toggleSelection: function () {
-            this.sendAction('toggleAlbum', this.get('model'));
+        toggleIsSelected: function() {
+            var model = this.get('model');
+
+            model.toggleProperty('isSelected');
+
+            this.sendAction('toggleIsSelected', model);
         },
-        click: function () {
+        click: function() {
             this.transitionToRoute('album', this.get('model'));
         }
     }

@@ -11,13 +11,13 @@ var suggestionLimit = 10;
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     audioPlayer: Ember.inject.service(),
     queryParams: ['query', 'isSearchMode'],
-    updateLiveQuery: function () {
+    updateLiveQuery: function() {
         this.set('liveQuery', this.get('query'));
     }.observes('query'),
     liveQuery: '',
     query: '',
     suggestions: null,
-    updateSuggestions: function () {
+    updateSuggestions: function() {
         var suggestions = this.get('suggestions');
 
         suggestions.clear();
@@ -31,11 +31,11 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             }
         }
     }.observes('liveQuery', 'cache.searchDownloadedOnly'),
-    pushOfflineSuggestions: function (modelName) {
+    pushOfflineSuggestions: function(modelName) {
         var liveQuery = this.get('liveQuery'),
             suggestions = this.get('suggestions');
 
-        this.get('store').peekAll(modelName).any(function (snippet) {
+        this.get('store').peekAll(modelName).any(function(snippet) {
             var suggestion = snippet.get('name');
 
             if (logic.isMatch(suggestion, liveQuery)) {
@@ -47,16 +47,16 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             return suggestions.get('length') >= suggestionLimit;
         });
     },
-    pushOnlineSuggestions: function () {
+    pushOnlineSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             url;
 
         url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
 
-        Ember.$.getJSON(url).then(function (response) {
+        Ember.$.getJSON(url).then(function(response) {
             var suggestions = this.get('suggestions');
 
-            response[1].any(function (suggestion) {
+            response[1].any(function(suggestion) {
                 suggestions.pushObject(Suggestion.create({
                     value: suggestion
                 }));
@@ -65,11 +65,11 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
             });
         }.bind(this));
     },
-    showNotFound: function () {
+    showNotFound: function() {
         return !this.get('isLoading') && !this.get('recordings.length') && !this.get('albums.length');
     }.property('isLoading', 'recordings.length', 'albums.length'),
     // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
-    find: function (type) {
+    find: function(type) {
         var query = {
             maxResults: 4,
             query: this.get('query')
@@ -77,22 +77,22 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
         return this._super(type, query);
     },
-    recordings: function () {
+    recordings: function() {
         return this.find('recording');
     }.property('query', 'cache.searchDownloadedOnly'),
-    albums: function () {
+    albums: function() {
         return this.find('album');
     }.property('query', 'cache.searchDownloadedOnly'),
-    sortedRecordings: Ember.computed.sort('recordings', function (snippet, other) {
+    sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
         return this.sortSnippet(this.get('recordings'), snippet, other);
     }),
-    sortedAlbums: Ember.computed.sort('albums', function (snippet, other) {
+    sortedAlbums: Ember.computed.sort('albums', function(snippet, other) {
         return this.sortSnippet(this.get('albums'), snippet, other);
     }),
-    selectedRecordings: function () {
+    selectedRecordings: function() {
         return this.get('store').peekAll('recording').filterBy('isSelected');
     }.property('recordings.@each.isSelected'),
-    selectedAlbums: function () {
+    selectedAlbums: function() {
         return this.get('store').peekAll('album').filterBy('isSelected');
     }.property('albums.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -106,17 +106,17 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     /*TODO: Implement another way?*/
     isSearchMode: false,
     actions: {
-        search: function () {
+        search: function() {
             this.set('query', this.get('liveQuery'));
         },
-        pushToDownload: function (recording) {
+        pushToDownload: function(recording) {
             var cache = this.get('cache');
 
             if (!recording.get('isDownloaded')) {
                 if (!cache.isMobileConnection()) {
-                    recording.download().then(function () {
+                    recording.download().then(function() {
 
-                    }, function () {
+                    }, function() {
                         // TODO: show error?
                         cache.showMessage('download aborted');
                     });
@@ -127,13 +127,13 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 cache.showMessage('already downloaded');
             }
         },
-        pushToQueue: function (recording) {
+        pushToQueue: function(recording) {
             var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
                 cache = this.get('cache');
 
             if (!queue.contains(recording.get('id'))) {
                 if (!recording.get('isDownloaded')) {
-                    recording.download().then(function () {}, function () {
+                    recording.download().then(function() {}, function() {
                         // TODO: show error?
                         cache.showMessage('Download aborted');
                     }.bind(this));
@@ -146,30 +146,26 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 cache.showMessage('Already in queue');
             }
         },
-        selectAll: function () {
+        selectAll: function() {
             this.get('recordings').setEach('isSelected', true);
         },
-        clear: function () {
+        clear: function() {
             this.set('liveQuery', '');
 
             Ember.$('.mdl-textfield__input').focus();
         },
-        startSearchMode: function () {
+        startSearchMode: function() {
             this.set('isSearchMode', true);
         },
-        endSearchMode: function () {
+        endSearchMode: function() {
             this.set('isSearchMode', false);
         },
-        toggleRecording: function (recording) {
-            recording.toggleProperty('isSelected');
-
+        deselectAlbums: function(recording) {
             if (recording.get('isSelected')) {
                 this.get('selectedAlbums').setEach('isSelected', false);
             }
         },
-        toggleAlbum: function (album) {
-            album.toggleProperty('isSelected');
-
+        deselectRecordings: function(album) {
             if (album.get('isSelected')) {
                 this.get('selectedRecordings').setEach('isSelected', false);
             }
