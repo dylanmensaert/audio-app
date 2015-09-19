@@ -22,7 +22,7 @@ export default Ember.Mixin.create({
             promise = new Ember.RSVP.Promise(function (resolve, reject) {
                 this.get('store').query(modelName, query).then(function (snippets) {
                     if (!Ember.isEmpty(pageToken)) {
-                        snippets.unshiftObjects(this.get(pluralize(modelName + 's')));
+                        snippets.unshiftObjects(this.get(pluralize(modelName)));
                     }
 
                     resolve(snippets);

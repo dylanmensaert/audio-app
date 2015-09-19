@@ -28,7 +28,7 @@ export default Ember.Component.extend({
     },
     actions: {
         toggleSelection: function () {
-            this.get('model').toggleProperty('isSelected');
+            this.sendAction('toggleRecording', this.get('model'));
         },
         click: function () {
             this.sendAction('action', this.get('model'));

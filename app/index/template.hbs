@@ -62,7 +62,7 @@
 
             <div class="mdl-grid">
                 {{#each sortedRecordings as |recording|}}
-                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued toggleRecording='toggleRecording'}}
 
                     <div class="my-recording-separator">
                         <div class="my-recording-line" />
@@ -90,7 +90,7 @@
 
             <div class="mdl-grid my-album-grid">
                 {{#each sortedAlbums as |album|}}
-                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
+                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleAlbum='toggleAlbum'}}
                 {{/each}}
             </div>
         </div>

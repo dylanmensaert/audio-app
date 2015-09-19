@@ -35,7 +35,7 @@ export default Ember.Component.extend({
     }.property('model.isPlaying', 'showQueued', 'model.isDownloading', 'model.isDownloaded'),
     actions: {
         toggleSelection: function () {
-            this.get('model').toggleProperty('isSelected');
+            this.sendAction('toggleAlbum', this.get('model'));
         },
         click: function () {
             this.transitionToRoute('album', this.get('model'));

@@ -90,13 +90,9 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         return this.sortSnippet(this.get('albums'), snippet, other);
     }),
     selectedRecordings: function () {
-        this.get('selectedAlbums').setEach('isSelected', false);
-
         return this.get('store').peekAll('recording').filterBy('isSelected');
     }.property('recordings.@each.isSelected'),
     selectedAlbums: function () {
-        this.get('selectedRecordings').setEach('isSelected', false);
-
         return this.get('store').peekAll('album').filterBy('isSelected');
     }.property('albums.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -163,6 +159,20 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         },
         endSearchMode: function () {
             this.set('isSearchMode', false);
+        },
+        toggleRecording: function (recording) {
+            recording.toggleProperty('isSelected');
+
+            if (recording.get('isSelected')) {
+                this.get('selectedAlbums').setEach('isSelected', false);
+            }
+        },
+        toggleAlbum: function (album) {
+            album.toggleProperty('isSelected');
+
+            if (album.get('isSelected')) {
+                this.get('selectedRecordings').setEach('isSelected', false);
+            }
         }
     }
 });
