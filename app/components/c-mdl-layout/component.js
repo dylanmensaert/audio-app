@@ -17,17 +17,17 @@ export default ComponentMdl.extend({
                 Ember.$(this).css('top', -Math.floor((Ember.$(this).height() - Ember.$(this).parent().height()) / 2));
             });
         }.bind(this));
+
+        this._super();
     },
     willDestroyElement: function() {
         Ember.$(window).off('resize');
     },
     actions: {
         transitionToRoute: function(name) {
-            var cache = this.get('cache');
+            this.get('cache.completedTransitions').clear();
 
-            cache.get('completedTransitions').clear();
-
-            cache.transitionToRoute(name);
+            this.sendAction('transitionToRoute', name);
         }
     }
 });

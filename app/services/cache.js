@@ -33,7 +33,6 @@ export default Ember.Service.extend({
         }.bind(this), 5000);
     },
     fileSystem: null,
-    transitionToRoute: null,
     completedTransitions: [],
     hasPreviousTransition: function() {
         return this.get('completedTransitions.length') > 1;

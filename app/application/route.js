@@ -184,8 +184,6 @@ export default Ember.Route.extend(routeMixin, {
             // TODO: implement fileSystem via inject?
             cache.set('fileSystem', this.get('fileSystem'));
 
-            cache.set('transitionToRoute', this.transitionTo.bind(this));
-
             audioPlayer.set('didEnd', this.next.bind(this));
 
             this.set('fileSystem.didParseJSON', function() {
@@ -210,6 +208,9 @@ export default Ember.Route.extend(routeMixin, {
             completedTransitions.removeAt(lastIndex - 1);
 
             previousTransition.retry();
+        },
+        transitionTo: function() {
+            this.transitionTo.apply(this, arguments);
         }
     }
 });

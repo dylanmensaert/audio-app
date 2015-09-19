@@ -7,8 +7,6 @@ export default Ember.Component.extend({
     classNameBindings: ['model.isSelected:my-active'],
     model: null,
     showQueued: false,
-    // TODO: transition via another way?
-    transitionToRoute: null,
     didInsertElement: function() {
         var outerImage = this.$('.outer-image'),
             innerImage = this.$('.inner-image');
@@ -42,7 +40,7 @@ export default Ember.Component.extend({
             this.sendAction('toggleIsSelected', model);
         },
         click: function() {
-            this.transitionToRoute('album', this.get('model'));
+            this.sendAction('action', 'album', this.get('model'));
         }
     }
 });

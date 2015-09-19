@@ -1,4 +1,4 @@
-{{#c-mdl-layout}}
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if cache.hasPreviousTransition}}
     <div class="mdl-layout__header-row autocomplete-header">
       <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
@@ -90,7 +90,7 @@
 
             <div class="mdl-grid my-album-grid">
                 {{#each sortedAlbums as |album|}}
-                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleIsSelected='deselectRecordings'}}
+                    {{c-album model=album action='transitionTo' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleIsSelected='deselectRecordings'}}
                 {{/each}}
             </div>
         </div>

@@ -4,23 +4,23 @@ import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
-    init: function () {
+    init: function() {
         this._super();
 
-        this.updateOnlineRecordings();
+        /*this.updateOnlineRecordings();*/
     },
     queryParams: ['returnRoute'],
     returnRoute: null,
-    didScrollToBottom: function () {
-        return function () {
+    didScrollToBottom: function() {
+        return function() {
             this.updateOnlineRecordings(this.get('cache.nextPageToken'));
         }.bind(this);
     }.property('cache.nextPageToken'),
-    album: function () {
+    album: function() {
         // TODO: put this in model and work via id. Should keep a cache of all fetched records. Work with ember-data!?
         return this.get('cache.selectedSnippets.firstObject');
     }.property(),
-    updateOnlineRecordings: function (nextPageToken) {
+    updateOnlineRecordings: function(nextPageToken) {
         var findRecordingsPromise;
 
         if (!this.get('cache.searchDownloadedOnly')) {
@@ -34,13 +34,10 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }
     },
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.set('album.isSelected', true);
         },
-        transitionBack: function () {
-            this.transitionToRoute(this.get('returnRoute'));
-        },
-        download: function () {
+        download: function() {
             var album = this.get('album');
 
             if (album.get('isSelected')) {
@@ -58,7 +55,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 this._super();
             }
         },
-        downloadAllRecordings: function (album, index) {
+        downloadAllRecordings: function(album, index) {
             // TODO: this will be undefined when switching routes while downloading
             var recordings = this.get('recordings'),
                 recording = recordings.objectAt(index),
@@ -74,7 +71,7 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 }
 
                 if (!recording.get('isDownloaded')) {
-                    recording.download().then(function () {
+                    recording.download().then(function() {
                         this.downloadAllRecordings(album, index + 1);
                     });
                 }
@@ -84,12 +81,12 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 }
             }
         },
-        findAllRecordingsByAlbum: function (id, recordings, pageToken) {
+        findAllRecordingsByAlbum: function(id, recordings, pageToken) {
             this.get('store').query('recording', {
                 albumId: id,
                 nextPageToken: pageToken,
                 requestType: 'byAlbum'
-            }).then(function (snippets) {
+            }).then(function(snippets) {
                 var nextPageToken = this.get('cache.nextPageToken');
 
                 recordings.pushObjects(snippets);
