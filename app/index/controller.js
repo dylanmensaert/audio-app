@@ -10,13 +10,13 @@ var suggestionLimit = 10;
 
 export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
     audioPlayer: Ember.inject.service(),
-    queryParams: ['query', 'isSearchMode'],
+    queryParams: ['query'],
     updateLiveQuery: function() {
         this.set('liveQuery', this.get('query'));
     }.observes('query'),
     liveQuery: '',
     query: '',
-    suggestions: null,
+    suggestions: [],
     updateSuggestions: function() {
         var suggestions = this.get('suggestions');
 
@@ -84,10 +84,10 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         return this.find('album');
     }.property('query', 'cache.searchDownloadedOnly'),
     sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
-        return this.sortSnippet(this.get('recordings'), snippet, other);
+        return this.sortSnippet(this.get('recordings'), snippet, other, this.get('cache.searchDownloadedOnly'));
     }),
     sortedAlbums: Ember.computed.sort('albums', function(snippet, other) {
-        return this.sortSnippet(this.get('albums'), snippet, other);
+        return this.sortSnippet(this.get('albums'), snippet, other, this.get('cache.searchDownloadedOnly'));
     }),
     selectedRecordings: function() {
         return this.get('store').peekAll('recording').filterBy('isSelected');
@@ -104,7 +104,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     // TODO: implement isLoading correctly since removed from snippets fetch
     /*isLoading: false,*/
     /*TODO: Implement another way?*/
-    isSearchMode: false,
     actions: {
         search: function() {
             this.set('query', this.get('liveQuery'));
@@ -146,16 +145,10 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
                 cache.showMessage('Already in queue');
             }
         },
-        selectAll: function() {
-            this.get('recordings').setEach('isSelected', true);
-        },
         clear: function() {
             this.set('liveQuery', '');
 
             Ember.$('.mdl-textfield__input').focus();
-        },
-        endSearchMode: function() {
-            this.set('isSearchMode', false);
         },
         deselectAlbums: function(recording) {
             if (recording.get('isSelected')) {

@@ -6,21 +6,21 @@ import logic from 'audio-app/utils/logic';
 export default Ember.Mixin.create({
     cache: Ember.inject.service(),
     // TODO: implement as separate mixin since also needed in some routes?
-    find: function (modelName, query, pageToken) {
+    find: function(modelName, query, pageToken) {
         var result,
             promise;
 
         if (this.get('cache.searchDownloadedOnly')) {
-            result = this.get('store').peekAll(modelName).filter(function (snippet) {
+            result = this.get('store').peekAll(modelName).filter(function(snippet) {
                 return logic.isMatch(snippet.get('name'), query.query);
             });
         } else {
-            query.setNextPageToken = function (nextPageToken) {
+            query.setNextPageToken = function(nextPageToken) {
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
-            promise = new Ember.RSVP.Promise(function (resolve, reject) {
-                this.get('store').query(modelName, query).then(function (snippets) {
+            promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                this.get('store').query(modelName, query).then(function(snippets) {
                     if (!Ember.isEmpty(pageToken)) {
                         snippets.unshiftObjects(this.get(pluralize(modelName)));
                     }
@@ -35,18 +35,5 @@ export default Ember.Mixin.create({
         }
 
         return result;
-    },
-    sortSnippet: function (snippets, snippet, other) {
-        var result = -1;
-
-        if (!this.get('cache.searchDownloadedOnly')) {
-            if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
-                result = 1;
-            }
-        } else if (snippet.get('name') > other.get('name')) {
-            result = 1;
-        }
-
-        return result;
-    },
+    }
 });
