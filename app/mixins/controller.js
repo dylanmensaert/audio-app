@@ -6,14 +6,14 @@ export default Ember.Mixin.create({
     isEditMode: false,
     editAlbum: null,
     // TODO: sorting should not always be dependable by cache.searchDownloadedOnly. So pass extra param?
-    sortSnippet: function(snippets, snippet, other, orderByName) {
+    sortSnippet: function(snippets, snippet, other, keepOriginalOrder) {
         var result = -1;
 
-        if (orderByName) {
-            if (snippet.get('name') > other.get('name')) {
+        if (keepOriginalOrder) {
+            if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
                 result = 1;
             }
-        } else if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
+        } else if (snippet.get('name') > other.get('name')) {
             result = 1;
         }
 
