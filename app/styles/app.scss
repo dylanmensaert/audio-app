@@ -4,8 +4,11 @@
 /* TODO: prefix everything with my- / audio-? */
 
 $audio-height: 50px;
-$menu-height: 45px;
+$menu-height: 64px;
 $vert-width: 35px;
+
+/* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
+
 .bar {
     position: fixed;
     @media screen and (min-width: 1024px) {
@@ -33,10 +36,20 @@ $vert-width: 35px;
 
 .action-bar {
     @extend .bar;
+    z-index: 3;
     top: 0;
-    height: $menu-height;
     font-size: 22px;
-    padding-right: 15px;
+    background-color: #cccccc;
+    @media screen and (max-width: 1024px) {
+        width: calc(100% - 32px);
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    @media screen and (min-width: 1024px) {
+        width: calc(100% - 320px);
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 }
 
 .action-cancel {
@@ -408,4 +421,40 @@ $vert-width: 35px;
 
 .my-slider {
     margin: 0;
+}
+
+.my-active {
+    background-color: #cccccc;
+}
+
+.my-menu-grid {
+    height: $menu-height;
+    padding: 0;
+}
+
+.my-menu-cell {
+    width: calc(14.28571428571429%);
+}
+
+.mdl-button .my-badge[data-badge]:after {
+    top: -11px;
+    right: -24px;
+}
+
+.my-icon-btn {
+    height: 64px;
+    line-height: 64px
+}
+
+.my-menu-btn {
+    @extend .my-icon-btn;
+    width: 100%;
+}
+
+.my-text-right {
+    text-align: right;
+}
+
+.my-text-left {
+    text-align: left;
 }

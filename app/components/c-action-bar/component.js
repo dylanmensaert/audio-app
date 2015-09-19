@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['action-bar', 'btn-material-amber-A700', 'container', 'text-center'],
+    classNames: ['mdl-grid', 'my-menu-grid'],
     models: null,
     actions: {
         deselect: function () {

@@ -1,13 +1,11 @@
-<div class="row">
-    <div class="col-xs-2 text-left">
-        <span class="mdl-badge" data-badge={{models.length}} />
-    </div>
+<div class="my-menu-cell my-text-left">
+    <span class="mdl-badge my-menu-btn" data-badge={{models.length}} />
+</div>
 
-    {{yield}}
+{{yield}}
 
-    <div class="col-xs-2 outer-label">
-        <div {{action 'deselect'}} class="inner-label">
-            <i class="material-icons">cancel</i>
-        </div>
+<div class="my-menu-cell my-icon-btn my-text-right">
+    <div {{action 'deselect'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons">close</i>
     </div>
 </div>

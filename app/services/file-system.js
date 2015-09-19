@@ -125,7 +125,7 @@ export default Ember.Service.extend({
             create: true
         });
     },
-    parseJSON: function (json) {
+    parseJSON: function () /*TODO: implement param, avoiding jshint to throw error: json*/ {
         // TODO: implement correctly
         /*var parsedJSON = JSON.parse(json);
 

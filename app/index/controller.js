@@ -89,6 +89,12 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     sortedAlbums: Ember.computed.sort('albums', function (snippet, other) {
         return this.sortSnippet(this.get('albums'), snippet, other);
     }),
+    selectedRecordings: function () {
+        return this.get('store').peekAll('recording').filterBy('isSelected');
+    }.property('recordings.@each.isSelected'),
+    selectedAlbums: function () {
+        return this.get('store').peekAll('album').filterBy('isSelected');
+    }.property('albums.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {
@@ -96,15 +102,8 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }
     }.observes('recordings.length'),*/
     // TODO: implement isLoading correctly since removed from snippets fetch
-    isLoading: false,
+    /*isLoading: false,*/
     /*TODO: Implement another way?*/
-    updateSelectedRecordings: function () {
-        var selectedRecordings = this.get('recordings').filterBy('isSelected');
-
-        this.set('cache.selectedRecordings', selectedRecordings);
-    }.observes('recordings.@each.isSelected'),
-    originals: Ember.computed.alias('fileSystem.recordings'),
-    selected: Ember.computed.alias('cache.selectedRecordings'),
     isSearchMode: false,
     actions: {
         search: function () {

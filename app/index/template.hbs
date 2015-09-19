@@ -35,11 +35,11 @@
     </div>
   </header>
 
-  <main class="mdl-layout__content mdl-color--grey-100">
-      {{#if cache.selectedRecordings}}
-          {{c-recordings-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
-      {{/if}}
+  {{#if selectedRecordings}}
+      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete'}}
+  {{/if}}
 
+  <main class="mdl-layout__content mdl-color--grey-100">
       {{#if showNotFound}}
         No records found
       {{/if}}
