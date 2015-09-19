@@ -1,59 +1,33 @@
-{{#c-action-bar models=recordings deselect='exitEdit'}}
-    <div class="col-xs-2 outer-label">
-        {{#link-to 'albums' tagName='div' class='inner-label'}}
-            <i class="material-icons">
-              library_music
-            </i>
-        {{/link-to}}
+{{#c-action-bar models=recordings}}
+    <div class="my-menu-cell-offset" />
+
+    <div class="my-menu-cell">
+      {{#if unsavedAlbums}}
+          <div {{action 'save'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnsaved unsavedAlbums.length}}>check</span>
+          </div>
+      {{else}}
+         &nbsp;
+      {{/if}}
     </div>
 
-    <div class="col-xs-2 outer-label">
-        {{#if undownloadedRecordings}}
-          {{#if isEveryUndownloaded}}
-            <!-- TODO: Further refactored if else? -->
-            <div {{action 'download'}} class="material-icons">
-              file_download
-            </div>
-          {{else}}
-            <div {{action 'download'}} class="material-icons mdl-badge" data-badge={{undownloadedRecordings.length}}>
-              file_download
-            </div>
-          {{/if}}
-        {{else}}
-            &nbsp;
-        {{/if}}
+    <div class="my-menu-cell">
+      {{#if isSingle}}
+          <div {{action 'edit'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge">mode_edit</span>
+          </div>
+      {{else}}
+         &nbsp;
+      {{/if}}
     </div>
 
-    <div class="col-xs-2 outer-label">
-        {{#if hasSingle}}
-            {{#if isEditMode}}
-                <div {{action 'exitEdit'}} class="inner-label">
-                    <i class="material-icons">close</i>
-                </div>
-            {{else}}
-                <div {{action 'setupEdit'}} class="inner-label">
-                    <i class="material-icons">mode_edit</i>
-                </div>
-            {{/if}}
-        {{else}}
-            &nbsp;
-        {{/if}}
-    </div>
-
-    <div class="col-xs-2 outer-label">
-        {{#if offlineRecordings}}
-          {{#if isEveryOffline}}
-            <!-- TODO: Further refactored if else? -->
-            <div {{action 'remove'}} class="material-icons">
-              delete
-            </div>
-          {{else}}
-            <div {{action 'remove'}} class="material-icons mdl-badge" data-badge={{offlineRecordings.length}}>
-              delete
-            </div>
-          {{/if}}
-        {{else}}
-            &nbsp;
-        {{/if}}
+    <div class="my-menu-cell">
+      {{#if savedAlbums}}
+          <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEverySaved savedAlbums.length}}>delete</span>
+          </div>
+      {{else}}
+         &nbsp;
+      {{/if}}
     </div>
 {{/c-action-bar}}

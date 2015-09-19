@@ -1,39 +1,36 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    recordings: null,
-    isEditMode: null,
-    isEveryOffline: function () {
-        return this.get('recordings').isEvery('isOffline');
-    }.property('recordings.@each.isOffline'),
-    isEveryUndownloaded: function () {
-        return !this.get('recordings').isAny(function (recording) {
-            return recording.get('isDownloaded') || recording.get('isDownloading');
-        });
-    }.property('recordings.@each.isDownloaded', 'recordings.@each.isDownloading'),
-    offlineRecordings: function () {
-        return this.get('recordings').filterBy('isOffline');
-    }.property('recordings.@each.isOffline'),
-    undownloadedRecordings: function () {
-        return this.get('recordings').filter(function (recording) {
+    classNames: ['action-bar'],
+    albums: null,
+    unsavedAlbums: function() {
+        return this.get('albums').filter(function(recording) {
             return !recording.get('isDownloaded') && !recording.get('isDownloading');
         });
-    }.property('recordings.@each.isDownloaded'),
-    hasSingle: function () {
-        return this.get('recordings.length') === 1;
-    }.property('recordings.length'),
+    }.property('albums.@each.isDownloaded'),
+    isEveryUnsaved: function() {
+        return this.get('unsavedAlbums.length') === this.get('albums.length');
+    }.property('unsavedAlbums.length', 'albums.length'),
+    savedAlbums: function() {
+        return this.get('albums').filter(function(recording) {
+            return recording.get('isDownloaded') || recording.get('isDownloading');
+        });
+    }.property('albums.@each.isDownloaded'),
+    isEverySaved: function() {
+        return this.get('savedAlbums.length') === this.get('albums.length');
+    }.property('savedAlbums.length', 'albums.length'),
+    isSingle: function() {
+        return this.get('albums.length') === 1;
+    }.property('albums.length'),
     actions: {
-        download: function () {
-            this.sendAction('download');
+        save: function() {
+            this.sendAction('save');
         },
-        remove: function () {
-            this.sendAction('remove');
+        edit: function() {
+            this.sendAction('edit');
         },
-        setupEdit: function () {
-            this.sendAction('setupEdit');
-        },
-        exitEdit: function () {
-            this.sendAction('exitEdit');
+        delete: function() {
+            this.sendAction('delete');
         }
     }
 });

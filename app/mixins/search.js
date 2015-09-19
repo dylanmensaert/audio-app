@@ -3,6 +3,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
+// TODO: rename search mixin to find mixin since not only used for index route?
 export default Ember.Mixin.create({
     cache: Ember.inject.service(),
     // TODO: implement as separate mixin since also needed in some routes?

@@ -6,6 +6,7 @@
 $audio-height: 50px;
 $menu-height: 64px;
 $vert-width: 35px;
+$menu-cell-width: 14.28571428571429%;
 
 /* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
 
@@ -396,26 +397,26 @@ $vert-width: 35px;
 
 .my-title-cell--10-col {
     @media (max-width: 479px) {
-        width: calc(50%);
+        width: 50%;
     }
     @media (max-width: 839px) and (min-width: 480px) {
-        width: calc(75%);
+        width: 75%;
     }
     @media (min-width: 840px) {
-        width: calc(83.3333333333%);
+        width: 83.3333333333%;
     }
 }
 
 .my-title-cell--2-col {
     text-align: right;
     @media (max-width: 479px) {
-        width: calc(50%);
+        width: 50%;
     }
     @media (max-width: 839px) and (min-width: 480px) {
-        width: calc(25%);
+        width: 25%;
     }
     @media (min-width: 840px) {
-        width: calc(16.6666666667%);
+        width: 16.6666666667%;
     }
 }
 
@@ -433,7 +434,11 @@ $vert-width: 35px;
 }
 
 .my-menu-cell {
-    width: calc(14.28571428571429%);
+    width: $menu-cell-width;
+}
+
+.my-menu-cell-offset {
+    width: 2 * $menu-cell-width;
 }
 
 .mdl-button .my-badge[data-badge]:after {
@@ -448,7 +453,9 @@ $vert-width: 35px;
 
 .my-menu-btn {
     @extend .my-icon-btn;
+    // TODO: width: 100% makes it overlap with other btns. This looks nice but check if click might result in double actions..
     width: 100%;
+    min-width: initial;
 }
 
 .my-text-right {

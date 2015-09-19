@@ -34,7 +34,9 @@
   </header>
 
   {{#if selectedRecordings}}
-      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete'}}
+      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
+  {{else if selectedAlbums}}
+      {{c-albums-bar albums=selectedAlbums save='save' edit='edit' delete='delete'}}
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
