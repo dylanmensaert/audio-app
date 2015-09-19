@@ -4,7 +4,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     // TODO: add placeholder left and right to row of cells that can help fix cell width layout
     classNames: ['mdl-cell', 'mdl-cell--2-col-phone', 'mdl-cell--2-col-tablet', 'mdl-cell--3-col-desktop', 'my-card-cell'],
-    classNameBindings: ['model.isSelected:active'],
+    classNameBindings: ['model.isSelected:my-active'],
     model: null,
     showQueued: false,
     // TODO: transition via another way?
