@@ -362,10 +362,9 @@ $menu-cell-width: 14.28571428571429%;
     font-size: 18px;
 }
 
-.my-loading {
-    position: fixed;
-    margin: 40% auto;
-    display: block;
+.my-loading-bar {
+    width: 100%;
+    text-align: center;
 }
 
 .my-text {

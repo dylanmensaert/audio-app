@@ -66,8 +66,8 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }.bind(this));
     },
     showNotFound: function() {
-        return !this.get('isLoading') && !this.get('recordings.length') && !this.get('albums.length');
-    }.property('isLoading', 'recordings.length', 'albums.length'),
+        return !this.get('recordings.isPending') && !this.get('albums.isPending') && !this.get('recordings.length') && !this.get('albums.length');
+    }.property('recordings.isPending', 'albums.isPending', 'recordings.length', 'albums.length'),
     // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
     find: function(type) {
         var query = {

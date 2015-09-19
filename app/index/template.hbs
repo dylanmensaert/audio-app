@@ -72,6 +72,12 @@
         </div>
       {{/if}}
 
+      {{#if recordings.isPending}}
+        <div class="my-loading-bar">
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+        </div>
+      {{/if}}
+
       {{#if albums}}
         <div class="my-panel">
             <div class="mdl-grid my-title-grid">
@@ -96,8 +102,10 @@
         </div>
       {{/if}}
 
-      {{#if isLoading}}
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      {{#if albums.isPending}}
+          <div class="my-loading-bar">
+              {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+          </div>
       {{/if}}
   </main>
 

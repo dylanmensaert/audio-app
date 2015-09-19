@@ -56,7 +56,9 @@
         {{/if}}
 
         {{#if isLoading}}
-            {{c-mdl class='mdl-spinner mdl-js-spinner is-active my-loading'}}
+            <div class="my-loading-bar">
+                {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+            </div>
         {{/if}}
     {{/c-endless-scroll}}
   </main>
