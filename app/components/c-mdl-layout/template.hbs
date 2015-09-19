@@ -6,21 +6,21 @@
   </span>
 
   <nav class="mdl-navigation">
-    {{#link-to 'albums' class='mdl-navigation__link'}}
+    <a {{action 'transitionToRoute' 'albums'}}  class='mdl-navigation__link'>
       <i class="material-icons">
         library_music
       </i>
 
       Albums
-    {{/link-to}}
+    </a>
 
-    {{#link-to 'settings' class='mdl-navigation__link'}}
+    <a {{action 'transitionToRoute' 'settings'}}  class='mdl-navigation__link'>
       <i class="material-icons">
         settings
       </i>
 
       Settings
-    {{/link-to}}
+    </a>
   </nav>
 </div>
 

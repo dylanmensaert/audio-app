@@ -1,7 +1,7 @@
 {{#c-mdl-layout}}
-  {{#if isSearchMode}}
-    {{#c-mdl class='mdl-layout__header-row autocomplete-header'}}
-      <label {{action 'endSearchMode'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+  {{#if cache.hasPreviousTransition}}
+    <div class="mdl-layout__header-row autocomplete-header">
+      <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
         </i>
@@ -16,22 +16,20 @@
           <i class="material-icons">close</i>
         {{/c-mdl}}
       {{/if}}
-    {{/c-mdl}}
+    </div>
   {{/if}}
 
-  <header class="mdl-layout__header {{if isSearchMode 'hidden'}}">
+  <header class="mdl-layout__header {{if cache.hasPreviousTransition 'hidden'}}">
     <div class="mdl-layout__header-row">
-      <div class="mdl-textfield mdl-js-textfield">
-        <input value={{liveQuery}} {{action 'startSearchMode'}} class="mdl-textfield__input">
-
-        <label class="mdl-textfield__label"></label>
-      </div>
+      {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
 
       <div class="mdl-layout-spacer"></div>
 
-      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
-      </button>
+      {{#if liveQuery}}
+        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+          <i class="material-icons">close</i>
+        {{/c-mdl}}
+      {{/if}}
     </div>
   </header>
 

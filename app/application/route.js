@@ -1,18 +1,18 @@
 /* global document: true */
 import Ember from 'ember';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
-import updateTitleMixin from 'audio-app/mixins/update-title';
+import routeMixin from 'audio-app/mixins/route';
 
-var generateRandom = function (min, max) {
+var generateRandom = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export default Ember.Route.extend(updateTitleMixin, {
+export default Ember.Route.extend(routeMixin, {
     audioPlayer: Ember.inject.service(),
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),
     title: 'audio',
-    previous: function () {
+    previous: function() {
         var queue,
             currentIndex,
             previousIndex,
@@ -33,13 +33,13 @@ export default Ember.Route.extend(updateTitleMixin, {
 
         this.play(previousRecording);
     },
-    next: function () {
+    next: function() {
         var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
             recordingId,
             nextRecording,
             unplayedRecordingIds;
 
-        unplayedRecordingIds = queue.filter(function (recordingId) {
+        unplayedRecordingIds = queue.filter(function(recordingId) {
             return !this.get('cache.playedRecordingIds').contains(recordingId);
         }.bind(this));
 
@@ -57,7 +57,7 @@ export default Ember.Route.extend(updateTitleMixin, {
 
         this.play(nextRecording);
     },
-    play: function (recording) {
+    play: function(recording) {
         var fileSystem = this.get('fileSystem'),
             offlineRecordings = fileSystem.get('recordings'),
             audioPlayer = this.get('audioPlayer'),
@@ -102,14 +102,14 @@ export default Ember.Route.extend(updateTitleMixin, {
         }
 
         if (!Ember.isEmpty(recording) && fileSystem.get('setDownloadBeforePlaying') && !recording.get('isDownloaded')) {
-            recording.download().then(function () {
+            recording.download().then(function() {
                 audioPlayer.play(recording);
             });
         } else {
             audioPlayer.play(recording);
         }
     },
-    downloadRecordings: function () {
+    downloadRecordings: function() {
         var fileSystem = this.get('fileSystem'),
             cache = this.get('cache'),
             recordings;
@@ -122,61 +122,61 @@ export default Ember.Route.extend(updateTitleMixin, {
                 cache.showMessage('Downloading download-later');
 
                 // TODO: Handle multiple 'observe' calls before download finishes
-                recordings.forEach(function (recording) {
+                recordings.forEach(function(recording) {
                     recording.download();
                 });
             }
         }
     }.observes('fileSystem.setDownloadLaterOnMobile', 'cache.isMobileConnection', 'recordings.@each.isDownloadLater'),
     actions: {
-        loading: function () {
+        loading: function() {
             if (this.get('controller')) {
                 this.set('controller.isLoading', true);
 
-                this.router.one('didTransition', function () {
+                this.router.one('didTransition', function() {
                     this.set('controller.isLoading', false);
                 }.bind(this));
             }
         },
-        error: function (error) {
+        error: function(error) {
             if (this.get('controller')) {
                 this.set('controller.error', error);
             }
         },
-        updateTitle: function (tokens) {
+        updateTitle: function(tokens) {
             this._super(tokens);
 
             tokens.reverse();
             document.title = tokens.join(' - ');
         },
-        play: function (recording) {
+        play: function(recording) {
             this.play(recording);
         },
-        pause: function () {
+        pause: function() {
             this.get('audioPlayer').pause();
         },
-        previous: function () {
+        previous: function() {
             this.previous();
         },
-        next: function () {
+        next: function() {
             this.next();
         },
-        didTransition: function () {
+        didTransition: function() {
             var audioPlayer = this.get('audioPlayer'),
                 cache = this.get('cache'),
                 audioSlider;
 
             audioSlider = AudioSlider.create({
-                onSlideStop: function (value) {
+                onSlideStop: function(value) {
                     audioPlayer.setCurrentTime(value);
                 }
             });
 
-            audioPlayer.addObserver('currentTime', audioPlayer, function () {
+            audioPlayer.addObserver('currentTime', audioPlayer, function() {
                 audioSlider.setValue(this.get('currentTime'));
             });
 
-            audioPlayer.addObserver('duration', audioPlayer, function () {
+            audioPlayer.addObserver('duration', audioPlayer, function() {
                 audioSlider.set('max', this.get('duration'));
             });
 
@@ -184,9 +184,11 @@ export default Ember.Route.extend(updateTitleMixin, {
             // TODO: implement fileSystem via inject?
             cache.set('fileSystem', this.get('fileSystem'));
 
+            cache.set('transitionToRoute', this.transitionTo.bind(this));
+
             audioPlayer.set('didEnd', this.next.bind(this));
 
-            this.set('fileSystem.didParseJSON', function () {
+            this.set('fileSystem.didParseJSON', function() {
                 var recording = this.get('recordings').findBy('id', this.get('playingRecordingId'));
 
                 if (!Ember.isEmpty(recording)) {
@@ -194,10 +196,20 @@ export default Ember.Route.extend(updateTitleMixin, {
                 }
             });
         },
-        transitionToQueue: function () {
+        transitionToQueue: function() {
             this.get('fileSystem.recordings').setEach('isSelected', false);
 
             this.transitionToRoute('queue.index');
+        },
+        transitionToPrevious: function() {
+            var completedTransitions = this.get('cache.completedTransitions'),
+                lastIndex = completedTransitions.get('length') - 1,
+                previousTransition = completedTransitions.objectAt(lastIndex - 1);
+
+            completedTransitions.removeAt(lastIndex);
+            completedTransitions.removeAt(lastIndex - 1);
+
+            previousTransition.retry();
         }
     }
 });

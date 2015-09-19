@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import updateTitleMixin from 'audio-app/mixins/update-title';
+import routeMixin from 'audio-app/mixins/route';
 
-export default Ember.Route.extend(updateTitleMixin, {
+export default Ember.Route.extend(routeMixin, {
     title: 'Albums'
 });

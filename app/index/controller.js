@@ -154,9 +154,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
 
             Ember.$('.mdl-textfield__input').focus();
         },
-        startSearchMode: function() {
-            this.set('isSearchMode', true);
-        },
         endSearchMode: function() {
             this.set('isSearchMode', false);
         },

@@ -6,21 +6,21 @@ export default Ember.Mixin.create({
     isEditMode: false,
     editAlbum: null,
     actions: {
-        remove: function () {
+        remove: function() {
             var originals = this.get('originals');
 
-            this.get('selected').forEach(function (model) {
+            this.get('selected').forEach(function(model) {
                 originals.removeObject(model);
             });
         },
-        setupEdit: function () {
+        setupEdit: function() {
             var name = this.get('selected.firstObject.name');
 
             this.set('liveQuery', name);
             this.set('editAlbum', 'Edit: ' + name);
             this.set('isEditMode', true);
         },
-        saveEdit: function () {
+        saveEdit: function() {
             var singleSelected = this.get('selected.firstObject');
 
             singleSelected.set('name', this.get('liveQuery'));
@@ -31,7 +31,7 @@ export default Ember.Mixin.create({
 
             this.send('exitEdit');
         },
-        exitEdit: function () {
+        exitEdit: function() {
             this.set('liveQuery', '');
             this.set('isEditMode', false);
         }
