@@ -39,7 +39,7 @@
 
             <div class="mdl-grid">
                 {{#each sortedRecordings as |recording|}}
-                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued toggleIsSelected='deselectAlbums'}}
+                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
 
                     <div class="my-recording-separator">
                         <div class="my-recording-line" />

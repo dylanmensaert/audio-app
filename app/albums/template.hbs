@@ -39,7 +39,7 @@
 
             <div class="mdl-grid">
                 {{#each sortedAlbums as |album|}}
-                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleIsSelected='deselectAlbums'}}
+                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
 
                     <div class="my-album-separator">
                         <div class="my-album-line" />
