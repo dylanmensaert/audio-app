@@ -1,9 +1,29 @@
+/* global Blob */
+
 import Ember from 'ember';
+import pluralize from 'ember-inflector';
 import meta from 'meta-data';
 
+var write = function() {
+    var json = this.serialize();
+
+    this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
+        fileEntry.createWriter(function(fileWriter) {
+            fileWriter.onwriteend = function() {
+                if (!fileWriter.length) {
+                    fileWriter.write(new Blob([json], {
+                        type: 'application/json'
+                    }));
+                }
+            };
+
+            fileWriter.truncate(0);
+        });
+    });
+};
+
 export default Ember.Mixin.create({
-    // TODO: really implement via cache object?
-    cache: Ember.inject.service(),
+    fileSystem: Ember.inject.service(),
     buildUrlByEndpoint: function(endpoint, maxResults, nextPageToken) {
         var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet&maxResults=' + maxResults + '&key=' + meta.key;
 
@@ -22,9 +42,6 @@ export default Ember.Mixin.create({
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
             Ember.$.getJSON(url).then(function(payload) {
-                // TODO: search alternative for working with cache?
-                /*cache.set('nextPageToken', payload.nextPageToken);*/
-
                 query.setNextPageToken(payload.nextPageToken);
 
                 Ember.run(null, resolve, payload);
@@ -32,5 +49,22 @@ export default Ember.Mixin.create({
                 Ember.run(null, reject, response);
             });
         });
+    },
+    createRecord: function(store, type, snapshot) {
+        var fileSystem = this.get('fileSystem');
+
+        fileSystem.get(pluralize(type)).pushObject(snapshot.get('id'));
+
+        Ember.run.debounce(fileSystem, write, 100);
+    },
+    updateRecord: function() {
+        Ember.run.debounce(this.get('fileSystem'), write, 100);
+    },
+    deleteRecord: function(store, type, snapshot) {
+        var fileSystem = this.get('fileSystem');
+
+        fileSystem.get(pluralize(type) + 'Ids').removeObject(snapshot.get('id'));
+
+        Ember.run.debounce(fileSystem, write, 100);
     }
 });

@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
-import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
-export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
+export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     init: function() {
         this._super();
 

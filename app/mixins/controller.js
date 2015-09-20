@@ -1,10 +1,9 @@
+import pluralize from 'ember-inflector';
+import DS from 'ember-data';
 import Ember from 'ember';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
-    selected: null,
-    originals: null,
-    isEditMode: false,
-    editAlbum: null,
     // TODO: sorting should not always be dependable by cache.searchDownloadedOnly. So pass extra param?
     sortSnippet: function(snippets, snippet, other, keepOriginalOrder) {
         var result = -1;
@@ -19,35 +18,35 @@ export default Ember.Mixin.create({
 
         return result;
     },
-    actions: {
-        remove: function() {
-            var originals = this.get('originals');
+    // TODO: implement as separate mixin since also needed in some routes?
+    find: function(modelName, query, searchOnline, pageToken) {
+        var result,
+            promise;
 
-            this.get('selected').forEach(function(model) {
-                originals.removeObject(model);
+        if (!searchOnline) {
+            result = this.get('store').peekAll(modelName).filter(function(snippet) {
+                return logic.isMatch(snippet.get('name'), query.query);
             });
-        },
-        setupEdit: function() {
-            var name = this.get('selected.firstObject.name');
+        } else {
+            query.setNextPageToken = function(nextPageToken) {
+                this.set('nextPageToken', nextPageToken);
+            }.bind(this);
 
-            this.set('liveQuery', name);
-            this.set('editAlbum', 'Edit: ' + name);
-            this.set('isEditMode', true);
-        },
-        saveEdit: function() {
-            var singleSelected = this.get('selected.firstObject');
+            promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                this.get('store').query(modelName, query).then(function(snippets) {
+                    if (!Ember.isEmpty(pageToken)) {
+                        snippets.unshiftObjects(this.get(pluralize(modelName)));
+                    }
 
-            singleSelected.set('name', this.get('liveQuery'));
+                    resolve(snippets);
+                }.bind(this), reject);
+            }.bind(this));
 
-            if (!this.get('originals').isAny('id', singleSelected.get('id'))) {
-                this.get('originals').pushObject(singleSelected);
-            }
-
-            this.send('exitEdit');
-        },
-        exitEdit: function() {
-            this.set('liveQuery', '');
-            this.set('isEditMode', false);
+            result = DS.PromiseArray.create({
+                promise: promise
+            });
         }
+
+        return result;
     }
 });

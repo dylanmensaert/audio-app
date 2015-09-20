@@ -3,13 +3,14 @@ import meta from 'meta-data';
 import Suggestion from 'audio-app/components/c-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/mixins/controller';
-import searchMixin from 'audio-app/mixins/search';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
+import albumActionsMixin from 'audio-app/recording/actions-mixin';
 
 var suggestionLimit = 10;
 
-export default Ember.Controller.extend(controllerMixin, searchMixin, recordingActionsMixin, {
+export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, albumActionsMixin, {
     audioPlayer: Ember.inject.service(),
+    cache: Ember.inject.service(),
     queryParams: ['query'],
     updateLiveQuery: function() {
         this.set('liveQuery', this.get('query'));
@@ -66,16 +67,18 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
         }.bind(this));
     },
     showNotFound: function() {
-        return !this.get('recordings.isPending') && !this.get('albums.isPending') && !this.get('recordings.length') && !this.get('albums.length');
-    }.property('recordings.isPending', 'albums.isPending', 'recordings.length', 'albums.length'),
-    // TODO: DO SAME FOR ALBUMS AND DELETE OTHER CODE + TEST
+        return !this.get('isLoading') && !this.get('recordings.length') && !this.get('albums.length');
+    }.property('isLoading', 'recordings.length', 'albums.length'),
+    isLoading: function() {
+        return this.get('recordings.isPending') || this.get('albums.isPending');
+    }.property('recordings.isPending', 'albums.isPending'),
     find: function(type) {
         var query = {
             maxResults: 4,
             query: this.get('query')
         };
 
-        return this._super(type, query);
+        return this._super(type, query, !this.get('cache.searchDownloadedOnly'));
     },
     recordings: function() {
         return this.find('recording');
@@ -107,43 +110,6 @@ export default Ember.Controller.extend(controllerMixin, searchMixin, recordingAc
     actions: {
         search: function() {
             this.set('query', this.get('liveQuery'));
-        },
-        pushToDownload: function(recording) {
-            var cache = this.get('cache');
-
-            if (!recording.get('isDownloaded')) {
-                if (!cache.isMobileConnection()) {
-                    recording.download().then(function() {
-
-                    }, function() {
-                        // TODO: show error?
-                        cache.showMessage('download aborted');
-                    });
-                } else {
-                    this.get('fileSystem.albums').findBy('name', 'Download later').get('recordingIds').pushObject(recording.get('id'));
-                }
-            } else {
-                cache.showMessage('already downloaded');
-            }
-        },
-        pushToQueue: function(recording) {
-            var queue = this.get('fileSystem.albums').findBy('name', 'Queue').get('recordingIds'),
-                cache = this.get('cache');
-
-            if (!queue.contains(recording.get('id'))) {
-                if (!recording.get('isDownloaded')) {
-                    recording.download().then(function() {}, function() {
-                        // TODO: show error?
-                        cache.showMessage('Download aborted');
-                    }.bind(this));
-                }
-
-                this.get('fileSystem.queue').pushObject(recording.get('id'));
-
-                cache.showMessage('Added to queue');
-            } else {
-                cache.showMessage('Already in queue');
-            }
         },
         clear: function() {
             this.set('liveQuery', '');

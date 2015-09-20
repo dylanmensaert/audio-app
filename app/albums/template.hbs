@@ -1,50 +1,33 @@
-{{#c-mdl-layout}}
-  {{#if isSearchMode}}
-    {{#c-mdl class='mdl-layout__header-row autocomplete-header'}}
-      <label {{action 'endSearchMode'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-        <i class="material-icons">
-          arrow_back
-        </i>
-      </label>
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  <div class='mdl-layout__header-row autocomplete-header'>
+    <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </label>
 
-      {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
+    <span class="mdl-layout-title">
+      {{query}}
+    </span>
 
-      <div class="mdl-layout-spacer"></div>
+    <div class="mdl-layout-spacer"></div>
 
-      {{#if liveQuery}}
-        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">close</i>
-        {{/c-mdl}}
-      {{/if}}
-    {{/c-mdl}}
+    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+    </button>
+  </div>
+
+  {{#if selectedAlbums}}
+      {{c-albums-bar albums=selectedAlbums save='save' edit='edit' delete='delete'}}
   {{/if}}
 
-  <header class="mdl-layout__header {{if isSearchMode 'hidden'}}">
-    <div class="mdl-layout__header-row">
-      <div class="mdl-textfield mdl-js-textfield">
-        <input value={{liveQuery}} {{action 'startSearchMode'}} class="mdl-textfield__input">
-
-        <label class="mdl-textfield__label"></label>
-      </div>
-
-      <div class="mdl-layout-spacer"></div>
-
-      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
-      </button>
-    </div>
-  </header>
-
   <main class="mdl-layout__content mdl-color--grey-100">
-      {{#if cache.selectedRecordings}}
-          {{c-recording recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
-      {{/if}}
+    {{#if showNotFound}}
+      No records found
+    {{/if}}
 
-      {{#if showNotFound}}
-        No records found
-      {{/if}}
-
-      {{#if albums}}
+    {{#if albums}}
+      {{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
         <div class="my-panel">
             <div class="mdl-grid my-title-grid">
                 <div class="my-title-cell--10-col">
@@ -52,28 +35,27 @@
                         Albums
                     </h4>
                 </div>
-
-                <div class="my-title-cell--2-col">
-                    <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
-                        more
-                    </div>
-                </div>
             </div>
 
-            <div class="mdl-grid my-album-grid">
-                {{#each albums as |album|}}
-                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued}}
+            <div class="mdl-grid">
+                {{#each sortedAlbums as |album|}}
+                    {{c-album model=album action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleIsSelected='deselectAlbums'}}
+
+                    <div class="my-album-separator">
+                        <div class="my-album-line" />
+                    </div>
                 {{/each}}
             </div>
         </div>
-      {{/if}}
+      {{/c-endless-scroll}}
+    {{/if}}
 
-      {{#if isLoading}}
-          <div class="my-loading-bar">
-              {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-          </div>
-      {{/if}}
+    {{#if albums.isPending}}
+      <div class="my-loading-bar">
+        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      </div>
+    {{/if}}
   </main>
-{{/c-mdl-layout}}
 
-{{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+  {{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{/c-mdl-layout}}

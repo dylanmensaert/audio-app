@@ -17,21 +17,21 @@
         {{/c-mdl}}
       {{/if}}
     </div>
+  {{else}}
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
+
+        <div class="mdl-layout-spacer"></div>
+
+        {{#if liveQuery}}
+          {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+            <i class="material-icons">close</i>
+          {{/c-mdl}}
+        {{/if}}
+      </div>
+    </header>
   {{/if}}
-
-  <header class="mdl-layout__header {{if cache.hasPreviousTransition 'hidden'}}">
-    <div class="mdl-layout__header-row">
-      {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
-
-      <div class="mdl-layout-spacer"></div>
-
-      {{#if liveQuery}}
-        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">close</i>
-        {{/c-mdl}}
-      {{/if}}
-    </div>
-  </header>
 
   {{#if selectedRecordings}}
       {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
@@ -42,6 +42,12 @@
   <main class="mdl-layout__content mdl-color--grey-100">
       {{#if showNotFound}}
         No records found
+      {{/if}}
+
+      {{#if isLoading}}
+        <div class="my-loading-bar">
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+        </div>
       {{/if}}
 
       {{#if recordings}}
@@ -72,12 +78,6 @@
         </div>
       {{/if}}
 
-      {{#if recordings.isPending}}
-        <div class="my-loading-bar">
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-        </div>
-      {{/if}}
-
       {{#if albums}}
         <div class="my-panel">
             <div class="mdl-grid my-title-grid">
@@ -100,12 +100,6 @@
                 {{/each}}
             </div>
         </div>
-      {{/if}}
-
-      {{#if albums.isPending}}
-          <div class="my-loading-bar">
-              {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-          </div>
       {{/if}}
   </main>
 

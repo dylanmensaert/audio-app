@@ -7,9 +7,9 @@ export default Ember.Mixin.create({
     name: DS.attr('string'),
     thumbnail: DS.attr('string'),
     isSelected: false,
-    // TODO: check if thumbnail property is needed for album too or just take first record of that album? If not, check where strip() is used..
+    // TODO: check if thumbnail property is needed for album too or just take first record of that album? If not, check where serialize() is used..
     propertyNames: ['id', 'name', 'thumbnail'],
-    strip: function() {
+    serialize: function() {
         return this.getProperties(this.get('propertyNames'));
     }
 });

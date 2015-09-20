@@ -20,7 +20,9 @@ export default Ember.Mixin.create({
         var snippet = store.peekRecord(modelName, id);
 
         if (snippet) {
-            snippet = snippet.strip();
+            snippet = snippet.serialize();
+
+            delete snippet.id;
         } else {
             snippet = {
                 name: item.snippet.title,
@@ -29,9 +31,5 @@ export default Ember.Mixin.create({
         }
 
         return snippet;
-    },
-    // TODO: implement
-    serialize: function(snapshot) {
-        return snapshot;
     }
 });
