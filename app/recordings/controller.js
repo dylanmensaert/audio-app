@@ -34,7 +34,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
             this.get('recordings').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.propertyWillChange('recordings');
+            this.notifyPropertyChange('recordings');
         }
     }
 });

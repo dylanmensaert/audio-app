@@ -23,33 +23,31 @@
       {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
   {{/if}}
 
-  <main class="mdl-layout__content mdl-color--grey-100">
+  {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
     {{#if showNotFound}}
       No records found
     {{/if}}
 
     {{#if recordings}}
-      {{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
-        <div class="my-panel">
-            <div class="mdl-grid my-title-grid">
-                <div class="my-title-cell--10-col">
-                    <h4 class="my-title-text">
-                        Recordings
-                    </h4>
-                </div>
-            </div>
+      <div class="my-panel">
+          <div class="mdl-grid my-title-grid">
+              <div class="my-title-cell--10-col">
+                  <h4 class="my-title-text">
+                      Recordings
+                  </h4>
+              </div>
+          </div>
 
-            <div class="mdl-grid">
-                {{#each sortedRecordings as |recording|}}
-                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
+          <div class="mdl-grid">
+              {{#each sortedRecordings as |recording|}}
+                  {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
 
-                    <div class="my-recording-separator">
-                        <div class="my-recording-line" />
-                    </div>
-                {{/each}}
-            </div>
-        </div>
-      {{/c-endless-scroll}}
+                  <div class="my-recording-separator">
+                      <div class="my-recording-line" />
+                  </div>
+              {{/each}}
+          </div>
+      </div>
     {{/if}}
 
     {{#if recordings.isPending}}
@@ -57,7 +55,7 @@
         {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
       </div>
     {{/if}}
-  </main>
+  {{/c-endless-scroll}}
 
   {{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
 {{/c-mdl-layout}}

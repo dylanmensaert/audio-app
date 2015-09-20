@@ -34,7 +34,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
             this.get('albums').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.propertyWillChange('albums');
+            this.notifyPropertyChange('albums');
         }
     }
 });
