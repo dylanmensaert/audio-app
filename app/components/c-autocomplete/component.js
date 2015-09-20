@@ -3,28 +3,29 @@ import ComponentMdl from 'audio-app/components/c-mdl';
 
 var keyCodeUp = 38,
     keyCodeDown = 40,
-    keyCodeEscape = 27;
+    keyCodeEscape = 27,
+    timer;
 
 export default ComponentMdl.extend({
     classNames: ['mdl-textfield', 'mdl-js-textfield'],
     liveQuery: '',
     suggestions: null,
     showSuggestions: false,
-    showAutoComplete: function () {
+    showAutoComplete: function() {
         return this.get('showSuggestions') && this.get('suggestions.length');
     }.property('showSuggestions', 'suggestions.length'),
-    updateShowSuggestions: function () {
+    updateShowSuggestions: function() {
         this.set('showSuggestions', !Ember.isEmpty(this.get('liveQuery')));
     }.observes('liveQuery'),
-    keyDown: function (event) {
+    keyDown: function(event) {
         if (event.keyCode === keyCodeUp) {
-            this.selectAdjacent(function (selectedIndex) {
+            this.selectAdjacent(function(selectedIndex) {
                 return selectedIndex - 1;
             });
 
             event.preventDefault();
         } else if (event.keyCode === keyCodeDown) {
-            this.selectAdjacent(function (selectedIndex) {
+            this.selectAdjacent(function(selectedIndex) {
                 return selectedIndex + 1;
             });
 
@@ -33,7 +34,7 @@ export default ComponentMdl.extend({
             this.hideSuggestions();
         }
     },
-    selectAdjacent: function (getAdjacentIndex) {
+    selectAdjacent: function(getAdjacentIndex) {
         var suggestions = this.get('suggestions'),
             selectedSuggestion,
             selectedIndex,
@@ -60,8 +61,11 @@ export default ComponentMdl.extend({
             this.send('searchSelected');
         }
     },
+    willDestroyElement: function() {
+        Ember.run.cancel(timer);
+    },
     // TODO: improve logic by setting isSelected false when showSuggestions is true after false
-    hideSuggestions: function () {
+    hideSuggestions: function() {
         var selectedSuggestion = this.get('suggestions').findBy('isSelected');
 
         if (!Ember.isEmpty(selectedSuggestion)) {
@@ -71,7 +75,7 @@ export default ComponentMdl.extend({
         this.set('showSuggestions', false);
     },
     actions: {
-        searchSelected: function () {
+        searchSelected: function() {
             var suggestions = this.get('suggestions'),
                 selectedSuggestion = suggestions.findBy('isSelected');
 
@@ -83,7 +87,7 @@ export default ComponentMdl.extend({
 
             this.sendAction('action');
         },
-        searchSuggestion: function (suggestion) {
+        searchSuggestion: function(suggestion) {
             this.set('liveQuery', suggestion.get('value'));
 
             this.hideSuggestions();
@@ -91,8 +95,8 @@ export default ComponentMdl.extend({
             this.sendAction('action');
         },
         // TODO: Could cause asyncrounous problems since click event needs to be registered first..
-        didFocusOut: function () {
-            Ember.run.later(this, this.hideSuggestions, 100);
+        didFocusOut: function() {
+            timer = Ember.run.later(this, this.hideSuggestions, 100);
         }
     }
 });

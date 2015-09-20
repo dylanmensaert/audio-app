@@ -19,6 +19,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
         return this.sortSnippet(this.get('recordings'), snippet, other, !this.get('cache.searchDownloadedOnly'));
     }),
+    selectedRecordings: function() {
+        return this.get('store').peekAll('recording').filterBy('isSelected');
+    }.property('recordings.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('recordings.length')) {

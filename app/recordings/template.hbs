@@ -17,6 +17,8 @@
     </button>
   </div>
 
+  <header class="mdl-layout__header hidden" />
+
   {{#if selectedRecordings}}
       {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
   {{/if}}

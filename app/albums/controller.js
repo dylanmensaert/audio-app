@@ -19,6 +19,9 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
     sortedAlbums: Ember.computed.sort('albums', function(snippet, other) {
         return this.sortSnippet(this.get('albums'), snippet, other, !this.get('cache.searchDownloadedOnly'));
     }),
+    selectedAlbums: function() {
+        return this.get('store').peekAll('album').filterBy('isSelected');
+    }.property('albums.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('albums.length')) {
