@@ -9,6 +9,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     query: '',
     recordings: [],
     isPending: true,
+    isLocked: false,
     updateRecordings: function() {
         var query = {
             maxResults: 50,
@@ -18,6 +19,8 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
 
         this.find('recording', query, !this.get('cache.searchDownloadedOnly')).then(function(recordingsPromise) {
             this.get('recordings').pushObjects(recordingsPromise.toArray());
+
+            this.set('isLocked', false);
 
             if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
@@ -42,7 +45,11 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
             this.get('recordings').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.updateRecordings();
+            if (!this.get('isLocked')) {
+                this.set('isLocked', true);
+
+                this.updateRecordings();
+            }
         }
     }
 });

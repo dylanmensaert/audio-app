@@ -9,6 +9,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
     query: '',
     albums: [],
     isPending: true,
+    isLocked: false,
     updateAlbums: function() {
         var query = {
             maxResults: 50,
@@ -18,6 +19,8 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
 
         this.find('album', query, !this.get('cache.searchDownloadedOnly')).then(function(albumsPromise) {
             this.get('albums').pushObjects(albumsPromise.toArray());
+
+            this.set('isLocked', false);
 
             if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
@@ -42,7 +45,11 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
             this.get('albums').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.updateAlbums();
+            if (!this.get('isLocked')) {
+                this.set('isLocked', true);
+
+                this.updateAlbums();
+            }
         }
     }
 });
