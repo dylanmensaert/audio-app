@@ -12,6 +12,9 @@ export default Ember.Route.extend(routeMixin, {
     fileSystem: Ember.inject.service(),
     cache: Ember.inject.service(),
     title: 'audio',
+    beforeModel: function() {
+        return this.get('fileSystem').forge();
+    },
     previous: function() {
         var queue,
             currentIndex,
@@ -164,7 +167,15 @@ export default Ember.Route.extend(routeMixin, {
         didTransition: function() {
             var audioPlayer = this.get('audioPlayer'),
                 cache = this.get('cache'),
+                playingRecording,
                 audioSlider;
+
+            playingRecording = this.get('store').peekRecord('recording', this.get('fileSystem.playingRecordingId'));
+
+            if (!Ember.isEmpty(playingRecording)) {
+                audioPlayer.load(playingRecording);
+            }
+
 
             audioSlider = AudioSlider.create({
                 onSlideStop: function(value) {
@@ -181,18 +192,8 @@ export default Ember.Route.extend(routeMixin, {
             });
 
             cache.set('audioSlider', audioSlider);
-            // TODO: implement fileSystem via inject?
-            cache.set('fileSystem', this.get('fileSystem'));
 
             audioPlayer.set('didEnd', this.next.bind(this));
-
-            this.set('fileSystem.didParseJSON', function() {
-                var recording = this.get('recordings').findBy('id', this.get('playingRecordingId'));
-
-                if (!Ember.isEmpty(recording)) {
-                    audioPlayer.load(recording);
-                }
-            });
         },
         transitionToQueue: function() {
             this.get('fileSystem.recordings').setEach('isSelected', false);

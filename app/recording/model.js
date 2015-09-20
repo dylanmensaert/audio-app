@@ -5,7 +5,7 @@ import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/model';
 import meta from 'meta-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
-import pluralize from 'ember-inflector';
+import Inflector from 'ember-inflector';
 
 var signateUrl,
     extractExtension;
@@ -51,7 +51,7 @@ export default DS.Model.extend(modelMixin, {
     }.property('fileSystem.albums.@each.recordingIds.[]', 'id'),
     createFilePath: function(type, extension) {
         var fileName = this.get('id') + '.' + extension,
-            directory = pluralize(type);
+            directory = Inflector.inflector.pluralize(type);
 
         return directory + '/' + fileName;
     },

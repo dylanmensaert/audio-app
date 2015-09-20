@@ -86,11 +86,11 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, a
     albums: function() {
         return this.find('album');
     }.property('query', 'cache.searchDownloadedOnly'),
-    sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
-        return this.sortSnippet(this.get('recordings'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+    sortedRecordings: Ember.computed.sort('recordings', function(recording, other) {
+        return this.sortSnippet(this.get('recordings'), recording, other, !this.get('cache.searchDownloadedOnly'));
     }),
-    sortedAlbums: Ember.computed.sort('albums', function(snippet, other) {
-        return this.sortSnippet(this.get('albums'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+    sortedAlbums: Ember.computed.sort('albums', function(album, other) {
+        return this.sortSnippet(this.get('albums'), album, other, !this.get('cache.searchDownloadedOnly'));
     }),
     selectedRecordings: function() {
         return this.get('store').peekAll('recording').filterBy('isSelected');

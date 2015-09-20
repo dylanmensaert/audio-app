@@ -1,4 +1,4 @@
-import pluralize from 'ember-inflector';
+import Inflector from 'ember-inflector';
 import DS from 'ember-data';
 import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
             promise = new Ember.RSVP.Promise(function(resolve, reject) {
                 this.get('store').query(modelName, query).then(function(snippets) {
                     if (!Ember.isEmpty(pageToken)) {
-                        snippets.unshiftObjects(this.get(pluralize(modelName)));
+                        snippets.unshiftObjects(this.get(Inflector.inflector.pluralize(modelName)));
                     }
 
                     resolve(snippets);

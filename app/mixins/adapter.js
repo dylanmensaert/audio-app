@@ -1,26 +1,6 @@
-/* global Blob */
-
 import Ember from 'ember';
-import pluralize from 'ember-inflector';
+import Inflector from 'ember-inflector';
 import meta from 'meta-data';
-
-var write = function() {
-    var json = this.serialize();
-
-    this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
-        fileEntry.createWriter(function(fileWriter) {
-            fileWriter.onwriteend = function() {
-                if (!fileWriter.length) {
-                    fileWriter.write(new Blob([json], {
-                        type: 'application/json'
-                    }));
-                }
-            };
-
-            fileWriter.truncate(0);
-        });
-    });
-};
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
@@ -53,18 +33,20 @@ export default Ember.Mixin.create({
     createRecord: function(store, type, snapshot) {
         var fileSystem = this.get('fileSystem');
 
-        fileSystem.get(pluralize(type)).pushObject(snapshot.get('id'));
+        fileSystem.get(Inflector.inflector.pluralize(type)).pushObject(snapshot.get('id'));
 
-        Ember.run.debounce(fileSystem, write, 100);
+        Ember.run.debounce(fileSystem, fileSystem.write, 100);
     },
     updateRecord: function() {
-        Ember.run.debounce(this.get('fileSystem'), write, 100);
+        var fileSystem = this.get('fileSystem');
+
+        Ember.run.debounce(fileSystem, fileSystem.write, 100);
     },
     deleteRecord: function(store, type, snapshot) {
         var fileSystem = this.get('fileSystem');
 
-        fileSystem.get(pluralize(type) + 'Ids').removeObject(snapshot.get('id'));
+        fileSystem.get(Inflector.inflector.pluralize(type) + 'Ids').removeObject(snapshot.get('id'));
 
-        Ember.run.debounce(fileSystem, write, 100);
+        Ember.run.debounce(fileSystem, fileSystem.write, 100);
     }
 });

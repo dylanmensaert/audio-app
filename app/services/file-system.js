@@ -1,4 +1,4 @@
-/* global window, FileReader, PERSISTENT, Number, requestFileSystem */
+/* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
 
 import Ember from 'ember';
 // TODO: implement correctly
@@ -9,27 +9,27 @@ window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileS
 
 export default Ember.Service.extend({
     store: Ember.inject.service(),
-    init: function() {
-        this._super();
-
-        this.forge();
-    },
     instance: null,
-    albumsIds: [],
+    albumIds: [],
     recordingsIds: [],
     playingRecordingId: null,
     setDownloadedOnlyOnMobile: true,
     setDownloadLaterOnMobile: true,
     setDownloadBeforePlaying: false,
-    didParseJSON: null,
     // TODO: http://stackoverflow.com/questions/30109066/html-5-file-system-how-to-increase-persistent-storage
     forge: function() {
-        navigator.webkitPersistentStorage.queryUsageAndQuota(function(usage, quota) {
-            if (quota > usage) {
-                this.create(quota).then(this.createFiles.bind(this));
-            } else {
-                this.increaseQuota().then(this.createFiles.bind(this));
-            }
+        return new Ember.RSVP.Promise(function(resolve) {
+            navigator.webkitPersistentStorage.queryUsageAndQuota(function(usage, quota) {
+                if (quota > usage) {
+                    this.create(quota).then(function(instance) {
+                        this.createFiles(instance).then(resolve);
+                    }.bind(this));
+                } else {
+                    this.increaseQuota().then(function(instance) {
+                        this.createFiles(instance).then(resolve);
+                    }.bind(this));
+                }
+            }.bind(this));
         }.bind(this));
     },
     increaseQuota: function() {
@@ -60,45 +60,70 @@ export default Ember.Service.extend({
     createFiles: function(instance) {
         var deserialize = this.deserialize.bind(this);
 
-        instance.root.getFile('data.json', {}, function(fileEntry) {
-            fileEntry.file(function(file) {
-                var reader = new FileReader();
+        return new Ember.RSVP.Promise(function(resolve) {
+            instance.root.getDirectory('thumbnails', {
+                create: true
+            });
 
-                reader.onloadend = function() {
-                    deserialize(this.result);
+            instance.root.getDirectory('audio', {
+                create: true
+            });
+
+            instance.root.getFile('data.json', {}, function(fileEntry) {
+                fileEntry.file(function(file) {
+                    var reader = new FileReader();
+
+                    reader.onloadend = function() {
+                        deserialize(this.result);
+
+                        resolve();
+                    };
+
+                    reader.readAsText(file);
+                });
+            }, function() {
+                instance.root.getFile('data.json', {
+                    create: true
+                }, function() {
+                    deserialize(JSON.stringify({
+                        recordings: [],
+                        albums: [{
+                            id: 'download-later',
+                            name: 'Download later',
+                            permission: 'push-only'
+                        }, {
+                            id: 'queue',
+                            name: 'Queue',
+                            permission: 'push-only'
+                        }, {
+                            id: 'history',
+                            name: 'History',
+                            permission: 'read-only'
+                        }]
+                    }));
+
+                    this.write();
+
+                    resolve();
+                }.bind(this));
+            }.bind(this));
+        }.bind(this));
+    },
+    write: function() {
+        var json = this.serialize();
+
+        this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
+            fileEntry.createWriter(function(fileWriter) {
+                fileWriter.onwriteend = function() {
+                    if (!fileWriter.length) {
+                        fileWriter.write(new Blob([json], {
+                            type: 'application/json'
+                        }));
+                    }
                 };
 
-                reader.readAsText(file);
+                fileWriter.truncate(0);
             });
-        }, function() {
-            instance.root.getFile('data.json', {
-                create: true
-            }, function() {
-                deserialize(JSON.stringify({
-                    recordings: [],
-                    albums: [{
-                        id: 'download-later',
-                        name: 'Download later',
-                        permission: 'push-only'
-                    }, {
-                        id: 'queue',
-                        name: 'Queue',
-                        permission: 'push-only'
-                    }, {
-                        id: 'history',
-                        name: 'History',
-                        permission: 'read-only'
-                    }]
-                }));
-            });
-        });
-
-        instance.root.getDirectory('thumbnails', {
-            create: true
-        });
-
-        instance.root.getDirectory('audio', {
-            create: true
         });
     },
     deserialize: function(json) {
@@ -110,10 +135,12 @@ export default Ember.Service.extend({
 
             delete album.id;
 
-            store.push('album', {
-                type: 'album',
-                id: id,
-                attributes: album
+            store.push({
+                data: {
+                    type: 'album',
+                    id: id,
+                    attributes: album
+                }
             });
 
             return id;
@@ -126,10 +153,12 @@ export default Ember.Service.extend({
 
             delete recording.id;
 
-            store.push('recording', {
-                type: 'recording',
-                id: id,
-                attributes: recording
+            store.push({
+                data: {
+                    type: 'recording',
+                    id: id,
+                    attributes: recording
+                }
             });
 
             return id;
@@ -138,10 +167,6 @@ export default Ember.Service.extend({
         delete parsedJSON.recordings;
 
         this.setProperties(parsedJSON);
-
-        if (!Ember.isEmpty(this.get('didParseJSON'))) {
-            this.didParseJSON();
-        }
     },
     serialize: function() {
         var store = this.get('store'),
@@ -149,7 +174,7 @@ export default Ember.Service.extend({
                 playingRecordingId: this.get('playingRecordingId')
             };
 
-        data.albums = this.get('albumsIds').map(function(id) {
+        data.albums = this.get('albumIds').map(function(id) {
             return store.peekRecord('album', id).serialize();
         });
 
