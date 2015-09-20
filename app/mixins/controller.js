@@ -20,12 +20,15 @@ export default Ember.Mixin.create({
     },
     // TODO: implement as separate mixin since also needed in some routes?
     find: function(modelName, query, searchOnline, pageToken) {
-        var result,
-            promise;
+        var promise;
 
         if (!searchOnline) {
-            result = this.get('store').peekAll(modelName).filter(function(snippet) {
-                return logic.isMatch(snippet.get('name'), query.query);
+            promise = new Ember.RSVP.Promise(function(resolve) {
+                var snippets = this.get('store').peekAll(modelName).filter(function(snippet) {
+                    return logic.isMatch(snippet.get('name'), query.query);
+                });
+
+                resolve(snippets);
             });
         } else {
             query.setNextPageToken = function(nextPageToken) {
@@ -41,12 +44,10 @@ export default Ember.Mixin.create({
                     resolve(snippets);
                 }.bind(this), reject);
             }.bind(this));
-
-            result = DS.PromiseArray.create({
-                promise: promise
-            });
         }
 
-        return result;
+        return DS.PromiseArray.create({
+            promise: promise
+        });
     }
 });

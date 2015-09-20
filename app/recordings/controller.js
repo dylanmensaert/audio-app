@@ -7,15 +7,23 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
-    recordings: function() {
+    recordings: [],
+    isPending: true,
+    updateRecordings: function() {
         var query = {
             maxResults: 50,
             query: this.get('query'),
             nextPageToken: this.get('nextPageToken')
         };
 
-        return this.find('recording', query, !this.get('cache.searchDownloadedOnly'));
-    }.property('query', 'cache.searchDownloadedOnly'),
+        this.find('recording', query, !this.get('cache.searchDownloadedOnly')).then(function(recordingsPromise) {
+            this.get('recordings').pushObjects(recordingsPromise.toArray());
+
+            if (!this.get('nextPageToken')) {
+                this.set('isPending', false);
+            }
+        }.bind(this));
+    }.observes('query', 'cache.searchDownloadedOnly').on('init'),
     sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
         return this.sortSnippet(this.get('recordings'), snippet, other, !this.get('cache.searchDownloadedOnly'));
     }),
@@ -34,7 +42,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
             this.get('recordings').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.notifyPropertyChange('recordings');
+            this.updateRecordings();
         }
     }
 });

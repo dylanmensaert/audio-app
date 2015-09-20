@@ -7,15 +7,23 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
     cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
-    albums: function() {
+    albums: [],
+    isPending: true,
+    updateAlbums: function() {
         var query = {
             maxResults: 50,
             query: this.get('query'),
             nextPageToken: this.get('nextPageToken')
         };
 
-        return this.find('album', query, !this.get('cache.searchDownloadedOnly'));
-    }.property('query', 'cache.searchDownloadedOnly'),
+        this.find('album', query, !this.get('cache.searchDownloadedOnly')).then(function(albumsPromise) {
+            this.get('albums').pushObjects(albumsPromise.toArray());
+
+            if (!this.get('nextPageToken')) {
+                this.set('isPending', false);
+            }
+        }.bind(this));
+    }.observes('query', 'cache.searchDownloadedOnly').on('init'),
     sortedAlbums: Ember.computed.sort('albums', function(snippet, other) {
         return this.sortSnippet(this.get('albums'), snippet, other, !this.get('cache.searchDownloadedOnly'));
     }),
@@ -34,7 +42,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
             this.get('albums').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            this.notifyPropertyChange('albums');
+            this.updateAlbums();
         }
     }
 });
