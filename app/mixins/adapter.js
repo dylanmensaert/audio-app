@@ -4,7 +4,7 @@ import meta from 'meta-data';
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
-    buildUrlByEndpoint: function(endpoint, maxResults, nextPageToken) {
+    buildUrlByEndpoint: function (endpoint, maxResults, nextPageToken) {
         var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet&maxResults=' + maxResults + '&key=' + meta.key;
 
         if (!Ember.isEmpty(nextPageToken)) {
@@ -13,36 +13,35 @@ export default Ember.Mixin.create({
 
         return url;
     },
-    buildUrlByType: function(type, query) {
+    buildUrlByType: function (type, query) {
         // TODO: Rename query.query property?
         return this.buildUrlByEndpoint('search', query.maxResults, query.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query.query;
     },
-    query: function(store, type, query) {
+    query: function (store, type, query) {
         var url = this.buildUrl(type.modelName, null, null, 'query', query);
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.$.getJSON(url).then(function(payload) {
+        return new Ember.RSVP.Promise(function (resolve, reject) {
+            Ember.$.getJSON(url).then(function (payload) {
                 query.setNextPageToken(payload.nextPageToken);
 
                 Ember.run(null, resolve, payload);
-            }, function(response) {
+            }, function (response) {
                 Ember.run(null, reject, response);
             });
         });
     },
-    createRecord: function(store, type, snapshot) {
-        var fileSystem = this.get('fileSystem');
+    updateRecord: function (store, type, snapshot) {
+        var fileSystem = this.get('fileSystem'),
+            snippets = fileSystem.get(Inflector.inflector.pluralize(type)),
+            id = snapshot.get('id');
 
-        fileSystem.get(Inflector.inflector.pluralize(type)).pushObject(snapshot.get('id'));
+        if (!snippets.isAny('id', id)) {
+            snippets.pushObject(id);
+        }
 
         Ember.run.debounce(fileSystem, fileSystem.write, 100);
     },
-    updateRecord: function() {
-        var fileSystem = this.get('fileSystem');
-
-        Ember.run.debounce(fileSystem, fileSystem.write, 100);
-    },
-    deleteRecord: function(store, type, snapshot) {
+    deleteRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem');
 
         fileSystem.get(Inflector.inflector.pluralize(type) + 'Ids').removeObject(snapshot.get('id'));
