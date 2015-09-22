@@ -32,11 +32,11 @@ export default Ember.Mixin.create({
     },
     updateRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem'),
-            snippets = fileSystem.get(Inflector.inflector.pluralize(type)),
+            snippetIds = fileSystem.get(Inflector.inflector.pluralize(type) + 'Ids'),
             id = snapshot.get('id');
 
-        if (!snippets.isAny('id', id)) {
-            snippets.pushObject(id);
+        if (!snippetIds.contains(id)) {
+            snippetIds.pushObject(id);
         }
 
         Ember.run.debounce(fileSystem, fileSystem.write, 100);

@@ -1,6 +1,6 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if cache.hasPreviousTransition}}
-    <div class="mdl-layout__header-row autocomplete-header">
+    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar'}}
       <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
@@ -16,27 +16,45 @@
           <i class="material-icons">close</i>
         {{/c-mdl}}
       {{/if}}
-    </div>
-  {{else}}
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
+    {{/c-mdl}}
+  {{else if isEditMode}}
+    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar my-edit-bar'}}
+      <label {{action 'exitEdit'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+        <i class="material-icons">
+          arrow_back
+        </i>
+      </label>
 
-        <div class="mdl-layout-spacer"></div>
+      {{c-autocomplete action='search' liveQuery=editedAlbumName suggestions=suggestions}}
 
-        {{#if liveQuery}}
-          {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-            <i class="material-icons">close</i>
-          {{/c-mdl}}
-        {{/if}}
-      </div>
-    </header>
+      <div class="mdl-layout-spacer"></div>
+
+      {{#if editedAlbumName}}
+        {{#c-mdl tagName='button' action='saveEdit' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+          <i class="material-icons">done</i>
+        {{/c-mdl}}
+      {{/if}}
+    {{/c-mdl}}
   {{/if}}
+
+  <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
+    <div class="mdl-layout__header-row">
+      {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
+
+      <div class="mdl-layout-spacer"></div>
+
+      {{#if liveQuery}}
+        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+          <i class="material-icons">close</i>
+        {{/c-mdl}}
+      {{/if}}
+    </div>
+  </header>
 
   {{#if selectedRecordings}}
       {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
   {{else if selectedAlbums}}
-      {{c-albums-bar albums=selectedAlbums save='save' edit='edit' delete='delete'}}
+      {{c-albums-bar albums=selectedAlbums save='save' edit='setupEdit' delete='delete'}}
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">

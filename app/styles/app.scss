@@ -72,6 +72,7 @@ $menu-cell-width: 14.28571428571429%;
     overflow: hidden;
     position: relative;
     width: 100%;
+    background-color: #e1e1e1;
 }
 
 .audio-stamp {
@@ -240,11 +241,11 @@ $menu-cell-width: 14.28571428571429%;
     }
 }
 
-.autocomplete-header {
+.my-autocomplete-bar {
     padding-left: 0;
 }
 
-.mdl-layout--fixed-drawer:not(.is-small-screen) > .autocomplete-header {
+.mdl-layout--fixed-drawer:not(.is-small-screen) > .my-autocomplete-bar {
     margin-left: 240px;
 }
 
@@ -464,4 +465,9 @@ $menu-cell-width: 14.28571428571429%;
 
 .my-text-left {
     text-align: left;
+}
+
+.my-edit-bar {
+    z-index: 4;
+    background-color: white;
 }

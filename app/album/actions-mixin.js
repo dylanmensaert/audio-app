@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
     editedAlbumName: null,
+    isEditMode: function () {
+        return this.get('editedAlbumName') !== null;
+    }.property('editedAlbumName'),
     actions: {
         save: function () {
             this.get('selectedAlbums').forEach(function (album) {
