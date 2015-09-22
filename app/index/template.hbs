@@ -1,37 +1,24 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if cache.hasPreviousTransition}}
-    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar'}}
-      <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+  {{#if hideMdlHeader}}
+    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar' classNameBindings='isEditMode:my-edit-bar'}}
+      <label {{action (if isEditMode 'exitEdit' 'transitionToPrevious')}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
         </i>
       </label>
 
-      {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
-
-      <div class="mdl-layout-spacer"></div>
-
-      {{#if liveQuery}}
-        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">close</i>
-        {{/c-mdl}}
+      <!-- TODO: implement via another way, see TODO questions? -->
+      {{#if isEditMode}}
+          {{c-autocomplete action='search' liveQuery=editedAlbumName suggestions=suggestions}}
+      {{else}}
+          {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
       {{/if}}
-    {{/c-mdl}}
-  {{else if isEditMode}}
-    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar my-edit-bar'}}
-      <label {{action 'exitEdit'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-        <i class="material-icons">
-          arrow_back
-        </i>
-      </label>
-
-      {{c-autocomplete action='search' liveQuery=editedAlbumName suggestions=suggestions}}
 
       <div class="mdl-layout-spacer"></div>
 
-      {{#if editedAlbumName}}
-        {{#c-mdl tagName='button' action='saveEdit' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">done</i>
+      {{#if showActionButton}}
+        {{#c-mdl tagName='button' action=(if isEditMode 'saveEdit' 'clear') class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+          <i class="material-icons">{{if isEditMode 'done' 'close'}}</i>
         {{/c-mdl}}
       {{/if}}
     {{/c-mdl}}

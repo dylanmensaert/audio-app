@@ -25,6 +25,7 @@ export default Ember.Mixin.create({
             var selectedAlbum = this.get('selectedAlbums.firstObject');
 
             selectedAlbum.set('name', this.get('editedAlbumName'));
+            selectedAlbum.set('isSelected', false);
 
             this.set('editedAlbumName', null);
         },

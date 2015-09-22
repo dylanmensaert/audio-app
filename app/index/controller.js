@@ -21,6 +21,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, a
     hideMdlHeader: function () {
         return this.get('cache.hasPreviousTransition') || this.get('isEditMode');
     }.property('cache.hasPreviousTransition', 'isEditMode'),
+    showActionButton: function () {
+        return this.get('liveQuery') || this.get('editedAlbumName');
+    }.property('liveQuery', 'editedAlbumName'),
     updateSuggestions: function () {
         var suggestions = this.get('suggestions');
 
