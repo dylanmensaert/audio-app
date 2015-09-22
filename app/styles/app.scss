@@ -241,11 +241,11 @@ $menu-cell-width: 14.28571428571429%;
     }
 }
 
-.my-autocomplete-bar {
+.my-header-bar {
     padding-left: 0;
 }
 
-.mdl-layout--fixed-drawer:not(.is-small-screen) > .my-autocomplete-bar {
+.mdl-layout--fixed-drawer:not(.is-small-screen) > .my-header-bar {
     margin-left: 240px;
 }
 

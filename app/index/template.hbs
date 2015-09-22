@@ -1,6 +1,6 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if hideMdlHeader}}
-    {{#c-mdl class='mdl-layout__header-row my-autocomplete-bar' classNameBindings='isEditMode:my-edit-bar'}}
+    {{#c-mdl class='mdl-layout__header-row my-header-bar' classNameBindings='isEditMode:my-edit-bar'}}
       <label {{action (if isEditMode 'exitEdit' 'transitionToPrevious')}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
