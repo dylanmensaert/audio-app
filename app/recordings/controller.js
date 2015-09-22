@@ -10,6 +10,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     recordings: [],
     isPending: true,
     isLocked: false,
+    nextPageToken: null,
     updateRecordings: function() {
         var query = {
             maxResults: 50,

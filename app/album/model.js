@@ -1,7 +1,6 @@
 import DS from 'ember-data';
 import modelMixin from 'audio-app/mixins/model';
 
-// TODO: Implement correctly
 export default DS.Model.extend(modelMixin, {
     recordingIds: [],
     totalRecordings: null,
@@ -12,5 +11,8 @@ export default DS.Model.extend(modelMixin, {
     isPushOnly: function() {
         return this.get('permission') === 'push-only';
     }.property('permission'),
-    propertyNames: ['recordingIds', 'permission']
+    propertyNames: ['recordingIds', 'permission'],
+    isQueue: function() {
+        return this.get('id') === 'queue';
+    }.property('id')
 });

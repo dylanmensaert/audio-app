@@ -39,7 +39,7 @@
   </header>
 
   {{#if selectedRecordings}}
-      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
+      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue' transitionToAlbums='transitionTo'}}
   {{else if selectedAlbums}}
       {{c-albums-bar albums=selectedAlbums save='save' edit='setupEdit' delete='delete'}}
   {{/if}}
@@ -101,7 +101,7 @@
 
             <div class="mdl-grid my-album-grid">
                 {{#each sortedAlbums as |album|}}
-                    {{c-album model=album action='transitionTo' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=album.isQueued toggleIsSelected='deselectRecordings'}}
+                    {{c-album model=album action='transitionTo' toggleIsSelected='deselectRecordings'}}
                 {{/each}}
             </div>
         </div>

@@ -20,7 +20,7 @@
   <header class="mdl-layout__header hidden" />
 
   {{#if selectedRecordings}}
-      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue'}}
+      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue' transitionToAlbums='transitionTo'}}
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}

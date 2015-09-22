@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 import adapterMixin from 'audio-app/mixins/adapter';
 
 export default DS.Adapter.extend(adapterMixin, {
@@ -7,7 +8,7 @@ export default DS.Adapter.extend(adapterMixin, {
             this._super(store, type, query).then(function(payload) {
                 var album;
 
-                if (query.requestType === 'byAlbum') {
+                if (query.albumId) {
                     album = store.peekRecord('album', query.albumId);
 
                     if (album && !album.get('totalRecordings')) {
@@ -22,7 +23,7 @@ export default DS.Adapter.extend(adapterMixin, {
     buildUrl: function(modelName, id, snapshot, requestType, query) {
         var url;
 
-        if (query.requestType === 'byAlbum') {
+        if (query.albumId) {
             url = this.buildUrlByEndpoint('playlistItems', 50, query.nextPageToken) + '&playlistId=' + query.albumId;
         } else {
             url = this.buildUrlByType('video', query);

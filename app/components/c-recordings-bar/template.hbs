@@ -5,9 +5,9 @@
     </div>
 
     <div class="my-menu-cell">
-        {{#link-to 'albums' tagName='div' class='mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn'}}
+        <div {{action 'transitionToAlbums'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
             <span class="material-icons mdl-badge my-badge">playlist_add</span>
-        {{/link-to}}
+        </div>
     </div>
 
     <div class="my-menu-cell">

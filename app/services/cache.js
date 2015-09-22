@@ -32,6 +32,7 @@ export default Ember.Service.extend({
             this.set('type', getType());
         }.bind(this), 5000);
     },
+    store: Ember.inject.service(),
     fileSystem: null,
     completedTransitions: [],
     hasPreviousTransition: function() {
@@ -43,9 +44,6 @@ export default Ember.Service.extend({
     }.property('isOffline', 'isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
     isMobile: !Ember.isEmpty(navigator.connection),
     selectedSnippetIds: [],
-    selectedSnippets: [],
-    // TODO: deprecate selectedRecordings in favor of selectedSnippets
-    selectedRecordings: [],
     playedRecordingIds: [],
     showMessage: null,
     audioSlider: null,
@@ -61,5 +59,39 @@ export default Ember.Service.extend({
 
         return this.get('isMobile') && (type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
             Connection.CELL);
-    }.property('type', 'isMobile')
+    }.property('type', 'isMobile'),
+    nextPageToken: null,
+    downloadRecordingsForAlbum: function(album, nextPageToken) {
+        this.set('nextPageToken', nextPageToken);
+
+        this.findAllRecordingsByAlbum(album.get('id'));
+        this.downloadNextRecording(album, 0);
+    },
+    findAllRecordingsByAlbum: function(albumId) {
+        var nextPageToken = this.get('nextPageToken');
+
+        if (!Ember.isEmpty(nextPageToken)) {
+            this.get('store').query('recording', {
+                albumId: albumId,
+                maxResults: 50,
+                nextPageToken: nextPageToken
+            }).then(function() {
+                this.findAllRecordingsByAlbum(albumId);
+            }.bind(this));
+        }
+    },
+    downloadNextRecording: function(album, index) {
+        var recordingId = album.get('recordingIds').objectAt(index),
+            recording;
+
+        if (recordingId) {
+            recording = this.get('store').peekRecord('recording', recordingId);
+
+            if (!recording.get('isDownloaded') && !recording.get('isDownloading')) {
+                recording.download().then(function() {
+                    this.downloadNextRecording(album, index + 1);
+                }.bind(this));
+            }
+        }
+    }
 });

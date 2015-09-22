@@ -19,9 +19,19 @@ export default Ember.Component.extend({
     isEverySaved: function() {
         return this.get('savedAlbums.length') === this.get('albums.length');
     }.property('savedAlbums.length', 'albums.length'),
-    isSingle: function() {
-        return this.get('albums.length') === 1;
-    }.property('albums.length'),
+    isEditable: function() {
+        var albums = this.get('albums'),
+            isEditable = false,
+            album;
+
+        if (albums.get('length') === 1) {
+            album = albums.get('firstObject');
+
+            isEditable = !album.get('isReadOnly') && !album.get('isPushOnly');
+        }
+
+        return isEditable;
+    }.property('albums.length', 'albums.firstObject.isReadOnly', 'albums.firstObject.isPushOnly'),
     actions: {
         save: function() {
             this.sendAction('save');

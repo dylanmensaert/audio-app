@@ -2,24 +2,55 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
     cache: Ember.inject.service(),
+    pushToQueue: function(recordingIds, recording) {
+        if (!recording.get('isDownloaded') && !recording.get('isDownloading')) {
+            recording.download().then(function() {}, function() {
+                // TODO: show error?
+                this.get('cache').showMessage('Download aborted');
+            }.bind(this));
+        }
+
+        recordingIds.pushObject(recording.get('id'));
+    },
     actions: {
-        download: function () {
-            this.get('selectedRecordings').forEach(function (recording) {
+        download: function() {
+            this.get('selectedRecordings').forEach(function(recording) {
                 if (!recording.get('isDownloaded') && !recording.get('isDownloading')) {
                     recording.download();
                 }
             });
         },
-        pushToDownload: function (recording) {
+        delete: function() {
+            this.get('selectedRecordings').forEach(function(recording) {
+                if (recording.get('isDownloaded')) {
+                    recording.remove().then(function() {
+                        recording.destroyRecord();
+                    });
+                }
+            });
+        },
+        queue: function() {
+            var queue = this.get('store').peekRecord('album', 'queue'),
+                recordingIds = queue.get('recordingIds');
+
+            this.get('selectedRecordings').forEach(function(recording) {
+                if (!recordingIds.contains(recording.get('id'))) {
+                    this.pushToQueue(recordingIds, recording);
+                }
+            });
+
+            this.get('cache').showMessage('Added to queue');
+        },
+        pushToDownload: function(recording) {
             var cache = this.get('cache'),
                 recordingIds,
                 id;
 
             if (!recording.get('isDownloaded') && !recording.get('isDownloading')) {
                 if (!cache.isMobileConnection()) {
-                    recording.download().then(function () {
+                    recording.download().then(function() {
 
-                    }, function () {
+                    }, function() {
                         // TODO: show error?
                         cache.showMessage('download aborted');
                     });
@@ -37,25 +68,20 @@ export default Ember.Mixin.create({
                 cache.showMessage('already downloaded');
             }
         },
-        pushToQueue: function (recording) {
-            var recordingIds = this.get('store').peekRecord('album', 'queue').get('recordingIds'),
-                cache = this.get('cache'),
-                id = recording.get('id');
+        pushToQueue: function(recording) {
+            var queue = this.get('store').peekRecord('album', 'queue'),
+                recordingIds = queue.get('recordingIds'),
+                cache = this.get('cache');
 
-            if (!recordingIds.contains(id)) {
-                if (!recording.get('isDownloaded') && !recording.get('isDownloading')) {
-                    recording.download().then(function () {}, function () {
-                        // TODO: show error?
-                        cache.showMessage('Download aborted');
-                    }.bind(this));
-                }
-
-                recordingIds.pushObject(id);
+            if (!recordingIds.contains(recording.get('id'))) {
+                this.pushToQueue(recordingIds, recording);
 
                 cache.showMessage('Added to queue');
             } else {
                 cache.showMessage('Already in queue');
             }
+
+            queue.save();
         }
     }
 });

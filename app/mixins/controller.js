@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
 
         return result;
     },
-    // TODO: implement as separate mixin since also needed in some routes?
+    // TODO: implement as separate mixin since also needed in some routes/cache object?
     find: function(modelName, query, searchOnline, pageToken) {
         var promise;
 

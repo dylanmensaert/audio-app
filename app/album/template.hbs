@@ -1,67 +1,65 @@
-{{#c-mdl-layout}}
-    {{#c-mdl class='mdl-layout__header-row my-header-bar'}}
-      <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-        <i class="material-icons">
-          arrow_back
-        </i>
-      </label>
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  <div class='mdl-layout__header-row my-header-bar'>
+    <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </label>
 
-      <span class="mdl-layout-title">
-        {{model.name}}
-      </span>
+    <span class="mdl-layout-title">
+      {{model.name}}
+    </span>
 
-      <div class="mdl-layout-spacer"></div>
+    <div class="mdl-layout-spacer"></div>
 
-      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
-      </button>
-    {{/c-mdl}}
+    <button {{action 'selectAlbum'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+    </button>
+  </div>
 
-  <main class="mdl-layout__content mdl-color--grey-100">
-    {{#c-endless-scroll didScrollToBottom=didScrollToBottom}}
-        {{#if cache.selectedRecordings}}
-            {{recording-action-bar recordings=cache.selectedRecordings isEditMode=isEditMode download='download' remove='remove' setupEdit='setupEdit' exitEdit='exitEdit'}}
-        {{/if}}
+  <header class="mdl-layout__header hidden" />
 
-        {{#if showNotFound}}
-          No records found
-        {{/if}}
+  {{#if selectedRecordings}}
+      {{#c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue' transitionToAlbums='transitionTo'}}
+          <div {{action 'removeFromAlbum'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge">file_download</span>
+          </div>
+       {{/c-recordings-bar}}
+  {{/if}}
 
-        {{#if recordings}}
-          <div class="my-panel">
-              <div class="mdl-grid my-title-grid">
-                  <div class="my-title-cell--10-col">
-                      <h4 class="my-title-text">
-                          Recordings
-                      </h4>
-                  </div>
+  {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
+    {{#if showNotFound}}
+      No records found
+    {{/if}}
 
-                  <div class="my-title-cell--2-col">
-                      <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn">
-                          more
-                      </div>
-                  </div>
-              </div>
-
-              <div class="mdl-grid">
-                  {{#each recordings as |recording|}}
-                      {{c-audio-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued}}
-
-                      <div class="my-recording-separator">
-                          <div class="my-recording-line" />
-                      </div>
-                  {{/each}}
+    {{#if recordings}}
+      <div class="my-panel">
+          <div class="mdl-grid my-title-grid">
+              <div class="my-title-cell--10-col">
+                  <h4 class="my-title-text">
+                      Recordings
+                  </h4>
               </div>
           </div>
-        {{/if}}
 
-        {{#if isLoading}}
-            <div class="my-loading-bar">
-                {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-            </div>
-        {{/if}}
-    {{/c-endless-scroll}}
-  </main>
+          <div class="mdl-grid">
+              {{#each sortedRecordings as |recording|}}
+                  {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=(if model.isQueue false recording.isQueued)}}
+
+                  <div class="my-recording-separator">
+                      <div class="my-recording-line" />
+                  </div>
+              {{/each}}
+          </div>
+      </div>
+    {{/if}}
+
+    {{#if isPending}}
+      <div class="my-loading-bar">
+        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      </div>
+    {{/if}}
+  {{/c-endless-scroll}}
+
+  {{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
 {{/c-mdl-layout}}
-
-{{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}

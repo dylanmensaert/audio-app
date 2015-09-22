@@ -3,97 +3,71 @@ import controllerMixin from 'audio-app/mixins/controller';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
-    init: function() {
-        this._super();
+    audioPlayer: Ember.inject.service(),
+    cache: Ember.inject.service(),
+    queryParams: ['query'],
+    query: '',
+    recordings: [],
+    model: null,
+    isPending: true,
+    isLocked: false,
+    updateRecordings: function() {
+        var query = {
+            albumId: this.get('model.id'),
+            maxResults: 50,
+            nextPageToken: this.get('nextPageToken')
+        };
 
-        /*this.updateOnlineRecordings();*/
-    },
-    queryParams: ['returnRoute'],
-    returnRoute: null,
-    didScrollToBottom: function() {
-        return function() {
-            this.updateOnlineRecordings(this.get('cache.nextPageToken'));
-        }.bind(this);
-    }.property('cache.nextPageToken'),
-    album: function() {
-        // TODO: put this in model and work via id. Should keep a cache of all fetched records. Work with ember-data!?
-        return this.get('cache.selectedSnippets.firstObject');
-    }.property(),
-    updateOnlineRecordings: function(nextPageToken) {
-        var findRecordingsPromise;
+        this.find('recording', query, !this.get('cache.searchDownloadedOnly')).then(function(recordingsPromise) {
+            this.get('recordings').pushObjects(recordingsPromise.toArray());
 
-        if (!this.get('cache.searchDownloadedOnly')) {
-            findRecordingsPromise = this.get('store').query('recording', {
-                albumId: this.get('album.id'),
-                nextPageToken: nextPageToken,
-                requestType: 'byAlbum'
-            });
+            this.set('isLocked', false);
 
-            this.updateOnlineSnippets(findRecordingsPromise, 'album.onlineRecordings', nextPageToken);
+            if (!this.get('nextPageToken')) {
+                this.set('isPending', false);
+            }
+        }.bind(this));
+    }.observes('query', 'cache.searchDownloadedOnly').on('init'),
+    sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
+        return this.sortSnippet(this.get('recordings'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+    }),
+    selectedRecordings: function() {
+        return this.get('store').peekAll('recording').filterBy('isSelected');
+    }.property('recordings.@each.isSelected'),
+    // TODO: Implement - avoid triggering on init?
+    /*updateMessage: function() {
+        if (!this.get('recordings.length')) {
+            this.get('cache').showMessage('No songs found');
         }
-    },
+    }.observes('recordings.length'),*/
+    /*TODO: Implement another way?*/
     actions: {
-        selectAll: function() {
-            this.set('album.isSelected', true);
+        selectAlbum: function() {
+            this.get('model').set('isSelected', true);
+        },
+        didScrollToBottom: function() {
+            if (!this.get('isLocked')) {
+                this.set('isLocked', true);
+
+                this.updateRecordings();
+            }
         },
         download: function() {
-            var album = this.get('album');
+            var album = this.get('model');
 
             if (album.get('isSelected')) {
-                if (!Ember.isEmpty(this.get('cache.nextPageToken'))) {
-                    this.findAllRecordingsByAlbum(album.get('id'), this.get('recordings'), this.get('cache.nextPageToken'));
-                }
-
-                album.get('recordingIds').clear();
-
-                this.get('fileSystem.albums').pushObject(album);
-
-                this.downloadAllRecordings(this.get('album'), 0);
+                this.get('cache').downloadRecordingsForAlbum(album, this.get('nextPageToken'));
             } else {
-                // TODO: super references recordingActionsMixin. Should I use this method since not really OOP
                 this._super();
             }
         },
-        downloadAllRecordings: function(album, index) {
-            // TODO: this will be undefined when switching routes while downloading
-            var recordings = this.get('recordings'),
-                recording = recordings.objectAt(index),
-                id,
-                offlineRecording;
+        removeFromAlbum: function() {
+            var recordingIds = this.get('selectedRecordings').mapBy('id'),
+                model = this.get('model');
 
-            if (!Ember.isEmpty(recording)) {
-                id = recording.get('id');
-                offlineRecording = this.get('fileSystem.recordings').findBy('id', id);
+            model.get('recordingIds').removeObjects(recordingIds);
 
-                if (!Ember.isEmpty(offlineRecording)) {
-                    recording = offlineRecording;
-                }
-
-                if (!recording.get('isDownloaded')) {
-                    recording.download().then(function() {
-                        this.downloadAllRecordings(album, index + 1);
-                    });
-                }
-
-                if (!album.get('recordingIds').contains(id)) {
-                    album.get('recordingIds').pushObject(id);
-                }
-            }
-        },
-        findAllRecordingsByAlbum: function(id, recordings, pageToken) {
-            this.get('store').query('recording', {
-                albumId: id,
-                nextPageToken: pageToken,
-                requestType: 'byAlbum'
-            }).then(function(snippets) {
-                var nextPageToken = this.get('cache.nextPageToken');
-
-                recordings.pushObjects(snippets);
-
-                if (!Ember.isEmpty(nextPageToken)) {
-                    this.findAllRecordingsByAlbum(id, recordings, nextPageToken);
-                }
-            }.bind(this));
+            model.save();
         }
     }
 });

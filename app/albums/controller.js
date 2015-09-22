@@ -10,6 +10,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
     albums: [],
     isPending: true,
     isLocked: false,
+    nextPageToken: null,
     updateAlbums: function() {
         var query = {
             maxResults: 50,
