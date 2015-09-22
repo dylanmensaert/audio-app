@@ -10,6 +10,9 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
     albums: [],
     isPending: true,
     isLocked: false,
+    disableLock: function() {
+        this.set('isLocked', false);
+    },
     nextPageToken: null,
     updateAlbums: function() {
         var query = {
@@ -21,7 +24,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
         this.find('album', query, !this.get('cache.searchDownloadedOnly')).then(function(albumsPromise) {
             this.get('albums').pushObjects(albumsPromise.toArray());
 
-            this.set('isLocked', false);
+            this Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
             if (!this.get('nextPageToken')) {
                 this.set('isPending', false);

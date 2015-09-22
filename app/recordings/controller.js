@@ -10,6 +10,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     recordings: [],
     isPending: true,
     isLocked: false,
+    disableLock: function() {
+        this.set('isLocked', false);
+    },
     nextPageToken: null,
     updateRecordings: function() {
         var query = {
@@ -21,7 +24,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
         this.find('recording', query, !this.get('cache.searchDownloadedOnly')).then(function(recordingsPromise) {
             this.get('recordings').pushObjects(recordingsPromise.toArray());
 
-            this.set('isLocked', false);
+            Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
             if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
