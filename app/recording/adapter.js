@@ -2,7 +2,24 @@ import DS from 'ember-data';
 import adapterMixin from 'audio-app/mixins/adapter';
 
 export default DS.Adapter.extend(adapterMixin, {
-    buildUrl: function (modelName, id, snapshot, requestType, query) {
+    query: function(store, type, query) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            this._super(store, type, query).then(function(payload) {
+                var album;
+
+                if (query.requestType === 'byAlbum') {
+                    album = store.peekRecord('album', query.albumId);
+
+                    if (album && !album.get('totalRecordings')) {
+                        album.set('totalRecordings', payload.pageInfo.totalResults);
+                    }
+                }
+
+                resolve(payload);
+            }, reject);
+        }.bind(this));
+    },
+    buildUrl: function(modelName, id, snapshot, requestType, query) {
         var url;
 
         if (query.requestType === 'byAlbum') {

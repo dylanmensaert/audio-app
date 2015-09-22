@@ -4,11 +4,12 @@ import modelMixin from 'audio-app/mixins/model';
 // TODO: Implement correctly
 export default DS.Model.extend(modelMixin, {
     recordingIds: [],
+    totalRecordings: null,
     permission: null,
-    isReadOnly: function () {
+    isReadOnly: function() {
         return this.get('permission') === 'read-only';
     }.property('permission'),
-    isPushOnly: function () {
+    isPushOnly: function() {
         return this.get('permission') === 'push-only';
     }.property('permission'),
     propertyNames: ['recordingIds', 'permission']
