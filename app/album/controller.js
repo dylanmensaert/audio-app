@@ -7,13 +7,13 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
-    recordings: [],
     model: null,
     isPending: true,
     isLocked: false,
     disableLock: function() {
         this.set('isLocked', false);
     },
+    recordings: [],
     updateRecordings: function() {
         var query = {
             albumId: this.get('model.id'),
