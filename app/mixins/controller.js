@@ -17,6 +17,6 @@ export default Ember.Mixin.create({
         return result;
     },
     find: function () {
-        logic.find.apply(this, arguments);
+        return logic.find.apply(this, arguments);
     }
 });
