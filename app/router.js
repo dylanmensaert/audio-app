@@ -9,7 +9,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-    this.route('recordings');
+    this.route('recordings', function() {
+        this.route('albums');
+    });
 
     this.route('albums');
     this.route('album', {

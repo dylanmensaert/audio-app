@@ -3,8 +3,6 @@ import controllerMixin from 'audio-app/mixins/controller';
 import albumActionsMixin from 'audio-app/album/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
-    audioPlayer: Ember.inject.service(),
-    cache: Ember.inject.service(),
     queryParams: ['query'],
     query: '',
     albums: [],

@@ -3,8 +3,6 @@ import controllerMixin from 'audio-app/mixins/controller';
 import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
-    audioPlayer: Ember.inject.service(),
-    cache: Ember.inject.service(),
     model: null,
     isPending: true,
     isLocked: false,
@@ -57,7 +55,7 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
             var album = this.get('model');
 
             if (album.get('isSelected')) {
-                this.get('cache').downloadRecordingsForAlbum(album, this.get('nextPageToken'));
+                album.download(this.get('nextPageToken'));
             } else {
                 this._super();
             }

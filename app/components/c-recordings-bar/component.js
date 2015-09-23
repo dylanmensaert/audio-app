@@ -39,7 +39,7 @@ export default Ember.Component.extend({
             this.set('cache.selectedSnippetIds', this.get('recordings').mapBy('id'));
 
             // TODO: implement transitionToAlbums
-            this.sendAction('transitionToAlbums', 'albums');
+            this.sendAction('transitionToAlbums', 'recordings.albums');
         }
     }
 });

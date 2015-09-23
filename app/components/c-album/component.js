@@ -16,6 +16,7 @@ export default Ember.Component.extend({
         innerImage.height(innerImage.width() / 12 * 9);
         innerImage.css('top', -Math.floor((innerImage.height() - outerImage.height()) / 2));
     },
+    // TODO: implement correct statusses
     hasStatus: function() {
         return this.get('model.isPlaying') || this.get('showQueued') || this.get('model.isDownloading') || this.get('model.isDownloaded');
     }.property('model.isPlaying', 'showQueued', 'model.isDownloading', 'model.isDownloaded'),
