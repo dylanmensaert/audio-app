@@ -24,7 +24,7 @@ export default Ember.Controller.extend(controllerMixin, albumActionsMixin, {
         this.find('album', query, !this.get('cache.searchDownloadedOnly')).then(function(albumsPromise) {
             this.get('albums').pushObjects(albumsPromise.toArray());
 
-            this Ember.run.scheduleOnce('afterRender', this, this.disableLock);
+            Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
             if (!this.get('nextPageToken')) {
                 this.set('isPending', false);

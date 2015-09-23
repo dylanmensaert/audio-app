@@ -5,8 +5,6 @@ import recordingActionsMixin from 'audio-app/recording/actions-mixin';
 export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
     audioPlayer: Ember.inject.service(),
     cache: Ember.inject.service(),
-    queryParams: ['query'],
-    query: '',
     model: null,
     isPending: true,
     isLocked: false,
@@ -30,9 +28,9 @@ export default Ember.Controller.extend(controllerMixin, recordingActionsMixin, {
                 this.set('isPending', false);
             }
         }.bind(this));
-    }.observes('query', 'cache.searchDownloadedOnly').on('init'),
+    }.observes('model.id', 'cache.searchDownloadedOnly'),
     sortedRecordings: Ember.computed.sort('recordings', function(snippet, other) {
-        return this.sortSnippet(this.get('recordings'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+        return this.sortSnippet(this.get('model.recordingIds'), snippet, other, true);
     }),
     selectedRecordings: function() {
         return this.get('store').peekAll('recording').filterBy('isSelected');

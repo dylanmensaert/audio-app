@@ -5,6 +5,7 @@ import routeTransitionMixin from 'audio-app/mixins/route-transition';
 export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
     title: 'Album',
     model: function(params) {
+        // TODO: also fetch, mostly for browser when refreshing page..
         return this.get('store').peekRecord('album', params.album_id);
     }
 });

@@ -5,10 +5,10 @@ import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
     // TODO: sorting should not always be dependable by cache.searchDownloadedOnly. So pass extra param?
-    sortSnippet: function(snippets, snippet, other, keepOriginalOrder) {
+    sortSnippet: function(snippets, snippet, other, keepGivenOrder) {
         var result = -1;
 
-        if (keepOriginalOrder) {
+        if (keepGivenOrder) {
             if (snippets.indexOf(snippet) > snippets.indexOf(other)) {
                 result = 1;
             }
