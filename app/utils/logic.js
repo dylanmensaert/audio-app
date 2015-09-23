@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Inflector from 'ember-inflector';
 import DS from 'ember-data';
 
 function isMatch(value, query) {
@@ -11,8 +10,9 @@ function isMatch(value, query) {
 // TODO: rename logic file?
 export default {
     isMatch: isMatch,
-    find: function (modelName, query, searchOnline, pageToken) {
-        var promise;
+    find: function (modelName, query, searchOnline) {
+        var promise,
+            promiseArray;
 
         if (!searchOnline) {
             promise = new Ember.RSVP.Promise(function (resolve) {
@@ -22,24 +22,19 @@ export default {
 
                 resolve(snippets);
             });
+
+            promiseArray = DS.PromiseArray.create({
+                promise: promise
+            });
+
         } else {
             query.setNextPageToken = function (nextPageToken) {
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
-            promise = new Ember.RSVP.Promise(function (resolve, reject) {
-                this.get('store').query(modelName, query).then(function (snippets) {
-                    if (!Ember.isEmpty(pageToken)) {
-                        snippets.unshiftObjects(this.get(Inflector.inflector.pluralize(modelName)));
-                    }
-
-                    resolve(snippets);
-                }.bind(this), reject);
-            }.bind(this));
+            promiseArray = this.get('store').query(modelName, query);
         }
 
-        return DS.PromiseArray.create({
-            promise: promise
-        });
+        return promiseArray;
     }
 };
