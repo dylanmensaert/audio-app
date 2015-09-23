@@ -5,9 +5,13 @@ import meta from 'meta-data';
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     buildUrlByEndpoint: function (endpoint, maxResults, nextPageToken) {
-        var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet&maxResults=' + maxResults + '&key=' + meta.key;
+        var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + meta.key;
 
-        if (!Ember.isEmpty(nextPageToken)) {
+        if (maxResults) {
+            url += '&maxResults=' + maxResults;
+        }
+
+        if (nextPageToken) {
             url += '&pageToken=' + nextPageToken;
         }
 
@@ -16,6 +20,11 @@ export default Ember.Mixin.create({
     buildUrlByType: function (type, query) {
         // TODO: Rename query.query property?
         return this.buildUrlByEndpoint('search', query.maxResults, query.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query.query;
+    },
+    findRecord: function (endpoint, id) {
+        var url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;
+
+        return Ember.$.getJSON(url);
     },
     query: function (store, type, query) {
         var url = this.buildUrl(type.modelName, null, null, 'query', query);

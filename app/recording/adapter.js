@@ -3,9 +3,9 @@ import Ember from 'ember';
 import adapterMixin from 'audio-app/mixins/adapter';
 
 export default DS.Adapter.extend(adapterMixin, {
-    query: function(store, type, query) {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            this._super(store, type, query).then(function(payload) {
+    query: function (store, type, query) {
+        return new Ember.RSVP.Promise(function (resolve, reject) {
+            this._super(store, type, query).then(function (payload) {
                 var album;
 
                 if (query.albumId) {
@@ -20,7 +20,7 @@ export default DS.Adapter.extend(adapterMixin, {
             }, reject);
         }.bind(this));
     },
-    buildUrl: function(modelName, id, snapshot, requestType, query) {
+    buildUrl: function (modelName, id, snapshot, requestType, query) {
         var url;
 
         if (query.albumId) {
@@ -30,5 +30,8 @@ export default DS.Adapter.extend(adapterMixin, {
         }
 
         return url;
+    },
+    findRecord: function (store, type, id) {
+        this._super('videos', id);
     }
 });

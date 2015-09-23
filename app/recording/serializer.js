@@ -2,14 +2,16 @@ import DS from 'ember-data';
 import serializerMixin from 'audio-app/mixins/serializer';
 
 export default DS.Serializer.extend(serializerMixin, {
-    normalize: function(store, typeClass, item) {
+    normalize: function (store, typeClass, item) {
         var id,
             recording;
 
         if (item.id.videoId) {
             id = item.id.videoId;
-        } else {
+        } else if (item.snippet.resourceId) {
             id = item.snippet.resourceId.videoId;
+        } else {
+            id = item.id;
         }
 
         recording = this.peekSnippet(store, typeClass.modelName, id, item);
