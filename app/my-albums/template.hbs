@@ -1,0 +1,45 @@
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">
+        My Albums
+      </span>
+
+      <div class="mdl-layout-spacer"></div>
+
+      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+      </button>
+    </div>
+  </header>
+
+  {{#if selectedAlbums}}
+      {{c-albums-bar albums=selectedAlbums save='save' edit='edit' delete='delete'}}
+  {{/if}}
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+    {{#if albums}}
+      <div class="my-panel">
+          <div class="mdl-grid my-title-grid">
+              <div class="my-title-cell--10-col">
+                  <h4 class="my-title-text">
+                      My Albums
+                  </h4>
+              </div>
+          </div>
+
+          <div class="mdl-grid">
+              {{#each sortedAlbums as |album|}}
+                  {{c-album model=album action='transitionTo'}}
+
+                  <div class="my-album-separator">
+                      <div class="my-album-line" />
+                  </div>
+              {{/each}}
+          </div>
+      </div>
+    {{/if}}
+  </main>
+
+  {{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+{{/c-mdl-layout}}
