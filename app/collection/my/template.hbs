@@ -9,7 +9,11 @@
           </i>
         </label>
 
-        {{c-mdl-input value=(mut createdCollectionName) insert-newline='saveCreate'}}
+        {{#c-mdl class='mdl-textfield mdl-js-textfield'}}
+          {{c-mdl-input value=(mut createdCollectionName) insert-newline='saveCreate'}}
+
+          <label class="mdl-textfield__label"></label>
+        {{/c-mdl}}
 
         <div class="mdl-layout-spacer"></div>
 
@@ -49,9 +53,11 @@
     {{/if}}
   </main>
 
-  <button {{action 'setupCreate'}} class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-fixed-button">
-    <i class="material-icons">add</i>
-  </button>
+  {{#unless isCreatedMode}}
+    {{#c-mdl action='setupCreate' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-fixed-button"}}
+      <i class="material-icons">add</i>
+    {{/c-mdl}}
+  {{/unless}}
 
   {{c-audio-player audioPlayer=audioPlayer transitionTo=transitionTo play=play pause=pause}}
 {{/c-mdl-layout}}

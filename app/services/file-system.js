@@ -1,11 +1,31 @@
 /* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
 
 import Ember from 'ember';
+
+var lastWriter;
 // TODO: implement correctly
 /*import Collection from 'audio-app/collection/model';
 import Track from 'audio-app/track/model';*/
 
 window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+function write() {
+    var json = this.serialize();
+
+    this.get('instance').root.getFile('data.json', {}, function (fileEntry) {
+        fileEntry.createWriter(function (fileWriter) {
+            fileWriter.onwriteend = function () {
+                if (!fileWriter.length) {
+                    fileWriter.write(new Blob([json], {
+                        type: 'application/json'
+                    }));
+                }
+            };
+
+            fileWriter.truncate(0);
+        });
+    });
+}
 
 export default Ember.Service.extend({
     store: Ember.inject.service(),
@@ -102,29 +122,16 @@ export default Ember.Service.extend({
                         }]
                     }));
 
-                    this.write();
-
-                    resolve();
+                    this.write().then(resolve);
                 }.bind(this));
             }.bind(this));
         }.bind(this));
     },
     write: function () {
-        var json = this.serialize();
+        Ember.run.cancel(lastWriter);
 
-        this.get('instance').root.getFile('data.json', {}, function (fileEntry) {
-            fileEntry.createWriter(function (fileWriter) {
-                fileWriter.onwriteend = function () {
-                    if (!fileWriter.length) {
-                        fileWriter.write(new Blob([json], {
-                            type: 'application/json'
-                        }));
-                    }
-                };
-
-                fileWriter.truncate(0);
-            });
-        });
+        // TODO: implement write.then() to return Promise
+        lastWriter = Ember.run.later(this, write, 100);
     },
     deserialize: function (json) {
         var store = this.get('store'),

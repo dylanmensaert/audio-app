@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Inflector from 'ember-inflector';
 import meta from 'meta-data';
 
 export default Ember.Mixin.create({
@@ -49,20 +48,34 @@ export default Ember.Mixin.create({
     },
     updateRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem'),
-            snippetIds = fileSystem.get(Inflector.inflector.pluralize(type.modelName) + 'Ids'),
+            snippetIds = fileSystem.get(type.modelName + 'Ids'),
             id = snapshot.id;
 
         if (!snippetIds.contains(id)) {
             snippetIds.pushObject(id);
         }
 
-        Ember.run.debounce(fileSystem, fileSystem.write, 100);
+        fileSystem.write();
+
+        return {
+            deserializeSingleRecord: true,
+            items: [
+                snapshot
+            ]
+        };
     },
     deleteRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem');
 
-        fileSystem.get(Inflector.inflector.pluralize(type.modelName) + 'Ids').removeObject(snapshot.id);
+        fileSystem.get(type.modelName + 'Ids').removeObject(snapshot.id);
 
-        Ember.run.debounce(fileSystem, fileSystem.write, 100);
+        fileSystem.write();
+
+        return {
+            deserializeSingleRecord: true,
+            items: [
+                snapshot
+            ]
+        };
     }
 });
