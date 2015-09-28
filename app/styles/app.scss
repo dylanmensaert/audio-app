@@ -139,7 +139,7 @@ $menu-cell-width: 14.28571428571429%;
     }
 }
 
-.list-group-separator.recording-separator {
+.list-group-separator.track-separator {
     margin: 0;
 }
 
@@ -147,7 +147,7 @@ $menu-cell-width: 14.28571428571429%;
     font-size: 52px;
 }
 
-.list-group-item.recording-item {
+.list-group-item.track-item {
     padding: 0;
 }
 
@@ -326,21 +326,21 @@ $menu-cell-width: 14.28571428571429%;
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
 }
 
-.my-recording-part {
+.my-track-part {
     display: table-cell;
     padding-top: 8px;
     padding-bottom: 8px;
 }
 
-.my-recording-body {
-    @extend .my-recording-part;
+.my-track-body {
+    @extend .my-track-part;
     padding-left: 8px;
     padding-right: 8px;
     width: 100%;
 }
 
-.my-recording-middle {
-    @extend .my-recording-part;
+.my-track-middle {
+    @extend .my-track-part;
     vertical-align: middle;
 }
 
@@ -349,13 +349,13 @@ $menu-cell-width: 14.28571428571429%;
     height: 68px;
 }
 
-.my-recording-line {
+.my-track-line {
     width: calc(100% - 90px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     float: right;
 }
 
-.my-recording-separator {
+.my-track-separator {
     width: 100%;
 }
 
@@ -374,7 +374,7 @@ $menu-cell-width: 14.28571428571429%;
     font-size: 13px;
 }
 
-.my-album-grid {
+.my-collection-grid {
     padding: 14px 4px;
 }
 

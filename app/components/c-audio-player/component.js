@@ -4,7 +4,7 @@ export default Ember.Component.extend({
     audioPlayer: null,
     actions: {
         transitionToQueue: function () {
-            this.sendAction('transitionTo', 'album/queue');
+            this.sendAction('transitionTo', 'collection/queue');
         },
         play: function () {
             this.sendAction('play');

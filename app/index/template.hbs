@@ -9,7 +9,7 @@
 
       <!-- TODO: implement via another way, see TODO questions? -->
       {{#if isEditMode}}
-          {{c-autocomplete action='search' liveQuery=editedAlbumName suggestions=suggestions}}
+          {{c-autocomplete action='search' liveQuery=editedCollectionName suggestions=suggestions}}
       {{else}}
           {{c-autocomplete action='search' liveQuery=liveQuery suggestions=suggestions}}
       {{/if}}
@@ -38,10 +38,10 @@
     </div>
   </header>
 
-  {{#if selectedRecordings}}
-      {{c-recordings-bar recordings=selectedRecordings download='download' delete='delete' queue='queue' transitionToAlbums='transitionTo'}}
-  {{else if selectedAlbums}}
-      {{c-albums-bar albums=selectedAlbums save='save' edit='setupEdit' delete='delete'}}
+  {{#if selectedTracks}}
+      {{c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
+  {{else if selectedCollections}}
+      {{c-collections-bar collections=selectedCollections save='save' edit='setupEdit' delete='delete'}}
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
@@ -55,53 +55,53 @@
         </div>
       {{/if}}
 
-      {{#if recordings}}
+      {{#if tracks}}
         <div class="my-panel">
             <div class="mdl-grid my-title-grid">
                 <div class="my-title-cell--10-col">
                     <h4 class="my-title-text">
-                        Recordings
+                        Tracks
                     </h4>
                 </div>
 
                 <div class="my-title-cell--2-col">
-                    {{#link-to 'recording.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
+                    {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
                       more
                     {{/link-to }}
                 </div>
             </div>
 
             <div class="mdl-grid">
-                {{#each sortedRecordings as |recording|}}
-                    {{c-recording model=recording action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=recording.isQueued toggleIsSelected='deselectAlbums'}}
+                {{#each sortedTracks as |track|}}
+                    {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
 
-                    <div class="my-recording-separator">
-                        <div class="my-recording-line" />
+                    <div class="my-track-separator">
+                        <div class="my-track-line" />
                     </div>
                 {{/each}}
             </div>
         </div>
       {{/if}}
 
-      {{#if albums}}
+      {{#if collections}}
         <div class="my-panel">
             <div class="mdl-grid my-title-grid">
                 <div class="my-title-cell--10-col">
                     <h4 class="my-title-text">
-                        Albums
+                        Collections
                     </h4>
                 </div>
 
                 <div class="my-title-cell--2-col">
-                    {{#link-to 'album.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
+                    {{#link-to 'collection.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
                       more
                     {{/link-to }}
                 </div>
             </div>
 
-            <div class="mdl-grid my-album-grid">
-                {{#each sortedAlbums as |album|}}
-                    {{c-album model=album action='transitionTo' toggleIsSelected='deselectRecordings'}}
+            <div class="mdl-grid my-collection-grid">
+                {{#each sortedCollections as |collection|}}
+                    {{c-collection model=collection action='transitionTo' toggleIsSelected='deselectTracks'}}
                 {{/each}}
             </div>
         </div>

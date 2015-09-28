@@ -1,0 +1,66 @@
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  <div class='mdl-layout__header-row my-header-bar {{if isEditMode 'my-edit-bar'}}'>
+    <label {{action (if isEditMode 'exitEdit' 'transitionToPrevious')}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </label>
+
+    {{#if isEditMode}}
+        {{c-autocomplete action='search' liveQuery=editedCollectionName suggestions=suggestions}}
+    {{else}}
+      <span class="mdl-layout-title">
+        {{query}}
+      </span>
+    {{/if}}
+
+    <div class="mdl-layout-spacer"></div>
+
+    <!-- TODO: implement isEditMode functionality -->
+    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+    </button>
+  </div>
+
+  <header class="mdl-layout__header hidden" />
+
+  {{#if selectedCollections}}
+      {{c-collections-bar collections=selectedCollections save='save' edit='edit' delete='delete'}}
+  {{/if}}
+
+  {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
+    {{#if showNotFound}}
+      No collections found
+    {{/if}}
+
+    {{#if collections}}
+      <div class="my-panel">
+          <div class="mdl-grid my-title-grid">
+              <div class="my-title-cell--10-col">
+                  <h4 class="my-title-text">
+                      Collections
+                  </h4>
+              </div>
+          </div>
+
+          <div class="mdl-grid">
+              {{#each sortedCollections as |collection|}}
+                  {{c-collection model=collection action='transitionTo'}}
+
+                  <div class="my-collection-separator">
+                      <div class="my-collection-line" />
+                  </div>
+              {{/each}}
+          </div>
+      </div>
+    {{/if}}
+
+    {{#if isPending}}
+      <div class="my-loading-bar">
+        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      </div>
+    {{/if}}
+  {{/c-endless-scroll}}
+
+  {{c-audio-player audioPlayer=audioPlayer transitionTo=transitionTo play=play pause=pause}}
+{{/c-mdl-layout}}

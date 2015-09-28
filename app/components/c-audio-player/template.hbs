@@ -1,11 +1,11 @@
-{{#if audioPlayer.recording}}
+{{#if audioPlayer.track}}
     <div class="audio-stamp" />
 
     <div class="audio-bar">
         <div class="mdl-grid">
             <div {{action 'transitionToQueue'}} class="mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop">
               <div class="audio-name">
-                {{audioPlayer.recording.name}}
+                {{audioPlayer.track.name}}
               </div>
             </div>
 

@@ -1,0 +1,45 @@
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  <div class='mdl-layout__header-row my-header-bar'>
+    <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+      <i class="material-icons">
+        arrow_back
+      </i>
+    </label>
+
+    <div class="my-menu-cell my-text-left">
+        <span class="mdl-badge my-menu-btn" data-badge={{collections.length}} />
+    </div>
+  </div>
+
+  <header class="mdl-layout__header hidden" />
+
+  <main class="mdl-layout__content mdl-color--grey-100">
+    {{#if showNotFound}}
+      No collections found
+    {{/if}}
+
+    {{#if collections}}
+      <div class="my-panel">
+          <div class="mdl-grid my-title-grid">
+              <div class="my-title-cell--10-col">
+                  <h4 class="my-title-text">
+                      Collections
+                  </h4>
+              </div>
+          </div>
+
+          <div class="mdl-grid">
+              {{#each sortedCollections as |collection|}}
+                  {{c-collection model=collection action='transitionTo' toggleIsSelected='toggleIsSelected'}}
+
+                  <div class="my-collection-separator">
+                      <div class="my-collection-line" />
+                  </div>
+              {{/each}}
+          </div>
+      </div>
+    {{/if}}
+  </main>
+
+  {{c-audio-player audioPlayer=audioPlayer transitionTo=transitionTo play=play pause=pause}}
+{{/c-mdl-layout}}

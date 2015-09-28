@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Recording from 'audio-app/recording/object';
+import Track from 'audio-app/track/object';
 
 var split = function (fileName) {
     var lastIndex = fileName.lastIndexOf('.');
@@ -19,21 +19,21 @@ export default Ember.TextField.extend({
     accept: 'audio/*,video/*',
     didInsertElement: function () {
         var fileSystem = this.get('fileSystem'),
-            recordings,
+            tracks,
             fileName;
 
         this.$().onchange = function () {
-            recordings = this.files.map(function (file) {
+            tracks = this.files.map(function (file) {
                 fileName = split(file.name);
 
-                return Recording.create({
+                return Track.create({
                     id: fileName.value,
                     name: fileName.value,
                     extension: fileName.extension
                 });
             });
 
-            fileSystem.pushObjects(recordings);
+            fileSystem.pushObjects(tracks);
 
             this.files.forEach(function (file) {
                 fileSystem.get('instance').root.getFile(file.name, {

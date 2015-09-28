@@ -9,14 +9,14 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
-    this.route('recording', function () {
+    this.route('track', function () {
         this.route('list');
-        this.route('albums');
+        this.route('collections');
     });
 
-    this.route('album', function () {
+    this.route('collection', function () {
         this.route('index', {
-            path: '/:album_id'
+            path: '/:collection_id'
         });
 
         this.route('list');

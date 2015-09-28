@@ -1,0 +1,45 @@
+<div {{action 'click'}} class="my-track-middle">
+    <div class="my-static-image">
+      <div class="outer-image">
+          <img class="inner-image" src={{model.thumbnail}} draggable="false" />
+      </div>
+    </div>
+</div>
+
+<div {{action 'click'}} class="my-track-body my-text">
+  {{model.name}}
+
+  <div class="my-paragraph-end" />
+</div>
+
+<div class="my-track-middle my-vertical-status-bar">
+    {{#if model.isPlaying}}
+        <div>
+            <i class="material-icons">headset</i>
+        </div>
+    {{else}}
+        {{#if showQueued}}
+            <div>
+                <i class="material-icons">schedule</i>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{#if model.isDownloading}}
+        <div>
+            {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+        </div>
+    {{/if}}
+
+    {{#if model.isDownloaded}}
+        <div>
+            <i class="material-icons">offline_pin</i>
+        </div>
+    {{/if}}
+</div>
+
+<div class="my-track-middle">
+  <div {{action 'toggleIsSelected'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <i class="material-icons">more_vert</i>
+  </div>
+</div>
