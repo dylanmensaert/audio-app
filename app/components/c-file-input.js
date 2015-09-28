@@ -1,14 +1,13 @@
 import Ember from 'ember';
-import Track from 'audio-app/track/object';
 
-var split = function (fileName) {
+function split(fileName) {
     var lastIndex = fileName.lastIndexOf('.');
 
     return {
         value: fileName.substr(0, lastIndex),
         extension: fileName.substr(lastIndex + 1, fileName.length)
     };
-};
+}
 
 export default Ember.TextField.extend({
     fileSystem: Ember.inject.service(),
@@ -18,22 +17,18 @@ export default Ember.TextField.extend({
     multiple: 'multiple',
     accept: 'audio/*,video/*',
     didInsertElement: function () {
-        var fileSystem = this.get('fileSystem'),
-            tracks,
-            fileName;
+        var fileSystem = this.get('fileSystem');
 
         this.$().onchange = function () {
-            tracks = this.files.map(function (file) {
-                fileName = split(file.name);
+            this.files.forEach(function (file) {
+                var fileName = split(file.name);
 
-                return Track.create({
+                fileSystem.get('store').pushPayload('track', {
                     id: fileName.value,
                     name: fileName.value,
                     extension: fileName.extension
                 });
             });
-
-            fileSystem.pushObjects(tracks);
 
             this.files.forEach(function (file) {
                 fileSystem.get('instance').root.getFile(file.name, {

@@ -11,7 +11,7 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     instance: null,
     collectionIds: [],
-    tracksIds: [],
+    trackIds: [],
     playingTrackId: null,
     setDownloadedOnlyOnMobile: true,
     setDownloadLaterOnMobile: true,

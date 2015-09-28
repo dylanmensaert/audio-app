@@ -1,17 +1,5 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
-    <div class="mdl-layout__header-row">
-      <span class="mdl-layout-title">
-        My Collections
-      </span>
-
-      <div class="mdl-layout-spacer"></div>
-
-      <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
-      </button>
-    </div>
-  </header>
+  {{c-menu-bar title='My Collections' selectAll='selectAll'}}
 
   {{#if selectedCollections}}
       {{c-collections-bar collections=selectedCollections save='save' edit='edit' delete='delete'}}
