@@ -21,10 +21,18 @@ export default Ember.Mixin.create({
         // TODO: Rename query.query property?
         return this.buildUrlByEndpoint('search', query.maxResults, query.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query.query;
     },
-    findRecord: function (endpoint, id) {
+    findRecord: function (store, type, id, endpoint) {
         var url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;
 
-        return Ember.$.getJSON(url);
+        return new Ember.RSVP.Promise(function (resolve, reject) {
+            Ember.$.getJSON(url).then(function (payload) {
+                payload.deserializeSingleRecord = true;
+
+                Ember.run(null, resolve, payload);
+            }.bind(this), function (response) {
+                Ember.run(null, reject, response);
+            });
+        }.bind(this));
     },
     query: function (store, type, query) {
         var url = this.buildUrl(type.modelName, null, null, 'query', query);

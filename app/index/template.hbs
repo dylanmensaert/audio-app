@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="my-title-cell--2-col">
-                    {{#link-to 'recordings' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
+                    {{#link-to 'recording.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
                       more
                     {{/link-to }}
                 </div>
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="my-title-cell--2-col">
-                    {{#link-to 'albums' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
+                    {{#link-to 'album.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
                       more
                     {{/link-to }}
                 </div>
@@ -108,5 +108,5 @@
       {{/if}}
   </main>
 
-  {{c-audio-player audioPlayer=audioPlayer transitionToQueue=transitionToQueue play=play pause=pause}}
+  {{c-audio-player audioPlayer=audioPlayer transitionTo=transitionTo play=play pause=pause}}
 {{/c-mdl-layout}}

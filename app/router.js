@@ -9,17 +9,18 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function () {
-    this.route('recordings', function () {
-        // TODO: implement correctly
+    this.route('recording', function () {
+        this.route('list');
         this.route('albums');
     });
 
-    // TODO: rename?
-    this.route('myalbums');
+    this.route('album', function () {
+        this.route('index', {
+            path: '/:album_id'
+        });
 
-    this.route('albums');
-    this.route('album', {
-        path: '/album/:album_id'
+        this.route('list');
+        this.route('my');
     });
 
     this.route('settings');

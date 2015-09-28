@@ -6,6 +6,6 @@ export default DS.Adapter.extend(adapterMixin, {
         return this.buildUrlByType('playlist', query);
     },
     findRecord: function (store, type, id) {
-        this._super('playlists', id);
+        return this._super(store, type, id, 'playlists');
     }
 });

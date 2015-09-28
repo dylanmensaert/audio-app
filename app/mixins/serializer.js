@@ -12,6 +12,10 @@ export default Ember.Mixin.create({
             return this.normalize(store, primaryModelClass, item);
         }.bind(this));
 
+        if (payload.deserializeSingleRecord) {
+            data = data.get(0);
+        }
+
         return {
             data: data
         };

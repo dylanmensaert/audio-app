@@ -32,6 +32,6 @@ export default DS.Adapter.extend(adapterMixin, {
         return url;
     },
     findRecord: function (store, type, id) {
-        this._super('videos', id);
+        return this._super(store, type, id, 'videos');
     }
 });
