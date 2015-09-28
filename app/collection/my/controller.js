@@ -4,6 +4,7 @@ import collectionActionsMixin from 'audio-app/collection/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, {
     fileSystem: Ember.inject.service(),
+    store: Ember.inject.service(),
     collections: function () {
         var store = this.get('store');
 
@@ -24,9 +25,32 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
         }
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
+    createdCollectionName: null,
+    isCreatedMode: function () {
+        return this.get('createdCollectionName') !== null;
+    }.property('createdCollectionName'),
     actions: {
         selectAll: function () {
             this.get('collections').setEach('isSelected', true);
+        },
+        saveCreate: function () {
+            var createdCollectionName = this.get('createdCollectionName'),
+                store = this.get('store');
+
+            store.pushPayload('collection', {
+                id: createdCollectionName,
+                name: createdCollectionName
+            });
+
+            store.peekRecord('collection', createdCollectionName).save();
+
+            this.set('createdCollectionName', null);
+        },
+        setupCreate: function () {
+            this.set('createdCollectionName', '');
+        },
+        exitCreate: function () {
+            this.set('createdCollectionName', null);
         }
     }
 });

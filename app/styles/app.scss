@@ -471,3 +471,10 @@ $menu-cell-width: 14.28571428571429%;
     z-index: 4;
     background-color: white;
 }
+
+.my-fixed-button {
+    position: fixed;
+    z-index: 1;
+    right: 15px;
+    bottom: $audio-height + 15px;
+}

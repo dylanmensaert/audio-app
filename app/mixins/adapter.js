@@ -49,8 +49,8 @@ export default Ember.Mixin.create({
     },
     updateRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem'),
-            snippetIds = fileSystem.get(Inflector.inflector.pluralize(type) + 'Ids'),
-            id = snapshot.get('id');
+            snippetIds = fileSystem.get(Inflector.inflector.pluralize(type.modelName) + 'Ids'),
+            id = snapshot.id;
 
         if (!snippetIds.contains(id)) {
             snippetIds.pushObject(id);
@@ -61,7 +61,7 @@ export default Ember.Mixin.create({
     deleteRecord: function (store, type, snapshot) {
         var fileSystem = this.get('fileSystem');
 
-        fileSystem.get(Inflector.inflector.pluralize(type) + 'Ids').removeObject(snapshot.get('id'));
+        fileSystem.get(Inflector.inflector.pluralize(type.modelName) + 'Ids').removeObject(snapshot.id);
 
         Ember.run.debounce(fileSystem, fileSystem.write, 100);
     }

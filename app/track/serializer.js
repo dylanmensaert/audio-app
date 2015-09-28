@@ -2,18 +2,8 @@ import DS from 'ember-data';
 import serializerMixin from 'audio-app/mixins/serializer';
 
 export default DS.Serializer.extend(serializerMixin, {
-    pushPayload: function (modelName, payload) {
-        var id = payload.id;
-
-        delete payload.id;
-
-        this.get('store').push({
-            data: {
-                type: modelName,
-                id: id,
-                attributes: payload
-            }
-        });
+    pushPayload: function (store, payload) {
+        this._super(store, payload, 'track');
     },
     normalize: function (store, typeClass, item) {
         var id,

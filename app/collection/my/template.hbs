@@ -1,5 +1,25 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{c-menu-bar title='My Collections' selectAll='selectAll'}}
+  {{c-menu-bar title='My Collections' selectAll='selectAll' classNameBindings='isCreatedMode:hidden'}}
+
+  {{#if isCreatedMode}}
+      {{#c-mdl class='mdl-layout__header-row my-header-bar'}}
+        <label {{action 'exitCreate'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </label>
+
+        {{c-mdl-input value=(mut createdCollectionName) insert-newline='saveCreate'}}
+
+        <div class="mdl-layout-spacer"></div>
+
+        {{#if createdCollectionName}}
+          {{#c-mdl tagName='button' action='saveCreate' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+            <i class="material-icons">done</i>
+          {{/c-mdl}}
+        {{/if}}
+      {{/c-mdl}}
+  {{/if}}
 
   {{#if selectedCollections}}
       {{c-collections-bar collections=selectedCollections save='save' edit='edit' delete='delete'}}
@@ -28,6 +48,10 @@
       </div>
     {{/if}}
   </main>
+
+  <button {{action 'setupCreate'}} class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-fixed-button">
+    <i class="material-icons">add</i>
+  </button>
 
   {{c-audio-player audioPlayer=audioPlayer transitionTo=transitionTo play=play pause=pause}}
 {{/c-mdl-layout}}

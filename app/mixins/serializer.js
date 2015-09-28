@@ -7,6 +7,19 @@ function convertImageUrl(url) {
 }
 
 export default Ember.Mixin.create({
+    pushPayload: function (store, payload, modelName) {
+        var id = payload.id;
+
+        delete payload.id;
+
+        store.push({
+            data: {
+                type: modelName,
+                id: id,
+                attributes: payload
+            }
+        });
+    },
     normalizeResponse: function (store, primaryModelClass, payload) {
         var data = payload.items.map(function (item) {
             return this.normalize(store, primaryModelClass, item);
