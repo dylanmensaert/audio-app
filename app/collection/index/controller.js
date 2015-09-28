@@ -6,10 +6,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     model: null,
     isPending: true,
     isLocked: false,
+    tracks: [],
     disableLock: function () {
         this.set('isLocked', false);
     },
-    tracks: [],
     updateTracks: function () {
         var query = {
             collectionId: this.get('model.id'),
