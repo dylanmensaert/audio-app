@@ -112,14 +112,17 @@ export default Ember.Service.extend({
                         collections: [{
                             id: 'download-later',
                             name: 'Download later',
+                            isLocalOnly: true,
                             permission: 'push-only'
                         }, {
                             id: 'queue',
                             name: 'Queue',
+                            isLocalOnly: true,
                             permission: 'push-only'
                         }, {
                             id: 'history',
                             name: 'History',
+                            isLocalOnly: true,
                             permission: 'read-only'
                         }]
                     }));
