@@ -1,4 +1,4 @@
-var proxyPath = 'a/itemInfo/';
+var proxyPath = 'get';
 
 module.exports = function(app) {
     // For options, see:

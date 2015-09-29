@@ -1,4 +1,4 @@
-var proxyPath = '/youtube/v3/playlistItems';
+var proxyPath = 'youtube/v3/playlistItems';
 
 module.exports = function(app) {
     // For options, see:
@@ -12,9 +12,9 @@ module.exports = function(app) {
         console.error(err, req.url);
     });
 
-    app.use(proxyPath, function(req, res, next) {
+    app.use('/' + proxyPath, function(req, res, next) {
         // include root path in proxied request
-        req.url = proxyPath + '/' + req.url;
+        req.url = req.url.slice(0, 1) + proxyPath + req.url.slice(1);
 
         proxy.web(req, res, {
             target: 'https://www.googleapis.com'
