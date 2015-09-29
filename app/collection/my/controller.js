@@ -42,9 +42,11 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
                 name: createdCollectionName
             });
 
-            store.peekRecord('collection', createdCollectionName).save();
+            store.peekRecord('collection', createdCollectionName).save().then(function () {
+                this.set('createdCollectionName', null);
 
-            this.set('createdCollectionName', null);
+                this.get('cache').showMessage('Saved new collection');
+            }.bind(this));
         },
         setupCreate: function () {
             this.set('createdCollectionName', '');
