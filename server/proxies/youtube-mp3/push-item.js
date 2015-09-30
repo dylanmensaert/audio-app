@@ -15,8 +15,6 @@ module.exports = function(app) {
         // include root path in proxied request
         req.url = req.url.slice(0, 1) + proxyPath + req.url.slice(1);
 
-        console.log('IIIIIIIII: ' + req.url)
-
         proxy.web(req, res, {
             target: 'http://www.youtube-mp3.org'
         });
