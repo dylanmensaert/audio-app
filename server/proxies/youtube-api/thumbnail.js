@@ -20,4 +20,4 @@ module.exports = function(app) {
             target: 'https://i.ytimg.com'
         });
     });
-};\
+};
