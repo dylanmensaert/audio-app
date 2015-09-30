@@ -1,4 +1,4 @@
-var proxyPath = 'vi';
+var proxyPath = 'vi/';
 
 module.exports = function(app) {
     // For options, see:
@@ -20,4 +20,4 @@ module.exports = function(app) {
             target: 'https://i.ytimg.com'
         });
     });
-};
+};\
