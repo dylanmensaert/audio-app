@@ -3,7 +3,9 @@
 module.exports = function(environment) {
     var ENV = {
         contentSecurityPolicy: {
-            'style-src': "'self' 'unsafe-inline'"
+            'style-src': "'self' 'unsafe-inline'",
+            'media-src': "'self' *.aclst.com",
+            'connect-src': "'self' *.aclst.com"
         },
         modulePrefix: 'audio-app',
         environment: environment,
