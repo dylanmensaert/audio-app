@@ -10,6 +10,7 @@ $audio-height: 45px;
 $menu-height: 64px;
 $vert-width: 35px;
 $menu-cell-width: 14.28571428571429%;
+$audio-top: 2px;
 
 /* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
 
@@ -79,13 +80,13 @@ $menu-cell-width: 14.28571428571429%;
 }
 
 .audio-stamp {
-    height: $audio-height;
+    height: $audio-height + $audio-top;
 }
 
 .my-audio-slider-bar {
     @extend .bar;
     z-index: 1;
-    bottom: $audio-height - 9px;
+    bottom: $audio-height - 8px;
 }
 
 .my-audio-slider {
@@ -102,6 +103,7 @@ $menu-cell-width: 14.28571428571429%;
     bottom: 0;
     height: $audio-height;
     background: white;
+    padding-top: $audio-top;
 }
 
 .my-audio-cell {
