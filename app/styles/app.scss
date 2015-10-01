@@ -281,6 +281,11 @@ $menu-cell-width: 14.28571428571429%;
     max-width: 250px;
     min-width: 160px;
     margin: 0;
+    &.mdl-cell {
+        @media (max-width: 479px) {
+            width: 50%;
+        }
+    }
 }
 
 .my-card {
