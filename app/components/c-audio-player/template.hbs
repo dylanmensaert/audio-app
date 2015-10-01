@@ -2,25 +2,31 @@
     <div class="audio-stamp" />
 
     <div class="audio-bar">
-        <div class="mdl-grid">
-            <div {{action 'transitionToQueue'}} class="mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop">
-              <div class="audio-name">
+        <div class="mdl-grid my-audio-grid">
+            <div {{action 'transitionToQueue'}} class="mdl-cell mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop my-audio-text">
+              <div class="my-audio-name">
                 {{audioPlayer.track.name}}
               </div>
+
+              <div class="my-audio-paragraph-end" />
             </div>
 
-            <div class="mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop">
-                <div class="audio-icon-large">
+            <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop my-audio-cell">
+                <div class="my-audio-box">
                     {{#if audioPlayer.isLoading}}
                         {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
                     {{/if}}
 
                     {{#if audioPlayer.isPlaying}}
-                        <i class="material-icons" {{action 'pause'}}>pause</i>
+                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons" {{action 'pause'}}>pause</i>
+                      {{/c-mdl}}
                     {{/if}}
 
                     {{#if audioPlayer.isIdle}}
-                        <i class="material-icons" {{action 'play'}}>play_arrow</i>
+                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons" {{action 'play'}}>play_arrow</i>
+                      {{/c-mdl}}
                     {{/if}}
                 </div>
             </div>

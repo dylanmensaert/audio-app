@@ -8,7 +8,7 @@ export default Ember.Object.extend({
     onSlideStop: null,
     setValue: function(value) {
         if (!this.get('isDragged')) {
-            this.set('component.value', value);
+            this.get('component.element').MaterialSlider.change(value);
         }
     },
     updateMax: function() {

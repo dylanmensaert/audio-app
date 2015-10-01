@@ -1,9 +1,12 @@
 /* TODO: remove unused css */
 
 
+/* TODO: make sure all @extend classes are defined BEFORE they are extended. This will affect css order */
+
+
 /* TODO: prefix everything with my- / audio-? */
 
-$audio-height: 50px;
+$audio-height: 45px;
 $menu-height: 64px;
 $vert-width: 35px;
 $menu-cell-width: 14.28571428571429%;
@@ -79,10 +82,19 @@ $menu-cell-width: 14.28571428571429%;
     height: $audio-height;
 }
 
-.audio-slider {
+.my-audio-slider-bar {
     @extend .bar;
     z-index: 1;
-    bottom: $audio-height - 15px;
+    bottom: $audio-height - 9px;
+}
+
+.my-audio-slider {
+    width: 100%;
+    margin: 0;
+}
+
+.mdl-slider__background-flex {
+    @extend .my-audio-slider;
 }
 
 .audio-bar {
@@ -92,27 +104,43 @@ $menu-cell-width: 14.28571428571429%;
     background: white;
 }
 
-.audio-name,
-.audio-icon {
-    display: table-cell;
-    vertical-align: middle;
-    height: $audio-height - 16px;
+.my-audio-cell {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-.audio-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
+.my-audio-box {
+    display: table-cell;
+    vertical-align: middle;
+    height: $audio-height;
+}
+
+.my-audio-name {
+    @extend .my-audio-box;
     font-size: 18px;
     white-space: nowrap;
 }
 
-.audio-icon {
-    font-size: 24px;
+.my-audio-text {
+    @extend .my-audio-cell;
+    overflow: hidden;
+    position: relative;
 }
 
-.audio-icon-large {
-    @extend .audio-icon;
-    font-size: 34px;
+.my-paragraph-end {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 25px;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));
+    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.my-audio-paragraph-end {
+    @extend .my-paragraph-end;
+    height: $audio-height - 16px;
 }
 
 .audio-timer {
@@ -320,17 +348,6 @@ $menu-cell-width: 14.28571428571429%;
     width: 45px;
 }
 
-.my-paragraph-end {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 60px;
-    height: 25px;
-    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));
-    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-}
-
 .my-track-part {
     display: table-cell;
     padding-top: 8px;
@@ -397,6 +414,10 @@ $menu-cell-width: 14.28571428571429%;
     padding: 16px 8px 0 8px;
 }
 
+.my-audio-grid {
+    padding: 0;
+}
+
 .my-title-text {
     margin-top: 0;
 }
@@ -424,10 +445,6 @@ $menu-cell-width: 14.28571428571429%;
     @media (min-width: 840px) {
         width: 16.6666666667%;
     }
-}
-
-.my-slider {
-    margin: 0;
 }
 
 .my-active {
