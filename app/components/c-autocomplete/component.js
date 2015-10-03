@@ -67,7 +67,6 @@ export default ComponentMdl.extend({
     willDestroyElement: function () {
         Ember.run.cancel(timer);
     },
-    // TODO: improve logic by setting isSelected false when showSuggestions is true after false
     hideSuggestions: function () {
         var selectedSuggestion = this.get('suggestions').findBy('isSelected');
 
@@ -97,9 +96,10 @@ export default ComponentMdl.extend({
 
             this.sendAction('action');
         },
-        // TODO: Could cause asyncrounous problems since click event needs to be registered first..
         didFocusOut: function () {
-            timer = Ember.run.later(this, this.hideSuggestions, 100);
+            if (!this.$('.my-autocomplete:hover').length) {
+                this.hideSuggestions();
+            }
         }
     }
 });

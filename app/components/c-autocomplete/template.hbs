@@ -3,7 +3,7 @@
 <label class="mdl-textfield__label"></label>
 
 {{#if showAutoComplete}}
-  <div class="autocomplete mdl-shadow--2dp">
+  <div class="my-autocomplete mdl-shadow--2dp">
     {{#each suggestions as |suggestion|}}
       {{#c-mdl action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect suggestion' classNameBindings='suggestion.isSelected:active'}}
         {{suggestion.value}}
