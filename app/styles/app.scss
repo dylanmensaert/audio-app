@@ -498,8 +498,14 @@ $audio-top: 2px;
 }
 
 .my-icon-btn {
-    height: 64px;
-    line-height: 64px
+    @media screen and (max-width: 1024px) {
+        height: $menu-height-phone;
+        line-height: $menu-height-phone;
+    }
+    @media screen and (min-width: 1024px) {
+        height: $menu-height;
+        line-height: $menu-height;
+    }
 }
 
 .my-menu-btn {
