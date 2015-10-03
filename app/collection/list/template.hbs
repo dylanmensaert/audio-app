@@ -7,7 +7,11 @@
     </label>
 
     {{#if isEditMode}}
-        {{c-autocomplete action='search' liveQuery=editedCollectionName suggestions=suggestions}}
+        {{#c-mdl class='mdl-textfield mdl-js-textfield'}}
+          {{c-mdl-input value=(mut editedCollectionName) insert-newline='search'}}
+
+          <label class="mdl-textfield__label"></label>
+        {{/c-mdl}}
     {{else}}
       <span class="mdl-layout-title">
         {{query}}

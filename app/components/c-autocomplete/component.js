@@ -7,7 +7,7 @@ var keyCodeUp = 38,
     timer;
 
 export default ComponentMdl.extend({
-    classNames: ['mdl-textfield', 'mdl-js-textfield'],
+    classNames: ['mdl-textfield', 'mdl-js-textfield', 'my-suggestions-textfield'],
     liveQuery: '',
     suggestions: null,
     showSuggestions: false,
@@ -37,7 +37,7 @@ export default ComponentMdl.extend({
     selectAdjacent: function (getAdjacentIndex) {
         var suggestions = this.get('suggestions'),
             selectedSuggestion,
-            selectedIndex,
+            adjacentIndex,
             adjacentSuggestion;
 
         if (suggestions.get('length')) {
@@ -48,12 +48,15 @@ export default ComponentMdl.extend({
 
                 this.set('showSuggestions', true);
             } else {
-                selectedIndex = suggestions.indexOf(selectedSuggestion);
-                adjacentSuggestion = suggestions.objectAt(getAdjacentIndex(selectedIndex));
+                adjacentIndex = getAdjacentIndex(suggestions.indexOf(selectedSuggestion));
+                adjacentSuggestion = suggestions.objectAt(adjacentIndex);
 
                 if (Ember.isEmpty(adjacentSuggestion)) {
-                    this.hideSuggestions();
+                    if (adjacentIndex < 0) {
+                        this.hideSuggestions();
+                    }
                 } else {
+                    selectedSuggestion.set('isSelected', false);
                     adjacentSuggestion.set('isSelected', true);
                 }
             }

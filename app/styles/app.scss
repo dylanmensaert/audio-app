@@ -6,13 +6,23 @@
 
 /* TODO: prefix everything with my- / audio-? */
 
-$audio-height: 45px;
+$menu-height-phone: 56px;
 $menu-height: 64px;
+$audio-height: 45px;
 $vert-width: 35px;
 $menu-cell-width: 14.28571428571429%;
 $audio-top: 2px;
 
 /* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
+
+@mixin menu-height {
+    @media screen and (max-width: 1024px) {
+        height: $menu-height-phone;
+    }
+    @media screen and (min-width: 1024px) {
+        height: $menu-height;
+    }
+}
 
 .bar {
     position: fixed;
@@ -204,7 +214,7 @@ $audio-top: 2px;
 }
 
 .menu-placeholder {
-    height: $menu-height + 5px;
+    @include menu-height;
 }
 
 .grid-label {
@@ -220,7 +230,7 @@ $audio-top: 2px;
 }
 
 .outer-label {
-    height: $menu-height;
+    @include menu-height;
     padding: 0;
 }
 
@@ -239,7 +249,7 @@ $audio-top: 2px;
 
 .inner-btn-group {
     margin: 0;
-    height: $menu-height;
+    @include menu-height;
 }
 
 .text-active {
@@ -286,19 +296,35 @@ $audio-top: 2px;
 
 .autocomplete {
     position: absolute;
-    z-index: 2;
     width: 100%;
+    z-index: 4;
+    left: 0;
+    @media screen and (max-width: 1024px) {
+        top: $menu-height-phone + 2px;
+    }
+    @media screen and (min-width: 1024px) {
+        top: $menu-height + 2px;
+    }
     .suggestion {
         width: inherit;
         text-align: inherit;
         text-transform: inherit;
         bottom: inherit;
         background: white;
+        position: static;
         &.active,
         &:hover {
             background: #b3d4fc;
         }
     }
+}
+
+.my-suggestions-wrapper .mdl-layout__header-row {
+    position: relative;
+}
+
+.my-suggestions-textfield {
+    position: initial;
 }
 
 // Fix for fixed heading bar
@@ -454,7 +480,7 @@ $audio-top: 2px;
 }
 
 .my-menu-grid {
-    height: $menu-height;
+    @include menu-height;
     padding: 0;
 }
 

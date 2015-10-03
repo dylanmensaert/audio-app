@@ -23,16 +23,37 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
         return this.get('liveQuery') || this.get('editedCollectionName');
     }.property('liveQuery', 'editedCollectionName'),
     updateSuggestions: function () {
-        var suggestions = this.get('suggestions');
+        var liveQuery = this.get('liveQuery'),
+            suggestions,
+            url;
 
-        suggestions.clear();
+        this.set('suggestions', []);
 
-        if (!Ember.isEmpty(this.get('liveQuery'))) {
+        suggestions = this.get('suggestions');
+
+        if (!Ember.isEmpty(liveQuery)) {
             this.pushOfflineSuggestions('track');
             this.pushOfflineSuggestions('collection');
 
             if (!this.get('cache.searchDownloadedOnly') && this.get('suggestions.length') < suggestionLimit) {
-                this.pushOnlineSuggestions();
+                url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
+
+                Ember.$.getJSON(url).then(function (response) {
+                    var givenQuery = response[0],
+                        givenSuggestions;
+
+                    /*if (givenQuery === this.get('liveQuery')) {*/
+                    givenSuggestions = response[1];
+
+                    givenSuggestions.any(function (suggestion) {
+                        suggestions.pushObject(Suggestion.create({
+                            value: suggestion
+                        }));
+
+                        return suggestions.get('length') >= suggestionLimit;
+                    });
+                    /*}*/
+                }.bind(this));
             }
         }
     }.observes('liveQuery', 'cache.searchDownloadedOnly'),
@@ -53,22 +74,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
         });
     },
     pushOnlineSuggestions: function () {
-        var liveQuery = this.get('liveQuery'),
-            url;
 
-        url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
-
-        Ember.$.getJSON(url).then(function (response) {
-            var suggestions = this.get('suggestions');
-
-            response[1].any(function (suggestion) {
-                suggestions.pushObject(Suggestion.create({
-                    value: suggestion
-                }));
-
-                return suggestions.get('length') >= suggestionLimit;
-            });
-        }.bind(this));
     },
     showNotFound: function () {
         return !this.get('isLoading') && !this.get('tracks.length') && !this.get('collections.length');
