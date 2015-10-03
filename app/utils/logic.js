@@ -25,7 +25,7 @@ export default {
                     });
                 } else {
                     snippets = store.peekAll(modelName).filter(function(snippet) {
-                        return isMatch(snippet.get('name'), options.query);
+                        return !snippet.get('permission') && isMatch(snippet.get('name'), options.query);
                     });
                 }
 

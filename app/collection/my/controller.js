@@ -6,11 +6,18 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
     fileSystem: Ember.inject.service(),
     store: Ember.inject.service(),
     collections: function() {
-        var store = this.get('store');
+        var store = this.get('store'),
+            collections = [];
 
-        return this.get('fileSystem.collectionIds').map(function(collectionId) {
-            return store.peekRecord('collection', collectionId);
+        this.get('fileSystem.collectionIds').forEach(function(collectionId) {
+            var collection = store.peekRecord('collection', collectionId);
+
+            if (!collection.get('permission')) {
+                collections.pushObject(collection);
+            }
         });
+
+        return collections;
     }.property('fileSystem.collectionIds.[]', 'collections.[]'),
     sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
         return this.sortSnippet(this.get('collections'), snippet, other, false);

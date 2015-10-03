@@ -62,7 +62,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
         this.get('store').peekAll(modelName).any(function(snippet) {
             var suggestion = snippet.get('name');
 
-            if (logic.isMatch(suggestion, liveQuery)) {
+            if (!snippet.get('permission') && logic.isMatch(suggestion, liveQuery)) {
                 suggestions.pushObject(Suggestion.create({
                     value: Ember.String.decamelize(suggestion)
                 }));

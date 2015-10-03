@@ -7,18 +7,15 @@ import meta from 'meta-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
 
-var signateUrl,
-    extractExtension;
-
-signateUrl = function(url) {
+function signateUrl(url) {
     var host = 'http://www.youtube-mp3.org';
 
     return meta.downloadHost + url + '&s=' + ytMp3.createSignature(host + url);
-};
+}
 
-extractExtension = function(source) {
+function extractExtension(source) {
     return source.substr(source.lastIndexOf('.') + 1, source.length);
-};
+}
 
 export default DS.Model.extend(modelMixin, {
     audio: DS.attr('string'),
