@@ -10,19 +10,19 @@ var suggestionLimit = 10;
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, collectionActionsMixin, {
     queryParams: ['query'],
-    updateLiveQuery: function () {
+    updateLiveQuery: function() {
         this.set('liveQuery', this.get('query'));
     }.observes('query'),
     liveQuery: '',
     query: '',
     suggestions: [],
-    hideMdlHeader: function () {
+    hideMdlHeader: function() {
         return this.get('cache.hasPreviousTransition') || this.get('isEditMode');
     }.property('cache.hasPreviousTransition', 'isEditMode'),
-    showActionButton: function () {
+    showActionButton: function() {
         return this.get('liveQuery') || this.get('editedCollectionName');
     }.property('liveQuery', 'editedCollectionName'),
-    updateSuggestions: function () {
+    updateSuggestions: function() {
         var liveQuery = this.get('liveQuery'),
             suggestions,
             url;
@@ -35,33 +35,26 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
             this.pushOfflineSuggestions('track');
             this.pushOfflineSuggestions('collection');
 
-            if (!this.get('cache.searchDownloadedOnly') && this.get('suggestions.length') < suggestionLimit) {
+            if (!this.get('cache.searchDownloadedOnly') && suggestions.get('length') < suggestionLimit) {
                 url = meta.suggestHost + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
 
-                Ember.$.getJSON(url).then(function (response) {
-                    var givenQuery = response[0],
-                        givenSuggestions;
-
-                    /*if (givenQuery === this.get('liveQuery')) {*/
-                    givenSuggestions = response[1];
-
-                    givenSuggestions.any(function (suggestion) {
+                Ember.$.getJSON(url).then(function(response) {
+                    response[1].any(function(suggestion) {
                         suggestions.pushObject(Suggestion.create({
                             value: suggestion
                         }));
 
                         return suggestions.get('length') >= suggestionLimit;
                     });
-                    /*}*/
                 }.bind(this));
             }
         }
     }.observes('liveQuery', 'cache.searchDownloadedOnly'),
-    pushOfflineSuggestions: function (modelName) {
+    pushOfflineSuggestions: function(modelName) {
         var liveQuery = this.get('liveQuery'),
             suggestions = this.get('suggestions');
 
-        this.get('store').peekAll(modelName).any(function (snippet) {
+        this.get('store').peekAll(modelName).any(function(snippet) {
             var suggestion = snippet.get('name');
 
             if (logic.isMatch(suggestion, liveQuery)) {
@@ -73,16 +66,16 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
             return suggestions.get('length') >= suggestionLimit;
         });
     },
-    pushOnlineSuggestions: function () {
+    pushOnlineSuggestions: function() {
 
     },
-    showNotFound: function () {
+    showNotFound: function() {
         return !this.get('isLoading') && !this.get('tracks.length') && !this.get('collections.length');
     }.property('isLoading', 'tracks.length', 'collections.length'),
-    isLoading: function () {
+    isLoading: function() {
         return this.get('tracks.isPending') || this.get('collections.isPending');
     }.property('tracks.isPending', 'collections.isPending'),
-    find: function (type) {
+    find: function(type) {
         var query = {
             maxResults: 4,
             query: this.get('query')
@@ -90,22 +83,22 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
 
         return this._super(type, query, !this.get('cache.searchDownloadedOnly'));
     },
-    tracks: function () {
+    tracks: function() {
         return this.find('track');
     }.property('query', 'cache.searchDownloadedOnly'),
-    collections: function () {
+    collections: function() {
         return this.find('collection');
     }.property('query', 'cache.searchDownloadedOnly'),
-    sortedTracks: Ember.computed.sort('tracks', function (track, other) {
+    sortedTracks: Ember.computed.sort('tracks', function(track, other) {
         return this.sortSnippet(this.get('tracks'), track, other, !this.get('cache.searchDownloadedOnly'));
     }),
-    sortedCollections: Ember.computed.sort('collections', function (collection, other) {
+    sortedCollections: Ember.computed.sort('collections', function(collection, other) {
         return this.sortSnippet(this.get('collections'), collection, other, !this.get('cache.searchDownloadedOnly'));
     }),
-    selectedTracks: function () {
+    selectedTracks: function() {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected'),
-    selectedCollections: function () {
+    selectedCollections: function() {
         return this.get('store').peekAll('collection').filterBy('isSelected');
     }.property('collections.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -118,20 +111,20 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
     /*isLoading: false,*/
     /*TODO: Implement another way?*/
     actions: {
-        search: function () {
+        search: function() {
             this.set('query', this.get('liveQuery'));
         },
-        clear: function () {
+        clear: function() {
             this.set('liveQuery', '');
 
             Ember.$('.mdl-textfield__input').focus();
         },
-        deselectCollections: function (track) {
+        deselectCollections: function(track) {
             if (track.get('isSelected')) {
                 this.get('selectedCollections').setEach('isSelected', false);
             }
         },
-        deselectTracks: function (collection) {
+        deselectTracks: function(collection) {
             if (collection.get('isSelected')) {
                 this.get('selectedTracks').setEach('isSelected', false);
             }
