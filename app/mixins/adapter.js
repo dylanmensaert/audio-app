@@ -3,22 +3,29 @@ import meta from 'meta-data';
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
-    buildUrlByEndpoint: function(endpoint, maxResults, nextPageToken) {
+    buildUrlByEndpoint: function(endpoint, options) {
         var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + meta.key;
 
-        if (maxResults) {
-            url += '&maxResults=' + maxResults;
-        }
+        if (options) {
+            if (options.maxResults) {
+                url += '&maxResults=' + options.maxResults;
+            }
 
-        if (nextPageToken) {
-            url += '&pageToken=' + nextPageToken;
+            if (options.nextPageToken) {
+                url += '&pageToken=' + options.nextPageToken;
+            }
         }
 
         return url;
     },
     buildUrlByType: function(type, options) {
-        // TODO: Rename query.query property?
-        return this.buildUrlByEndpoint('search', options.maxResults, options.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + options.query;
+        var url = this.buildUrlByEndpoint('search', options) + '&order=viewCount&type=' + type;
+
+        if (options.query) {
+            url += '&q=' + options.query;
+        }
+
+        return url;
     },
     findRecord: function(store, type, id, endpoint) {
         var url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;

@@ -3,18 +3,18 @@ import config from './config/environment';
 
 var Router = Ember.Router.extend({
     location: config.locationType,
-    updateTitle: function () {
+    updateTitle: function() {
         this.send('updateTitle', []);
     }.on('didTransition')
 });
 
-Router.map(function () {
-    this.route('track', function () {
+Router.map(function() {
+    this.route('track', function() {
         this.route('list');
         this.route('collections');
     });
 
-    this.route('collection', function () {
+    this.route('collection', function() {
         this.route('index', {
             path: '/:collection_id'
         });

@@ -5,7 +5,7 @@ export default Ember.Component.extend({
     classNames: ['mdl-layout__header'],
     title: null,
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.sendAction('selectAll');
         }
     }

@@ -24,7 +24,9 @@ export default DS.Adapter.extend(adapterMixin, {
         var url;
 
         if (options.collectionId) {
-            url = this.buildUrlByEndpoint('playlistItems', 50, options.nextPageToken) + '&playlistId=' + options.collectionId;
+            options.maxResults = 50;
+
+            url = this.buildUrlByEndpoint('playlistItems', options) + '&playlistId=' + options.collectionId;
         } else {
             url = this.buildUrlByType('video', options);
         }

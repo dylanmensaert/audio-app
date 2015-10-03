@@ -6,7 +6,8 @@ import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
 import collectionActionsMixin from 'audio-app/collection/actions-mixin';
 
-var suggestionLimit = 10;
+// TODO: implement const for every unchanging variable
+const suggestionLimit = 10;
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, collectionActionsMixin, {
     queryParams: ['query'],
