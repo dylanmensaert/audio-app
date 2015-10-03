@@ -45,7 +45,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
                 Ember.$.getJSON(url).then(function(response) {
                     response[1].any(function(suggestion) {
                         suggestions.pushObject(Suggestion.create({
-                            value: Ember.String.decamelize(suggestion)
+                            value: suggestion
                         }));
 
                         return suggestions.get('length') >= suggestionLimit;
@@ -63,7 +63,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
 
             if (logic.isMatch(suggestion, liveQuery)) {
                 suggestions.pushObject(Suggestion.create({
-                    value: suggestion
+                    value: Ember.String.decamelize(suggestion)
                 }));
             }
 
