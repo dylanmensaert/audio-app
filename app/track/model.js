@@ -90,7 +90,7 @@ export default DS.Model.extend(modelMixin, {
         this.set('status', 'downloading');
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (Ember.isEmpty(this.get('audio'))) {
+            if (!this.get('audio')) {
                 this.fetchDownload().then(function() {
                     this.insert().then(resolve, reject);
                 }.bind(this));

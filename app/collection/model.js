@@ -26,16 +26,16 @@ export default DS.Model.extend(modelMixin, {
     },
     findAllTracks: function() {
         var nextPageToken = this.get('nextPageToken'),
-            query;
+            options;
 
         if (!nextPageToken) {
-            query = {
+            options = {
                 collectionId: this.get('id'),
                 maxResults: 50,
                 nextPageToken: nextPageToken
             };
 
-            logic.find.call(this, 'track', query, true).then(function() {
+            logic.find.call(this, 'track', options, true).then(function() {
                 this.findAllTracks(this.get('id'));
             }.bind(this));
         }

@@ -10,53 +10,53 @@ errors.set(4, 'Audio not supported');
 export default Ember.Component.extend({
     tagName: 'audio',
     audioPlayer: null,
-    didInsertElement: function () {
+    didInsertElement: function() {
         var element = this.get('element'),
             audioPlayer = this.get('audioPlayer'),
             track = audioPlayer.get('track');
 
-        element.addEventListener('durationchange', function (event) {
+        element.addEventListener('durationchange', function(event) {
             audioPlayer.set('duration', event.target.duration);
         });
 
-        element.addEventListener('timeupdate', function (event) {
+        element.addEventListener('timeupdate', function(event) {
             audioPlayer.set('currentTime', event.target.currentTime);
         });
 
-        element.addEventListener('abort', function (event) {
+        element.addEventListener('abort', function(event) {
             Ember.RSVP.reject(errors.get(event.target.error.code));
 
             audioPlayer.set('status', 'idle');
         });
 
-        element.addEventListener('error', function (event) {
+        element.addEventListener('error', function(event) {
             // TODO: Show errors via cache.showMessage?
             Ember.RSVP.reject(errors.get(event.target.error.code));
 
             audioPlayer.set('status', 'idle');
         });
 
-        element.addEventListener('loadstart', function () {
+        element.addEventListener('loadstart', function() {
             audioPlayer.set('status', 'loading');
         });
 
-        element.addEventListener('canplay', function () {
+        element.addEventListener('canplay', function() {
             audioPlayer.set('status', 'idle');
         });
 
-        element.addEventListener('waiting', function () {
+        element.addEventListener('waiting', function() {
             audioPlayer.set('status', 'loading');
         });
 
-        element.addEventListener('pause', function () {
+        element.addEventListener('pause', function() {
             audioPlayer.set('status', 'idle');
         });
 
-        element.addEventListener('playing', function () {
+        element.addEventListener('playing', function() {
             audioPlayer.set('status', 'playing');
         });
 
-        element.addEventListener('ended', function () {
+        element.addEventListener('ended', function() {
             audioPlayer.set('status', 'idle');
 
             audioPlayer.didEnd();
@@ -64,11 +64,11 @@ export default Ember.Component.extend({
 
         audioPlayer.set('element', element);
 
-        if (!Ember.isEmpty(track)) {
+        if (track) {
             audioPlayer.load(track);
         }
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         var element = this.get('element');
 
         element.removeEventListener('durationchange');

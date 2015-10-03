@@ -10,7 +10,7 @@ function isMatch(value, query) {
 // TODO: rename logic file?
 export default {
     isMatch: isMatch,
-    find: function(modelName, query, searchOnline) {
+    find: function(modelName, options, searchOnline) {
         var store = this.get('store'),
             promise,
             promiseArray;
@@ -19,13 +19,13 @@ export default {
             promise = new Ember.RSVP.Promise(function(resolve) {
                 var snippets;
 
-                if (query.collectionId) {
-                    snippets = store.peekRecord('collection', query.collectionId).get('trackIds').map(function(trackId) {
+                if (options.collectionId) {
+                    snippets = store.peekRecord('collection', options.collectionId).get('trackIds').map(function(trackId) {
                         return store.peekRecord('track', trackId);
                     });
                 } else {
                     snippets = store.peekAll(modelName).filter(function(snippet) {
-                        return isMatch(snippet.get('name'), query.query);
+                        return isMatch(snippet.get('name'), options.query);
                     });
                 }
 
@@ -37,11 +37,11 @@ export default {
             });
 
         } else {
-            query.setNextPageToken = function(nextPageToken) {
+            options.setNextPageToken = function(nextPageToken) {
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
-            promiseArray = store.query(modelName, query);
+            promiseArray = store.query(modelName, options);
         }
 
         return promiseArray;

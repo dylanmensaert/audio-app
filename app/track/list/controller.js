@@ -16,13 +16,13 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
     updateTracks: function() {
-        var query = {
+        var options = {
             maxResults: 50,
             query: this.get('query'),
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('track', query, !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);

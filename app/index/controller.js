@@ -11,10 +11,14 @@ var suggestionLimit = 10;
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, collectionActionsMixin, {
     queryParams: ['query'],
     updateLiveQuery: function() {
-        this.set('liveQuery', this.get('query'));
+        var query = this.get('query');
+
+        if (query) {
+            this.set('liveQuery', query);
+        }
     }.observes('query'),
     liveQuery: '',
-    query: '',
+    query: null,
     suggestions: [],
     hideMdlHeader: function() {
         return this.get('cache.hasPreviousTransition') || this.get('isEditMode');
@@ -31,7 +35,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
 
         suggestions = this.get('suggestions');
 
-        if (!Ember.isEmpty(liveQuery)) {
+        if (liveQuery) {
             this.pushOfflineSuggestions('track');
             this.pushOfflineSuggestions('collection');
 
@@ -41,7 +45,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
                 Ember.$.getJSON(url).then(function(response) {
                     response[1].any(function(suggestion) {
                         suggestions.pushObject(Suggestion.create({
-                            value: suggestion
+                            value: Ember.String.decamelize(suggestion)
                         }));
 
                         return suggestions.get('length') >= suggestionLimit;
@@ -66,9 +70,6 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
             return suggestions.get('length') >= suggestionLimit;
         });
     },
-    pushOnlineSuggestions: function() {
-
-    },
     showNotFound: function() {
         return !this.get('isLoading') && !this.get('tracks.length') && !this.get('collections.length');
     }.property('isLoading', 'tracks.length', 'collections.length'),
@@ -76,12 +77,17 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, colle
         return this.get('tracks.isPending') || this.get('collections.isPending');
     }.property('tracks.isPending', 'collections.isPending'),
     find: function(type) {
-        var query = {
-            maxResults: 4,
-            query: this.get('query')
-        };
+        var query = this.get('query'),
+            options;
 
-        return this._super(type, query, !this.get('cache.searchDownloadedOnly'));
+        if (query !== null) {
+            options = {
+                maxResults: 4,
+                query: query
+            };
+
+            return this._super(type, options, !this.get('cache.searchDownloadedOnly'));
+        }
     },
     tracks: function() {
         return this.find('track');

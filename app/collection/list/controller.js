@@ -16,13 +16,13 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
         return !this.get('isPending') && !this.get('collection.length');
     }.property('isPending', 'collection.length'),
     updateCollections: function() {
-        var query = {
+        var options = {
             maxResults: 50,
             query: this.get('query'),
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('collection', query, !this.get('cache.searchDownloadedOnly')).then(function(collectionsPromise) {
+        this.find('collection', options, !this.get('cache.searchDownloadedOnly')).then(function(collectionsPromise) {
             this.get('collections').pushObjects(collectionsPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);

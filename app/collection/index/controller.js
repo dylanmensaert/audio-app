@@ -15,15 +15,15 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.property('isPending', 'tracks.length'),
     updateTracks: function() {
         var collection = this.get('model'),
-            query;
+            options;
 
-        query = {
+        options = {
             collectionId: collection.get('id'),
             maxResults: 50,
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('track', query, !collection.get('isLocalOnly') && !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, !collection.get('isLocalOnly') && !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);

@@ -71,7 +71,7 @@ export default Ember.Route.extend(routeMixin, {
             playedTrackIds,
             id;
 
-        if (!Ember.isEmpty(track)) {
+        if (track) {
             id = track.get('id');
             historyTrackIds = store.peekRecord('collection', 'history').get('trackIds');
             queueTrackIds = store.peekRecord('collection', 'queue').get('trackIds');
@@ -88,7 +88,7 @@ export default Ember.Route.extend(routeMixin, {
             historyTrackIds.pushObject(id);
 
             if (!queueTrackIds.contains(id)) {
-                if (Ember.isEmpty(audioPlayer.get('track.id'))) {
+                if (!audioPlayer.get('track.id')) {
                     queueTrackIds.pushObject(id);
                 } else {
                     queueTrackIds.insertAt(queueTrackIds.indexOf(audioPlayer.get('track.id')) + 1, id);
@@ -102,7 +102,7 @@ export default Ember.Route.extend(routeMixin, {
             fileSystem.set('playingTrackId', id);
         }
 
-        if (!Ember.isEmpty(track) && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
+        if (track && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
             track.download().then(function() {
                 audioPlayer.play(track);
             });
@@ -151,7 +151,7 @@ export default Ember.Route.extend(routeMixin, {
 
             playingTrack = this.get('store').peekRecord('track', this.get('fileSystem.playingTrackId'));
 
-            if (!Ember.isEmpty(playingTrack)) {
+            if (playingTrack) {
                 audioPlayer.load(playingTrack);
             }
 

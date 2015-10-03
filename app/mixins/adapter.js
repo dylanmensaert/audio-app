@@ -16,9 +16,9 @@ export default Ember.Mixin.create({
 
         return url;
     },
-    buildUrlByType: function(type, query) {
+    buildUrlByType: function(type, options) {
         // TODO: Rename query.query property?
-        return this.buildUrlByEndpoint('search', query.maxResults, query.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + query.query;
+        return this.buildUrlByEndpoint('search', options.maxResults, options.nextPageToken) + '&order=viewCount&type=' + type + '&q=' + options.query;
     },
     findRecord: function(store, type, id, endpoint) {
         var url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;
@@ -33,12 +33,12 @@ export default Ember.Mixin.create({
             });
         }.bind(this));
     },
-    query: function(store, type, query) {
-        var url = this.buildUrl(type.modelName, null, null, 'query', query);
+    query: function(store, type, options) {
+        var url = this.buildUrl(type.modelName, null, null, 'query', options);
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
             Ember.$.getJSON(url).then(function(payload) {
-                query.setNextPageToken(payload.nextPageToken);
+                options.setNextPageToken(payload.nextPageToken);
 
                 Ember.run(null, resolve, payload);
             }, function(response) {
