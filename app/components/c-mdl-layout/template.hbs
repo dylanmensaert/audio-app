@@ -6,7 +6,7 @@
   </span>
 
   <nav class="mdl-navigation">
-    <a {{action 'transitionToRoute' 'collection.my'}}  class='mdl-navigation__link'>
+    <a {{action 'transitionToRoute' 'collection.my'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.my') 'my-active'}}">
       <i class="material-icons">
         library_music
       </i>
@@ -14,7 +14,7 @@
       My Collections
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'queue'}}  class='mdl-navigation__link'>
+    <a {{action 'transitionToRoute' 'collection' 'queue'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/queue') 'my-active'}}">
       <i class="material-icons">
         queue_music
       </i>
@@ -22,7 +22,7 @@
       Queue
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'download-later'}}  class='mdl-navigation__link'>
+    <a {{action 'transitionToRoute' 'collection' 'download-later'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
       <i class="material-icons">
         archive
       </i>
@@ -30,7 +30,7 @@
       Download Later
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'history'}}  class='mdl-navigation__link'>
+    <a {{action 'transitionToRoute' 'collection' 'history'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/history') 'my-active'}}">
       <i class="material-icons">
         library_books
       </i>
@@ -38,7 +38,7 @@
       History
     </a>
 
-    <a {{action 'transitionToRoute' 'settings'}}  class='mdl-navigation__link'>
+    <a {{action 'transitionToRoute' 'settings'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'settings') 'my-active'}}">
       <i class="material-icons">
         settings
       </i>

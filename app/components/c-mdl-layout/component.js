@@ -23,6 +23,20 @@ export default ComponentMdl.extend({
     willDestroyElement: function() {
         Ember.$(window).off('resize');
     },
+    currentTargetName: function() {
+        var currentTransition = this.get('cache.completedTransitions.lastObject'),
+            currentTargetName,
+            resolvedModel;
+
+        currentTargetName = currentTransition.targetName;
+        resolvedModel = currentTransition.resolvedModels[currentTargetName];
+
+        if (resolvedModel) {
+            currentTargetName += '/' + resolvedModel.id;
+        }
+
+        return currentTargetName;
+    }.property('cache.completedTransitions.lastObject'),
     actions: {
         transitionToRoute: function(name, model) {
             this.get('cache.completedTransitions').clear();
