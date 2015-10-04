@@ -152,7 +152,7 @@ $audio-top: 2px;
 
 .my-audio-paragraph-end {
     @extend .my-paragraph-end;
-    height: $audio-height - 16px;
+    height: $audio-height;
 }
 
 .audio-timer {
