@@ -14,14 +14,6 @@
       My Collections
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'queue'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/queue') 'my-active'}}">
-      <i class="material-icons">
-        queue_music
-      </i>
-
-      Queue
-    </a>
-
     <a {{action 'transitionToRoute' 'collection' 'download-later'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
       <i class="material-icons">
         archive
