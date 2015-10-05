@@ -63,7 +63,7 @@ export default Ember.Mixin.create({
         }
 
         return new Ember.RSVP.Promise(function(resolve) {
-            fileSystem.write().then(function() {
+            fileSystem.save().then(function() {
                 var response = {
                     deserializeSingleRecord: true,
                     items: [
@@ -81,7 +81,7 @@ export default Ember.Mixin.create({
         fileSystem.get(type.modelName + 'Ids').removeObject(snapshot.id);
 
         return new Ember.RSVP.Promise(function(resolve) {
-            fileSystem.write().then(function() {
+            fileSystem.save().then(function() {
                 var response = {
                     deserializeSingleRecord: true,
                     items: [

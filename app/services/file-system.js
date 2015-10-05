@@ -127,12 +127,12 @@ export default Ember.Service.extend({
                         }]
                     }));
 
-                    this.write().then(resolve);
+                    this.save().then(resolve);
                 }.bind(this));
             }.bind(this));
         }.bind(this));
     },
-    write: function() {
+    save: function() {
         Ember.run.cancel(lastWriter);
 
         return new Ember.RSVP.Promise(function(resolve) {
