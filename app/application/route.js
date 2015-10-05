@@ -1,7 +1,7 @@
 /* global document: true */
 import Ember from 'ember';
-import AudioSlider from 'audio-app/components/c-audio-slider/object';
 import routeMixin from 'audio-app/mixins/route';
+import AudioSlider from 'audio-app/components/c-audio-slider/object';
 
 var generateRandom = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -110,6 +110,12 @@ export default Ember.Route.extend(routeMixin, {
             audioPlayer.play(track);
         }
     },
+    updateTitle: function(tokens) {
+        this._super(tokens);
+
+        tokens.reverse();
+        document.title = tokens.join(' - ');
+    },
     actions: {
         loading: function() {
             if (this.get('controller')) {
@@ -124,12 +130,6 @@ export default Ember.Route.extend(routeMixin, {
             if (this.get('controller')) {
                 this.set('controller.error', error);
             }
-        },
-        updateTitle: function(tokens) {
-            this._super(tokens);
-
-            tokens.reverse();
-            document.title = tokens.join(' - ');
         },
         play: function(track) {
             this.play(track);

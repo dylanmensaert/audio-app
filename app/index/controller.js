@@ -12,7 +12,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
 
-        hhistoryTrackIds.forEach(function(trackId, index) {
+        historyTrackIds.forEach(function(trackId, index) {
             if (length - 8 >= index) {
                 lastHistoryTracks.pushObject(store.peekRecord('track', trackId));
             }
