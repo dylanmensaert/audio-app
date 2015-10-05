@@ -29,6 +29,10 @@ export default DS.Adapter.extend(adapterMixin, {
             url = this.buildUrlByEndpoint('playlistItems', options) + '&playlistId=' + options.collectionId;
         } else {
             url = this.buildUrlByType('video', options);
+
+            if (options.relatedVideoId) {
+                url += '&relatedToVideoId=' + options.relatedVideoId;
+            }
         }
 
         return url;

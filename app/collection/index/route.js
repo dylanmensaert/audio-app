@@ -15,13 +15,15 @@ export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
         }
 
         return collection;
-    },
-    resetController: function(controller, isExiting) {
-        if (isExiting) {
-            controller.set('model', null);
-            controller.set('isPending', true);
-            controller.set('isLocked', false);
-            controller.set('tracks', []);
-        }
     }
 });
+
+// TODO: check if this is still needed?
+/*,
+resetController: function(controller, isExiting) {
+    if (isExiting) {
+        controller.set('isPending', true);
+        controller.set('isLocked', false);
+        controller.set('tracks', []);
+    }
+}*/
