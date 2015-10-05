@@ -13,34 +13,6 @@ export default Ember.Mixin.create({
         trackIds.pushObject(track.get('id'));
     },
     actions: {
-        download: function () {
-            this.get('selectedTracks').forEach(function (track) {
-                if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-                    track.download();
-                }
-            });
-        },
-        delete: function () {
-            this.get('selectedTracks').forEach(function (track) {
-                if (track.get('isDownloaded')) {
-                    track.remove().then(function () {
-                        track.destroyRecord();
-                    });
-                }
-            });
-        },
-        queue: function () {
-            var queue = this.get('store').peekRecord('collection', 'queue'),
-                trackIds = queue.get('trackIds');
-
-            this.get('selectedTracks').forEach(function (track) {
-                if (!trackIds.contains(track.get('id'))) {
-                    this.pushToQueue(trackIds, track);
-                }
-            });
-
-            this.get('cache').showMessage('Added to queue');
-        },
         pushToDownload: function (track) {
             var cache = this.get('cache'),
                 trackIds,

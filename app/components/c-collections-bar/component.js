@@ -32,15 +32,35 @@ export default Ember.Component.extend({
 
         return isEditable;
     }.property('collections.length', 'collections.firstObject.isReadOnly', 'collections.firstObject.isPushOnly'),
+    editedCollectionName: null,
+    isEditMode: function () {
+        return this.get('editedCollectionName') !== null;
+    }.property('editedCollectionName'),
     actions: {
         save: function () {
-            this.sendAction('save');
-        },
-        edit: function () {
-            this.sendAction('edit');
+            this.get('collections').forEach(function (collection) {
+                collection.save();
+            });
         },
         delete: function () {
-            this.sendAction('delete');
+            this.get('collections').forEach(function (collection) {
+                collection.destroyRecord();
+            });
+        },
+        setupEdit: function () {
+            var name = this.get('collections.firstObject.name');
+
+            this.set('editedCollectionName', name);
+        },
+        saveEdit: function () {
+            var selectedCollection = this.get('collections.firstObject');
+
+            selectedCollection.set('name', this.get('editedCollectionName'));
+            selectedCollection.set('isSelected', false);
+
+            selectedCollection.save();
+
+            this.set('editedCollectionName', null);
         }
     }
 });

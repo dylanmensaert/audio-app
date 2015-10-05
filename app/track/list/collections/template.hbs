@@ -1,17 +1,27 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  <div class='mdl-layout__header-row my-header-bar'>
-    <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </label>
+  {{#if cache.hasPreviousTransitions}}
+      <div class='mdl-layout__header-row my-header-bar'>
+        <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+          <i class="material-icons">
+            arrow_back
+          </i>
+        </label>
 
-    <div class="my-menu-cell my-text-left">
-        <span class="mdl-badge my-menu-btn" data-badge={{collections.length}} />
-    </div>
-  </div>
+        <div class="my-menu-cell my-text-left">
+            <span class="mdl-badge my-menu-btn" data-badge={{collections.length}} />
+        </div>
+      </div>
 
-  <header class="mdl-layout__header hidden" />
+      <header class="mdl-layout__header hidden" />
+  {{else}}
+      <header class="mdl-layout__header">
+        <div class='mdl-layout__header-row'>
+          <div class="my-menu-cell my-text-left">
+              <span class="mdl-badge my-menu-btn" data-badge={{collections.length}} />
+          </div>
+        </div>
+      </header>
+  {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
     {{#if showNotFound}}

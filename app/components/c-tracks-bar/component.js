@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     cache: Ember.inject.service(),
+    store: Ember.inject.service(),
     classNames: ['action-bar'],
     tracks: null,
     undownloadedTracks: function () {
@@ -28,13 +29,32 @@ export default Ember.Component.extend({
     }.property('unQueuedTracks.length', 'tracks.length'),
     actions: {
         download: function () {
-            this.sendAction('download');
+            this.get('tracks').forEach(function (track) {
+                if (!track.get('isDownloaded') && !track.get('isDownloading')) {
+                    track.download();
+                }
+            });
         },
         delete: function () {
-            this.sendAction('delete');
+            this.get('tracks').forEach(function (track) {
+                if (track.get('isDownloaded')) {
+                    track.remove().then(function () {
+                        track.destroyRecord();
+                    });
+                }
+            });
         },
         queue: function () {
-            this.sendAction('queue');
+            var queue = this.get('store').peekRecord('collection', 'queue'),
+                trackIds = queue.get('trackIds');
+
+            this.get('tracks').forEach(function (track) {
+                if (!trackIds.contains(track.get('id'))) {
+                    this.pushToQueue(trackIds, track);
+                }
+            });
+
+            this.get('cache').showMessage('Added to queue');
         },
         transitionToCollections: function () {
             this.set('cache.selectedSnippetIds', this.get('tracks').mapBy('id'));

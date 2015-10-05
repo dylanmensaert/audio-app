@@ -7,13 +7,13 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     isPending: true,
     isLocked: false,
     tracks: [],
-    disableLock: function() {
+    disableLock: function () {
         this.set('isLocked', false);
     },
-    showNotFound: function() {
+    showNotFound: function () {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
-    updateTracks: function() {
+    updateTracks: function () {
         var collection = this.get('model'),
             options;
 
@@ -23,7 +23,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('track', options, !collection.get('isLocalOnly') && !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, !collection.get('isLocalOnly') && !this.get('cache.searchDownloadedOnly')).then(function (tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
@@ -33,10 +33,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             }
         }.bind(this));
     }.observes('model.id', 'cache.searchDownloadedOnly'),
-    sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
+    sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
         return this.sortSnippet(this.get('model.trackIds'), snippet, other, true);
     }),
-    selectedTracks: function() {
+    selectedTracks: function () {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -47,17 +47,17 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        selectCollection: function() {
+        selectCollection: function () {
             this.get('model').set('isSelected', true);
         },
-        didScrollToBottom: function() {
+        didScrollToBottom: function () {
             if (!this.get('isLocked')) {
                 this.set('isLocked', true);
 
                 this.updateTracks();
             }
         },
-        download: function() {
+        download: function () {
             var collection = this.get('model');
 
             if (collection.get('isSelected')) {
@@ -66,7 +66,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 this._super();
             }
         },
-        removeFromCollection: function() {
+        removeFromCollection: function () {
             var trackIds = this.get('selectedTracks').mapBy('id'),
                 model = this.get('model');
 

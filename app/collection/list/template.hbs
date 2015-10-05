@@ -1,35 +1,14 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  <div class='mdl-layout__header-row my-header-bar {{if isEditMode 'my-edit-bar'}}'>
-    <label {{action (if isEditMode 'exitEdit' 'transitionToPrevious')}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </label>
-
-    {{#if isEditMode}}
-        {{#c-mdl class='mdl-textfield mdl-js-textfield'}}
-          {{c-mdl-input value=(mut editedCollectionName) insert-newline='search'}}
-
-          <label class="mdl-textfield__label"></label>
-        {{/c-mdl}}
-    {{else}}
-      <span class="mdl-layout-title">
-        {{query}}
-      </span>
-    {{/if}}
-
-    <div class="mdl-layout-spacer"></div>
-
-    <!-- TODO: implement isEditMode functionality -->
-    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-      <i class="material-icons">more_vert</i>
-    </button>
-  </div>
-
-  <header class="mdl-layout__header hidden" />
-
   {{#if selectedCollections}}
-      {{c-collections-bar collections=selectedCollections save='save' edit='edit' delete='delete'}}
+      {{c-collections-bar collections=selectedCollections}}
+  {{else if cache.hasPreviousTransitions}}
+      {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
+  {{/if}}
+
+  {{#if cache.hasPreviousTransitions}}
+      <header class="mdl-layout__header hidden" />
+  {{else}}
+      {{c-menu-bar title=query selectAll='selectAll' classNameBindings='selectedCollections.length:hidden'}}
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}

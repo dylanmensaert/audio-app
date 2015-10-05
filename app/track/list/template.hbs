@@ -1,26 +1,14 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  <div class='mdl-layout__header-row my-header-bar'>
-    <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
-      <i class="material-icons">
-        arrow_back
-      </i>
-    </label>
-
-    <span class="mdl-layout-title">
-      {{query}}
-    </span>
-
-    <div class="mdl-layout-spacer"></div>
-
-    <button {{action 'selectAll'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-      <i class="material-icons">more_vert</i>
-    </button>
-  </div>
-
-  <header class="mdl-layout__header hidden" />
-
   {{#if selectedTracks}}
-      {{c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
+      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
+  {{else if cache.hasPreviousTransitions}}
+      {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
+  {{/if}}
+
+  {{#if cache.hasPreviousTransitions}}
+      <header class="mdl-layout__header hidden" />
+  {{else}}
+    {{c-menu-bar title=query selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}

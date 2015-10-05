@@ -8,21 +8,21 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     tracks: [],
     isPending: true,
     isLocked: false,
-    disableLock: function() {
+    disableLock: function () {
         this.set('isLocked', false);
     },
     nextPageToken: null,
-    showNotFound: function() {
+    showNotFound: function () {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
-    updateTracks: function() {
+    updateTracks: function () {
         var options = {
             maxResults: 50,
             query: this.get('query'),
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('track', options, !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, !this.get('cache.searchDownloadedOnly')).then(function (tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
@@ -32,10 +32,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             }
         }.bind(this));
     }.observes('query', 'cache.searchDownloadedOnly').on('init'),
-    sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
+    sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
         return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache.searchDownloadedOnly'));
     }),
-    selectedTracks: function() {
+    selectedTracks: function () {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -46,10 +46,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        selectAll: function() {
-            this.get('tracks').setEach('isSelected', true);
-        },
-        didScrollToBottom: function() {
+        didScrollToBottom: function () {
             if (!this.get('isLocked')) {
                 this.set('isLocked', true);
 

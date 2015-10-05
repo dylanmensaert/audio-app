@@ -1,51 +1,45 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if hideMdlHeader}}
-    {{#c-mdl class='mdl-layout__header-row my-header-bar' classNameBindings='isEditMode:my-edit-bar'}}
-      <label {{action (if isEditMode 'exitEdit' 'transitionToPrevious')}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
+  {{#if selectedTracks}}
+      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
+  {{else if selectedCollections}}
+      {{c-collections-bar collections=selectedCollections}}
+  {{else if cache.hasPreviousTransition}}
+    {{#c-mdl class='mdl-layout__header-row my-header-bar'}}
+      <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
         </i>
       </label>
 
-      {{#if isEditMode}}
-          {{#c-mdl class='mdl-textfield mdl-js-textfield'}}
-            {{c-mdl-input value=(mut editedCollectionName) insert-newline='search'}}
-
-            <label class="mdl-textfield__label"></label>
-          {{/c-mdl}}
-      {{else}}
-          {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
-      {{/if}}
-
-      <div class="mdl-layout-spacer"></div>
-
-      {{#if showActionButton}}
-        {{#c-mdl tagName='button' action=(if isEditMode 'saveEdit' 'clear') class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">{{if isEditMode 'done' 'close'}}</i>
-        {{/c-mdl}}
-      {{/if}}
-    {{/c-mdl}}
-  {{/if}}
-
-  <header class="mdl-layout__header my-suggestions-wrapper {{if hideMdlHeader 'hidden'}}">
-    <div class="mdl-layout__header-row">
       {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
 
       <div class="mdl-layout-spacer"></div>
 
       {{#if liveQuery}}
         {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">close</i>
+          <i class="material-icons">
+            close
+          </i>
         {{/c-mdl}}
       {{/if}}
-    </div>
-  </header>
-
-  {{#if selectedTracks}}
-      {{c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
-  {{else if selectedCollections}}
-      {{c-collections-bar collections=selectedCollections save='save' edit='setupEdit' delete='delete'}}
+    {{/c-mdl}}
   {{/if}}
+
+  {{#unless cache.hasPreviousTransition}}
+    <header class="mdl-layout__header my-suggestions-wrapper {{if hideMdlHeader 'hidden'}}">
+      <div class="mdl-layout__header-row">
+        {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
+
+        <div class="mdl-layout-spacer"></div>
+
+        {{#if liveQuery}}
+          {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+            <i class="material-icons">close</i>
+          {{/c-mdl}}
+        {{/if}}
+      </div>
+    </header>
+  {{/unless}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
       {{#if showNotFound}}

@@ -31,3 +31,7 @@
       {{/if}}
     </div>
 {{/c-action-bar}}
+
+{{#if isEditMode}}
+  {{c-input-bar query=editedCollectionName done='save'}}
+{{/if}}
