@@ -14,7 +14,7 @@
       My Collections
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'download-later'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
+    <a {{action 'transitionToRoute' 'collection.index' 'download-later'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
       <i class="material-icons">
         archive
       </i>
@@ -22,7 +22,7 @@
       Download Later
     </a>
 
-    <a {{action 'transitionToRoute' 'collection' 'history'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/history') 'my-active'}}">
+    <a {{action 'transitionToRoute' 'collection.index' 'history'}}  class="mdl-navigation__link {{if (is-equal currentTargetName 'collection.index/history') 'my-active'}}">
       <i class="material-icons">
         library_books
       </i>

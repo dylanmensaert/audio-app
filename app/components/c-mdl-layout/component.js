@@ -28,23 +28,34 @@ export default ComponentMdl.extend({
             currentTargetName,
             resolvedModel;
 
-        currentTargetName = currentTransition.targetName;
-        resolvedModel = currentTransition.resolvedModels[currentTargetName];
+        if (currentTransition) {
+            currentTargetName = currentTransition.targetName;
+            resolvedModel = currentTransition.resolvedModels[currentTargetName];
 
-        if (resolvedModel) {
-            currentTargetName += '/' + resolvedModel.id;
+            if (resolvedModel) {
+                currentTargetName += '/' + resolvedModel.id;
+            }
         }
 
         return currentTargetName;
     }.property('cache.completedTransitions.lastObject'),
     actions: {
         transitionToRoute: function(name, model) {
-            this.get('cache.completedTransitions').clear();
+            var currentTargetName = this.get('currentTargetName'),
+                targetName = name;
 
             if (model) {
-                this.sendAction('transitionToRoute', name, model);
-            } else {
-                this.sendAction('transitionToRoute', name);
+                targetName += '/' + model;
+            }
+
+            if (currentTargetName !== targetName) {
+                this.get('cache.completedTransitions').clear();
+
+                if (model) {
+                    this.sendAction('transitionToRoute', name, model);
+                } else {
+                    this.sendAction('transitionToRoute', name);
+                }
             }
         }
     }
