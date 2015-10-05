@@ -1,6 +1,10 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if selectedCollections}}
-      {{c-collections-bar collections=selectedCollections}}
+  {{#if selectedTracks}}
+      {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
+          <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge">file_download</span>
+          </div>
+       {{/c-tracks-bar}}
   {{else if cache.hasPreviousTransitions}}
       {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
   {{/if}}
@@ -8,15 +12,7 @@
   {{#if cache.hasPreviousTransitions}}
       <header class="mdl-layout__header hidden" />
   {{else}}
-   {{c-menu-bar title=model.name selectAll='selectAll' classNameBindings='selectedCollections.length:hidden'}}
-  {{/if}}
-
-  {{#if selectedTracks}}
-      {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
-          <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge">file_download</span>
-          </div>
-       {{/c-tracks-bar}}
+   {{c-menu-bar title=model.name selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
