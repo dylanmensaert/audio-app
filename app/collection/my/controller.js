@@ -1,15 +1,14 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
-import collectionActionsMixin from 'audio-app/collection/actions-mixin';
 
-export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, {
+export default Ember.Controller.extend(controllerMixin, {
     fileSystem: Ember.inject.service(),
     store: Ember.inject.service(),
-    collections: function () {
+    collections: function() {
         var store = this.get('store'),
             collections = [];
 
-        this.get('fileSystem.collectionIds').forEach(function (collectionId) {
+        this.get('fileSystem.collectionIds').forEach(function(collectionId) {
             var collection = store.peekRecord('collection', collectionId);
 
             if (!collection.get('permission')) {
@@ -19,10 +18,10 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
 
         return collections;
     }.property('fileSystem.collectionIds.[]', 'collections.[]'),
-    sortedCollections: Ember.computed.sort('collections', function (snippet, other) {
+    sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
         return this.sortSnippet(this.get('collections'), snippet, other, false);
     }),
-    selectedCollections: function () {
+    selectedCollections: function() {
         return this.get('collections').filterBy('isSelected');
     }.property('collections.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -33,17 +32,17 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
     createdCollectionName: null,
-    isCreatedMode: function () {
+    isCreatedMode: function() {
         return this.get('createdCollectionName') !== null;
     }.property('createdCollectionName'),
-    hideMenuBar: function () {
+    hideMenuBar: function() {
         return this.get('isCreatedMode') || this.get('selectedCollections.length');
     }.property('isCreatedMode', 'selectedCollections.length'),
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.get('collections').setEach('isSelected', true);
         },
-        saveCreate: function () {
+        saveCreate: function() {
             var createdCollectionName = this.get('createdCollectionName'),
                 store = this.get('store'),
                 cache = this.get('cache');
@@ -58,17 +57,17 @@ export default Ember.Controller.extend(controllerMixin, collectionActionsMixin, 
                     isLocalOnly: true
                 });
 
-                store.peekRecord('collection', createdCollectionName).save().then(function () {
+                store.peekRecord('collection', createdCollectionName).save().then(function() {
                     this.set('createdCollectionName', null);
 
                     cache.showMessage('Saved new collection');
                 }.bind(this));
             }
         },
-        setupCreate: function () {
+        setupCreate: function() {
             this.set('createdCollectionName', '');
         },
-        exitCreate: function () {
+        exitCreate: function() {
             this.set('createdCollectionName', null);
         }
     }

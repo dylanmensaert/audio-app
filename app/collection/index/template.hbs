@@ -8,7 +8,7 @@
   {{#if cache.hasPreviousTransitions}}
       <header class="mdl-layout__header hidden" />
   {{else}}
-   {{c-menu-bar title='My Collections' selectAll='selectAll' classNameBindings='selectedCollections.length:hidden'}}
+   {{c-menu-bar title=model.name selectAll='selectAll' classNameBindings='selectedCollections.length:hidden'}}
   {{/if}}
 
   {{#if selectedTracks}}
