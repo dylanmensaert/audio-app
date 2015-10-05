@@ -4,7 +4,7 @@
   {{else if selectedCollections}}
       {{c-collections-bar collections=selectedCollections}}
   {{else if cache.hasPreviousTransition}}
-    {{#c-mdl class='mdl-layout__header-row my-header-bar'}}
+    {{#c-mdl class='mdl-layout__header-row my-header-bar my-suggestions-header'}}
       <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon menu-icon">
         <i class="material-icons">
           arrow_back
@@ -28,8 +28,8 @@
   {{/if}}
 
   {{#unless cache.hasPreviousTransition}}
-    <header class="mdl-layout__header my-suggestions-wrapper {{if hideMdlHeader 'hidden'}}">
-      <div class="mdl-layout__header-row">
+    <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
+      <div class="mdl-layout__header-row my-suggestions-header">
         {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
 
         <div class="mdl-layout-spacer"></div>

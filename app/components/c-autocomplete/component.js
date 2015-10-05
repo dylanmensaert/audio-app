@@ -1,13 +1,14 @@
 import Ember from 'ember';
 import ComponentMdl from 'audio-app/components/c-mdl';
 
-var keyCodeUp = 38,
+const keyCodeUp = 38,
     keyCodeDown = 40,
-    keyCodeEscape = 27,
-    timer;
+    keyCodeEscape = 27;
+
+var timer;
 
 export default ComponentMdl.extend({
-    classNames: ['mdl-textfield', 'mdl-js-textfield', 'my-suggestions-textfield'],
+    classNames: ['my-suggestions-textfield'],
     liveQuery: '',
     suggestions: null,
     showSuggestions: false,

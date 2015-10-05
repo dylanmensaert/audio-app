@@ -1,6 +1,8 @@
-{{c-mdl-input value=(mut liveQuery) insert-newline='searchSelected' didFocusOut='didFocusOut'}}
+<div class="mdl-textfield mdl-js-textfield">
+  {{c-mdl-input value=(mut liveQuery) insert-newline='searchSelected' didFocusOut='didFocusOut'}}
 
-<label class="mdl-textfield__label"></label>
+  <label class="mdl-textfield__label"></label>
+</div>
 
 {{#if showAutoComplete}}
   <div class="my-autocomplete mdl-shadow--2dp">
