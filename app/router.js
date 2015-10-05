@@ -23,6 +23,8 @@ Router.map(function() {
         this.route('my');
     });
 
+    this.route('search');
+
     this.route('settings');
 });
 
