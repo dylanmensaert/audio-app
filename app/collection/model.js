@@ -3,9 +3,16 @@ import modelMixin from 'audio-app/mixins/model';
 import logic from 'audio-app/utils/logic';
 
 export default DS.Model.extend(modelMixin, {
+    init: function() {
+        this._super();
+
+        if (!this.get('trackIds.length')) {
+            this.set('trackIds', []);
+        }
+    },
     permission: DS.attr('string'),
     isLocalOnly: DS.attr('boolean'),
-    trackIds: [],
+    trackIds: null,
     totalTracks: null,
     isReadOnly: function() {
         return this.get('permission') === 'read-only';

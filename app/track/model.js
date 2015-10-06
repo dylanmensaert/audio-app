@@ -20,6 +20,7 @@ function extractExtension(source) {
 export default DS.Model.extend(modelMixin, {
     audio: DS.attr('string'),
     status: null,
+    isDownloaded: false,
     isSaved: function() {
         return this.get('fileSystem.trackIds').contains(this.get('id'));
     }.property('fileSystem.tracks.[]'),
@@ -29,7 +30,6 @@ export default DS.Model.extend(modelMixin, {
     isPlaying: function() {
         return this.get('fileSystem.playingTrackId') === this.get('id');
     }.property('fileSystem.playingTrackId', 'id'),
-    isDownloaded: false,
     // TODO: check for better solution which uses only one computed property
     updateIsDownloaded: function() {
         this.get('fileSystem.instance').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function() {

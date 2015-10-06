@@ -32,8 +32,8 @@ function write(resolve) {
 export default Ember.Service.extend({
     store: Ember.inject.service(),
     instance: null,
-    collectionIds: [],
-    trackIds: [],
+    collectionIds: null,
+    trackIds: null,
     playingTrackId: null,
     setDownloadedOnlyOnMobile: true,
     setDownloadLaterOnMobile: true,
