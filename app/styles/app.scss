@@ -442,12 +442,23 @@ $audio-top: 2px;
     padding: 16px 8px 0 8px;
 }
 
-.my-audio-grid {
+.my-grid {
     padding: 0;
 }
 
 .my-title-text {
     margin-top: 0;
+}
+
+.my-menu-icon {
+    margin-right: 12px;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link.my-menu-link {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+    padding: 16px 30px;
 }
 
 .my-title-cell--10-col {
