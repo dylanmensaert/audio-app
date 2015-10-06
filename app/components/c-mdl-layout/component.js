@@ -7,11 +7,11 @@ export default ComponentMdl.extend({
     didInsertElement: function() {
         Ember.$(window).resize(function() {
             // TODO: duplicate with audio-track/component
-            this.$('.outer-image').each(function() {
+            this.$('.my-outer-image').each(function() {
                 Ember.$(this).height(Ember.$(this).width() / 30 * 17);
             });
 
-            this.$('.inner-image').each(function() {
+            this.$('.my-inner-image').each(function() {
                 Ember.$(this).height(Ember.$(this).width() / 12 * 9);
 
                 Ember.$(this).css('top', -Math.floor((Ember.$(this).height() - Ember.$(this).parent().height()) / 2));

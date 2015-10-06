@@ -24,7 +24,7 @@ $audio-top: 2px;
     }
 }
 
-.bar {
+@mixin bar {
     position: fixed;
     @media screen and (min-width: 1024px) {
         margin-left: 240px;
@@ -33,27 +33,21 @@ $audio-top: 2px;
     @media screen and (max-width: 1024px) {
         width: 100%;
     }
-    /* TODO: z-index needed? */
-    /* z-index: 3; */
 }
 
-.message-bar {
-    @extend .bar;
+.my-message-bar {
+    @include bar;
     bottom: $audio-height + 5px;
 }
 
-.toast-message {
+.my-toast-message {
     border-radius: 200px;
     padding: 10px 13px 10px 13px;
     background-color: #323232;
     color: #FFFFFF;
 }
 
-.action-bar {
-    @extend .bar;
-    z-index: 3;
-    top: 0;
-    font-size: 22px;
+.my-action-bar {
     background-color: #cccccc;
     @media screen and (max-width: 1024px) {
         width: calc(100% - 32px);
@@ -67,34 +61,24 @@ $audio-top: 2px;
     }
 }
 
-.action-cancel {
-    float: right;
-}
-
-.loading-bar {
-    @extend .bar;
-    height: 4px;
-    margin: 0;
-}
-
-.inner-image {
+.my-inner-image {
     width: 100%;
     position: absolute;
 }
 
-.outer-image {
+.my-outer-image {
     overflow: hidden;
     position: relative;
     width: 100%;
     background-color: #e1e1e1;
 }
 
-.audio-stamp {
+.my-audio-stamp {
     height: $audio-height + $audio-top;
 }
 
 .my-audio-slider-bar {
-    @extend .bar;
+    @include bar;
     z-index: 1;
     bottom: $audio-height - 8px;
 }
@@ -108,8 +92,8 @@ $audio-top: 2px;
     @extend .my-audio-slider;
 }
 
-.audio-bar {
-    @extend .bar;
+.my-audio-bar {
+    @include bar;
     bottom: 0;
     height: $audio-height;
     background: white;
@@ -155,16 +139,7 @@ $audio-top: 2px;
     height: $audio-height;
 }
 
-.audio-timer {
-    padding-top: 8px;
-    font-size: 12px;
-}
-
-.highlight {
-    color: #ef6c00;
-}
-
-.btn-file {
+.my-btn-file {
     position: relative;
     overflow: hidden;
     input[type=file] {
@@ -179,14 +154,6 @@ $audio-top: 2px;
     }
 }
 
-.text-large {
-    font-size: 52px;
-}
-
-.list-group-item.track-item {
-    padding: 0;
-}
-
 * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -196,78 +163,9 @@ $audio-top: 2px;
     user-select: none;
 }
 
-.menu-bar {
-    @extend .bar;
-    margin: 0 0 10px 0;
-    padding: 0;
-    top: 0;
-    .btn.btn-default {
-        &,
-        &:hover {
-            background-color: #eeeeee;
-        }
-    }
-}
-
-.menu-placeholder {
-    @include menu-height;
-}
-
-.grid-label {
-    margin: 3px 2px 3px 2px;
-}
-
-.spaced-top {
-    margin-top: 10px;
-}
-
-.btn-inline {
-    padding: 4px 15px 4px 15px;
-}
-
-.outer-label {
-    @include menu-height;
-    padding: 0;
-}
-
-.inner-label {
-    margin-top: 11px;
-}
-
-.menu-text {
-    font-size: 15px;
-    color: white;
-}
-
-.outer-btn-group {
-    padding: 0;
-}
-
-.inner-btn-group {
-    margin: 0;
-    @include menu-height;
-}
-
-.text-active {
-    color: #ff9800;
-}
-
-.action-top {
-    background-color: #eeeeee;
-}
-
-.action-badge {
-    background-color: white;
-    color: #ffab00;
-}
-
-.row {
+.my-row {
     margin-left: 0;
     margin-right: 0;
-}
-
-.undercover {
-    visibility: hidden;
 }
 
 // Fix for fixed heading title
@@ -285,7 +183,7 @@ $audio-top: 2px;
     margin-left: 240px;
 }
 
-.menu-icon {
+.my-spaced-icon {
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -301,7 +199,7 @@ $audio-top: 2px;
     @media screen and (min-width: 1024px) {
         top: $menu-height + 2px;
     }
-    .suggestion {
+    .my-suggestion {
         width: inherit;
         text-align: inherit;
         text-transform: inherit;

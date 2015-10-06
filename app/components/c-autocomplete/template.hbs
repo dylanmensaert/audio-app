@@ -7,7 +7,7 @@
 {{#if showAutoComplete}}
   <div class="my-autocomplete mdl-shadow--2dp">
     {{#each suggestions as |suggestion|}}
-      {{#c-mdl action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect suggestion' classNameBindings='suggestion.isSelected:active'}}
+      {{#c-mdl action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect my-suggestion' classNameBindings='suggestion.isSelected:active'}}
         {{suggestion.value}}
       {{/c-mdl}}
     {{/each}}
