@@ -139,6 +139,8 @@ export default Ember.Route.extend(routeMixin, {
         } else {
             audioPlayer.play(track);
         }
+
+        fileSystem.save();
     },
     updateTitle: function(tokens) {
         this._super(tokens);
