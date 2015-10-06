@@ -179,10 +179,6 @@ $audio-top: 2px;
     }
 }
 
-.list-group-separator.track-separator {
-    margin: 0;
-}
-
 .text-large {
     font-size: 52px;
 }
@@ -399,13 +395,13 @@ $audio-top: 2px;
     height: 68px;
 }
 
-.my-track-line {
+.my-line {
     width: calc(100% - 90px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     float: right;
 }
 
-.my-track-separator {
+.my-separator {
     width: 100%;
 }
 

@@ -30,8 +30,8 @@
               {{#each sortedTracks as |track|}}
                   {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=track.isQueued}}
 
-                  <div class="my-track-separator">
-                      <div class="my-track-line" />
+                  <div class="my-separator">
+                      <div class="my-line" />
                   </div>
               {{/each}}
           </div>
