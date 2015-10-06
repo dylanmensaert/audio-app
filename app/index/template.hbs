@@ -2,7 +2,7 @@
   {{#if selectedTracks}}
       {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
   {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
+      {{c-transition-bar transitionToPrevious='transitionToPrevious' title=query selectAll='selectAll'}}
   {{/if}}
 
   {{#if cache.hasPreviousTransition}}

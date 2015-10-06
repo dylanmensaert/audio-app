@@ -18,6 +18,7 @@ export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
     },
     resetController: function (controller, isExiting) {
         if (isExiting) {
+            controller.set('nextPageToken', null);
             controller.set('isPending', true);
             controller.set('isLocked', false);
             controller.set('tracks', []);

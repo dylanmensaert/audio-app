@@ -4,6 +4,7 @@ import trackActionsMixin from 'audio-app/track/actions-mixin';
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     model: null,
+    nextPageToken: null,
     isPending: true,
     isLocked: false,
     tracks: [],

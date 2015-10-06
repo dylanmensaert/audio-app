@@ -4,7 +4,7 @@
   {{else if selectedCollections}}
       {{c-collections-bar collections=selectedCollections}}
   {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
+      {{c-transition-bar transitionToPrevious='transitionToPrevious' title=query selectAll='selectAll'}}
   {{/if}}
 
   {{#if cache.hasPreviousTransition}}

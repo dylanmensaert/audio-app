@@ -6,6 +6,9 @@ export default Ember.Component.extend({
     actions: {
         selectAll: function () {
             this.sendAction('selectAll');
+        },
+        transitionToPrevious: function () {
+            this.sendAction('transitionToPrevious');
         }
     }
 });

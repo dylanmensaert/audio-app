@@ -6,7 +6,7 @@
           </div>
        {{/c-tracks-bar}}
   {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar back='transitionToPrevious' title=model.name selectAll='selectAll'}}
+      {{c-transition-bar transitionToPrevious='transitionToPrevious' title=model.name selectAll='selectAll'}}
   {{/if}}
 
   {{#if cache.hasPreviousTransition}}
