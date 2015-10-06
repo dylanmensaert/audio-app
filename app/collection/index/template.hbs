@@ -5,11 +5,11 @@
             <span class="material-icons mdl-badge my-badge">file_download</span>
           </div>
        {{/c-tracks-bar}}
-  {{else if cache.hasPreviousTransitions}}
-      {{c-transition-bar back='transitionToPrevious' title=query selectAll='selectAll'}}
+  {{else if cache.hasPreviousTransition}}
+      {{c-transition-bar back='transitionToPrevious' title=model.name selectAll='selectAll'}}
   {{/if}}
 
-  {{#if cache.hasPreviousTransitions}}
+  {{#if cache.hasPreviousTransition}}
       <header class="mdl-layout__header hidden" />
   {{else}}
    {{c-menu-bar title=model.name selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}

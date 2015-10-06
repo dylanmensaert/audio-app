@@ -4,7 +4,7 @@ import routeTransitionMixin from 'audio-app/mixins/route-transition';
 
 export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
     title: 'index',
-    model: function(params) {
+    model: function (params) {
         // TODO: should work out of the box via findRecord: http://emberjs.com/blog/2015/06/18/ember-data-1-13-released.html#toc_better-caching-defaults-for-code-findall-code-and-code-findrecord-code
         // However, the documentation does not seem to work in this case
         var store = this.get('store'),
@@ -15,15 +15,12 @@ export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
         }
 
         return collection;
+    },
+    resetController: function (controller, isExiting) {
+        if (isExiting) {
+            controller.set('isPending', true);
+            controller.set('isLocked', false);
+            controller.set('tracks', []);
+        }
     }
 });
-
-// TODO: check if this is still needed?
-/*,
-resetController: function(controller, isExiting) {
-    if (isExiting) {
-        controller.set('isPending', true);
-        controller.set('isLocked', false);
-        controller.set('tracks', []);
-    }
-}*/
