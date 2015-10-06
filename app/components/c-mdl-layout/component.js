@@ -48,6 +48,10 @@ export default ComponentMdl.extend({
                 targetName += '/' + model;
             }
 
+            if (name === this.get('cache.completedTransitions.lastObject').targetName) {
+                this.$('.mdl-layout__drawer').removeClass('is-visible');
+            }
+
             if (currentTargetName !== targetName) {
                 this.get('cache.completedTransitions').clear();
 
