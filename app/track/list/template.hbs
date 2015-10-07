@@ -12,9 +12,11 @@
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
-    {{#if showNotFound}}
-      No tracks found
-    {{/if}}
+    <div class="mdl-grid">
+     {{#if showNotFound}}
+        No tracks found
+      {{/if}}
+    </div>
 
     {{#if tracks}}
       <div class="my-panel">

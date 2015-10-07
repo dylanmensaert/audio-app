@@ -24,9 +24,11 @@
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    {{#if showNotFound}}
-      No collections found
-    {{/if}}
+    <div class="mdl-grid">
+      {{#if showNotFound}}
+        No collections found
+      {{/if}}
+    </div>
 
     {{#if collections}}
       <div class="my-panel">
