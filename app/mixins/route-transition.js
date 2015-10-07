@@ -1,14 +1,15 @@
+/* global encodeURIComponent: true */
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
     cache: Ember.inject.service(),
     currentTransition: null,
-    afterModel: function(resolvedModel, transition) {
+    afterModel: function (resolvedModel, transition) {
         this.set('currentTransition', transition);
 
         this.get('cache.completedTransitions').pushObject(transition);
     },
-    deactivate: function() {
+    deactivate: function () {
         var controller = this.get('controller'),
             currentTransition = this.get('currentTransition'),
             hasCurrentTransition = this.get('cache.completedTransitions').contains(currentTransition),
@@ -18,11 +19,11 @@ export default Ember.Mixin.create({
             currentTransition.intent.url = '/' + currentTransition.targetName;
             queryParams = [];
 
-            controller.get('queryParams').forEach(function(queryParam) {
+            controller.get('queryParams').forEach(function (queryParam) {
                 var queryValue = controller.get(queryParam);
 
                 if (queryValue !== undefined && queryValue !== null) {
-                    queryParams.addObject(queryParam + '=' + queryValue);
+                    queryParams.addObject(queryParam + '=' + encodeURIComponent(queryValue));
                 }
             });
 
