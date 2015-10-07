@@ -138,7 +138,9 @@ export default Ember.Route.extend(routeMixin, {
             fileSystem.save();
         }
 
-        track.save();
+        if (track) {
+            track.save();
+        }
 
         if (track && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
             track.download().then(function () {
