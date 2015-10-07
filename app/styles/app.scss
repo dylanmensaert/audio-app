@@ -26,12 +26,12 @@ $audio-top: 2px;
 
 @mixin bar {
     position: fixed;
+    @media screen and (max-width: 1024px) {
+        width: 100%;
+    }
     @media screen and (min-width: 1024px) {
         margin-left: 240px;
         width: calc(100% - 240px);
-    }
-    @media screen and (max-width: 1024px) {
-        width: 100%;
     }
 }
 
@@ -55,6 +55,7 @@ $audio-top: 2px;
         padding-right: 16px;
     }
     @media screen and (min-width: 1024px) {
+        margin-left: 240px;
         width: calc(100% - 320px);
         padding-left: 40px;
         padding-right: 40px;
