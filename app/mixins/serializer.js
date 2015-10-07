@@ -7,7 +7,7 @@ function convertImageUrl(url) {
 }
 
 export default Ember.Mixin.create({
-    pushPayload: function (store, payload, modelName) {
+    pushPayload: function(store, payload, modelName) {
         var id = payload.id;
 
         delete payload.id;
@@ -20,9 +20,15 @@ export default Ember.Mixin.create({
             }
         });
     },
-    normalizeResponse: function (store, primaryModelClass, payload) {
-        var data = payload.items.map(function (item) {
-            return this.normalize(store, primaryModelClass, item);
+    normalizeResponse: function(store, primaryModelClass, payload) {
+        var data = [];
+
+        payload.items.forEach(function(item) {
+            var snippet = this.normalize(store, primaryModelClass, item);
+
+            if (snippet) {
+                data.pushObject(snippet);
+            }
         }.bind(this));
 
         if (payload.deserializeSingleRecord) {
@@ -33,7 +39,7 @@ export default Ember.Mixin.create({
             data: data
         };
     },
-    peekSnippet: function (store, modelName, id, item) {
+    peekSnippet: function(store, modelName, id, item) {
         var snippet = store.peekRecord(modelName, id);
 
         if (snippet) {
@@ -41,6 +47,9 @@ export default Ember.Mixin.create({
 
             delete snippet.id;
         } else {
+            if (!item.snippet.thumbnails) {
+                var test = '';
+            }
             snippet = {
                 name: item.snippet.title,
                 // TODO: support higher resolutions (for desktop) when available?: standard, maxres

@@ -44,11 +44,11 @@
   {{/unless}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-grid">
       {{#if showNotFound}}
-        No records found
+        <div class="mdl-grid">
+          No records found
+        </div>
       {{/if}}
-    </div>
 
       {{#if isLoading}}
         <div class="my-loading-bar">

@@ -12,22 +12,14 @@
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
-    <div class="mdl-grid">
+    <div class="my-panel">
       {{#if showNotFound}}
-        No collections found
+        <div class="mdl-grid">
+          No collections found
+        </div>
       {{/if}}
-    </div>
 
-    {{#if collections}}
-      <div class="my-panel">
-          <div class="mdl-grid my-title-grid">
-              <div class="my-title-cell--10-col">
-                  <h4 class="my-title-text">
-                      Collections
-                  </h4>
-              </div>
-          </div>
-
+      {{#if collections}}
           <div class="mdl-grid">
               {{#each sortedCollections as |collection|}}
                   {{c-collection model=collection action='transitionTo'}}
@@ -37,14 +29,14 @@
                   </div>
               {{/each}}
           </div>
-      </div>
-    {{/if}}
+      {{/if}}
 
-    {{#if isPending}}
-      <div class="my-loading-bar">
-        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-      </div>
-    {{/if}}
+      {{#if isPending}}
+        <div class="my-loading-bar">
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+        </div>
+      {{/if}}
+    </div>
   {{/c-endless-scroll}}
 
   {{c-audio-player audioPlayer=audioPlayer transitionTo='transitionTo' play='play' pause='pause'}}
