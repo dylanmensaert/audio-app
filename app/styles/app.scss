@@ -356,6 +356,10 @@ $audio-top: 2px;
     margin-right: 12px;
 }
 
+.my-invisible {
+    visibility: hidden;
+}
+
 .mdl-layout__drawer .mdl-navigation .mdl-navigation__link.my-menu-link {
     align-items: center;
     display: flex;

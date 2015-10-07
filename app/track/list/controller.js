@@ -57,6 +57,9 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
+        selectAll: function() {
+            this.get('tracks').setEach('isSelected', true);
+        },
         didScrollToBottom: function() {
             if (!this.get('isLocked')) {
                 this.set('isLocked', true);

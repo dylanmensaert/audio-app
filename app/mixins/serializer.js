@@ -47,9 +47,6 @@ export default Ember.Mixin.create({
 
             delete snippet.id;
         } else {
-            if (!item.snippet.thumbnails) {
-                var test = '';
-            }
             snippet = {
                 name: item.snippet.title,
                 // TODO: support higher resolutions (for desktop) when available?: standard, maxres

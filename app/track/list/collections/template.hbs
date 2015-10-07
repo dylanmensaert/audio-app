@@ -24,33 +24,33 @@
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-grid">
-      {{#if showNotFound}}
-        No collections found
-      {{/if}}
-    </div>
-
-    {{#if collections}}
-      <div class="my-panel">
-          <div class="mdl-grid my-title-grid">
-              <div class="my-title-cell--10-col">
-                  <h4 class="my-title-text">
-                      Collections
-                  </h4>
-              </div>
-          </div>
-
-          <div class="mdl-grid">
-              {{#each sortedCollections as |collection|}}
-                  {{c-collection model=collection action='transitionTo' toggleIsSelected='toggleIsSelected'}}
-
-                  <div class="my-collection-separator">
-                      <div class="my-collection-line" />
-                  </div>
-              {{/each}}
+    <div class="my-panel">
+      <div class="mdl-grid my-title-grid">
+          <div class="my-title-cell--10-col">
+              <h4 class="my-title-text">
+                  My Collections
+              </h4>
           </div>
       </div>
-    {{/if}}
+
+      {{#if showNotFound}}
+        <div class="mdl-grid">
+          No collections found
+        </div>
+      {{/if}}
+
+      {{#if collections}}
+        <div class="mdl-grid">
+            {{#each sortedCollections as |collection|}}
+                {{c-collection model=collection action='transitionTo' toggleIsSelected='toggleIsSelected'}}
+
+                <div class="my-collection-separator">
+                    <div class="my-collection-line" />
+                </div>
+            {{/each}}
+        </div>
+      {{/if}}
+    </div>
   </main>
 
   {{c-audio-player audioPlayer=audioPlayer transitionTo='transitionTo' play='play' pause='pause'}}
