@@ -12,7 +12,9 @@
 
     <div {{action 'toggleIsSelected'}} class="my-card-vert">
       <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
+        <i class="material-icons">
+          more_vert
+        </i>
       </div>
     </div>
   </div>
@@ -22,10 +24,14 @@
 
     <div class="mdl-card__actions mdl-card--border my-card-actions">
       {{#if model.isPlaying}}
-        <i class="material-icons">headset</i>
+        <i class="material-icons">
+          headset
+        </i>
       {{else}}
           {{#if showQueued}}
-              <i class="material-icons">schedule</i>
+              <i class="material-icons">
+                schedule
+              </i>
           {{/if}}
       {{/if}}
 
@@ -34,7 +40,9 @@
       {{/if}}
 
       {{#if model.isDownloaded}}
-          <i class="material-icons">offline_pin</i>
+          <i class="material-icons">
+            offline_pin
+          </i>
       {{/if}}
     </div>
    {{/if}}

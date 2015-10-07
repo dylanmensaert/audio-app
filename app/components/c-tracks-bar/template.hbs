@@ -6,14 +6,18 @@
 
     <div class="my-menu-cell">
         <div {{action 'transitionToCollections'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge">playlist_add</span>
+            <span class="material-icons mdl-badge my-badge">
+              loyalty
+            </span>
         </div>
     </div>
 
     <div class="my-menu-cell">
       {{#if undownloadedTracks}}
           <div {{action 'download'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUndownloaded undownloadedTracks.length}}>file_download</span>
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUndownloaded undownloadedTracks.length}}>
+              file_download
+            </span>
           </div>
       {{else}}
          &nbsp;
@@ -23,7 +27,9 @@
     <div class="my-menu-cell">
       {{#if downloadedTracks}}
           <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryDownloaded downloadedTracks.length}}>delete</span>
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryDownloaded downloadedTracks.length}}>
+              delete
+            </span>
           </div>
       {{else}}
          &nbsp;
@@ -33,7 +39,9 @@
     <div class="my-menu-cell">
       {{#if unQueuedTracks}}
           <div {{action 'queue'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnQueued unQueuedTracks.length}}>queue_music</span>
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnQueued unQueuedTracks.length}}>
+              queue_music
+            </span>
           </div>
       {{else}}
          &nbsp;
