@@ -140,11 +140,18 @@ $audio-top: 2px;
     height: $audio-height;
 }
 
+.my-settings-grid {
+    max-width: 300px;
+    float: left;
+}
+
 .my-btn-file {
     position: relative;
     overflow: hidden;
     input[type=file] {
         position: absolute;
+        height: 100%;
+        z-index: 1;
         top: 0;
         left: 0;
         opacity: 0;
