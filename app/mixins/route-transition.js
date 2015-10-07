@@ -19,11 +19,15 @@ export default Ember.Mixin.create({
             currentTransition.intent.url = '/' + currentTransition.targetName;
             queryParams = [];
 
+            currentTransition.intent.queryParams = {};
+
             controller.get('queryParams').forEach(function (queryParam) {
                 var queryValue = controller.get(queryParam);
 
                 if (queryValue !== undefined && queryValue !== null) {
                     queryParams.addObject(queryParam + '=' + encodeURIComponent(queryValue));
+
+                    currentTransition.intent.queryParams[queryParam] = queryValue;
                 }
             });
 
