@@ -55,20 +55,19 @@ export default Ember.Mixin.create({
     },
     updateRecord: function(store, type, snapshot) {
         var fileSystem = this.get('fileSystem'),
-            snippetIds = fileSystem.get(type.modelName + 'Ids'),
-            id = snapshot.id;
+            snippetIds = fileSystem.get(type.modelName + 'Ids');
 
-        if (!snippetIds.contains(id)) {
-            snippetIds.pushObject(id);
+        if (!snippetIds.contains(snapshot.id)) {
+            snippetIds.pushObject(snapshot.id);
         }
 
         return new Ember.RSVP.Promise(function(resolve) {
             fileSystem.save().then(function() {
                 var response = {
                     deserializeSingleRecord: true,
-                    items: [
-                        snapshot
-                    ]
+                    items: [{
+                        id: snapshot.id
+                    }]
                 };
 
                 resolve(response);
@@ -84,9 +83,9 @@ export default Ember.Mixin.create({
             fileSystem.save().then(function() {
                 var response = {
                     deserializeSingleRecord: true,
-                    items: [
-                        snapshot
-                    ]
+                    items: [{
+                        id: snapshot.id
+                    }]
                 };
 
                 resolve(response);

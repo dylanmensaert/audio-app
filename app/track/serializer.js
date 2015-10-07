@@ -10,10 +10,10 @@ export default DS.Serializer.extend(serializerMixin, {
             track,
             data;
 
-        if (item.snippet.title !== 'Deleted video') {
+        if (!item.snippet || item.snippet.title !== 'Deleted video') {
             if (item.id.videoId) {
                 id = item.id.videoId;
-            } else if (item.snippet.resourceId) {
+            } else if (item.snippet && item.snippet.resourceId) {
                 id = item.snippet.resourceId.videoId;
             } else {
                 id = item.id;
@@ -21,7 +21,7 @@ export default DS.Serializer.extend(serializerMixin, {
 
             track = this.peekSnippet(store, typeClass.modelName, id, item);
 
-            if (!track.id) {
+            if (!track.extension) {
                 track.extension = 'mp3';
             }
 
