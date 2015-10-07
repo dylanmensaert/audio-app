@@ -6,9 +6,17 @@
   </span>
 
   <nav class="mdl-navigation">
+    <a {{action 'transitionToRoute' 'index'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'index') 'my-active'}}">
+      <i class="material-icons my-menu-icon">
+        whatshot
+      </i>
+
+      Recommended
+    </a>
+
     <a {{action 'transitionToRoute' 'collection.my'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.my') 'my-active'}}">
       <i class="material-icons my-menu-icon">
-        library_music
+        loyalty
       </i>
 
       My Collections
@@ -16,7 +24,7 @@
 
     <a {{action 'transitionToRoute' 'collection.index' 'download-later'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
       <i class="material-icons my-menu-icon">
-        archive
+        shop_two
       </i>
 
       Download Later
