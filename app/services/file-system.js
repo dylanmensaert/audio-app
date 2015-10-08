@@ -144,9 +144,11 @@ export default Ember.Service.extend({
             parsedJSON = JSON.parse(json);
 
         parsedJSON.collectionIds = parsedJSON.collections.map(function(collection) {
-            var id = collection.id;
+            var id = collection.id,
+                trackIds = collection.trackIds;
 
             delete collection.id;
+            delete collection.trackIds;
 
             store.push({
                 data: {
@@ -155,6 +157,8 @@ export default Ember.Service.extend({
                     attributes: collection
                 }
             });
+
+            store.peekRecord('collection', id).set('trackIds', trackIds);
 
             return id;
         });

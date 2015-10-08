@@ -6,16 +6,14 @@ export default DS.Model.extend(modelMixin, {
     init: function() {
         this._super();
 
-        if (!this.get('trackIds.length')) {
-            this.set('trackIds', []);
-        }
+        this.set('trackIds', []);
     },
     permission: DS.attr('string'),
     isLocalOnly: DS.attr('boolean'),
     trackIds: null,
     totalTracks: null,
     isReadOnly: function() {
-        return this.get('permission') === 'read-only';
+        return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
     }.property('permission'),
     isPushOnly: function() {
         return this.get('permission') === 'push-only';
@@ -28,10 +26,10 @@ export default DS.Model.extend(modelMixin, {
     download: function(nextPageToken) {
         this.set('nextPageToken', nextPageToken);
 
-        this.findAllTracks();
+        this.saveNextTracks();
         this.downloadNextTrack(0);
     },
-    findAllTracks: function() {
+    saveNextTracks: function() {
         var nextPageToken = this.get('nextPageToken'),
             options;
 
@@ -42,8 +40,14 @@ export default DS.Model.extend(modelMixin, {
                 nextPageToken: nextPageToken
             };
 
-            logic.find.call(this, 'track', options, true).then(function() {
-                this.findAllTracks(this.get('id'));
+            logic.find.call(this, 'track', options, true).then(function(tracks) {
+                this.get('trackIds').pushObjects(tracks.mapBy('id'));
+
+                tracks.forEach(function(track) {
+                    track.save();
+                });
+
+                this.saveNextTracks(this.get('id'));
             }.bind(this));
         }
     },

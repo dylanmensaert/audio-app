@@ -49,7 +49,7 @@ export default Ember.Controller.extend(controllerMixin, {
             this.get('collections').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            if (!this.get('isLocked')) {
+            if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateCollections();

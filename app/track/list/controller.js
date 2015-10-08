@@ -61,7 +61,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             this.get('tracks').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            if (!this.get('isLocked')) {
+            if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateTracks();
