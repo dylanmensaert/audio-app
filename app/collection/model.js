@@ -3,33 +3,32 @@ import modelMixin from 'audio-app/mixins/model';
 import logic from 'audio-app/utils/logic';
 
 export default DS.Model.extend(modelMixin, {
-    init: function() {
-        this._super();
-
-        this.set('trackIds', []);
-    },
     permission: DS.attr('string'),
-    isLocalOnly: DS.attr('boolean'),
-    trackIds: null,
-    totalTracks: null,
-    isReadOnly: function() {
+    isLocalOnly: DS.attr('boolean', {
+        defaultValue: true
+    }),
+    trackIds: DS.attr({
+        defaultValue: []
+    }),
+    totalTracks: DS.attr('number'),
+    isReadOnly: function () {
         return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
     }.property('permission'),
-    isPushOnly: function() {
+    isPushOnly: function () {
         return this.get('permission') === 'push-only';
     }.property('permission'),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
-    isQueue: function() {
+    isQueue: function () {
         return this.get('id') === 'queue';
     }.property('id'),
     nextPageToken: null,
-    download: function(nextPageToken) {
+    download: function (nextPageToken) {
         this.set('nextPageToken', nextPageToken);
 
         this.saveNextTracks();
         this.downloadNextTrack(0);
     },
-    saveNextTracks: function() {
+    saveNextTracks: function () {
         var nextPageToken = this.get('nextPageToken'),
             options;
 
@@ -40,10 +39,10 @@ export default DS.Model.extend(modelMixin, {
                 nextPageToken: nextPageToken
             };
 
-            logic.find.call(this, 'track', options, true).then(function(tracks) {
+            logic.find.call(this, 'track', options, true).then(function (tracks) {
                 this.get('trackIds').pushObjects(tracks.mapBy('id'));
 
-                tracks.forEach(function(track) {
+                tracks.forEach(function (track) {
                     track.save();
                 });
 
@@ -51,7 +50,7 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }
     },
-    downloadNextTrack: function(index) {
+    downloadNextTrack: function (index) {
         var trackId = this.get('trackIds').objectAt(index),
             track;
 
@@ -59,7 +58,7 @@ export default DS.Model.extend(modelMixin, {
             track = this.get('store').peekRecord('track', trackId);
 
             if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-                track.download().then(function() {
+                track.download().then(function () {
                     this.downloadNextTrack(index + 1);
                 }.bind(this));
             }

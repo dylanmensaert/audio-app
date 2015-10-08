@@ -8,23 +8,23 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     isPending: true,
     isLocked: false,
     tracks: [],
-    disableLock: function() {
+    disableLock: function () {
         this.set('isLocked', false);
     },
-    showNotFound: function() {
+    showNotFound: function () {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
-    updateTracks: function() {
-        var collection = this.get('model'),
-            options;
-
-        options = {
-            collectionId: collection.get('id'),
+    searchOnline: function () {
+        return !this.get('model.isLocalOnly') && !this.get('cache.searchDownloadedOnly');
+    }.property('model.isLocalOnly', 'cache.searchDownloadedOnly'),
+    updateOnlineTracks: function () {
+        var options = {
+            collectionId: this.get('model.id'),
             maxResults: 50,
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('track', options, !collection.get('isLocalOnly') && !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, true).then(function (tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
@@ -33,11 +33,39 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 this.set('isPending', false);
             }
         }.bind(this));
-    }.observes('model.id', 'cache.searchDownloadedOnly'),
-    sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
+    },
+    updateOfflineTracks: function () {
+        var options = {
+            collectionId: this.get('model.id')
+        };
+
+        this.set('isPending', true);
+
+        this.find('track', options, false).then(function (tracksPromise) {
+            this.set('tracks', tracksPromise.toArray());
+
+            this.set('isPending', false);
+        }.bind(this));
+    },
+    updateTracks: function () {
+        if (this.get('searchOnline')) {
+            this.updateOnlineTracks();
+        } else {
+            this.updateOfflineTracks();
+        }
+    }.observes('model.trackIds'),
+    resetController: function () {
+        this.set('nextPageToken', null);
+        this.set('isPending', true);
+        this.set('isLocked', false);
+        this.set('tracks', []);
+
+        this.updateTracks();
+    }.observes('model.id', 'searchOnline'),
+    sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
         return this.sortSnippet(this.get('model.trackIds'), snippet, other, true);
     }),
-    selectedTracks: function() {
+    selectedTracks: function () {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -48,17 +76,17 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        selectAll: function() {
+        selectAll: function () {
             this.get('model').set('isSelected', true);
         },
-        didScrollToBottom: function() {
+        didScrollToBottom: function () {
             if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
-                this.updateTracks();
+                this.updateOnlineTracks();
             }
         },
-        download: function() {
+        download: function () {
             var collection = this.get('model');
 
             if (collection.get('isSelected')) {
@@ -67,7 +95,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 this._super();
             }
         },
-        removeFromCollection: function() {
+        removeFromCollection: function () {
             var trackIds = this.get('selectedTracks').mapBy('id'),
                 model = this.get('model');
 
