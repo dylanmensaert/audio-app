@@ -2,7 +2,7 @@
   {{#if selectedTracks}}
       {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
           <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge">file_download</span>
+            <span class="material-icons mdl-badge my-badge">delete</span>
           </div>
        {{/c-tracks-bar}}
   {{else if cache.hasPreviousTransition}}
