@@ -19,6 +19,7 @@ function extractExtension(source) {
 
 export default DS.Model.extend(modelMixin, {
     audio: DS.attr('string'),
+    // TODO: is separate status function necessary?
     status: null,
     isDownloaded: false,
     isSaved: function () {
@@ -173,6 +174,25 @@ export default DS.Model.extend(modelMixin, {
                 resolve();
             }.bind(this), reject);
         });
+    },
+    getIsReferenced: function () {
+        var store = this.get('store'),
+            id = this.get('id');
+
+        return this.get('fileSystem.collectionIds').isAny(function (collectionId) {
+            var collection = store.peekRecord('collection', collectionId);
+
+            return collection.get('trackIds').contains(id);
+        });
+    },
+    destroy: function () {
+        var store = this.get('store');
+
+        this.remove().then(function () {
+            if (!this.getIsReferenced()) {
+                this.destroyRecord();
+            }
+        }.bind(this));
     },
     propertyNames: 'extension'
 });

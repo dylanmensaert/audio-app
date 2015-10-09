@@ -9,14 +9,14 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     tracks: [],
     isPending: true,
     isLocked: false,
-    disableLock: function() {
+    disableLock: function () {
         this.set('isLocked', false);
     },
     nextPageToken: null,
-    showNotFound: function() {
+    showNotFound: function () {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
-    updateTracks: function() {
+    updateTracks: function () {
         var query = this.get('query'),
             relatedVideoId = this.get('relatedVideoId'),
             options = {
@@ -33,7 +33,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             options.relatedVideoId = relatedVideoId;
         }
 
-        this.find('track', options, !this.get('cache.searchDownloadedOnly')).then(function(tracksPromise) {
+        this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function (tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
@@ -42,11 +42,11 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 this.set('isPending', false);
             }
         }.bind(this));
-    }.observes('query', 'relatedVideoId', 'cache.searchDownloadedOnly').on('init'),
-    sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
-        return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+    }.observes('query', 'relatedVideoId').on('init'),
+    sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
+        return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache').getIsOfflineMode());
     }),
-    selectedTracks: function() {
+    selectedTracks: function () {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -57,10 +57,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        selectAll: function() {
+        selectAll: function () {
             this.get('tracks').setEach('isSelected', true);
         },
-        didScrollToBottom: function() {
+        didScrollToBottom: function () {
             if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 

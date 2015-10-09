@@ -4,8 +4,8 @@ import logic from 'audio-app/utils/logic';
 export default Ember.Mixin.create({
     audioPlayer: Ember.inject.service(),
     cache: Ember.inject.service(),
-    // TODO: sorting should not always be dependable by cache.searchDownloadedOnly. So pass extra param?
-    sortSnippet: function(snippets, snippet, other, keepGivenOrder) {
+    // TODO: sorting should not always be dependable by cache.getIsOfflineMode(). So pass extra param?
+    sortSnippet: function (snippets, snippet, other, keepGivenOrder) {
         var result = -1;
 
         if (keepGivenOrder) {
@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
 
         return result;
     },
-    find: function() {
+    find: function () {
         return logic.find.apply(this, arguments);
     }
 });

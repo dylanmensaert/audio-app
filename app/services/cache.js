@@ -1,73 +1,49 @@
-/* global Connection, setInterval */
+/* global Connection, navigator */
 
 import Ember from 'ember';
 
+// TODO: put isMobile related properties in separate file if desktop vs mobile environment is provided.
+const isMobile = !Ember.isEmpty(navigator.connection);
+
+var getType;
+
+if (isMobile) {
+    getType = function () {
+        return navigator.connection.type;
+    };
+} else {
+    getType = function () {
+        return navigator.onLine;
+    };
+}
+
+function getIsOffline() {
+    var type = getType();
+
+    return (isMobile && type === Connection.NONE) || (!isMobile && !type);
+}
+
+function getIsMobileConnection() {
+    var type = getType();
+
+    return isMobile && (type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
+        Connection.CELL);
+}
+
 export default Ember.Service.extend({
-    init: function() {
-        var getType;
-
-        this._super();
-
-        if (this.get('isMobile')) {
-            document.addEventListener('offline', function() {
-                this.set('type', navigator.connection.type);
-            }.bind(this), false);
-
-            document.addEventListener('online', function() {
-                this.set('type', navigator.connection.type);
-            }.bind(this), false);
-
-            getType = function() {
-                return navigator.connection.type;
-            };
-        } else {
-            getType = function() {
-                return navigator.onLine;
-            };
-        }
-
-        this.set('type', getType());
-
-        setInterval(function() {
-            this.set('type', getType());
-        }.bind(this), 5000);
-    },
     store: Ember.inject.service(),
     fileSystem: null,
     completedTransitions: [],
-    hasPreviousTransition: function() {
+    hasPreviousTransition: function () {
         return this.get('completedTransitions.length') > 1;
     }.property('completedTransitions.length'),
     // TODO: duplicate with controller atm
-    searchDownloadedOnly: function() {
-        return this.get('isOffline') || (this.get('isMobileConnection') && this.get('fileSystem.setDownloadedOnlyOnMobile'));
-    }.property('isOffline', 'isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile'),
-    isMobile: !Ember.isEmpty(navigator.connection),
+    getIsOfflineMode: function () {
+        return getIsOffline() || (getIsMobileConnection() && this.get('fileSystem.setDownloadedOnlyOnMobile'));
+    },
     // TODO: rename to selectedTrackIds since only used for one functionality?
-    selectedSnippetIds: [],
+    selectedTrackIds: [],
     playedTrackIds: [],
     showMessage: null,
-    audioSlider: null,
-    type: null,
-    isOffline: function() {
-        var isMobile = this.get('isMobile'),
-            type = this.get('type');
-
-        return (isMobile && type === Connection.NONE) || (!isMobile && !type);
-    }.property('type', 'isMobile'),
-    showOfflineMessage: function() {
-        if (!this.get('isMobileConnection') || !this.get('fileSystem.setDownloadedOnlyOnMobile')) {
-            if (this.get('isOffline')) {
-                this.showMessage('Connection lost');
-            } else {
-                this.showMessage('Connection found');
-            }
-        }
-    }.observes('isMobileConnection', 'fileSystem.setDownloadedOnlyOnMobile', 'isOffline'),
-    isMobileConnection: function() {
-        var type = this.get('type');
-
-        return this.get('isMobile') && (type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
-            Connection.CELL);
-    }.property('type', 'isMobile')
+    audioSlider: null
 });

@@ -19,14 +19,7 @@ export default Ember.Mixin.create({
                 id;
 
             if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-                if (!cache.isMobileConnection()) {
-                    track.download().then(function () {
-
-                    }, function () {
-                        // TODO: show error?
-                        cache.showMessage('download aborted');
-                    });
-                } else {
+                if (cache.getIsDownloadedOnly()) {
                     trackIds = this.get('store').peekRecord('collection', 'download-later').get('trackIds');
                     id = track.get('id');
 
@@ -35,6 +28,13 @@ export default Ember.Mixin.create({
                     }
 
                     cache.showMessage('Added to collection: Download later');
+                } else {
+                    track.download().then(function () {
+
+                    }, function () {
+                        // TODO: show error?
+                        cache.showMessage('download aborted');
+                    });
                 }
             } else {
                 cache.showMessage('already downloaded');

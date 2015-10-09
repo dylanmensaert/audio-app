@@ -3,15 +3,15 @@ import controllerMixin from 'audio-app/mixins/controller';
 
 export default Ember.Controller.extend(controllerMixin, {
     collections: function () {
-        var selectedSnippetIds = this.get('cache.selectedSnippetIds');
+        var selectedTrackIds = this.get('cache.selectedTrackIds');
 
         return this.get('store').peekAll('collection').filter(function (collection) {
             var isSelected,
                 isReadOnly = collection.get('isReadOnly');
 
             if (!isReadOnly) {
-                isSelected = selectedSnippetIds.every(function (selectedSnippetId) {
-                    return collection.get('trackIds').contains(selectedSnippetId);
+                isSelected = selectedTrackIds.every(function (selectedTrackId) {
+                    return collection.get('trackIds').contains(selectedTrackId);
                 });
 
                 collection.set('isSelected', isSelected);
@@ -19,9 +19,9 @@ export default Ember.Controller.extend(controllerMixin, {
 
             return !isReadOnly;
         });
-    }.property('cache.selectedSnippetIds', 'collections.@each.trackIds.[]'),
+    }.property('cache.selectedTrackIds', 'collections.@each.trackIds.[]'),
     sortedCollections: Ember.computed.sort('collections', function (snippet, other) {
-        return this.sortSnippet(this.get('collections'), snippet, other, !this.get('cache.searchDownloadedOnly'));
+        return this.sortSnippet(this.get('collections'), snippet, other, !this.get('cache').getIsOfflineMode());
     }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
@@ -32,27 +32,31 @@ export default Ember.Controller.extend(controllerMixin, {
     /*TODO: Implement another way?*/
     actions: {
         transitionToPrevious: function () {
-            this.get('cache.selectedSnippetIds').clear();
+            this.get('cache.selectedTrackIds').clear();
 
             return false;
         },
         toggleIsSelected: function (collection) {
             var cache = this.get('cache'),
-                selectedSnippetIds = cache.get('selectedSnippetIds'),
+                selectedTrackIds = cache.get('selectedTrackIds'),
                 trackIds = collection.get('trackIds');
 
             if (collection.get('isSelected')) {
-                selectedSnippetIds.forEach(function (selectedSnippetId) {
-                    if (!trackIds.contains(selectedSnippetId)) {
-                        trackIds.pushObject(selectedSnippetId);
+                selectedTrackIds.forEach(function (selectedTrackId) {
+                    if (!trackIds.contains(selectedTrackId)) {
+                        collection.pushTrackById(selectedTrackId);
                     }
                 });
 
-                cache.showMessage('Added to label');
+                cache.showMessage('Added to collection');
             } else {
-                collection.removeObjects(selectedSnippetIds);
+                selectedTrackIds.forEach(function (selectedTrackId) {
+                    if (trackIds.contains(selectedTrackId)) {
+                        collection.removeTrackById(selectedTrackIds);
+                    }
+                });
 
-                cache.showMessage('Removed from label');
+                cache.showMessage('Removed from collection');
             }
         }
     }
