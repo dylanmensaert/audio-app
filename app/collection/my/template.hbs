@@ -34,7 +34,7 @@
   </main>
 
   {{#unless isCreatedMode}}
-    {{#c-mdl action='setupCreate' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-fixed-button"}}
+    {{#c-mdl action='setupCreate' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-create-btn' classNameBindings='audioPlayer.track:my-fixed-create-btn'}}
       <i class="material-icons">add</i>
     {{/c-mdl}}
   {{/unless}}

@@ -427,9 +427,13 @@ $audio-top: 2px;
     background-color: white;
 }
 
-.my-fixed-button {
+.my-create-btn {
     position: fixed;
     z-index: 1;
     right: 15px;
+    bottom: 15px;
+}
+
+.my-fixed-create-btn {
     bottom: $audio-height + 15px;
 }
