@@ -3,19 +3,19 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     classNames: ['my-action-bar'],
     collections: null,
-    unsavedCollections: function () {
+    unsavedCollections: function() {
         return this.get('collections').filterBy('isSaved', false);
     }.property('collections.@each.isSaved'),
-    isEveryUnsaved: function () {
+    isEveryUnsaved: function() {
         return this.get('unsavedCollections.length') === this.get('collections.length');
     }.property('unsavedCollections.length', 'collections.length'),
-    savedCollections: function () {
+    savedCollections: function() {
         return this.get('collections').filterBy('isSaved');
     }.property('collections.@each.isSaved'),
-    isEverySaved: function () {
+    isEverySaved: function() {
         return this.get('savedCollections.length') === this.get('collections.length');
     }.property('savedCollections.length', 'collections.length'),
-    isEditable: function () {
+    isEditable: function() {
         var collections = this.get('collections'),
             isEditable = false,
             collection;
@@ -29,26 +29,29 @@ export default Ember.Component.extend({
         return isEditable;
     }.property('collections.length', 'collections.firstObject.isReadOnly', 'collections.firstObject.isPushOnly'),
     editedCollectionName: null,
-    isEditMode: function () {
+    isEditMode: function() {
         return this.get('editedCollectionName') !== null;
     }.property('editedCollectionName'),
     actions: {
-        save: function () {
-            this.get('collections').forEach(function (collection) {
+        deselect: function() {
+            this.sendAction('deselect');
+        },
+        save: function() {
+            this.get('collections').forEach(function(collection) {
                 collection.save();
             });
         },
-        delete: function () {
-            this.get('collections').forEach(function (collection) {
+        delete: function() {
+            this.get('collections').forEach(function(collection) {
                 collection.destroy();
             });
         },
-        setupEdit: function () {
+        setupEdit: function() {
             var name = this.get('collections.firstObject.name');
 
             this.set('editedCollectionName', name);
         },
-        saveEdit: function () {
+        saveEdit: function() {
             var selectedCollection = this.get('collections.firstObject');
 
             selectedCollection.set('name', this.get('editedCollectionName'));

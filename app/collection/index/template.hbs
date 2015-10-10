@@ -1,5 +1,7 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if selectedTracks}}
+  {{#if selectedCollections}}
+      {{c-collections-bar collections=selectedCollections deselect='deselect'}}
+  {{else if selectedTracks}}
       {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
           <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
             <span class="material-icons mdl-badge my-badge">local_offer</span>
