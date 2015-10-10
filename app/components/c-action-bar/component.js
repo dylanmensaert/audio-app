@@ -4,10 +4,8 @@ export default Ember.Component.extend({
     classNames: ['mdl-grid', 'my-menu-grid'],
     models: null,
     actions: {
-        deselect: function () {
+        deselect: function() {
             this.get('models').setEach('isSelected', false);
-
-            this.sendAction('deselect');
         }
     }
 });

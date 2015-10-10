@@ -33,9 +33,6 @@ export default Ember.Component.extend({
         return this.get('editedCollectionName') !== null;
     }.property('editedCollectionName'),
     actions: {
-        deselect: function() {
-            this.sendAction('deselect');
-        },
         save: function() {
             this.get('collections').forEach(function(collection) {
                 collection.save();

@@ -11,6 +11,9 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     disableLock: function() {
         this.set('isLocked', false);
     },
+    hideMdlHeader: function() {
+        return this.get('selectedTracks.length') || this.get('selectedCollections.length');
+    }.property('selectedTracks.length', 'selectedCollections.length'),
     showNotFound: function() {
         return !this.get('isPending') && !this.get('tracks.length');
     }.property('isPending', 'tracks.length'),
@@ -90,11 +93,6 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     actions: {
         selectAll: function() {
             this.get('model').set('isSelected', true);
-
-            this.get('tracks').setEach('isSelected', true);
-        },
-        deselect: function() {
-            this.get('tracks').setEach('isSelected', false);
         },
         didScrollToBottom: function() {
             if (!this.get('isLocked') && this.get('nextPageToken')) {
