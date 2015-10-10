@@ -1,10 +1,6 @@
 <!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
 
 <div class="mdl-layout__drawer">
-  <span class="mdl-layout-title">
-    Menu
-  </span>
-
   <nav class="mdl-navigation">
     <a {{action 'transitionToRoute' 'index'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'index') 'my-active'}}">
       <i class="material-icons my-menu-icon">
