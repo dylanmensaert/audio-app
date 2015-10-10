@@ -2,7 +2,7 @@
   {{#if selectedTracks}}
       {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
           <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge">delete</span>
+            <span class="material-icons mdl-badge my-badge">highlight_off</span>
           </div>
        {{/c-tracks-bar}}
   {{else if cache.hasPreviousTransition}}
@@ -41,5 +41,5 @@
     {{/if}}
   {{/c-endless-scroll}}
 
-  {{c-audio-player audioPlayer=audioPlayer transitionTo='transitionTo' play='play' pause='pause'}}
+  {{c-audio-player audioPlayer=audioPlayer play='play' pause='pause'}}
 {{/c-mdl-layout}}

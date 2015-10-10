@@ -22,6 +22,14 @@
       My Collections
     </a>
 
+    <a {{action 'transitionToRoute' 'collection.index' 'queue'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/queue') 'my-active'}}">
+      <i class="material-icons my-menu-icon">
+        queue_music
+      </i>
+
+      Queue
+    </a>
+
     <a {{action 'transitionToRoute' 'collection.index' 'download-later'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
       <i class="material-icons my-menu-icon">
         shop_two

@@ -2,18 +2,6 @@
     <div class="my-menu-cell-offset" />
 
     <div class="my-menu-cell">
-      {{#if unsavedCollections}}
-          <div {{action 'save'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnsaved unsavedCollections.length}}>
-              shop_two
-            </span>
-          </div>
-      {{else}}
-         &nbsp;
-      {{/if}}
-    </div>
-
-    <div class="my-menu-cell">
       {{#if isEditable}}
           <div {{action 'edit'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
             <span class="material-icons mdl-badge my-badge">
@@ -30,6 +18,18 @@
           <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
             <span class="material-icons mdl-badge my-badge" data-badge={{unless isEverySaved savedCollections.length}}>
               delete
+            </span>
+          </div>
+      {{else}}
+         &nbsp;
+      {{/if}}
+    </div>
+
+    <div class="my-menu-cell">
+      {{#if unsavedCollections}}
+          <div {{action 'save'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
+            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnsaved unsavedCollections.length}}>
+              shop_two
             </span>
           </div>
       {{else}}
