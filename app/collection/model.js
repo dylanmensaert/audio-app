@@ -11,27 +11,27 @@ export default DS.Model.extend(modelMixin, {
         defaultValue: []
     }),
     totalTracks: DS.attr('number'),
-    isSaved: function () {
+    isSaved: function() {
         return this.get('fileSystem.collectionIds').contains(this.get('id'));
     }.property('fileSystem.tracks.[]'),
-    isReadOnly: function () {
+    isReadOnly: function() {
         return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
     }.property('permission'),
-    isPushOnly: function () {
+    isPushOnly: function() {
         return this.get('permission') === 'push-only';
     }.property('permission'),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
-    isQueue: function () {
+    isQueue: function() {
         return this.get('id') === 'queue';
     }.property('id'),
     nextPageToken: null,
-    download: function (nextPageToken) {
+    download: function(nextPageToken) {
         this.set('nextPageToken', nextPageToken);
 
         this.saveNextTracks();
         this.downloadNextTrack(0);
     },
-    saveNextTracks: function () {
+    saveNextTracks: function() {
         var nextPageToken = this.get('nextPageToken'),
             options;
 
@@ -42,10 +42,10 @@ export default DS.Model.extend(modelMixin, {
                 nextPageToken: nextPageToken
             };
 
-            logic.find.call(this, 'track', options, true).then(function (tracks) {
+            logic.find.call(this, 'track', options, true).then(function(tracks) {
                 this.get('trackIds').pushObjects(tracks.mapBy('id'));
 
-                tracks.forEach(function (track) {
+                tracks.forEach(function(track) {
                     track.save();
                 });
 
@@ -53,7 +53,7 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }
     },
-    downloadNextTrack: function (index) {
+    downloadNextTrack: function(index) {
         var trackId = this.get('trackIds').objectAt(index),
             track;
 
@@ -61,13 +61,13 @@ export default DS.Model.extend(modelMixin, {
             track = this.get('store').peekRecord('track', trackId);
 
             if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-                track.download().then(function () {
+                track.download().then(function() {
                     this.downloadNextTrack(index + 1);
                 }.bind(this));
             }
         }
     },
-    pushTrackById: function (trackId) {
+    pushTrackById: function(trackId) {
         var track = this.get('store').peekRecord('track', trackId);
 
         this.get('trackIds').pushObject(trackId);
@@ -77,21 +77,19 @@ export default DS.Model.extend(modelMixin, {
             track.save();
         }
     },
-    removeTrackById: function (trackId) {
+    removeTrackById: function(trackId) {
         var store = this.get('store'),
             track = store.peekRecord('track', trackId);
 
         this.get('trackIds').removeObject(trackId);
         this.save();
 
-        if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-            if (!track.getIsReferenced()) {
-                track.destroyRecord();
-            }
+        if (!track.get('isDownloaded') && !track.get('isDownloading') && !track.get('isReferenced')) {
+            track.destroyRecord();
         }
     },
-    destroy: function () {
-        this.get('trackIds').forEach(function (trackId) {
+    destroy: function() {
+        this.get('trackIds').forEach(function(trackId) {
             this.removeTrackById(trackId);
         }.bind(this));
 
