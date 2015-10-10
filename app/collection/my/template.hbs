@@ -14,25 +14,23 @@
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="my-panel">
-      {{#unless collections.length}}
-        <div class="mdl-grid">
-          No collections found
-        </div>
-      {{/unless}}
+    {{#unless collections.length}}
+      <div class="mdl-grid my-grid-title">
+        No collections found
+      </div>
+    {{/unless}}
 
       {{#if collections}}
-        <div class="mdl-grid">
-            {{#each sortedCollections as |collection|}}
-                {{c-collection model=collection action='transitionTo'}}
+      <div class="mdl-grid my-grid">
+          {{#each sortedCollections as |collection|}}
+              {{c-collection model=collection action='transitionTo'}}
 
-                <div class="my-collection-separator">
-                    <div class="my-collection-line" />
-                </div>
-            {{/each}}
-        </div>
-      {{/if}}
-    </div>
+              <div class="my-collection-separator">
+                  <div class="my-collection-line" />
+              </div>
+          {{/each}}
+      </div>
+    {{/if}}
   </main>
 
   {{#unless isCreatedMode}}

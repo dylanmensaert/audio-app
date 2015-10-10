@@ -35,6 +35,11 @@ $audio-top: 2px;
     }
 }
 
+.my-more-btn {
+    width: 100%;
+    background-color: #f0eeee;
+}
+
 .my-message-bar {
     @include bar;
     bottom: $audio-height + 5px;
@@ -330,26 +335,28 @@ $audio-top: 2px;
     padding: 14px 4px;
 }
 
-@media screen and (min-width: 479px) {
-    .my-panel {
-        margin: 16px;
-    }
-}
-
-.my-title-btn {
-    text-transform: none;
-}
-
 .my-title-grid {
     padding: 16px 8px 0 8px;
 }
 
-.my-grid {
+.my-audio-grid {
     padding: 0;
 }
 
-.my-title-text {
-    margin-top: 0;
+.my-grid-title {
+    @media screen and (max-width: 1024px) {
+        padding: 8px;
+    }
+    @media screen and (min-width: 1024px) {
+        padding: 24px;
+    }
+}
+
+.my-grid {
+    @extend .my-grid-title;
+    @media screen and (max-width: 479px) {
+        padding: 0;
+    }
 }
 
 .my-menu-icon {
@@ -365,31 +372,6 @@ $audio-top: 2px;
     display: flex;
     font-size: 14px;
     padding: 16px 30px;
-}
-
-.my-title-cell--10-col {
-    @media (max-width: 479px) {
-        width: 50%;
-    }
-    @media (max-width: 839px) and (min-width: 480px) {
-        width: 75%;
-    }
-    @media (min-width: 840px) {
-        width: 83.3333333333%;
-    }
-}
-
-.my-title-cell--2-col {
-    text-align: right;
-    @media (max-width: 479px) {
-        width: 50%;
-    }
-    @media (max-width: 839px) and (min-width: 480px) {
-        width: 25%;
-    }
-    @media (min-width: 840px) {
-        width: 16.6666666667%;
-    }
 }
 
 .my-active {

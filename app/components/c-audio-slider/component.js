@@ -26,6 +26,8 @@ export default ComponentMdl.extend({
             slider.set('isDragged', false);
         }.bind(this));
 
+        this.get('element').MaterialSlider.change(0);
+
         this.set('slider.component', this);
     },
     willDestroyElement: function() {

@@ -45,7 +45,7 @@
 
   <main class="mdl-layout__content mdl-color--grey-100">
       {{#if showNotFound}}
-        <div class="mdl-grid">
+        <div class="mdl-grid my-grid-title">
           No records found
         </div>
       {{/if}}
@@ -57,54 +57,46 @@
       {{/if}}
 
       {{#if tracks}}
-        <div class="my-panel">
-            <div class="mdl-grid my-title-grid">
-                <div class="my-title-cell--10-col">
-                    <h4 class="my-title-text">
-                        Tracks
-                    </h4>
+        <div class="mdl-grid my-grid-title">
+            <h4>
+                Tracks
+            </h4>
+        </div>
+
+        <div class="mdl-grid my-grid">
+            {{#each sortedTracks as |track|}}
+                {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
+
+                <div class="my-separator">
+                    <div class="my-line" />
                 </div>
+            {{/each}}
 
-                <div class="my-title-cell--2-col">
-                    {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
-                      more
-                    {{/link-to }}
-                </div>
-            </div>
-
-            <div class="mdl-grid">
-                {{#each sortedTracks as |track|}}
-                    {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
-
-                    <div class="my-separator">
-                        <div class="my-line" />
-                    </div>
-                {{/each}}
-            </div>
+            {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
+              <i class="material-icons">
+                expand_more
+              </i>
+            {{/link-to }}
         </div>
       {{/if}}
 
       {{#if collections}}
-        <div class="my-panel">
-            <div class="mdl-grid my-title-grid">
-                <div class="my-title-cell--10-col">
-                    <h4 class="my-title-text">
-                        Collections
-                    </h4>
-                </div>
+        <div class="mdl-grid my-grid-title">
+            <h4>
+                Collections
+            </h4>
+        </div>
 
-                <div class="my-title-cell--2-col">
-                    {{#link-to 'collection.list' (query-params query=query) class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent my-title-btn'}}
-                      more
-                    {{/link-to }}
-                </div>
-            </div>
+        <div class="mdl-grid my-grid">
+            {{#each sortedCollections as |collection|}}
+                {{c-collection model=collection action='transitionTo' toggleIsSelected='deselectTracks'}}
+            {{/each}}
 
-            <div class="mdl-grid my-collection-grid">
-                {{#each sortedCollections as |collection|}}
-                    {{c-collection model=collection action='transitionTo' toggleIsSelected='deselectTracks'}}
-                {{/each}}
-            </div>
+            {{#link-to 'collection.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
+              <i class="material-icons">
+                expand_more
+              </i>
+            {{/link-to}}
         </div>
       {{/if}}
   </main>

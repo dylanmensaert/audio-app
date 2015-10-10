@@ -16,25 +16,23 @@
   {{/if}}
 
   {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
-    <div class="my-panel">
-      {{#if showNotFound}}
-        <div class="mdl-grid">
-        No records found
+    {{#if showNotFound}}
+      <div class="mdl-grid my-grid-title">
+      No records found
+      </div>
+    {{/if}}
+
+    {{#if tracks}}
+        <div class="mdl-grid my-grid">
+            {{#each sortedTracks as |track|}}
+                {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=(if model.isQueue false track.isQueued)}}
+
+                <div class="my-separator">
+                    <div class="my-line" />
+                </div>
+            {{/each}}
         </div>
-      {{/if}}
-
-      {{#if tracks}}
-          <div class="mdl-grid">
-              {{#each sortedTracks as |track|}}
-                  {{c-track model=track action='play' swipeleft='pushToDownload' swiperight='pushToQueue' showQueued=(if model.isQueue false track.isQueued)}}
-
-                  <div class="my-separator">
-                      <div class="my-line" />
-                  </div>
-              {{/each}}
-          </div>
-      {{/if}}
-    </div>
+    {{/if}}
 
     {{#if isPending}}
       <div class="my-loading-bar">
