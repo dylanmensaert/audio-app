@@ -43,8 +43,6 @@ export default DS.Model.extend(modelMixin, {
         return this.get('store').peekRecord('collection', 'queue').get('trackIds').contains(this.get('id'));
     }.property('collections.@each.trackIds.[]', 'id'),
     isDownloadLater: function() {
-        // TODO: implement
-        return false;
         return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
     }.property('collections.@each.trackIds.[]', 'id'),
     isReferenced: function() {

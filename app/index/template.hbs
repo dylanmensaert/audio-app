@@ -40,7 +40,7 @@
                 </div>
             {{/each}}
 
-            {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
+            {{#link-to 'collection.index' 'history' class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
               <i class="material-icons">
                 expand_more
               </i>
@@ -64,7 +64,7 @@
                 </div>
             {{/each}}
 
-            {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
+            {{#link-to 'track.list' (query-params relatedVideoId=relatedVideoId) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
               <i class="material-icons">
                 expand_more
               </i>

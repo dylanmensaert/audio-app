@@ -362,6 +362,8 @@ $audio-top: 2px;
 }
 
 .my-grid-title {
+    padding-top: 0;
+    padding-bottom: 0;
     @media screen and (max-width: 1024px) {
         padding: 8px;
     }
