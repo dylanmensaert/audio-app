@@ -2,7 +2,6 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
-    audioPlayer: Ember.inject.service(),
     cache: Ember.inject.service(),
     // TODO: sorting should not always be dependable by cache.getIsOfflineMode(). So pass extra param?
     sortSnippet: function (snippets, snippet, other, keepGivenOrder) {

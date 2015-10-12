@@ -1,9 +1,70 @@
 {{#if audioPlayer.track}}
+  {{#if audioPlayer.isLargeMode}}
+    <div class="my-audio-stamp my-fixed-audio-stamp" />
+
+    <div class="my-audio-bar my-fixed-audio-bar">
+        <div class="mdl-grid my-audio-grid">
+          <div {{action 'toggleMode'}} class="mdl-cell my-audio-text">
+            <div class="my-audio-name">
+              {{audioPlayer.track.name}}
+            </div>
+
+            <div class="my-audio-paragraph-end" />
+          </div>
+        </div>
+
+        <div class="mdl-grid my-audio-grid">
+            <div class="mdl-cell my-cell--5-col">
+                {{time cache.audioSlider.value}}
+            </div>
+
+            <div class="mdl-cell my-cell--5-col my-audio-cell">
+                <div class="my-audio-box">
+                  {{#c-mdl class='mdl-button mdl-js-button mdl-button--icon'}}
+                      <i class="material-icons" {{action 'previous'}}>skip_previous</i>
+                  {{/c-mdl}}
+                </div>
+            </div>
+
+            <div class="mdl-cell my-cell--5-col my-audio-cell">
+                <div class="my-audio-box">
+                    {{#if audioPlayer.isLoading}}
+                        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+                    {{/if}}
+
+                    {{#if audioPlayer.isPlaying}}
+                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons" {{action 'pause'}}>pause</i>
+                      {{/c-mdl}}
+                    {{/if}}
+
+                    {{#if audioPlayer.isIdle}}
+                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons" {{action 'play'}}>play_arrow</i>
+                      {{/c-mdl}}
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="mdl-cell my-cell--5-col my-audio-cell">
+                <div class="my-audio-box">
+                  {{#c-mdl class='mdl-button mdl-js-button mdl-button--icon'}}
+                      <i class="material-icons" {{action 'next'}}>skip_next</i>
+                  {{/c-mdl}}
+                </div>
+            </div>
+
+            <div class="mdl-cell my-cell--5-col">
+              {{time cache.audioSlider.max}}
+            </div>
+        </div>
+    </div>
+  {{else}}
     <div class="my-audio-stamp" />
 
     <div class="my-audio-bar">
         <div class="mdl-grid my-audio-grid">
-            <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop my-audio-text">
+            <div {{action 'toggleMode'}} class="mdl-cell mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop my-audio-text">
               <div class="my-audio-name">
                 {{audioPlayer.track.name}}
               </div>
@@ -32,4 +93,5 @@
             </div>
         </div>
     </div>
+  {{/if}}
 {{/if}}

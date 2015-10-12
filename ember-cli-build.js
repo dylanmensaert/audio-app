@@ -36,9 +36,8 @@ module.exports = function (defaults) {
 
     app.import('bower_components/material-design-lite/material.js');
 
-    app.import('bower_components/moment/moment.js', {
-        exports: 'moment'
-    });
+    // TODO: dont export moment.js as global
+    app.import('bower_components/moment/moment.js');
 
     // TODO: implement dependencies correctly
     app.import('bower_components/jquery-mobile/js/jquery.mobile.vmouse.js');

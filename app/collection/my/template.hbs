@@ -34,10 +34,10 @@
   </main>
 
   {{#unless isCreatedMode}}
-    {{#c-mdl action='setupCreate' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-create-btn' classNameBindings='audioPlayer.track:my-fixed-create-btn'}}
+    {{#c-mdl action='setupCreate' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored my-create-btn' classNameBindings='isAudioPlayerDefaultMode:my-default-create-btn isAudioPlayerLargeMode:my-fixed-create-btn'}}
       <i class="material-icons">add</i>
     {{/c-mdl}}
   {{/unless}}
 
-  {{c-audio-player audioPlayer=audioPlayer play='play' pause='pause'}}
+  {{c-audio-player play='play' pause='pause' previous='previous' next='next'}}
 {{/c-mdl-layout}}

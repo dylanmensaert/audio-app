@@ -45,6 +45,10 @@ $audio-top: 2px;
     bottom: $audio-height + 5px;
 }
 
+.my-fixed-message-bar {
+    bottom: 2 * $audio-height + 5px;
+}
+
 .my-toast-message {
     border-radius: 200px;
     padding: 10px 13px 10px 13px;
@@ -83,10 +87,18 @@ $audio-top: 2px;
     height: $audio-height + $audio-top;
 }
 
+.my-fixed-audio-stamp {
+    height: 2 * $audio-height + $audio-top;
+}
+
 .my-audio-slider-bar {
     @include bar;
     z-index: 1;
     bottom: $audio-height - 8px;
+}
+
+.my-fixed-audio-slider-bar {
+    bottom: 2 * $audio-height - 8px;
 }
 
 .my-audio-slider {
@@ -106,9 +118,15 @@ $audio-top: 2px;
     padding-top: $audio-top;
 }
 
+.my-fixed-audio-bar {
+    height: 2 * $audio-height;
+}
+
 .my-audio-cell {
     margin-top: 0;
     margin-bottom: 0;
+    display: table;
+    text-align: center;
 }
 
 .my-audio-box {
@@ -434,6 +452,14 @@ $audio-top: 2px;
     bottom: 15px;
 }
 
-.my-fixed-create-btn {
+.my-default-create-btn {
     bottom: $audio-height + 15px;
+}
+
+.my-fixed-create-btn {
+    bottom: 2 * $audio-height + 15px;
+}
+
+.my-cell--5-col {
+    width: calc(20% - 16px);
 }
