@@ -1,13 +1,12 @@
 /* global moment */
 import Ember from "ember";
 
-export default Ember.Helper.helper(function (parameters) {
-    var seconds = parameters[0],
-        time = '';
+export default Ember.Helper.helper(function(parameters) {
+    var seconds = parameters[0];
 
-    if (seconds) {
-        time = moment.utc(seconds * 1000).format('mm:ss');
+    if (!seconds) {
+        seconds = 0;
     }
 
-    return time;
+    return moment.utc(seconds * 1000).format('mm:ss');
 });
