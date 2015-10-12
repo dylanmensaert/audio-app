@@ -1,15 +1,16 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend(controllerMixin, {
     fileSystem: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     store: Ember.inject.service(),
-    collections: function () {
+    collections: function() {
         var store = this.get('store'),
             collections = [];
 
-        this.get('fileSystem.collectionIds').forEach(function (collectionId) {
+        this.get('fileSystem.collectionIds').forEach(function(collectionId) {
             var collection = store.peekRecord('collection', collectionId);
 
             if (!collection.get('permission')) {
@@ -19,16 +20,16 @@ export default Ember.Controller.extend(controllerMixin, {
 
         return collections;
     }.property('fileSystem.collectionIds.[]', 'collections.[]'),
-    sortedCollections: Ember.computed.sort('collections', function (snippet, other) {
+    sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
         return this.sortSnippet(this.get('collections'), snippet, other, false);
     }),
-    isAudioPlayerDefaultMode: function () {
+    isAudioPlayerDefaultMode: function() {
         return this.get('audioPlayer.track') && !this.get('audioPlayer.isLargeMode');
     }.property('audioPlayer.track', 'audioPlayer.isLargeMode'),
-    isAudioPlayerLargeMode: function () {
+    isAudioPlayerLargeMode: function() {
         return this.get('audioPlayer.track') && this.get('audioPlayer.isLargeMode');
     }.property('audioPlayer.track', 'audioPlayer.isLargeMode'),
-    selectedCollections: function () {
+    selectedCollections: function() {
         return this.get('collections').filterBy('isSelected');
     }.property('collections.@each.isSelected'),
     // TODO: Implement - avoid triggering on init?
@@ -39,42 +40,54 @@ export default Ember.Controller.extend(controllerMixin, {
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
     createdCollectionName: null,
-    isCreatedMode: function () {
+    isCreatedMode: function() {
         return this.get('createdCollectionName') !== null;
     }.property('createdCollectionName'),
-    hideMenuBar: function () {
+    hideMenuBar: function() {
         return this.get('isCreatedMode') || this.get('selectedCollections.length');
     }.property('isCreatedMode', 'selectedCollections.length'),
+    createUniqueId: function() {
+        var store = this.get('store'),
+            randomId = logic.generateRandomId();
+
+        while (store.peekRecord('collection', randomId)) {
+            randomId = logic.generateRandomId();
+        }
+
+        return randomId;
+    },
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.get('collections').setEach('isSelected', true);
         },
-        saveCreate: function () {
+        saveCreate: function() {
             var createdCollectionName = this.get('createdCollectionName'),
                 store = this.get('store'),
-                cache = this.get('cache');
+                cache = this.get('cache'),
+                id;
 
             if (store.peekRecord('collection', createdCollectionName)) {
                 cache.showMessage('Collection already exists');
             } else {
+                id = this.createUniqueId();
+
                 store.pushPayload('collection', {
-                    // TODO: generate random id since will conflict when changing name
-                    id: createdCollectionName,
+                    id: id,
                     name: createdCollectionName,
                     isLocalOnly: true
                 });
 
-                store.peekRecord('collection', createdCollectionName).save().then(function () {
+                store.peekRecord('collection', id).save().then(function() {
                     this.set('createdCollectionName', null);
 
                     cache.showMessage('Saved new collection');
                 }.bind(this));
             }
         },
-        setupCreate: function () {
+        setupCreate: function() {
             this.set('createdCollectionName', '');
         },
-        exitCreate: function () {
+        exitCreate: function() {
             this.set('createdCollectionName', null);
         }
     }

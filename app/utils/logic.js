@@ -10,6 +10,17 @@ function isMatch(value, query) {
 // TODO: rename logic file?
 export default {
     isMatch: isMatch,
+    generateRandomId: function() {
+        var randomId = '',
+            possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+            index = 0;
+
+        for (index; index < 5; index++) {
+            randomId += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return randomId;
+    },
     find: function(modelName, options, searchOnline) {
         var store = this.get('store'),
             promise,

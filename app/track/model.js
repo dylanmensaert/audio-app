@@ -24,7 +24,7 @@ export default DS.Model.extend(modelMixin, {
     isDownloaded: false,
     isSaved: function() {
         return this.get('fileSystem.trackIds').contains(this.get('id'));
-    }.property('fileSystem.tracks.[]'),
+    }.property('id', 'fileSystem.trackIds.[]'),
     isDownloading: function() {
         return this.get('status') === 'downloading';
     }.property('status'),
@@ -45,8 +45,8 @@ export default DS.Model.extend(modelMixin, {
     isDownloadLater: function() {
         // TODO: implement
         return false;
-        /*return this.get('fileSystem.collections').findBy('name', 'Download later').get('trackIds').contains(this.get('id'));*/
-    }.property('fileSystem.collections.@each.trackIds.[]', 'id'),
+        return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
+    }.property('collections.@each.trackIds.[]', 'id'),
     isReferenced: function() {
         var store = this.get('store'),
             id = this.get('id');
@@ -58,7 +58,7 @@ export default DS.Model.extend(modelMixin, {
         });
     }.property('id', 'fileSystem.collectionIds', 'collections.@each.trackIds.[]'),
     createFilePath: function(type, extension) {
-        var fileName = this.get('id') + '.' + extension,
+        var fileName = this.get('name') + '.' + extension,
             directory = Inflector.inflector.pluralize(type);
 
         return directory + '/' + fileName;
