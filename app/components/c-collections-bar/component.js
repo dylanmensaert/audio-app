@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     classNames: ['my-action-bar'],
+    total: null,
     collections: null,
     unsavedCollections: function() {
         return this.get('collections').filterBy('isSaved', false);
