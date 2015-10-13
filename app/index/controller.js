@@ -1,47 +1,60 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
+import Item from 'audio-app/utils/item';
+import logic from 'audio-app/utils/logic';
 
-const shownLimit = 8;
+const lastHistoryTracksLimit = 8;
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
-    showNotFound: function() {
+    showNotFound: function () {
         return !this.get('tracks.isPending') && !this.get('tracks.length') && !this.get('lastHistoryTracks.length');
     }.property('tracks.isPending', 'tracks.length', 'lastHistoryTracks.length'),
-    lastHistoryTracks: function() {
+    lastHistoryTracks: function () {
         var store = this.get('store'),
             historyTrackIds = store.peekRecord('collection', 'history').get('trackIds'),
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
 
-        historyTrackIds.forEach(function(trackId, index) {
-            if (length <= shownLimit || length - shownLimit >= index) {
+        historyTrackIds.forEach(function (trackId, index) {
+            if (length <= lastHistoryTracksLimit || length - lastHistoryTracksLimit >= index) {
                 lastHistoryTracks.pushObject(store.peekRecord('track', trackId));
             }
         });
 
         return lastHistoryTracks;
     }.property('collections.@each.trackIds.[]'),
-    relatedVideoId: function() {
-        var history = this.get('store').peekRecord('collection', 'history');
+    relatedByTracks: function () {
+        return this.get('sortedLastHistoryTracks').map(function (historyTrack) {
+            var options,
+                promise;
 
-        return history.get('trackIds.lastObject');
-    }.property('collection.@each.trackIds.[]'),
-    tracks: function() {
-        var options = {
-            relatedVideoId: this.get('relatedVideoId'),
-            maxResults: shownLimit
-        };
+            options = {
+                relatedVideoId: historyTrack.get('id'),
+                maxResults: 50
+            };
 
-        return this._super('track', options, !this.get('cache').getIsOfflineMode());
-    }.property('relatedVideoId'),
-    sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
-        return this.sortSnippet(this.get('tracks'), track, other, !this.get('cache').getIsOfflineMode());
+            promise = this.find('track', options, !this.get('cache').getIsOfflineMode());
+
+            promise = new Ember.RSVP.Promise(function (resolve) {
+                this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function (relatedTracks) {
+                    resolve(logic.getTopRecords(relatedTracks, 4));
+                });
+            }.bind(this));
+
+            return Item.create({
+                track: historyTrack,
+                relatedTracks: DS.PromiseArray.create({
+                    promise: promise
+                })
+            });
+        }.bind(this));
+    }.property('sortedLastHistoryTracks.[]'),
+    sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function (track, other) {
+        return this.sortSnippet(this.get('lastHistoryTracks'), track, other, !this.get('cache').getIsOfflineMode());
     }),
-    sortedTracks: Ember.computed.sort('tracks', function(track, other) {
-        return this.sortSnippet(this.get('tracks'), track, other, !this.get('cache').getIsOfflineMode());
-    }),
-    selectedTracks: function() {
+    selectedTracks: function () {
         return this.get('store').peekAll('track').filterBy('isSelected');
     }.property('tracks.@each.isSelected')
 });

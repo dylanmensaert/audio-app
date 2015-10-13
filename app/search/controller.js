@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import meta from 'meta-data';
 import Suggestion from 'audio-app/components/c-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
@@ -75,16 +76,28 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.property('tracks.isPending', 'collections.isPending'),
     find: function (type) {
         var query = this.get('query'),
-            options;
+            options,
+            promise,
+            promiseArray;
 
         if (query !== null) {
             options = {
-                maxResults: 4,
+                maxResults: 50,
                 query: query
             };
 
-            return this._super(type, options, !this.get('cache').getIsOfflineMode());
+            promise = new Ember.RSVP.Promise(function (resolve) {
+                this._super(type, options, !this.get('cache').getIsOfflineMode()).then(function (snippets) {
+                    resolve(logic.getTopRecords(snippets, 4));
+                });
+            }.bind(this));
+
+            promiseArray = DS.PromiseArray.create({
+                promise: promise
+            });
         }
+
+        return promiseArray;
     },
     tracks: function () {
         return this.find('track');
