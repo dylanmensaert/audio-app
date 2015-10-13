@@ -16,8 +16,13 @@ export default Ember.Mixin.create({
             queryParams;
 
         if (hasCurrentTransition) {
-            currentTransition.intent.url = '/' + currentTransition.targetName;
             queryParams = [];
+
+            currentTransition.intent.url = '/';
+
+            if (currentTransition.targetName !== 'index') {
+                currentTransition.intent.url += currentTransition.targetName;
+            }
 
             currentTransition.intent.queryParams = {};
 
