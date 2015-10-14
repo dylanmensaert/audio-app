@@ -13,15 +13,17 @@ export default Ember.Mixin.create({
         var controller = this.get('controller'),
             currentTransition = this.get('currentTransition'),
             hasCurrentTransition = this.get('cache.completedTransitions').contains(currentTransition),
-            queryParams;
+            queryParams,
+            parameterName;
 
         if (hasCurrentTransition) {
             queryParams = [];
+            parameterName = this.get('parameterName');
 
-            currentTransition.intent.url = '/';
+            currentTransition.intent.url = '/' + currentTransition.targetName.replace(/index/g, '').replace(/\./g, '/');
 
-            if (currentTransition.targetName !== 'index') {
-                currentTransition.intent.url += currentTransition.targetName;
+            if (parameterName) {
+                currentTransition.intent.url += currentTransition.params[currentTransition.targetName][parameterName];
             }
 
             currentTransition.intent.queryParams = {};

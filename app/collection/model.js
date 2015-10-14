@@ -11,6 +11,15 @@ export default DS.Model.extend(modelMixin, {
         defaultValue: []
     }),
     totalTracks: DS.attr('number'),
+    numberOfTracks: function () {
+        var numberOfTracks = this.get('totalTracks');
+
+        if (!numberOfTracks) {
+            numberOfTracks = this.get('trackIds.length');
+        }
+
+        return numberOfTracks;
+    }.property('trackIds.length', 'totalTracks'),
     isSaved: function () {
         return this.get('fileSystem.collectionIds').contains(this.get('id'));
     }.property('fileSystem.tracks.[]'),

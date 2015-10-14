@@ -32,9 +32,11 @@ export default Ember.Controller.extend(controllerMixin, {
     /*TODO: Implement another way?*/
     actions: {
         transitionToPrevious: function () {
+            this.get('collections').setEach('isSelected', false);
+
             this.get('cache.selectedTrackIds').clear();
 
-            return false;
+            return true;
         },
         toggleIsSelected: function (collection) {
             var cache = this.get('cache'),

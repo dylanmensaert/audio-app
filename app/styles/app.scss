@@ -42,11 +42,20 @@ $audio-top: 2px;
 
 .my-message-bar {
     @include bar;
-    bottom: $audio-height + 5px;
+    bottom: 20px;
+    text-align: center;
+}
+
+.my-default-message-bar {
+    bottom: $audio-height + 20px;
 }
 
 .my-fixed-message-bar {
-    bottom: 2 * $audio-height + 5px;
+    bottom: 2 * $audio-height + 20px;
+}
+
+.mdl-layout__content {
+    z-index: 0;
 }
 
 .my-toast-message {
@@ -216,11 +225,6 @@ $audio-top: 2px;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.my-row {
-    margin-left: 0;
-    margin-right: 0;
 }
 
 // Fix for fixed heading title

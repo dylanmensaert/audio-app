@@ -56,7 +56,6 @@ export default Ember.Component.extend({
         transitionToCollections: function () {
             this.set('cache.selectedTrackIds', this.get('tracks').mapBy('id'));
 
-            // TODO: implement transitionToCollections
             this.sendAction('transitionToCollections', 'track.collections');
         }
     }

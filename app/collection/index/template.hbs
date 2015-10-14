@@ -1,6 +1,6 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if selectedCollections}}
-      {{c-collections-bar collections=selectedCollections total=selectedCollections.firstObject.totalTracks}}
+      {{c-collections-bar collections=selectedCollections total=selectedCollections.firstObject.numberOfTracks}}
   {{else if selectedTracks}}
       {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
           <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
