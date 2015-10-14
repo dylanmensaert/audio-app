@@ -13,7 +13,7 @@ extraAssets.push(new Funnel('vendor/fonts', {
     destDir: '/assets/fonts'
 }));
 
-module.exports = function (defaults) {
+module.exports = function(defaults) {
     var app = new EmberApp(defaults, {
         // Add options here
     });
@@ -38,16 +38,6 @@ module.exports = function (defaults) {
 
     // TODO: dont export moment.js as global
     app.import('bower_components/moment/moment.js');
-
-    // TODO: implement dependencies correctly
-    app.import('bower_components/jquery-mobile/js/jquery.mobile.vmouse.js');
-    app.import('bower_components/jquery-mobile/js/jquery.mobile.ns.js');
-    app.import('bower_components/jquery-mobile/js/jquery.mobile.support.touch.js', {
-        exports: 'jQuery'
-    });
-    app.import('bower_components/jquery-mobile/js/events/touch.js', {
-        exports: 'jQuery'
-    });
 
     // TODO: check to move from /vendor to /app?
     // TODO: implement
