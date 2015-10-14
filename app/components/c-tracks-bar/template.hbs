@@ -4,28 +4,20 @@
     </div>
 
     <div class="mdl-cell my-menu-cell">
-        <div {{action 'transitionToCollections'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-            <span id="modify-collections" class="material-icons">
+        <div {{action 'transitionToCollections'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <span class="material-icons">
               loyalty
             </span>
-
-            <div class="mdl-tooltip" for="modify-collections">
-              Modify collections
-            </div>
         </div>
     </div>
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEveryUnQueued}}
-          <div {{action 'queue'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-            <span id="queue" class="material-icons">
+          {{#c-mdl action='queue' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+            <span class="material-icons">
               queue_music
             </span>
-
-            <div class="mdl-tooltip" for="queue">
-              Add to queue
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else}}
          &nbsp;
       {{/if}}
@@ -33,25 +25,17 @@
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEveryDownloaded}}
-          <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          {{#c-mdl action='delete' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               delete
             </span>
-
-            <div class="mdl-tooltip" for="queue">
-              Delete
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else if isEveryUndownloaded}}
-          <div {{action 'download'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          {{#c-mdl action='download' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               file_download
             </span>
-
-            <div class="mdl-tooltip" for="queue">
-              Download
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else}}
          &nbsp;
       {{/if}}

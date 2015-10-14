@@ -4,15 +4,11 @@
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEditable}}
-          <div {{action 'edit'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          {{#c-mdl action='edit' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               mode_edit
             </span>
-
-            <div class="mdl-tooltip" for="total">
-              Edit
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else}}
          &nbsp;
       {{/if}}
@@ -20,25 +16,17 @@
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEverySaved}}
-          <div {{action 'delete'}} id="delete" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          {{#c-mdl action='delete' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               delete
             </span>
-
-            <div class="mdl-tooltip" for="delete">
-              Delete
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else if isEveryUnsaved}}
-          <div {{action 'save'}} id="save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          {{#c-mdl action='save' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               shop_two
             </span>
-
-            <div class="mdl-tooltip" for="save">
-              Save
-            </div>
-          </div>
+          {{/c-mdl}}
       {{else}}
          &nbsp;
       {{/if}}

@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import ComponentMdl from 'audio-app/components/c-mdl';
 
-export default Ember.Component.extend({
+export default ComponentMdl.extend({
     classNames: ['mdl-layout__header-row', 'my-header-bar'],
     title: null,
     actions: {

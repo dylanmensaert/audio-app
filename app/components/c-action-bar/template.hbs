@@ -1,21 +1,13 @@
 <div class="mdl-cell my-menu-cell my-text-left">
-    <span id="total" class="mdl-badge" data-badge={{shownTotal}} />
-
-    <div class="mdl-tooltip" for="total">
-      Number selected
-    </div>
+    <span class="mdl-badge" data-badge={{shownTotal}} />
 </div>
 
 {{yield}}
 
 <div class="mdl-cell my-menu-cell my-text-right">
-    <div {{action 'deselect'}} id="close" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <div {{action 'deselect'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
       <i class="material-icons">
         close
       </i>
-
-      <div class="mdl-tooltip" for="close">
-        Cancel
-      </div>
     </div>
 </div>

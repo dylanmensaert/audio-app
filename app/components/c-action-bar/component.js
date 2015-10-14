@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import ComponentMdl from 'audio-app/components/c-mdl';
 
-export default Ember.Component.extend({
+export default ComponentMdl.extend({
     classNames: ['mdl-grid', 'my-menu-grid'],
     models: null,
     total: null,
-    shownTotal: function() {
+    shownTotal: function () {
         var shownTotal = this.get('total');
 
         if (!shownTotal) {
@@ -14,7 +14,7 @@ export default Ember.Component.extend({
         return shownTotal;
     }.property('models.length', 'total'),
     actions: {
-        deselect: function() {
+        deselect: function () {
             this.get('models').setEach('isSelected', false);
         }
     }
