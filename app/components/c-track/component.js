@@ -28,6 +28,7 @@ export default ComponentMdl.extend({
         this.$().off('swipeleft');
         this.$().off('swiperight');
     },
+    click: null,
     actions: {
         toggleIsSelected: function () {
             var model = this.get('model');

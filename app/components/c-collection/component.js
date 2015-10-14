@@ -22,6 +22,7 @@ export default ComponentMdl.extend({
     hasStatus: function () {
         return this.get('model.isPlaying') || this.get('showQueued') || this.get('model.isDownloading') || this.get('model.isDownloaded');
     }.property('model.isPlaying', 'showQueued', 'model.isDownloading', 'model.isDownloaded'),
+    click: null,
     actions: {
         toggleIsSelected: function () {
             var model = this.get('model');
