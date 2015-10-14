@@ -8,6 +8,10 @@
             <span class="material-icons">
               mode_edit
             </span>
+
+            <div class="mdl-tooltip" for="total">
+              Edit
+            </div>
           </div>
       {{else}}
          &nbsp;
@@ -16,16 +20,24 @@
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEverySaved}}
-          <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <div {{action 'delete'}} id="delete" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <span class="material-icons">
               delete
             </span>
+
+            <div class="mdl-tooltip" for="delete">
+              Delete
+            </div>
           </div>
       {{else if isEveryUnsaved}}
-          <div {{action 'save'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+          <div {{action 'save'}} id="save" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <span class="material-icons">
               shop_two
             </span>
+
+            <div class="mdl-tooltip" for="save">
+              Save
+            </div>
           </div>
       {{else}}
          &nbsp;

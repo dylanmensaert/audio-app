@@ -5,18 +5,26 @@
 
     <div class="mdl-cell my-menu-cell">
         <div {{action 'transitionToCollections'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-            <span class="material-icons">
+            <span id="modify-collections" class="material-icons">
               loyalty
             </span>
+
+            <div class="mdl-tooltip" for="modify-collections">
+              Modify collections
+            </div>
         </div>
     </div>
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEveryUnQueued}}
           <div {{action 'queue'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-            <span class="material-icons">
+            <span id="queue" class="material-icons">
               queue_music
             </span>
+
+            <div class="mdl-tooltip" for="queue">
+              Add to queue
+            </div>
           </div>
       {{else}}
          &nbsp;
@@ -29,12 +37,20 @@
             <span class="material-icons">
               delete
             </span>
+
+            <div class="mdl-tooltip" for="queue">
+              Delete
+            </div>
           </div>
       {{else if isEveryUndownloaded}}
           <div {{action 'download'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <span class="material-icons">
               file_download
             </span>
+
+            <div class="mdl-tooltip" for="queue">
+              Download
+            </div>
           </div>
       {{else}}
          &nbsp;

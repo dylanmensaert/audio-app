@@ -35,7 +35,9 @@ export default Ember.Component.extend({
         },
         delete: function () {
             this.get('collections').forEach(function (collection) {
-                collection.destroy();
+                collection.destroy().then(function () {
+                    collection.set('isSelected', false);
+                });
             });
         },
         setupEdit: function () {

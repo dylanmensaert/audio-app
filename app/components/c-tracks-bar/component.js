@@ -34,11 +34,11 @@ export default Ember.Component.extend({
         },
         delete: function () {
             this.get('tracks').forEach(function (track) {
-                if (track.get('isDownloaded')) {
-                    track.remove().then(function () {
-                        track.destroyRecord();
+                track.remove().then(function () {
+                    track.destroyRecord().then(function () {
+                        track.set('isSelected', false);
                     });
-                }
+                });
             });
         },
         queue: function () {

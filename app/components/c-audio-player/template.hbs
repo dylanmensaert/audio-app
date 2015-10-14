@@ -50,12 +50,16 @@
         </div>
 
         <div class="mdl-grid my-audio-grid">
-          <div {{action 'toggleMode'}} class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop my-audio-text">
-            <div class="my-audio-name">
-              {{audioPlayer.track.name}}
-            </div>
+          <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop my-audio-text">
+            <div {{action 'toggleMode'}} class="mdl-button mdl-js-button my-audio-btn">
+              <div class="my-audio-table">
+                <div class="my-audio-name">
+                  {{audioPlayer.track.name}}
 
-            <div class="my-audio-paragraph-end" />
+                  <div class="my-audio-paragraph-end" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
     </div>
@@ -64,15 +68,19 @@
 
     <div class="my-audio-bar">
         <div class="mdl-grid my-audio-grid">
-            <div {{action 'toggleMode'}} class="mdl-cell mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop my-audio-text">
-              <div class="my-audio-name">
-                {{audioPlayer.track.name}}
-              </div>
+            <div class="mdl-cell mdl-cell--3-col-phone mdl-cell--6-col-tablet mdl-cell--9-col-desktop my-audio-text">
+              <div {{action 'toggleMode'}} class="mdl-button mdl-js-button my-audio-btn">
+                <div class="my-audio-table">
+                  <div class="my-audio-name">
+                    {{audioPlayer.track.name}}
+                  </div>
 
-              <div class="my-audio-paragraph-end" />
+                   <div class="my-audio-paragraph-end" />
+                 </div>
+              </div>
             </div>
 
-            <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop my-audio-cell my-text-left">
+            <div class="mdl-cell mdl-cell--1-col-phone mdl-cell--2-col-tablet mdl-cell--3-col-desktop my-audio-cell">
                 <div class="my-audio-box">
                     {{#if audioPlayer.isLoading}}
                         {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}

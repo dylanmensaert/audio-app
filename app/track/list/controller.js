@@ -21,7 +21,6 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             relatedVideoId = this.get('relatedVideoId'),
             options = {
                 maxResults: 50,
-                query: this.get('query'),
                 nextPageToken: this.get('nextPageToken')
             };
 
@@ -42,7 +41,15 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 this.set('isPending', false);
             }
         }.bind(this));
-    }.observes('query', 'relatedVideoId').on('init'),
+    },
+    resetController: function () {
+        this.set('nextPageToken', null);
+        this.set('isPending', true);
+        this.set('isLocked', false);
+        this.set('tracks', []);
+
+        this.updateTracks();
+    }.observes('query', 'relatedVideoId'),
     sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
         return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache').getIsOfflineMode());
     }),

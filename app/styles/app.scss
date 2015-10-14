@@ -59,9 +59,9 @@ $audio-top: 2px;
 .my-action-bar {
     background-color: #cccccc;
     @media screen and (max-width: 1024px) {
-        width: calc(100% - 32px);
-        padding-left: 16px;
-        padding-right: 16px;
+        width: calc(100% - 16px);
+        padding-left: 8px;
+        padding-right: 8px;
     }
     @media screen and (min-width: 1024px) {
         margin-left: 240px;
@@ -146,6 +146,11 @@ $audio-top: 2px;
     height: $audio-height;
 }
 
+.my-audio-table {
+    display: table;
+    width: 100%;
+}
+
 .my-audio-name {
     @extend .my-audio-box;
     font-size: 18px;
@@ -154,8 +159,16 @@ $audio-top: 2px;
 
 .my-audio-text {
     @extend .my-audio-cell;
-    overflow: hidden;
+    display: block;
+    margin-left: 0;
+}
+
+.my-audio-btn {
+    height: 100%;
+    display: block;
     position: relative;
+    padding: 0;
+    padding-left: 8px;
 }
 
 .my-paragraph-end {
@@ -372,11 +385,7 @@ $audio-top: 2px;
     padding: 0;
 }
 
-.my-grid-title {
-    &.mdl-grid {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
+.my-grid-panel {
     @media screen and (max-width: 1024px) {
         padding: 8px;
     }
@@ -385,8 +394,16 @@ $audio-top: 2px;
     }
 }
 
+.my-grid-title {
+    @extend .my-grid-panel;
+    &.mdl-grid {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
 .my-grid {
-    @extend .my-grid-title;
+    @extend .my-grid-panel;
     @media screen and (max-width: 479px) {
         padding: 0;
     }
