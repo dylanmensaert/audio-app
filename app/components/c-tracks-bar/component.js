@@ -5,28 +5,25 @@ export default Ember.Component.extend({
     store: Ember.inject.service(),
     classNames: ['my-action-bar'],
     tracks: null,
-    undownloadedTracks: function () {
-        return this.get('tracks').filter(function (track) {
+    isEveryUndownloaded: function () {
+        var undownloadedTracks = this.get('tracks').filter(function (track) {
             return !track.get('isDownloaded') && !track.get('isDownloading');
         });
-    }.property('tracks.@each.isDownloaded'),
-    isEveryUndownloaded: function () {
-        return this.get('undownloadedTracks.length') === this.get('tracks.length');
-    }.property('undownloadedTracks.length', 'tracks.length'),
-    downloadedTracks: function () {
-        return this.get('tracks').filter(function (track) {
+
+        return undownloadedTracks.get('length') === this.get('tracks.length');
+    }.property('tracks.@each.isDownloaded', 'tracks.length'),
+    isEveryDownloaded: function () {
+        var downloadedTracks = this.get('tracks').filter(function (track) {
             return track.get('isDownloaded') || track.get('isDownloading');
         });
-    }.property('tracks.@each.isDownloaded'),
-    isEveryDownloaded: function () {
-        return this.get('downloadedTracks.length') === this.get('tracks.length');
-    }.property('downloadedTracks.length', 'tracks.length'),
-    unQueuedTracks: function () {
-        return this.get('tracks').filterBy('isQueued', false);
-    }.property('tracks.@each.isQueued'),
+
+        return downloadedTracks.get('length') === this.get('tracks.length');
+    }.property('tracks.@each.isDownloaded', 'tracks.length'),
     isEveryUnQueued: function () {
-        return this.get('unQueuedTracks.length') === this.get('tracks.length');
-    }.property('unQueuedTracks.length', 'tracks.length'),
+        var unQueuedTracks = this.get('tracks').filterBy('isQueued', false);
+
+        return unQueuedTracks.get('length') === this.get('tracks.length');
+    }.property('tracks.@each.isQueued', 'tracks.length'),
     actions: {
         download: function () {
             this.get('tracks').forEach(function (track) {

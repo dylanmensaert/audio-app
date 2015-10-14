@@ -10,7 +10,7 @@ $menu-height-phone: 56px;
 $menu-height: 64px;
 $audio-height: 45px;
 $vert-width: 35px;
-$menu-cell-width: 14.28571428571429%;
+$menu-cell-width: calc(16.66666666666667% - 16px);
 $audio-top: 2px;
 
 /* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
@@ -127,6 +127,17 @@ $audio-top: 2px;
     margin-bottom: 0;
     display: table;
     text-align: center;
+}
+
+.my-menu-cell {
+    width: $menu-cell-width;
+    text-align: center;
+    @media screen and (max-width: 1024px) {
+        line-height: 40px;
+    }
+    @media screen and (min-width: 1024px) {
+        line-height: 48px;
+    }
 }
 
 .my-audio-box {
@@ -362,8 +373,10 @@ $audio-top: 2px;
 }
 
 .my-grid-title {
-    padding-top: 0;
-    padding-bottom: 0;
+    &.mdl-grid {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
     @media screen and (max-width: 1024px) {
         padding: 8px;
     }
@@ -401,37 +414,6 @@ $audio-top: 2px;
 .my-menu-grid {
     @include menu-height;
     padding: 0;
-}
-
-.my-menu-cell {
-    width: $menu-cell-width;
-}
-
-.my-menu-cell-offset {
-    width: 2 * $menu-cell-width;
-}
-
-.mdl-button .my-badge[data-badge]:after {
-    top: -11px;
-    right: -24px;
-}
-
-.my-icon-btn {
-    @media screen and (max-width: 1024px) {
-        height: $menu-height-phone;
-        line-height: $menu-height-phone;
-    }
-    @media screen and (min-width: 1024px) {
-        height: $menu-height;
-        line-height: $menu-height;
-    }
-}
-
-.my-menu-btn {
-    @extend .my-icon-btn;
-    // TODO: width: 100% makes it overlap with other btns. This looks nice but check if click might result in double actions..
-    width: 100%;
-    min-width: initial;
 }
 
 .my-text-right {

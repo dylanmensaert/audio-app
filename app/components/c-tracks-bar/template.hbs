@@ -1,46 +1,39 @@
 {{#c-action-bar models=tracks}}
-    <div class="my-menu-cell">
-        <!-- TODO: Implement removeFromCollection -->
+    <div class="mdl-cell my-menu-cell">
         {{yield}}
     </div>
 
-    <div class="my-menu-cell">
-        <div {{action 'transitionToCollections'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge">
+    <div class="mdl-cell my-menu-cell">
+        <div {{action 'transitionToCollections'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <span class="material-icons">
               loyalty
             </span>
         </div>
     </div>
 
-    <div class="my-menu-cell">
-      {{#if downloadedTracks}}
-          <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryDownloaded downloadedTracks.length}}>
+    <div class="mdl-cell my-menu-cell">
+      {{#if isEveryUnQueued}}
+          <div {{action 'queue'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <span class="material-icons">
+              queue_music
+            </span>
+          </div>
+      {{else}}
+         &nbsp;
+      {{/if}}
+    </div>
+
+    <div class="mdl-cell my-menu-cell">
+      {{#if isEveryDownloaded}}
+          <div {{action 'delete'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <span class="material-icons">
               delete
             </span>
           </div>
-      {{else}}
-         &nbsp;
-      {{/if}}
-    </div>
-
-    <div class="my-menu-cell">
-      {{#if undownloadedTracks}}
-          <div {{action 'download'}} class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUndownloaded undownloadedTracks.length}}>
+      {{else if isEveryUndownloaded}}
+          <div {{action 'download'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <span class="material-icons">
               file_download
-            </span>
-          </div>
-      {{else}}
-         &nbsp;
-      {{/if}}
-    </div>
-
-    <div class="my-menu-cell">
-      {{#if unQueuedTracks}}
-          <div {{action 'queue'}}  class="mdl-button mdl-js-button mdl-js-ripple-effect my-menu-btn">
-            <span class="material-icons mdl-badge my-badge" data-badge={{unless isEveryUnQueued unQueuedTracks.length}}>
-              queue_music
             </span>
           </div>
       {{else}}
