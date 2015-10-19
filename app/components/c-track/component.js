@@ -37,7 +37,7 @@ export default ComponentMdl.extend({
 
         if (left === 0) {
             this.set('doClick', true);
-        } else {
+        } else if (Math.abs(left) >= 80) {
             if (left > 0) {
                 action = 'swipeRight';
             } else {

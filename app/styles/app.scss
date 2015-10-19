@@ -402,8 +402,10 @@ $active-color: #cccccc;
     width: 100%;
 }
 
-.my-vertical-status-bar {
-    font-size: 18px;
+.my-status-bar {
+    i {
+        font-size: 18px;
+    }
 }
 
 .my-loading-bar {

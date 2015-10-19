@@ -31,29 +31,21 @@
     <div class="my-track-paragraph-end" />
   </div>
 
-  <div class="my-track-middle my-vertical-status-bar">
+  <div class="my-track-middle my-status-bar">
       {{#if model.isPlaying}}
-          <div>
-              <i class="material-icons">headset</i>
-          </div>
+          <i class="material-icons">headset</i>
       {{else}}
           {{#if showQueued}}
-              <div>
-                  <i class="material-icons">schedule</i>
-              </div>
+              <i class="material-icons">schedule</i>
           {{/if}}
       {{/if}}
 
       {{#if model.isDownloading}}
-          <div>
-              {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-          </div>
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
       {{/if}}
 
       {{#if model.isDownloaded}}
-          <div>
-              <i class="material-icons">offline_pin</i>
-          </div>
+          <i class="material-icons">offline_pin</i>
       {{/if}}
   </div>
 
