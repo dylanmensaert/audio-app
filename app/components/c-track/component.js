@@ -55,7 +55,7 @@ export default ComponentMdl.extend({
         if (this.get('startPosition')) {
             left = event.clientX - this.get('startPosition');
 
-            if (left !== 0 && Math.abs(left) <= 60) {
+            if (left !== 0 && Math.abs(left) <= 80) {
                 this.$('.my-track-draggable').css('left', left);
             }
         }

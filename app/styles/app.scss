@@ -13,6 +13,7 @@ $audio-height: 45px;
 $vert-width: 35px;
 $menu-cell-width: calc(16.66666666666667% - 16px);
 $audio-top: 2px;
+$active-color: #cccccc;
 
 /* TODO: maybe, if I put every bar inside the main tag, I do not need to set margin-left? */
 
@@ -34,12 +35,6 @@ $audio-top: 2px;
         margin-left: 240px;
         width: calc(100% - 240px);
     }
-}
-
-.my-quick-icon {
-    margin-left: 10px;
-    margin-right: 10px;
-    color: #ffc107;
 }
 
 .my-more-btn {
@@ -352,9 +347,16 @@ $audio-top: 2px;
 
 .my-track-body {
     @extend .my-track-part;
+    position: relative;
     padding-left: 8px;
     padding-right: 8px;
     width: 100%;
+}
+
+.my-active {
+    .my-track-paragraph-end {
+        background-color: $active-color;
+    }
 }
 
 .my-track-middle {
@@ -467,7 +469,7 @@ $audio-top: 2px;
 }
 
 .my-active {
-    background-color: #cccccc;
+    background-color: $active-color;
 }
 
 .my-menu-grid {
