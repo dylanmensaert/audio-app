@@ -6,7 +6,7 @@ export default ComponentMdl.extend({
     classNames: ['my-track'],
     model: null,
     showQueued: false,
-    didInsertElement: function () {
+    didInsertElement: function() {
         var outerImage = this.$('.my-outer-image'),
             innerImage = this.$('.my-inner-image');
 
@@ -19,17 +19,19 @@ export default ComponentMdl.extend({
     },
     doClick: false,
     startPosition: null,
-    resetPosition: function () {
-        this.$('.my-track-draggable').css('left', 0);
+    resetPosition: function() {
+        this.$('.my-track-draggable').animate({
+            left: 0
+        });
 
         this.set('startPosition', null);
     },
-    mouseDown: function (event) {
+    mouseDown: function(event) {
         this.set('startPosition', event.clientX);
 
         this.set('doClick', false);
     },
-    mouseUp: function (event) {
+    mouseUp: function(event) {
         var left = event.clientX - this.get('startPosition'),
             action;
 
@@ -47,7 +49,7 @@ export default ComponentMdl.extend({
 
         this.resetPosition();
     },
-    mouseMove: function (event) {
+    mouseMove: function(event) {
         var left;
 
         if (this.get('startPosition')) {
@@ -58,21 +60,21 @@ export default ComponentMdl.extend({
             }
         }
     },
-    mouseLeave: function () {
+    mouseLeave: function() {
         if (this.get('startPosition')) {
             this.resetPosition();
         }
     },
     click: null,
     actions: {
-        toggleIsSelected: function () {
+        toggleIsSelected: function() {
             var model = this.get('model');
 
             model.toggleProperty('isSelected');
 
             this.sendAction('toggleIsSelected', model);
         },
-        click: function () {
+        click: function() {
             if (this.get('doClick')) {
                 this.sendAction('action', this.get('model'));
             }
