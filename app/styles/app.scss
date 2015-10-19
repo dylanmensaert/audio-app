@@ -7,6 +7,7 @@
 /* TODO: prefix everything with my- / audio-? */
 
 $menu-height-phone: 56px;
+$track-height: 68px;
 $menu-height: 64px;
 $audio-height: 45px;
 $vert-width: 35px;
@@ -33,6 +34,12 @@ $audio-top: 2px;
         margin-left: 240px;
         width: calc(100% - 240px);
     }
+}
+
+.my-quick-icon {
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #ffc107;
 }
 
 .my-more-btn {
@@ -272,6 +279,14 @@ $audio-top: 2px;
     }
 }
 
+.my-track-draggable {
+    position: absolute;
+    background-color: rgb(245, 245, 245);
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
 .my-suggestions-header {
     position: relative;
 }
@@ -349,13 +364,36 @@ $audio-top: 2px;
 
 .my-static-image {
     width: 120px;
-    height: 68px;
+    height: $track-height;
 }
 
 .my-line {
     width: calc(100% - 90px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     float: right;
+}
+
+.my-track {
+    position: relative;
+    width: 100%;
+}
+
+.my-track-grid {
+    height: $track-height;
+    display: table;
+    width: calc(100% - 2 * 8px);
+}
+
+.my-track-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.my-track-paragraph-end {
+    @extend .my-paragraph-end;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgb(245, 245, 245)));
+    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgb(245, 245, 245));
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(245, 245, 245));
 }
 
 .my-separator {

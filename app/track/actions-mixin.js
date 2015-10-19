@@ -19,7 +19,7 @@ export default Ember.Mixin.create({
                 id;
 
             if (!track.get('isDownloaded') && !track.get('isDownloading')) {
-                if (cache.getIsDownloadedOnly()) {
+                if (cache.getIsOfflineMode()) {
                     trackIds = this.get('store').peekRecord('collection', 'download-later').get('trackIds');
                     id = track.get('id');
 

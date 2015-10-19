@@ -1,4 +1,4 @@
-/* global componentHandler: true */
+/* global componentHandler */
 import Ember from 'ember';
 
 export default Ember.Component.extend({

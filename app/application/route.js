@@ -1,4 +1,4 @@
-/* global document: true */
+/* global document */
 import Ember from 'ember';
 import routeMixin from 'audio-app/mixins/route';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
