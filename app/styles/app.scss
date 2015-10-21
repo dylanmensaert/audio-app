@@ -353,12 +353,6 @@ $active-color: #cccccc;
     width: 100%;
 }
 
-.my-active {
-    .my-track-paragraph-end {
-        background-color: $active-color;
-    }
-}
-
 .my-track-middle {
     @extend .my-track-part;
     vertical-align: middle;
@@ -391,11 +385,21 @@ $active-color: #cccccc;
     vertical-align: middle;
 }
 
+@mixin my-paragraph-end($color) {
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, $color));
+    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), $color);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), $color);
+}
+
+.my-active {
+    .my-track-paragraph-end {
+        @include my-paragraph-end($active-color);
+    }
+}
+
 .my-track-paragraph-end {
     @extend .my-paragraph-end;
-    background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, rgb(245, 245, 245)));
-    background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), rgb(245, 245, 245));
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(245, 245, 245));
+    @include my-paragraph-end(rgb(245, 245, 245));
 }
 
 .my-separator {
