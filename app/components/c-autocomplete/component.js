@@ -8,7 +8,7 @@ const keyCodeUp = 38,
 var timer;
 
 export default ComponentMdl.extend({
-    classNames: ['my-suggestions-textfield'],
+    classNames: ['my-suggestions-body'],
     liveQuery: '',
     suggestions: null,
     showSuggestions: false,

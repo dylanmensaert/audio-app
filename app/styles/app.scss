@@ -286,8 +286,19 @@ $active-color: #cccccc;
     position: relative;
 }
 
+.my-suggestions-body {
+    width: 100%;
+    max-width: 300px;
+}
+
 .my-suggestions-textfield {
-    position: initial;
+    width: 100%;
+}
+
+.mdl-layout__header {
+    .my-suggestions-input {
+        background-color: #4b5dc1;
+    }
 }
 
 // Fix for fixed heading bar
