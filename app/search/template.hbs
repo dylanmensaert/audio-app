@@ -65,7 +65,7 @@
 
         <div class="mdl-grid my-grid">
             {{#each sortedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='pushToDownload' swipeRight='pushToQueue' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
+                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
 
                 <div class="my-separator">
                     <div class="my-line" />

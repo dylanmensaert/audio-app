@@ -29,7 +29,7 @@
     {{#if tracks}}
         <div class="mdl-grid my-grid">
             {{#each sortedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='pushToDownload' swipeRight='pushToQueue' showQueued=(if model.isQueue false track.isQueued)}}
+                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=(if model.isQueue false track.isQueued)}}
 
                 <div class="my-separator">
                     <div class="my-line" />
