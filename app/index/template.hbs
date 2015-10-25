@@ -2,13 +2,13 @@
   {{#if selectedTracks}}
       {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
   {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar transitionToPrevious='transitionToPrevious' title='Recommended'}}
+      {{c-transition-bar transitionToPrevious='transitionToPrevious' title='Recommended' selectAll='selectAll'}}
   {{/if}}
 
   {{#if cache.hasPreviousTransition}}
       <header class="mdl-layout__header hidden" />
   {{else}}
-   {{c-menu-bar title='Recommended' classNameBindings='selectedTracks.length:hidden'}}
+   {{c-menu-bar title='Recommended' selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}
   {{/if}}
 
   <main class="mdl-layout__content mdl-color--grey-100">
