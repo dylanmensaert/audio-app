@@ -4,7 +4,7 @@ export default ComponentMdl.extend({
     classNames: ['mdl-grid', 'my-menu-grid'],
     models: null,
     total: null,
-    shownTotal: function () {
+    shownTotal: function() {
         var shownTotal = this.get('total');
 
         if (!shownTotal) {
@@ -14,8 +14,10 @@ export default ComponentMdl.extend({
         return shownTotal;
     }.property('models.length', 'total'),
     actions: {
-        deselect: function () {
+        deselect: function() {
             this.get('models').setEach('isSelected', false);
+
+            this.sendAction('deselect');
         }
     }
 });

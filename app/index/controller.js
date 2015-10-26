@@ -53,11 +53,6 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
         return this.sortSnippet(this.get('lastHistoryTracks'), track, other, !this.get('cache').getIsOfflineMode());
     }),
-    // TODO: not working for some reason
-    /*selectedTracks: function() {
-        return this.get('store').peekAll('track').filterBy('isSelected');
-    }.property('tracks.@each.isSelected'),*/
-    // TODO: not working for relatedByTracks
     selectedTracks: function() {
         var selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),
             selectedTracks = [];
@@ -69,7 +64,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         });
 
         return selectedTracks;
-    }.property('lastHistoryTracks.@each.isSelected', 'relatedByTracks.@each.relatedTracks.@each.isSelected'),
+    }.property('lastHistoryTracks.@each.isSelected'),
     actions: {
         selectAll: function() {
             this.get('lastHistoryTracks').setEach('isSelected', true);
@@ -77,6 +72,9 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             this.get('relatedByTracks').forEach(function(relatedByTrack) {
                 relatedByTrack.get('relatedTracks').setEach('isSelected', true);
             });
+        },
+        toggleIsSelected: function() {
+            this.notifyPropertyChange('selectedTracks');
         }
     }
 });

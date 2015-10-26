@@ -1,6 +1,6 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if selectedTracks}}
-      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
+      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo' deselect='toggleIsSelected'}}
   {{else if cache.hasPreviousTransition}}
       {{c-transition-bar transitionToPrevious='transitionToPrevious' title='Recommended' selectAll='selectAll'}}
   {{/if}}
@@ -57,7 +57,7 @@
 
         <div class="mdl-grid my-grid">
             {{#each relatedByTrack.relatedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=track.isQueued}}
+                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=track.isQueued toggleIsSelected='toggleIsSelected'}}
 
                 <div class="my-separator">
                     <div class="my-line" />
