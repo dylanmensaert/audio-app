@@ -12,21 +12,21 @@ export default ComponentMdl.extend({
     liveQuery: '',
     suggestions: null,
     showSuggestions: false,
-    showAutoComplete: function() {
+    showAutoComplete: function () {
         return this.get('showSuggestions') && this.get('suggestions.length');
     }.property('showSuggestions', 'suggestions.length'),
-    updateShowSuggestions: function() {
-        this.set('showSuggestions', !Ember.isEmpty(this.get('liveQuery')));
+    updateShowSuggestions: function () {
+        this.set('showSuggestions', !this.get('liveQuery'));
     }.observes('liveQuery'),
-    keyDown: function(event) {
+    keyDown: function (event) {
         if (event.keyCode === keyCodeUp) {
-            this.selectAdjacent(function(selectedIndex) {
+            this.selectAdjacent(function (selectedIndex) {
                 return selectedIndex - 1;
             });
 
             event.preventDefault();
         } else if (event.keyCode === keyCodeDown) {
-            this.selectAdjacent(function(selectedIndex) {
+            this.selectAdjacent(function (selectedIndex) {
                 return selectedIndex + 1;
             });
 
@@ -35,7 +35,7 @@ export default ComponentMdl.extend({
             this.hideSuggestions();
         }
     },
-    selectAdjacent: function(getAdjacentIndex) {
+    selectAdjacent: function (getAdjacentIndex) {
         var suggestions = this.get('suggestions'),
             selectedSuggestion,
             adjacentIndex,
@@ -65,10 +65,10 @@ export default ComponentMdl.extend({
             this.send('searchSelected');
         }
     },
-    willDestroyElement: function() {
+    willDestroyElement: function () {
         Ember.run.cancel(timer);
     },
-    hideSuggestions: function() {
+    hideSuggestions: function () {
         var selectedSuggestion = this.get('suggestions').findBy('isSelected');
 
         if (selectedSuggestion) {
@@ -78,7 +78,7 @@ export default ComponentMdl.extend({
         this.set('showSuggestions', false);
     },
     actions: {
-        searchSelected: function() {
+        searchSelected: function () {
             var suggestions = this.get('suggestions'),
                 selectedSuggestion = suggestions.findBy('isSelected');
 
@@ -90,14 +90,14 @@ export default ComponentMdl.extend({
 
             this.sendAction('search');
         },
-        searchSuggestion: function(suggestion) {
+        searchSuggestion: function (suggestion) {
             this.set('liveQuery', suggestion.get('value'));
 
             this.hideSuggestions();
 
             this.sendAction('search');
         },
-        didFocusOut: function() {
+        didFocusOut: function () {
             if (!this.$('.my-autocomplete:hover').length) {
                 this.hideSuggestions();
             }

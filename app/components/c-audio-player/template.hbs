@@ -23,14 +23,14 @@
                     {{/if}}
 
                     {{#if audioPlayer.isPlaying}}
-                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
-                          <i class="material-icons" {{action 'pause'}}>pause</i>
+                      {{#c-mdl action='pause' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons">pause</i>
                       {{/c-mdl}}
                     {{/if}}
 
                     {{#if audioPlayer.isIdle}}
-                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
-                          <i class="material-icons" {{action 'play'}}>play_arrow</i>
+                      {{#c-mdl action='play' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons">play_arrow</i>
                       {{/c-mdl}}
                     {{/if}}
                 </div>
@@ -38,8 +38,8 @@
 
             <div class="mdl-cell my-cell--5-col my-audio-cell">
                 <div class="my-audio-box">
-                  {{#c-mdl class='mdl-button mdl-js-button mdl-button--icon'}}
-                      <i class="material-icons" {{action 'next'}}>skip_next</i>
+                  {{#c-mdl action='next' class='mdl-button mdl-js-button mdl-button--icon'}}
+                      <i class="material-icons">skip_next</i>
                   {{/c-mdl}}
                 </div>
             </div>
@@ -87,14 +87,14 @@
                     {{/if}}
 
                     {{#if audioPlayer.isPlaying}}
-                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
-                          <i class="material-icons" {{action 'pause'}}>pause</i>
+                      {{#c-mdl action='pause' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons">pause</i>
                       {{/c-mdl}}
                     {{/if}}
 
                     {{#if audioPlayer.isIdle}}
-                      {{#c-mdl class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
-                          <i class="material-icons" {{action 'play'}}>play_arrow</i>
+                      {{#c-mdl action='play' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored'}}
+                          <i class="material-icons">play_arrow</i>
                       {{/c-mdl}}
                     {{/if}}
                 </div>

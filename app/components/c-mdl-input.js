@@ -6,7 +6,7 @@ export default Ember.TextField.extend({
     value: null,
     classNames: ['mdl-textfield__input'],
     insertNewline: function () {
-        this.sendAction('insert-newline');
+        this.sendAction('action');
     },
     change: function () {
         this.attrs.value.update(this.get('value'));

@@ -3,12 +3,14 @@
       {{c-collections-bar collections=selectedCollections total=selectedCollections.firstObject.numberOfTracks}}
   {{else if selectedTracks}}
       {{#c-tracks-bar tracks=selectedTracks download='download' delete='delete' queue='queue' transitionToCollections='transitionTo'}}
-          <div {{action 'removeFromCollection'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <div {{action 'removeFromCollection'}}>
+          <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <span class="material-icons">
               local_offer
             </span>
           </div>
-       {{/c-tracks-bar}}
+        </div>
+      {{/c-tracks-bar}}
   {{else if cache.hasPreviousTransition}}
       {{c-transition-bar transitionToPrevious='transitionToPrevious' title=model.name selectAll='selectAll'}}
   {{/if}}

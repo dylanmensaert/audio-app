@@ -4,20 +4,24 @@
     </div>
 
     <div class="mdl-cell my-menu-cell">
-        <div {{action 'transitionToCollections'}} class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+      <div {{action 'transitionToCollections'}}>
+        <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <span class="material-icons">
               loyalty
             </span>
         </div>
+      </div>
     </div>
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEveryUnQueued}}
-          {{#c-mdl action='queue' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+        <div {{action 'queue'}}>
+          {{#c-mdl class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               queue_music
             </span>
           {{/c-mdl}}
+        </div>
       {{else}}
          &nbsp;
       {{/if}}
@@ -25,17 +29,21 @@
 
     <div class="mdl-cell my-menu-cell">
       {{#if isEveryDownloaded}}
-          {{#c-mdl action='delete' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+        <div {{action 'delete'}}>
+          {{#c-mdl class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               delete
             </span>
           {{/c-mdl}}
+        </div>
       {{else if isEveryUndownloaded}}
-          {{#c-mdl action='download' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
+        <div {{action 'download'}}>
+          {{#c-mdl class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
             <span class="material-icons">
               file_download
             </span>
           {{/c-mdl}}
+        </div>
       {{else}}
          &nbsp;
       {{/if}}
