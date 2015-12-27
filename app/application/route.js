@@ -3,9 +3,9 @@ import Ember from 'ember';
 import routeMixin from 'audio-app/mixins/route';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
 
-var generateRandom = function(min, max) {
+function generateRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+}
 
 export default Ember.Route.extend(routeMixin, {
     audioPlayer: Ember.inject.service(),
@@ -23,7 +23,7 @@ export default Ember.Route.extend(routeMixin, {
 
         playingTrack = this.get('store').peekRecord('track', this.get('fileSystem.playingTrackId'));
 
-        if (playingTrack) {
+        if(playingTrack) {
             audioPlayer.load(playingTrack);
         }
 
@@ -45,7 +45,7 @@ export default Ember.Route.extend(routeMixin, {
 
         audioPlayer.set('didEnd', this.next.bind(this));
 
-        if (!this.get('store').peekRecord('collection', 'history').get('trackIds.length')) {
+        if(!this.get('store').peekRecord('collection', 'history').get('trackIds.length')) {
             this.transitionTo('search');
         }
     },
@@ -60,7 +60,7 @@ export default Ember.Route.extend(routeMixin, {
         queueTrackIds = store.peekRecord('collection', 'queue').get('trackIds');
         currentIndex = queueTrackIds.indexOf(this.get('audioPlayer.track.id'));
 
-        if (currentIndex > 0) {
+        if(currentIndex > 0) {
             previousIndex = currentIndex - 1;
         } else {
             previousIndex = queueTrackIds.get('length');
@@ -82,7 +82,7 @@ export default Ember.Route.extend(routeMixin, {
             return !this.get('cache.playedTrackIds').contains(trackId);
         }.bind(this));
 
-        if (!unplayedTrackIds.get('length')) {
+        if(!unplayedTrackIds.get('length')) {
             this.set('cache.playedTrackIds', []);
 
             unplayedTrackIds.pushObjects(queueTrackIds);
@@ -107,7 +107,7 @@ export default Ember.Route.extend(routeMixin, {
             playedTrackIds,
             id;
 
-        if (track) {
+        if(track) {
             id = track.get('id');
             history = store.peekRecord('collection', 'history');
             historyTrackIds = history.get('trackIds');
@@ -115,7 +115,7 @@ export default Ember.Route.extend(routeMixin, {
             queueTrackIds = queue.get('trackIds');
             playedTrackIds = this.get('cache.playedTrackIds');
 
-            if (historyTrackIds.contains(id)) {
+            if(historyTrackIds.contains(id)) {
                 historyTrackIds.removeObject(id);
             }
 
@@ -123,8 +123,8 @@ export default Ember.Route.extend(routeMixin, {
 
             history.save();
 
-            if (!queueTrackIds.contains(id)) {
-                if (audioPlayer.get('track.id')) {
+            if(!queueTrackIds.contains(id)) {
+                if(audioPlayer.get('track.id')) {
                     queueTrackIds.insertAt(queueTrackIds.indexOf(audioPlayer.get('track.id')) + 1, id);
                 } else {
                     queueTrackIds.pushObject(id);
@@ -133,7 +133,7 @@ export default Ember.Route.extend(routeMixin, {
                 queue.save();
             }
 
-            if (!playedTrackIds.contains(id)) {
+            if(!playedTrackIds.contains(id)) {
                 playedTrackIds.pushObject(id);
             }
 
@@ -142,11 +142,11 @@ export default Ember.Route.extend(routeMixin, {
             fileSystem.save();
         }
 
-        if (track) {
+        if(track) {
             track.save();
         }
 
-        if (track && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
+        if(track && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
             track.download().then(function() {
                 audioPlayer.play(track);
             });
@@ -162,7 +162,7 @@ export default Ember.Route.extend(routeMixin, {
     },
     actions: {
         loading: function() {
-            if (this.get('controller')) {
+            if(this.get('controller')) {
                 this.set('controller.isLoading', true);
 
                 this.router.one('didTransition', function() {
@@ -171,7 +171,7 @@ export default Ember.Route.extend(routeMixin, {
             }
         },
         error: function(error) {
-            if (this.get('controller')) {
+            if(this.get('controller')) {
                 this.set('controller.error', error);
             }
         },

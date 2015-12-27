@@ -33,7 +33,7 @@
 
         <div class="mdl-grid my-grid">
             {{#each sortedLastHistoryTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=track.isQueued}}
+                {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued}}
 
                 <div class="my-separator">
                     <div class="my-line" />
@@ -57,7 +57,7 @@
 
         <div class="mdl-grid my-grid">
             {{#each relatedByTrack.relatedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='pushToQueue' swipeRight='pushToDownload' showQueued=track.isQueued toggleIsSelected='toggleIsSelected'}}
+                {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued toggleIsSelected='toggleIsSelected'}}
 
                 <div class="my-separator">
                     <div class="my-line" />

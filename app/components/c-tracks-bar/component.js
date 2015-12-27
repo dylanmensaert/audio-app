@@ -5,29 +5,27 @@ export default Ember.Component.extend({
     store: Ember.inject.service(),
     classNames: ['my-action-bar'],
     tracks: null,
-    isEveryUndownloaded: function() {
-        var undownloadedTracks = this.get('tracks').filter(function(track) {
-            return !track.get('isDownloaded') && !track.get('isDownloading');
-        });
+    isEveryDownloadable: Ember.computed('tracks.@each.isDownloaded', 'tracks.length', function() {
+        var downloadableTracks = this.get('tracks').filterBy('isDownloadable');
 
-        return undownloadedTracks.get('length') === this.get('tracks.length');
-    }.property('tracks.@each.isDownloaded', 'tracks.length'),
-    isEveryDownloaded: function() {
+        return downloadableTracks.get('length') === this.get('tracks.length');
+    }),
+    isEveryDownloaded: Ember.computed('tracks.@each.isDownloaded', 'tracks.length', function() {
         var downloadedTracks = this.get('tracks').filter(function(track) {
             return track.get('isDownloaded') || track.get('isDownloading');
         });
 
         return downloadedTracks.get('length') === this.get('tracks.length');
-    }.property('tracks.@each.isDownloaded', 'tracks.length'),
-    isEveryUnQueued: function() {
+    }),
+    isEveryUnQueued: Ember.computed('tracks.@each.isQueued', 'tracks.length', function() {
         var unQueuedTracks = this.get('tracks').filterBy('isQueued', false);
 
         return unQueuedTracks.get('length') === this.get('tracks.length');
-    }.property('tracks.@each.isQueued', 'tracks.length'),
+    }),
     actions: {
         download: function() {
             this.get('tracks').forEach(function(track) {
-                if (!track.get('isDownloaded') && !track.get('isDownloading')) {
+                if(track.get('isDownloadable')) {
                     track.download();
                 }
             });
@@ -46,8 +44,8 @@ export default Ember.Component.extend({
                 trackIds = queue.get('trackIds');
 
             this.get('tracks').forEach(function(track) {
-                if (!trackIds.contains(track.get('id'))) {
-                    this.pushToQueue(trackIds, track);
+                if(!trackIds.contains(track.get('id'))) {
+                    this.queueSingle(trackIds, track);
                 }
             });
 

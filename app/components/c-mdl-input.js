@@ -1,23 +1,22 @@
 import Ember from 'ember';
 
 // TODO: send action on suggestion click
-// TODO: remove typeahead, which is settings this.$().val() on focus out
 export default Ember.TextField.extend({
     value: null,
     classNames: ['mdl-textfield__input'],
-    insertNewline: function () {
+    insertNewline: function() {
         this.sendAction('action');
     },
-    change: function () {
+    change: function() {
         this.attrs.value.update(this.get('value'));
     },
-    focus: function () {
+    focus: function() {
         this.focus();
     },
-    focusOut: function () {
+    focusOut: function() {
         this.sendAction('didFocusOut');
     },
-    didInsertElement: function () {
+    didInsertElement: function() {
         Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
     }
 });

@@ -9,41 +9,41 @@ export default Ember.Service.extend({
     status: null,
     didEnd: null,
     isLargeMode: false,
-    isLoading: function () {
+    isLoading: Ember.computed('status', function() {
         return this.get('status') === 'loading';
-    }.property('status'),
-    isPlaying: function () {
+    }),
+    isPlaying: Ember.computed('status', function() {
         return this.get('status') === 'playing';
-    }.property('status'),
-    isIdle: function () {
+    }),
+    isIdle: Ember.computed('status', function() {
         return this.get('status') === 'idle';
-    }.property('status'),
-    setCurrentTime: function (currentTime) {
+    }),
+    setCurrentTime: function(currentTime) {
         this.get('element').currentTime = currentTime;
     },
-    play: function (track) {
+    play: function(track) {
         var element = this.get('element');
 
-        if (!track) {
+        if(!track) {
             element.play();
         } else {
-            this.load(track).then(function () {
+            this.load(track).then(function() {
                 element.play();
             });
         }
     },
-    pause: function () {
+    pause: function() {
         this.get('element').pause();
     },
-    load: function (track) {
+    load: function(track) {
         var audio = track.get('audio');
 
         this.set('status', 'loading');
         this.set('track', track);
 
-        return new Ember.RSVP.Promise(function (resolve) {
-            if (!audio) {
-                track.fetchDownload().then(function (url) {
+        return new Ember.RSVP.Promise(function(resolve) {
+            if(!audio) {
+                track.fetchDownload().then(function(url) {
                     this.loadSource(url);
 
                     resolve();
@@ -55,10 +55,10 @@ export default Ember.Service.extend({
             }
         }.bind(this));
     },
-    loadSource: function (source) {
+    loadSource: function(source) {
         var element = this.get('element');
 
-        if (element) {
+        if(element) {
             element.src = source;
             element.load();
         }

@@ -1,17 +1,18 @@
 import Ember from 'ember';
-import meta from 'meta-data';
+import domainData from 'domain-data';
+import apiKey from 'api-key';
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     buildUrlByEndpoint: function(endpoint, options) {
-        var url = meta.searchHost + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + meta.key;
+        var url = domainData.searchName + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + apiKey;
 
-        if (options) {
-            if (options.maxResults) {
+        if(options) {
+            if(options.maxResults) {
                 url += '&maxResults=' + options.maxResults;
             }
 
-            if (options.nextPageToken) {
+            if(options.nextPageToken) {
                 url += '&pageToken=' + options.nextPageToken;
             }
         }
@@ -21,7 +22,7 @@ export default Ember.Mixin.create({
     buildUrlByType: function(type, options) {
         var url = this.buildUrlByEndpoint('search', options) + '&order=viewCount&type=' + type;
 
-        if (options.query) {
+        if(options.query) {
             url += '&q=' + options.query;
         }
 
@@ -57,7 +58,7 @@ export default Ember.Mixin.create({
         var fileSystem = this.get('fileSystem'),
             snippetIds = fileSystem.get(type.modelName + 'Ids');
 
-        if (!snippetIds.contains(snapshot.id)) {
+        if(!snippetIds.contains(snapshot.id)) {
             snippetIds.pushObject(snapshot.id);
         }
 

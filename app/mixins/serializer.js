@@ -1,9 +1,8 @@
 import Ember from 'ember';
-import meta from 'meta-data';
+import domainData from 'domain-data';
 
-// TODO: convert all functions to this format
 function convertImageUrl(url) {
-    return meta.imageHost + new URL(url).pathname;
+    return domainData.imageName + new URL(url).pathname;
 }
 
 export default Ember.Mixin.create({
@@ -26,12 +25,12 @@ export default Ember.Mixin.create({
         payload.items.forEach(function(item) {
             var snippet = this.normalize(store, primaryModelClass, item);
 
-            if (snippet) {
+            if(snippet) {
                 data.pushObject(snippet);
             }
         }.bind(this));
 
-        if (payload.deserializeSingleRecord) {
+        if(payload.deserializeSingleRecord) {
             data = data.get(0);
         }
 
@@ -42,7 +41,7 @@ export default Ember.Mixin.create({
     peekSnippet: function(store, modelName, id, item) {
         var snippet = store.peekRecord(modelName, id);
 
-        if (snippet) {
+        if(snippet) {
             snippet = snippet.serialize();
 
             delete snippet.id;

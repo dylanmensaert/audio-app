@@ -7,13 +7,13 @@ export default Ember.Object.extend({
     isDragged: false,
     onSlideStop: null,
     setValue: function(value) {
-        if (!this.get('isDragged')) {
+        if(!this.get('isDragged')) {
             this.set('value', value);
 
             this.get('component.element').MaterialSlider.change(value);
         }
     },
-    updateMax: function() {
+    updateMax: Ember.observer('max', function() {
         this.set('component.max', this.get('max'));
-    }.observes('max')
+    })
 });

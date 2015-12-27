@@ -9,14 +9,14 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     tracks: [],
     isPending: true,
     isLocked: false,
-    disableLock: function () {
+    disableLock: function() {
         this.set('isLocked', false);
     },
     nextPageToken: null,
-    showNotFound: function () {
+    showNotFound: Ember.computed('isPending', 'tracks.length', function() {
         return !this.get('isPending') && !this.get('tracks.length');
-    }.property('isPending', 'tracks.length'),
-    updateTracks: function () {
+    }),
+    updateTracks: function() {
         var query = this.get('query'),
             relatedVideoId = this.get('relatedVideoId'),
             options = {
@@ -24,38 +24,38 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 nextPageToken: this.get('nextPageToken')
             };
 
-        if (query) {
+        if(query) {
             options.query = query;
         }
 
-        if (relatedVideoId) {
+        if(relatedVideoId) {
             options.relatedVideoId = relatedVideoId;
         }
 
-        this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function (tracksPromise) {
+        this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function(tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
-            if (!this.get('nextPageToken')) {
+            if(!this.get('nextPageToken')) {
                 this.set('isPending', false);
             }
         }.bind(this));
     },
-    resetController: function () {
+    resetController: Ember.observer('query', 'relatedVideoId', function() {
         this.set('nextPageToken', null);
         this.set('isPending', true);
         this.set('isLocked', false);
         this.set('tracks', []);
 
         this.updateTracks();
-    }.observes('query', 'relatedVideoId'),
-    sortedTracks: Ember.computed.sort('tracks', function (snippet, other) {
+    }),
+    sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
         return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache').getIsOfflineMode());
     }),
-    selectedTracks: function () {
+    selectedTracks: Ember.computed('tracks.@each.isSelected', function() {
         return this.get('store').peekAll('track').filterBy('isSelected');
-    }.property('tracks.@each.isSelected'),
+    }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('tracks.length')) {
@@ -64,11 +64,11 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.get('tracks').setEach('isSelected', true);
         },
-        didScrollToBottom: function () {
-            if (!this.get('isLocked') && this.get('nextPageToken')) {
+        didScrollToBottom: function() {
+            if(!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateTracks();

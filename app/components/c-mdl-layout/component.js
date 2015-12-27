@@ -1,20 +1,22 @@
 import Ember from 'ember';
 import ComponentMdl from 'audio-app/components/c-mdl';
+import logic from 'audio-app/utils/logic';
 
 export default ComponentMdl.extend({
     cache: Ember.inject.service(),
     classNames: ['mdl-layout', 'mdl-js-layout', 'mdl-layout--fixed-drawer', 'mdl-layout--fixed-header'],
     didInsertElement: function() {
         Ember.$(window).resize(function() {
-            // TODO: duplicate with audio-track/component
             this.$('.my-outer-image').each(function() {
-                Ember.$(this).height(Ember.$(this).width() / 30 * 17);
+                logic.setOuterHeight(Ember.$(this));
             });
 
             this.$('.my-inner-image').each(function() {
-                Ember.$(this).height(Ember.$(this).width() / 12 * 9);
+                var currentElement = Ember.$(this);
 
-                Ember.$(this).css('top', -Math.floor((Ember.$(this).height() - Ember.$(this).parent().height()) / 2));
+                logic.setInnerHeight(currentElement);
+
+                logic.setTop(currentElement, currentElement.parent().height());
             });
         }.bind(this));
 
@@ -23,39 +25,39 @@ export default ComponentMdl.extend({
     willDestroyElement: function() {
         Ember.$(window).off('resize');
     },
-    currentTargetName: function() {
+    currentTargetName: Ember.computed('cache.completedTransitions.lastObject', function() {
         var currentTransition = this.get('cache.completedTransitions.lastObject'),
             currentTargetName,
             resolvedModel;
 
-        if (currentTransition) {
+        if(currentTransition) {
             currentTargetName = currentTransition.targetName;
             resolvedModel = currentTransition.resolvedModels[currentTargetName];
 
-            if (resolvedModel) {
+            if(resolvedModel) {
                 currentTargetName += '/' + resolvedModel.id;
             }
         }
 
         return currentTargetName;
-    }.property('cache.completedTransitions.lastObject'),
+    }),
     actions: {
         transitionToRoute: function(name, model) {
             var currentTargetName = this.get('currentTargetName'),
                 targetName = name;
 
-            if (model) {
+            if(model) {
                 targetName += '/' + model;
             }
 
-            if (name === this.get('cache.completedTransitions.lastObject').targetName) {
+            if(name === this.get('cache.completedTransitions.lastObject').targetName) {
                 this.$('.mdl-layout__drawer').removeClass('is-visible');
             }
 
-            if (currentTargetName !== targetName) {
+            if(currentTargetName !== targetName) {
                 this.get('cache.completedTransitions').clear();
 
-                if (model) {
+                if(model) {
                     this.sendAction('transitionToRoute', name, model);
                 } else {
                     this.sendAction('transitionToRoute', name);

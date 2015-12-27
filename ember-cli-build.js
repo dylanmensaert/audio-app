@@ -41,12 +41,12 @@ module.exports = function(defaults) {
 
     // TODO: check to move from /vendor to /app?
     // TODO: implement
-    app.import('vendor/meta/secret.js');
+    app.import('vendor/assets/api-key.js');
     app.import({
-        development: 'vendor/meta/data.js',
-        production: 'vendor/meta/data.prod.js'
+        development: 'vendor/assets/domain-data.js',
+        production: 'vendor/assets/domain-data.prod.js'
     }, {
-        exports: 'meta-data'
+        exports: 'domain-data'
     });
 
     return app.toTree(extraAssets);

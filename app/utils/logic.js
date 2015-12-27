@@ -7,7 +7,6 @@ function isMatch(value, query) {
     });
 }
 
-// TODO: rename logic file?
 export default {
     isMatch: isMatch,
     generateRandomId: function() {
@@ -15,7 +14,7 @@ export default {
             possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
             index = 0;
 
-        for (index; index < 5; index++) {
+        for(index; index < 5; index++) {
             randomId += possible.charAt(Math.floor(Math.random() * possible.length));
         }
 
@@ -37,11 +36,11 @@ export default {
             promise,
             promiseArray;
 
-        if (!searchOnline) {
+        if(!searchOnline) {
             promise = new Ember.RSVP.Promise(function(resolve) {
                 var snippets;
 
-                if (options.collectionId) {
+                if(options.collectionId) {
                     snippets = store.peekRecord('collection', options.collectionId).get('trackIds').map(function(trackId) {
                         return store.peekRecord('track', trackId);
                     });
@@ -67,5 +66,14 @@ export default {
         }
 
         return promiseArray;
+    },
+    setOuterHeight: function(element) {
+        return element.height(element.width() / 30 * 17);
+    },
+    setInnerHeight: function(element) {
+        return element.height(element.width() / 12 * 9);
+    },
+    setTop: function(element, outerHeight) {
+        return element.css('top', -Math.floor((element.height() - outerHeight) / 2));
     }
 };

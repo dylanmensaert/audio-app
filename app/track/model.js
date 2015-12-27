@@ -3,14 +3,14 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/model';
-import meta from 'meta-data';
+import domainData from 'domain-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
 
 function signateUrl(url) {
     var host = 'http://www.youtube-mp3.org';
 
-    return meta.downloadHost + url + '&s=' + ytMp3.createSignature(host + url);
+    return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
 
 function extractExtension(source) {
@@ -19,49 +19,48 @@ function extractExtension(source) {
 
 export default DS.Model.extend(modelMixin, {
     audio: DS.attr('string'),
-    // TODO: is separate status function necessary?
-    status: null,
+    thumbnail: DS.attr('string'),
+    isDownloading: false,
     isDownloaded: false,
-    isSaved: function () {
+    isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').contains(this.get('id'));
-    }.property('id', 'fileSystem.trackIds.[]'),
-    isDownloading: function () {
-        return this.get('status') === 'downloading';
-    }.property('status'),
-    isPlaying: function () {
+    }),
+    isPlaying: Ember.computed('fileSystem.playingTrackId', 'id', function() {
         return this.get('fileSystem.playingTrackId') === this.get('id');
-    }.property('fileSystem.playingTrackId', 'id'),
-    // TODO: check for better solution which uses only one computed property
-    updateIsDownloaded: function () {
-        this.get('fileSystem.instance').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function () {
+    }),
+    updateIsDownloaded: Ember.observer('audio', 'fileSystem.instance', 'extension', function() {
+        this.get('fileSystem.instance').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function() {
             this.set('isDownloaded', true);
-        }.bind(this), function () {
+        }.bind(this), function() {
             this.set('isDownloaded', false);
         }.bind(this));
-    }.observes('audio', 'fileSystem.instance', 'extension'),
-    isQueued: function () {
+    }),
+    isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
+        return !this.get('isDownloaded') && !this.get('isDownloading');
+    }),
+    isQueued: Ember.computed('collections.@each.trackIds.[]', 'id', function() {
         return this.get('store').peekRecord('collection', 'queue').get('trackIds').contains(this.get('id'));
-    }.property('collections.@each.trackIds.[]', 'id'),
-    isDownloadLater: function () {
+    }),
+    isDownloadLater: Ember.computed('collections.@each.trackIds.[]', 'id', function() {
         return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
-    }.property('collections.@each.trackIds.[]', 'id'),
-    isReferenced: function () {
+    }),
+    isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds.[]', function() {
         var store = this.get('store'),
             id = this.get('id');
 
-        return this.get('fileSystem.collectionIds').any(function (collectionId) {
+        return this.get('fileSystem.collectionIds').any(function(collectionId) {
             var collection = store.peekRecord('collection', collectionId);
 
             return collection.get('trackIds').contains(id);
         });
-    }.property('id', 'fileSystem.collectionIds', 'collections.@each.trackIds.[]'),
-    createFilePath: function (type, extension) {
+    }),
+    createFilePath: function(type, extension) {
         var fileName = this.get('name') + '.' + extension,
             directory = Inflector.inflector.pluralize(type);
 
         return directory + '/' + fileName;
     },
-    fetchDownload: function () {
+    fetchDownload: function() {
         var videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
             url;
 
@@ -70,13 +69,13 @@ export default DS.Model.extend(modelMixin, {
         url += '&el=na&bf=false';
         url += '&r=' + new Date().getTime();
 
-        return Ember.$.ajax(signateUrl(url)).then(function (videoId) {
+        return Ember.$.ajax(signateUrl(url)).then(function(videoId) {
             url = '/a/itemInfo/?';
             url += 'video_id=' + videoId;
             url += '&ac=www&t=grp';
             url += '&r=' + new Date().getTime();
 
-            return Ember.$.ajax(signateUrl(url)).then(function (info) {
+            return Ember.$.ajax(signateUrl(url)).then(function(info) {
                 info = info.substring(7, info.length - 1);
                 info = JSON.parse(info);
 
@@ -92,12 +91,12 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }.bind(this));
     },
-    download: function () {
-        this.set('status', 'downloading');
+    download: function() {
+        this.set('isDownloading', true);
 
-        return new Ember.RSVP.Promise(function (resolve, reject) {
-            if (!this.get('audio')) {
-                this.fetchDownload().then(function () {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            if(!this.get('audio')) {
+                this.fetchDownload().then(function() {
                     this.insert().then(resolve, reject);
                 }.bind(this));
             } else {
@@ -105,40 +104,39 @@ export default DS.Model.extend(modelMixin, {
             }
         }.bind(this));
     },
-    insert: function () {
+    insert: function() {
         var audio = this.createFilePath('audio', this.get('extension')),
-            thumbnail = this.createFilePath('thumbnail', extractExtension(this.get('thumbnail'))),
+            currentThumbnail = this.get('thumbnail'),
+            thumbnail = this.createFilePath('thumbnail', extractExtension(currentThumbnail)),
             promises;
 
         promises = {
             // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
             audio: this.downloadSource(this.get('audio'), audio),
             // TODO: write to filesystem on track property change
-            thumbnail: this.downloadSource(this.get('thumbnail'), thumbnail)
+            thumbnail: this.downloadSource(currentThumbnail, thumbnail)
         };
 
-        return new Ember.RSVP.Promise(function (resolve, reject) {
-            Ember.RSVP.hash(promises).then(function (hash) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            Ember.RSVP.hash(promises).then(function(hash) {
                 this.set('audio', hash.audio);
                 this.set('thumbnail', hash.thumbnail);
 
                 this.get('fileSystem.collections').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
 
-                // TODO: update offline collections and tracks in 1 write action
-                // TODO: only perform this
-                if (!this.get('isSaved')) {
+                if(!this.get('isSaved')) {
                     this.get('fileSystem.tracks').pushObject(this);
                 }
 
-                this.set('status', null);
+                this.set('isDownloading', false);
 
                 resolve();
-            }.bind(this), function (reason) {
+            }.bind(this), function(reason) {
                 reject(reason.message);
             });
         }.bind(this));
     },
-    downloadSource: function (url, source) {
+    downloadSource: function(url, source) {
         var fileSystem = this.get('fileSystem'),
             xhr = new XMLHttpRequest(),
             response;
@@ -146,15 +144,15 @@ export default DS.Model.extend(modelMixin, {
         xhr.open('GET', url, true);
         xhr.responseType = 'arraybuffer';
 
-        return new Ember.RSVP.Promise(function (resolve) {
-            xhr.onload = function () {
+        return new Ember.RSVP.Promise(function(resolve) {
+            xhr.onload = function() {
                 response = this.response;
 
                 fileSystem.get('instance').root.getFile(source, {
                     create: true
-                }, function (fileEntry) {
-                    fileEntry.createWriter(function (fileWriter) {
-                        fileWriter.onwriteend = function () {
+                }, function(fileEntry) {
+                    fileEntry.createWriter(function(fileWriter) {
+                        fileWriter.onwriteend = function() {
                             resolve(fileEntry.toURL());
                         };
 
@@ -166,7 +164,7 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
-    remove: function () {
+    remove: function() {
         var fileSystem = this.get('fileSystem'),
             promises;
 
@@ -175,17 +173,17 @@ export default DS.Model.extend(modelMixin, {
             thumbnail: fileSystem.remove(this.get('thumbnail'))
         };
 
-        return new Ember.RSVP.Promise(function (resolve, reject) {
-            Ember.RSVP.all(promises).then(function () {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            Ember.RSVP.all(promises).then(function() {
                 fileSystem.get('tracks').removeObject(this);
 
                 resolve();
             }.bind(this), reject);
         });
     },
-    destroy: function () {
-        this.remove().then(function () {
-            if (!this.get('isReferenced')()) {
+    destroy: function() {
+        this.remove().then(function() {
+            if(!this.get('isReferenced')()) {
                 this.destroyRecord();
             }
         }.bind(this));

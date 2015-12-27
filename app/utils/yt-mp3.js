@@ -1,11 +1,6 @@
 /* jshint ignore:start */
 
-var b0I,
-    _sig,
-    sig,
-    sig_url;
-
-b0I = {
+var b0I = {
     'V': function(I, B, P) {
         return I * B * P;
     },
@@ -44,7 +39,7 @@ b0I = {
     }
 };
 
-_sig = function(H) {
+function _sig(H) {
     var U = 'R3',
         m3 = 'round',
         e3 = 'B3',
@@ -100,7 +95,7 @@ _sig = function(H) {
         gs = function(I, B) {
             var P = 'D',
                 J = '';
-            for (var R = 0; b0I[P](R, I.length); R++) {
+            for(var R = 0; b0I[P](R, I.length); R++) {
                 J += B[I[R]];
             };
             return J;
@@ -117,8 +112,8 @@ _sig = function(H) {
         fn = function(I, B) {
             var P = 'E',
                 J = 'G';
-            for (var R = 0; b0I[J](R, I.length); R++) {
-                if (b0I[P](I[R], B)) return R;
+            for(var R = 0; b0I[J](R, I.length); R++) {
+                if(b0I[P](I[R], B)) return R;
             }
             return -1;
         },
@@ -129,19 +124,19 @@ _sig = function(H) {
         var W = 'www.youtube-mp3.org',
             S = gs(X[0], M),
             T = gs(X[1], M);
-        if (ew(W, S) || ew(W, T)) {
+        if(ew(W, S) || ew(W, T)) {
             F = L[1];
         } else {
             F = L[b0I[d3](5, 3)];
         }
-    } catch (I) {};
+    } catch(I) {};
     var N = 3219;
-    for (var Y = 0; b0I[z3](Y, H.length); Y++) {
+    for(var Y = 0; b0I[z3](Y, H.length); Y++) {
         var Q = H[n3](Y, 1)[K3]();
-        if (fn(r3, Q) > -1) {
+        if(fn(r3, Q) > -1) {
             N = N + (b0I[g3](parseInt(Q), 121, F));
         } else {
-            if (b0I[N3](Q, A)) {
+            if(b0I[N3](Q, A)) {
                 N = N + (b0I[D3](A[Q], F));
             }
         }
@@ -149,20 +144,20 @@ _sig = function(H) {
     }
     N = Math[m3](b0I[U](N, 1000));
     return N;
-};
+}
 
-sig = function(a) {
+function sig(a) {
     var b = 'X';
     try {
         b = _sig(a)
-    } catch (c) {}
-    if ('X' != b) return b
-};
+    } catch(c) {}
+    if('X' != b) return b
+}
 
-sig_url = function(a) {
+function sig_url(a) {
     var b = sig(a);
     return escape(b)
-};
+}
 
 export default {
     createSignature: function(url) {

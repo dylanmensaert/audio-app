@@ -6,32 +6,32 @@ export default Ember.Controller.extend(controllerMixin, {
     fileSystem: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     store: Ember.inject.service(),
-    collections: function() {
+    collections: Ember.computed('fileSystem.collectionIds.[]', 'collections.[]', function() {
         var store = this.get('store'),
             collections = [];
 
         this.get('fileSystem.collectionIds').forEach(function(collectionId) {
             var collection = store.peekRecord('collection', collectionId);
 
-            if (!collection.get('permission')) {
+            if(!collection.get('permission')) {
                 collections.pushObject(collection);
             }
         });
 
         return collections;
-    }.property('fileSystem.collectionIds.[]', 'collections.[]'),
+    }),
     sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
         return this.sortSnippet(this.get('collections'), snippet, other, false);
     }),
-    isAudioPlayerDefaultMode: function() {
+    isAudioPlayerDefaultMode: Ember.computed('audioPlayer.track', 'audioPlayer.isLargeMode', function() {
         return this.get('audioPlayer.track') && !this.get('audioPlayer.isLargeMode');
-    }.property('audioPlayer.track', 'audioPlayer.isLargeMode'),
-    isAudioPlayerLargeMode: function() {
+    }),
+    isAudioPlayerLargeMode: Ember.computed('audioPlayer.track', 'audioPlayer.isLargeMode', function() {
         return this.get('audioPlayer.track') && this.get('audioPlayer.isLargeMode');
-    }.property('audioPlayer.track', 'audioPlayer.isLargeMode'),
-    selectedCollections: function() {
+    }),
+    selectedCollections: Ember.computed('collections.@each.isSelected', function() {
         return this.get('collections').filterBy('isSelected');
-    }.property('collections.@each.isSelected'),
+    }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('collections.length')) {
@@ -40,17 +40,17 @@ export default Ember.Controller.extend(controllerMixin, {
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
     createdCollectionName: null,
-    isCreatedMode: function() {
+    isCreatedMode: Ember.computed('createdCollectionName', function() {
         return this.get('createdCollectionName') !== null;
-    }.property('createdCollectionName'),
-    hideMenuBar: function() {
+    }),
+    hideMenuBar: Ember.computed('isCreatedMode', 'selectedCollections.length', function() {
         return this.get('isCreatedMode') || this.get('selectedCollections.length');
-    }.property('isCreatedMode', 'selectedCollections.length'),
+    }),
     createUniqueId: function() {
         var store = this.get('store'),
             randomId = logic.generateRandomId();
 
-        while (store.peekRecord('collection', randomId)) {
+        while(store.peekRecord('collection', randomId)) {
             randomId = logic.generateRandomId();
         }
 
@@ -66,7 +66,7 @@ export default Ember.Controller.extend(controllerMixin, {
                 cache = this.get('cache'),
                 id;
 
-            if (store.peekRecord('collection', createdCollectionName)) {
+            if(store.peekRecord('collection', createdCollectionName)) {
                 cache.showMessage('Collection already exists');
             } else {
                 id = this.createUniqueId();
@@ -87,8 +87,9 @@ export default Ember.Controller.extend(controllerMixin, {
         setupCreate: function() {
             this.set('createdCollectionName', '');
         },
-        exitCreate: function() {
+        // TODO: Implement exitCreate?
+        /*exitCreate: function() {
             this.set('createdCollectionName', null);
-        }
+        }*/
     }
 });

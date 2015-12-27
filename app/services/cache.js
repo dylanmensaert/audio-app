@@ -7,12 +7,12 @@ const isMobile = !Ember.isEmpty(navigator.connection);
 
 var getType;
 
-if (isMobile) {
-    getType = function () {
+if(isMobile) {
+    getType = function() {
         return navigator.connection.type;
     };
 } else {
-    getType = function () {
+    getType = function() {
         return navigator.onLine;
     };
 }
@@ -20,7 +20,7 @@ if (isMobile) {
 function getIsOffline() {
     var type = getType();
 
-    return (isMobile && type === Connection.NONE) || (!isMobile && !type);
+    return(isMobile && type === Connection.NONE) || (!isMobile && !type);
 }
 
 function getIsMobileConnection() {
@@ -34,14 +34,13 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     fileSystem: null,
     completedTransitions: [],
-    hasPreviousTransition: function () {
+    hasPreviousTransition: Ember.computed('completedTransitions.length', function() {
         return this.get('completedTransitions.length') > 1;
-    }.property('completedTransitions.length'),
+    }),
     // TODO: duplicate with controller atm
-    getIsOfflineMode: function () {
+    getIsOfflineMode: function() {
         return getIsOffline() || (getIsMobileConnection() && this.get('fileSystem.setDownloadedOnlyOnMobile'));
     },
-    // TODO: rename to selectedTrackIds since only used for one functionality?
     selectedTrackIds: [],
     playedTrackIds: [],
     showMessage: null,
