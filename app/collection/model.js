@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import modelMixin from 'audio-app/mixins/model';
 import logic from 'audio-app/utils/logic';

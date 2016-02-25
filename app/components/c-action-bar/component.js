@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import ComponentMdl from 'audio-app/components/c-mdl';
 
 export default ComponentMdl.extend({

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import ComponentModel from 'audio-app/components/c-model';
 
 export default ComponentModel.extend({
