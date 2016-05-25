@@ -10,14 +10,14 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     showNotFound: Ember.computed('lastHistoryTracks.isPending', 'lastHistoryTracks.length', 'lastHistoryTracks.length', function() {
         return !this.get('lastHistoryTracks.isPending') && !this.get('lastHistoryTracks.length') && !this.get('lastHistoryTracks.length');
     }),
-    lastHistoryTracks: Ember.computed('collections.@each.trackIds.[]', function() {
+    lastHistoryTracks: Ember.computed('collections.@each.trackIds', function() {
         var store = this.get('store'),
             historyTrackIds = store.peekRecord('collection', 'history').get('trackIds'),
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
 
         historyTrackIds.forEach(function(trackId, index) {
-            if(length <= lastHistoryTracksLimit || length - lastHistoryTracksLimit >= index) {
+            if (length <= lastHistoryTracksLimit || length - lastHistoryTracksLimit >= index) {
                 lastHistoryTracks.pushObject(store.peekRecord('track', trackId));
             }
         });

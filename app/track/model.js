@@ -38,13 +38,13 @@ export default DS.Model.extend(modelMixin, {
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
-    isQueued: Ember.computed('collections.@each.trackIds.[]', 'id', function() {
+    isQueued: Ember.computed('collections.@each.trackIds', 'id', function() {
         return this.get('store').peekRecord('collection', 'queue').get('trackIds').contains(this.get('id'));
     }),
-    isDownloadLater: Ember.computed('collections.@each.trackIds.[]', 'id', function() {
+    isDownloadLater: Ember.computed('collections.@each.trackIds', 'id', function() {
         return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
     }),
-    isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds.[]', function() {
+    isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds', function() {
         var store = this.get('store'),
             id = this.get('id');
 
@@ -95,7 +95,7 @@ export default DS.Model.extend(modelMixin, {
         this.set('isDownloading', true);
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            if(!this.get('audio')) {
+            if (!this.get('audio')) {
                 this.fetchDownload().then(function() {
                     this.insert().then(resolve, reject);
                 }.bind(this));
@@ -124,7 +124,7 @@ export default DS.Model.extend(modelMixin, {
 
                 this.get('fileSystem.collections').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
 
-                if(!this.get('isSaved')) {
+                if (!this.get('isSaved')) {
                     this.get('fileSystem.tracks').pushObject(this);
                 }
 
@@ -183,7 +183,7 @@ export default DS.Model.extend(modelMixin, {
     },
     destroy: function() {
         this.remove().then(function() {
-            if(!this.get('isReferenced')()) {
+            if (!this.get('isReferenced')()) {
                 this.destroyRecord();
             }
         }.bind(this));

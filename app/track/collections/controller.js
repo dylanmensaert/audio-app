@@ -2,14 +2,14 @@ import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
 
 export default Ember.Controller.extend(controllerMixin, {
-    collections: Ember.computed('cache.selectedTrackIds', 'collections.@each.trackIds.[]', function() {
+    collections: Ember.computed('cache.selectedTrackIds', 'collections.@each.trackIds', function() {
         var selectedTrackIds = this.get('cache.selectedTrackIds');
 
         return this.get('store').peekAll('collection').filter(function(collection) {
             var isSelected,
                 isReadOnly = collection.get('isReadOnly');
 
-            if(!isReadOnly) {
+            if (!isReadOnly) {
                 isSelected = selectedTrackIds.every(function(selectedTrackId) {
                     return collection.get('trackIds').contains(selectedTrackId);
                 });
@@ -43,9 +43,9 @@ export default Ember.Controller.extend(controllerMixin, {
                 selectedTrackIds = cache.get('selectedTrackIds'),
                 trackIds = collection.get('trackIds');
 
-            if(collection.get('isSelected')) {
+            if (collection.get('isSelected')) {
                 selectedTrackIds.forEach(function(selectedTrackId) {
-                    if(!trackIds.contains(selectedTrackId)) {
+                    if (!trackIds.contains(selectedTrackId)) {
                         collection.pushTrackById(selectedTrackId);
                     }
                 });
@@ -53,7 +53,7 @@ export default Ember.Controller.extend(controllerMixin, {
                 cache.showMessage('Added to collection');
             } else {
                 selectedTrackIds.forEach(function(selectedTrackId) {
-                    if(trackIds.contains(selectedTrackId)) {
+                    if (trackIds.contains(selectedTrackId)) {
                         collection.removeTrackById(selectedTrackIds);
                     }
                 });
