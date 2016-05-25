@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import routeMixin from 'audio-app/mixins/route';
 import routeTransitionMixin from 'audio-app/mixins/route-transition';
 
-export default Ember.Route.extend(routeMixin, routeTransitionMixin, {
+export default Ember.Route.extend(routeTransitionMixin, {
     title: 'index',
     parameterName: 'collection_id',
-    model: function (parameters) {
+    model: function(parameters) {
         // TODO: should work out of the box via findRecord: http://emberjs.com/blog/2015/06/18/ember-data-1-13-released.html#toc_better-caching-defaults-for-code-findall-code-and-code-findrecord-code
         // However, the documentation does not seem to work in this case
         var store = this.get('store'),

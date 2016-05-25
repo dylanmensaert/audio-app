@@ -1,6 +1,5 @@
 import Ember from 'ember';
-import routeMixin from 'audio-app/mixins/route';
 
-export default Ember.Route.extend(routeMixin, {
+export default Ember.Route.extend({
     title: 'collection'
 });
