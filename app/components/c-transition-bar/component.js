@@ -2,13 +2,14 @@ import ComponentMdl from 'audio-app/components/c-mdl';
 
 export default ComponentMdl.extend({
     classNames: ['mdl-layout__header-row', 'my-header-bar'],
+    utils: Ember.inject.service(),
     title: null,
     actions: {
-        selectAll: function () {
+        selectAll: function() {
             this.sendAction('selectAll');
         },
-        transitionToPrevious: function () {
-            this.sendAction('transitionToPrevious');
+        back: function() {
+            this.get('utils').back();
         }
     }
 });

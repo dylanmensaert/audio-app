@@ -1,12 +1,13 @@
 import Ember from 'ember';
+import connection from 'connection';
 
 export default Ember.Mixin.create({
-    cache: Ember.inject.service(),
+    utils: Ember.inject.service(),
     queueSingle: function(trackIds, track) {
-        if(track.get('isDownloadable')) {
+        if (track.get('isDownloadable')) {
             track.download().then(function() {}, function() {
                 // TODO: show error?
-                this.get('cache').showMessage('Download aborted');
+                this.get('utils').showMessage('Download aborted');
             }.bind(this));
         }
 
@@ -14,43 +15,43 @@ export default Ember.Mixin.create({
     },
     actions: {
         downloadSingle: function(track) {
-            var cache = this.get('cache'),
+            var utils = this.get('utils'),
                 trackIds,
                 id;
 
-            if(track.get('isDownloadable')) {
-                if(cache.getIsOfflineMode()) {
+            if (track.get('isDownloadable')) {
+                if (!!connection.isMobile()) {
                     trackIds = this.get('store').peekRecord('collection', 'download-later').get('trackIds');
                     id = track.get('id');
 
-                    if(!trackIds.contains(id)) {
+                    if (!trackIds.contains(id)) {
                         trackIds.pushObject(id);
                     }
 
-                    cache.showMessage('Added to collection: Download later');
+                    utils.showMessage('Added to collection: Download later');
                 } else {
                     track.download().then(function() {
 
                     }, function() {
                         // TODO: show error?
-                        cache.showMessage('download aborted');
+                        utils.showMessage('download aborted');
                     });
                 }
             } else {
-                cache.showMessage('already downloaded');
+                utils.showMessage('already downloaded');
             }
         },
         queueSingle: function(track) {
             var queue = this.get('store').peekRecord('collection', 'queue'),
                 trackIds = queue.get('trackIds'),
-                cache = this.get('cache');
+                utils = this.get('utils');
 
-            if(!trackIds.contains(track.get('id'))) {
+            if (!trackIds.contains(track.get('id'))) {
                 this.queueSingle(trackIds, track);
 
-                cache.showMessage('Added to queue');
+                utils.showMessage('Added to queue');
             } else {
-                cache.showMessage('Already in queue');
+                utils.showMessage('Already in queue');
             }
 
             queue.save();

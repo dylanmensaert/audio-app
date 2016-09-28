@@ -1,14 +1,14 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if cache.hasPreviousTransition}}
+  {{#if utils.hasPreviousTransition}}
       <div class='mdl-layout__header-row my-header-bar'>
-        <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
+        <label {{action 'back'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
           <i class="material-icons">
             arrow_back
           </i>
         </label>
 
         <div class="mdl-cell my-menu-cell my-text-left">
-            <span class="mdl-badge" data-badge={{cache.selectedTrackIds.length}} />
+            <span class="mdl-badge" data-badge={{utils.selectedTrackIds.length}} />
         </div>
 
         Tracks selected
@@ -19,7 +19,7 @@
       <header class="mdl-layout__header">
         <div class='mdl-layout__header-row'>
           <div class="mdl-cell my-menu-cell my-text-left">
-              <span class="mdl-badge" data-badge={{cache.selectedTrackIds.length}} />
+              <span class="mdl-badge" data-badge={{utils.selectedTrackIds.length}} />
           </div>
 
           Tracks

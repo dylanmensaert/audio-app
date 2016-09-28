@@ -2,53 +2,11 @@
 
 <div class="mdl-layout__drawer">
   <nav class="mdl-navigation">
-    <a {{action 'transitionToRoute' 'index'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'index') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        whatshot
-      </i>
-
-      Recommended
-    </a>
-
-    <a {{action 'transitionToRoute' 'collection.my'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.my') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        loyalty
-      </i>
-
-      My Collections
-    </a>
-
-    <a {{action 'transitionToRoute' 'collection.index' 'queue'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/queue') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        queue_music
-      </i>
-
-      Queue
-    </a>
-
-    <a {{action 'transitionToRoute' 'collection.index' 'download-later'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/download-later') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        shop_two
-      </i>
-
-      Download Later
-    </a>
-
-    <a {{action 'transitionToRoute' 'collection.index' 'history'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'collection.index/history') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        library_books
-      </i>
-
-      History
-    </a>
-
-    <a {{action 'transitionToRoute' 'settings'}}  class="mdl-navigation__link my-menu-link {{if (is-equal currentTargetName 'settings') 'my-active'}}">
-      <i class="material-icons my-menu-icon">
-        settings
-      </i>
-
-      Settings
-    </a>
+    {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
+    {{c-menu-item value='My Collections' route='collection.my' icon='loyalty'}}
+    {{c-menu-item value='Download Later' route='collection.index' model='download-later' icon='queue_music'}}
+    {{c-menu-item value='History' route='collection.index' model='history' icon='library_books'}}
+    {{c-menu-item value='Settings' route='settings' icon='settings'}}
   </nav>
 </div>
 

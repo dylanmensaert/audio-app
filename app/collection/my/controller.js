@@ -13,7 +13,7 @@ export default Ember.Controller.extend(controllerMixin, {
         this.get('fileSystem.collectionIds').forEach(function(collectionId) {
             var collection = store.peekRecord('collection', collectionId);
 
-            if(!collection.get('permission')) {
+            if (!collection.get('permission')) {
                 collections.pushObject(collection);
             }
         });
@@ -35,7 +35,7 @@ export default Ember.Controller.extend(controllerMixin, {
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('collections.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
@@ -50,7 +50,7 @@ export default Ember.Controller.extend(controllerMixin, {
         var store = this.get('store'),
             randomId = logic.generateRandomId();
 
-        while(store.peekRecord('collection', randomId)) {
+        while (store.peekRecord('collection', randomId)) {
             randomId = logic.generateRandomId();
         }
 
@@ -63,11 +63,11 @@ export default Ember.Controller.extend(controllerMixin, {
         saveCreate: function() {
             var createdCollectionName = this.get('createdCollectionName'),
                 store = this.get('store'),
-                cache = this.get('cache'),
+                utils = this.get('utils'),
                 id;
 
-            if(store.peekRecord('collection', createdCollectionName)) {
-                cache.showMessage('Collection already exists');
+            if (store.peekRecord('collection', createdCollectionName)) {
+                utils.showMessage('Collection already exists');
             } else {
                 id = this.createUniqueId();
 
@@ -80,7 +80,7 @@ export default Ember.Controller.extend(controllerMixin, {
                 store.peekRecord('collection', id).save().then(function() {
                     this.set('createdCollectionName', null);
 
-                    cache.showMessage('Saved new collection');
+                    utils.showMessage('Saved new collection');
                 }.bind(this));
             }
         },

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
+import connection from 'connection';
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     queryParams: ['query', 'relatedVideoId'],
@@ -24,20 +25,20 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 nextPageToken: this.get('nextPageToken')
             };
 
-        if(query) {
+        if (query) {
             options.query = query;
         }
 
-        if(relatedVideoId) {
+        if (relatedVideoId) {
             options.relatedVideoId = relatedVideoId;
         }
 
-        this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function(tracksPromise) {
+        this.find('track', options, !connection.isMobile()).then(function(tracksPromise) {
             this.get('tracks').pushObjects(tracksPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
-            if(!this.get('nextPageToken')) {
+            if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
             }
         }.bind(this));
@@ -51,7 +52,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         this.updateTracks();
     }),
     sortedTracks: Ember.computed.sort('tracks', function(snippet, other) {
-        return this.sortSnippet(this.get('tracks'), snippet, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('tracks'), snippet, other, connection.isMobile());
     }),
     selectedTracks: Ember.computed('tracks.@each.isSelected', function() {
         return this.get('store').peekAll('track').filterBy('isSelected');
@@ -59,7 +60,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('tracks.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
@@ -68,7 +69,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             this.get('tracks').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            if(!this.get('isLocked') && this.get('nextPageToken')) {
+            if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateTracks();

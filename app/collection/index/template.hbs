@@ -11,11 +11,11 @@
           </div>
         </div>
       {{/c-tracks-bar}}
-  {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar transitionToPrevious='transitionToPrevious' title=model.name selectAll='selectAll'}}
+  {{else if utils.hasPreviousTransition}}
+      {{c-transition-bar title=model.name selectAll='selectAll'}}
   {{/if}}
 
-  {{#if cache.hasPreviousTransition}}
+  {{#if utils.hasPreviousTransition}}
       <header class="mdl-layout__header hidden" />
   {{else}}
    {{c-menu-bar title=model.name selectAll='selectAll' classNameBindings='hideMdlHeader:hidden'}}

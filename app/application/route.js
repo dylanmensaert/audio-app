@@ -1,6 +1,6 @@
-/* global document */
 import Ember from 'ember';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
+import connection from 'connection';
 
 function generateRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -9,14 +9,13 @@ function generateRandom(min, max) {
 export default Ember.Route.extend({
     audioPlayer: Ember.inject.service(),
     fileSystem: Ember.inject.service(),
-    cache: Ember.inject.service(),
-    title: 'audio',
+    utils: Ember.inject.service(),
     beforeModel: function() {
-        return this.get('fileSystem').forge();
+        return this.get('fileSystem').forge().then(connection.onReady);
     },
     afterModel: function() {
         var audioPlayer = this.get('audioPlayer'),
-            cache = this.get('cache'),
+            utils = this.get('utils'),
             playingTrack,
             audioSlider;
 
@@ -40,13 +39,15 @@ export default Ember.Route.extend({
             audioSlider.set('max', this.get('duration'));
         });
 
-        cache.set('audioSlider', audioSlider);
+        utils.set('audioSlider', audioSlider);
 
         audioPlayer.set('didEnd', this.next.bind(this));
 
         if (!this.get('store').peekRecord('collection', 'history').get('trackIds.length')) {
             this.transitionTo('search');
         }
+
+        this.set('utils.transitionToRoute', this.transitionTo.bind(this));
     },
     previous: function() {
         var store = this.get('store'),
@@ -78,11 +79,11 @@ export default Ember.Route.extend({
             unplayedTrackIds;
 
         unplayedTrackIds = queueTrackIds.filter(function(trackId) {
-            return !this.get('cache.playedTrackIds').contains(trackId);
+            return !this.get('utils.playedTrackIds').contains(trackId);
         }.bind(this));
 
         if (!unplayedTrackIds.get('length')) {
-            this.set('cache.playedTrackIds', []);
+            this.set('utils.playedTrackIds', []);
 
             unplayedTrackIds.pushObjects(queueTrackIds);
 
@@ -112,7 +113,7 @@ export default Ember.Route.extend({
             historyTrackIds = history.get('trackIds');
             queue = store.peekRecord('collection', 'queue');
             queueTrackIds = queue.get('trackIds');
-            playedTrackIds = this.get('cache.playedTrackIds');
+            playedTrackIds = this.get('utils.playedTrackIds');
 
             if (historyTrackIds.contains(id)) {
                 historyTrackIds.removeObject(id);
@@ -145,7 +146,7 @@ export default Ember.Route.extend({
             track.save();
         }
 
-        if (track && fileSystem.get('setDownloadBeforePlaying') && !track.get('isDownloaded')) {
+        if (track && fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
             track.download().then(function() {
                 audioPlayer.play(track);
             });
@@ -180,16 +181,7 @@ export default Ember.Route.extend({
         next: function() {
             this.next();
         },
-        transitionToPrevious: function() {
-            var completedTransitions = this.get('cache.completedTransitions'),
-                lastIndex = completedTransitions.get('length') - 1,
-                previousTransition = completedTransitions.objectAt(lastIndex - 1);
-
-            completedTransitions.removeAt(lastIndex);
-            completedTransitions.removeAt(lastIndex - 1);
-
-            previousTransition.retry();
-        },
+        // TODO: remove?
         transitionTo: function() {
             this.transitionTo.apply(this, arguments);
         }

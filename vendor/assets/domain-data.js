@@ -2,7 +2,7 @@
     define('domain-data', [], function() {
         'use strict';
 
-        const hostName = 'http://localhost:4200';
+        var hostName = 'http://localhost:4200';
 
         return {
             'default': {

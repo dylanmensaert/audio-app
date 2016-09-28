@@ -3,6 +3,7 @@ import DS from 'ember-data';
 import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
 import logic from 'audio-app/utils/logic';
+import connection from 'connection';
 
 const lastHistoryTracksLimit = 8;
 
@@ -34,10 +35,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
                 maxResults: 50
             };
 
-            promise = this.find('track', options, !this.get('cache').getIsOfflineMode());
+            promise = this.find('track', options, !connection.isMobile());
 
             promise = new Ember.RSVP.Promise(function(resolve) {
-                this.find('track', options, !this.get('cache').getIsOfflineMode()).then(function(relatedTracks) {
+                this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
                     resolve(logic.getTopRecords(relatedTracks, 4));
                 });
             }.bind(this));
@@ -51,7 +52,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         }.bind(this));
     }),
     sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
-        return this.sortSnippet(this.get('lastHistoryTracks'), track, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('lastHistoryTracks'), track, other, !connection.isMobile());
     }),
     selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', function() {
         var selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),

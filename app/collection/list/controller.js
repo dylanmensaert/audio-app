@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
+import connection from 'connection';
 
 export default Ember.Controller.extend(controllerMixin, {
     init: function() {
@@ -25,18 +26,18 @@ export default Ember.Controller.extend(controllerMixin, {
             nextPageToken: this.get('nextPageToken')
         };
 
-        this.find('collection', options, !this.get('cache').getIsOfflineMode()).then(function(collectionsPromise) {
+        this.find('collection', options, !connection.isMobile()).then(function(collectionsPromise) {
             this.get('collections').pushObjects(collectionsPromise.toArray());
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
-            if(!this.get('nextPageToken')) {
+            if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
             }
         }.bind(this));
     }),
     sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
-        return this.sortSnippet(this.get('collections'), snippet, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('collections'), snippet, other, !connection.isMobile());
     }),
     selectedCollections: Ember.computed('collections.@each.isSelected', function() {
         return this.get('store').peekAll('collection').filterBy('isSelected');
@@ -44,7 +45,7 @@ export default Ember.Controller.extend(controllerMixin, {
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('collections.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
@@ -53,7 +54,7 @@ export default Ember.Controller.extend(controllerMixin, {
             this.get('collections').setEach('isSelected', true);
         },
         didScrollToBottom: function() {
-            if(!this.get('isLocked') && this.get('nextPageToken')) {
+            if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateCollections();

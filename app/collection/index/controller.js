@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
+import connection from 'connection';
 
 export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     model: null,
@@ -18,7 +19,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         return !this.get('isPending') && !this.get('tracks.length');
     }),
     searchOnline: function() {
-        return !this.get('model.isLocalOnly') && !this.get('cache').getIsOfflineMode();
+        return !this.get('model.isLocalOnly') && !connection.isMobile();
     },
     updateOnlineTracks: function() {
         var options = {
@@ -34,7 +35,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
 
             Ember.run.scheduleOnce('afterRender', this, this.disableLock);
 
-            if(!this.get('nextPageToken')) {
+            if (!this.get('nextPageToken')) {
                 this.set('isPending', false);
             }
         }.bind(this));
@@ -51,7 +52,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         }.bind(this));
     },
     updateOfflineTracksByCollection: Ember.observer('model.trackIds.[]', function() {
-        if(!this.searchOnline()) {
+        if (!this.searchOnline()) {
             this.updateOfflineTracks();
         }
     }),
@@ -61,7 +62,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         this.set('isLocked', false);
         this.set('tracks', []);
 
-        if(this.searchOnline()) {
+        if (this.searchOnline()) {
             this.updateOnlineTracks();
         } else {
             this.updateOfflineTracks();
@@ -77,7 +78,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         var selectedCollections = [],
             model = this.get('model');
 
-        if(model.get('isSelected')) {
+        if (model.get('isSelected')) {
             selectedCollections.pushObject(model);
         }
 
@@ -86,7 +87,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('tracks.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
@@ -95,14 +96,14 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             this.get('model').set('isSelected', true);
         },
         didScrollToBottom: function() {
-            if(!this.get('isLocked') && this.get('nextPageToken')) {
+            if (!this.get('isLocked') && this.get('nextPageToken')) {
                 this.updateOnlineTracks();
             }
         },
         download: function() {
             var collection = this.get('model');
 
-            if(collection.get('isSelected')) {
+            if (collection.get('isSelected')) {
                 collection.download(this.get('nextPageToken'));
             } else {
                 this._super();

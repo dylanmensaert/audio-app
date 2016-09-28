@@ -1,11 +1,11 @@
 {{#c-mdl-layout transitionToRoute='transitionTo'}}
   {{#if selectedTracks}}
       {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
-  {{else if cache.hasPreviousTransition}}
-      {{c-transition-bar transitionToPrevious='transitionToPrevious' title=query selectAll='selectAll'}}
+  {{else if utils.hasPreviousTransition}}
+      {{c-transition-bar title=query selectAll='selectAll'}}
   {{/if}}
 
-  {{#if cache.hasPreviousTransition}}
+  {{#if utils.hasPreviousTransition}}
       <header class="mdl-layout__header hidden" />
   {{else}}
     {{c-menu-bar title=query selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}

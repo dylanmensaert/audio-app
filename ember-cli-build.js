@@ -50,5 +50,14 @@ module.exports = function(defaults) {
         exports: 'domain-data'
     });
 
+    app.import({
+        development: 'vendor/network/connection.js',
+        production: 'vendor/network/connection.prod.js'
+    }, {
+        exports: 'connection'
+    });
+
+    app.import('vendor/phonegap.js');
+
     return app.toTree(extraAssets);
 };

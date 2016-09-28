@@ -3,27 +3,19 @@
 
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid my-settings-grid">
-      <label class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop mdl-switch mdl-js-switch mdl-js-ripple-effect" for="downloaded-only">
-        <input type="checkbox" id="downloaded-only" class="mdl-switch__input" checked={{fileSystem.setDownloadedOnlyOnMobile}} />
-
-        <span class="mdl-switch__label">
-          Downloaded only on mobile
-        </span>
-      </label>
-
       <label class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-later">
-        <input type="checkbox" id="download-later" class="mdl-switch__input" checked={{fileSystem.setDownloadLaterOnMobile}} />
+        <input type="checkbox" id="download-later" class="mdl-switch__input" checked={{fileSystem.downloadLater}} />
 
         <span class="mdl-switch__label">
-          Download later on mobile
+          Download track when you have wifi
         </span>
       </label>
 
       <label class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-before">
-        <input type="checkbox" id="download-before" class="mdl-switch__input" checked={{fileSystem.setDownloadBeforePlaying}} />
+        <input type="checkbox" id="download-before" class="mdl-switch__input" checked={{fileSystem.downloadBeforePlaying}} />
 
         <span class="mdl-switch__label">
-          Download before playing
+          Download track before playing
         </span>
       </label>
 

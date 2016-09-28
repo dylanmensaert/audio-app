@@ -3,9 +3,9 @@
       {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
   {{else if selectedCollections}}
       {{c-collections-bar collections=selectedCollections}}
-  {{else if cache.hasPreviousTransition}}
+  {{else if utils.hasPreviousTransition}}
     {{#c-mdl class='mdl-layout__header-row my-header-bar my-suggestions-header'}}
-      <label {{action 'transitionToPrevious'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
+      <label {{action 'back'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
         <i class="material-icons">
           arrow_back
         </i>
@@ -27,7 +27,7 @@
     <header class="mdl-layout__header hidden" />
   {{/if}}
 
-  {{#unless cache.hasPreviousTransition}}
+  {{#unless utils.hasPreviousTransition}}
     <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
       <div class="mdl-layout__header-row my-suggestions-header">
         {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}

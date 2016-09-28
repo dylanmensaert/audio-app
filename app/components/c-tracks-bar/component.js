@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    cache: Ember.inject.service(),
+    utils: Ember.inject.service(),
     store: Ember.inject.service(),
     classNames: ['my-action-bar'],
     tracks: null,
@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     actions: {
         download: function() {
             this.get('tracks').forEach(function(track) {
-                if(track.get('isDownloadable')) {
+                if (track.get('isDownloadable')) {
                     track.download();
                 }
             });
@@ -44,15 +44,15 @@ export default Ember.Component.extend({
                 trackIds = queue.get('trackIds');
 
             this.get('tracks').forEach(function(track) {
-                if(!trackIds.contains(track.get('id'))) {
+                if (!trackIds.contains(track.get('id'))) {
                     this.queueSingle(trackIds, track);
                 }
             });
 
-            this.get('cache').showMessage('Added to queue');
+            this.get('utils').showMessage('Added to queue');
         },
         transitionToCollections: function() {
-            this.set('cache.selectedTrackIds', this.get('tracks').mapBy('id'));
+            this.set('utils.selectedTrackIds', this.get('tracks').mapBy('id'));
 
             this.sendAction('transitionToCollections', 'track.collections');
         },

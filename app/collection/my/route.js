@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import routeTransitionMixin from 'audio-app/mixins/route-transition';
+import clearRouteMixin from 'audio-app/mixins/route-clear';
 
-export default Ember.Route.extend(routeTransitionMixin, {
-    title: 'my'
-});
+export default Ember.Route.extend(clearRouteMixin);

@@ -3,12 +3,12 @@ import Ember from 'ember';
 var debouncer;
 
 export default Ember.Component.extend({
-    cache: Ember.inject.service(),
+    utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     init: function() {
         this._super();
 
-        this.set('cache.showMessage', this.show.bind(this));
+        this.set('utils.showMessage', this.show.bind(this));
     },
     classNames: ['my-message-bar'],
     classNameBindings: ['isAudioPlayerDefaultMode:my-default-message-bar', 'isAudioPlayerLargeMode:my-fixed-message-bar'],
@@ -32,13 +32,13 @@ export default Ember.Component.extend({
         }.bind(this));
     },
     show: function(message) {
-        if(this.get('fading')) {
+        if (this.get('fading')) {
             this.$().stop(true, true).fadeOut();
         }
 
         this.set('message', message);
 
-        if(!this.get('visible')) {
+        if (!this.get('visible')) {
             this.$().show();
             this.set('visible', true);
         }
@@ -48,7 +48,7 @@ export default Ember.Component.extend({
     click: function() {
         Ember.run.cancel(debouncer);
 
-        if(!this.get('fading')) {
+        if (!this.get('fading')) {
             this.fadeOut();
         }
     },

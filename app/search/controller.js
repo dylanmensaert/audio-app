@@ -5,6 +5,7 @@ import Suggestion from 'audio-app/components/c-autocomplete/suggestion';
 import logic from 'audio-app/utils/logic';
 import controllerMixin from 'audio-app/mixins/controller';
 import trackActionsMixin from 'audio-app/track/actions-mixin';
+import connection from 'connection';
 
 const suggestionLimit = 10;
 
@@ -13,7 +14,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     updateLiveQuery: Ember.observer('query', function() {
         var query = this.get('query');
 
-        if(query) {
+        if (query) {
             this.set('liveQuery', query);
         }
     }),
@@ -32,11 +33,11 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
 
         suggestions = this.get('suggestions');
 
-        if(liveQuery) {
+        if (liveQuery) {
             this.pushOfflineSuggestions('track');
             this.pushOfflineSuggestions('collection');
 
-            if(!this.get('cache').getIsOfflineMode() && suggestions.get('length') < suggestionLimit) {
+            if (!connection.isMobile() && suggestions.get('length') < suggestionLimit) {
                 url = domainData.suggestName + '/complete/search?client=firefox&ds=yt&q=' + liveQuery;
 
                 Ember.$.getJSON(url).then(function(response) {
@@ -58,7 +59,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         this.get('store').peekAll(modelName).any(function(snippet) {
             var suggestion = snippet.get('name');
 
-            if(!snippet.get('permission') && logic.isMatch(suggestion, liveQuery)) {
+            if (!snippet.get('permission') && logic.isMatch(suggestion, liveQuery)) {
                 suggestions.pushObject(Suggestion.create({
                     value: Ember.String.decamelize(suggestion)
                 }));
@@ -79,14 +80,14 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             promise,
             promiseArray;
 
-        if(query !== null) {
+        if (query !== null) {
             options = {
                 maxResults: 50,
                 query: query
             };
 
             promise = new Ember.RSVP.Promise(function(resolve) {
-                this._super(type, options, !this.get('cache').getIsOfflineMode()).then(function(snippets) {
+                this._super(type, options, !connection.isMobile()).then(function(snippets) {
                     resolve(logic.getTopRecords(snippets, 4));
                 });
             }.bind(this));
@@ -105,10 +106,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         return this.find('collection');
     }),
     sortedTracks: Ember.computed.sort('tracks', function(track, other) {
-        return this.sortSnippet(this.get('tracks'), track, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('tracks'), track, other, !connection.isMobile());
     }),
     sortedCollections: Ember.computed.sort('collections', function(collection, other) {
-        return this.sortSnippet(this.get('collections'), collection, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('collections'), collection, other, !connection.isMobile());
     }),
     selectedTracks: Ember.computed('tracks.@each.isSelected', function() {
         return this.get('store').peekAll('track').filterBy('isSelected');
@@ -119,7 +120,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('tracks.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('tracks.length'),*/
     // TODO: implement isLoading correctly since removed from snippets fetch
@@ -135,12 +136,12 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
             Ember.$('.mdl-textfield__input').focus();
         },
         deselectCollections: function(track) {
-            if(track.get('isSelected')) {
+            if (track.get('isSelected')) {
                 this.get('selectedCollections').setEach('isSelected', false);
             }
         },
         deselectTracks: function(collection) {
-            if(collection.get('isSelected')) {
+            if (collection.get('isSelected')) {
                 this.get('selectedTracks').setEach('isSelected', false);
             }
         }

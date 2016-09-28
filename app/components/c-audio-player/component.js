@@ -1,22 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    cache: Ember.inject.service(),
+    utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     actions: {
-        toggleMode: function () {
+        toggleMode: function() {
             this.toggleProperty('audioPlayer.isLargeMode');
         },
-        play: function () {
+        play: function() {
             this.sendAction('play');
         },
-        pause: function () {
+        pause: function() {
             this.sendAction('pause');
         },
-        previous: function () {
+        previous: function() {
             this.sendAction('previous');
         },
-        next: function () {
+        next: function() {
             this.sendAction('next');
         }
     }

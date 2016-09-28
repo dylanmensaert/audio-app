@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import controllerMixin from 'audio-app/mixins/controller';
+import connection from 'connection';
 
 export default Ember.Controller.extend(controllerMixin, {
-    collections: Ember.computed('cache.selectedTrackIds', 'collections.@each.trackIds', function() {
-        var selectedTrackIds = this.get('cache.selectedTrackIds');
+    collections: Ember.computed('utils.selectedTrackIds', 'collections.@each.trackIds', function() {
+        var selectedTrackIds = this.get('utils.selectedTrackIds');
 
         return this.get('store').peekAll('collection').filter(function(collection) {
             var isSelected,
@@ -21,26 +22,28 @@ export default Ember.Controller.extend(controllerMixin, {
         });
     }),
     sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
-        return this.sortSnippet(this.get('collections'), snippet, other, !this.get('cache').getIsOfflineMode());
+        return this.sortSnippet(this.get('collections'), snippet, other, !connection.isMobile());
     }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
         if (!this.get('collections.length')) {
-            this.get('cache').showMessage('No songs found');
+            this.get('utils').showMessage('No songs found');
         }
     }.observes('collections.length'),*/
     /*TODO: Implement another way?*/
     actions: {
-        transitionToPrevious: function() {
+        back: function() {
+            let utils = this.get('utils');
+
             this.get('collections').setEach('isSelected', false);
 
-            this.get('cache.selectedTrackIds').clear();
+            utils.get('selectedTrackIds').clear();
 
-            return true;
+            utils.back();
         },
         toggleIsSelected: function(collection) {
-            var cache = this.get('cache'),
-                selectedTrackIds = cache.get('selectedTrackIds'),
+            var utils = this.get('utils'),
+                selectedTrackIds = utils.get('selectedTrackIds'),
                 trackIds = collection.get('trackIds');
 
             if (collection.get('isSelected')) {
@@ -50,7 +53,7 @@ export default Ember.Controller.extend(controllerMixin, {
                     }
                 });
 
-                cache.showMessage('Added to collection');
+                utils.showMessage('Added to collection');
             } else {
                 selectedTrackIds.forEach(function(selectedTrackId) {
                     if (trackIds.contains(selectedTrackId)) {
@@ -58,7 +61,7 @@ export default Ember.Controller.extend(controllerMixin, {
                     }
                 });
 
-                cache.showMessage('Removed from collection');
+                utils.showMessage('Removed from collection');
             }
         }
     }

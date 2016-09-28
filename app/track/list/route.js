@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import routeTransitionMixin from 'audio-app/mixins/route-transition';
+import backRouteMixin from 'audio-app/mixins/route-back';
 
-export default Ember.Route.extend(routeTransitionMixin, {
-    title: 'Tracks'
-});
+export default Ember.Route.extend(backRouteMixin);
