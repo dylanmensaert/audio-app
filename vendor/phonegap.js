@@ -5,16 +5,18 @@
 
         Ember = Ember.default;
 
-        var setDeviceReady;
+        var setDeviceReady,
+            onDeviceReady;
+
+        onDeviceReady = new Ember.RSVP.Promise(function(resolve) {
+            setDeviceReady = resolve;
+        });
+
+        document.addEventListener('deviceready', setDeviceReady);
 
         return {
             'default': Ember.Object.create({
-                setDeviceReady: function() {
-                    document.addEventListener('deviceready', setDeviceReady);
-                },
-                onDeviceReady: new Ember.RSVP.Promise(function(resolve) {
-                    setDeviceReady = resolve;
-                })
+                onDeviceReady: onDeviceReady
             })
         };
     });

@@ -14,7 +14,7 @@
 
                     return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type === Connection.CELL;
                 },
-                onReady: phonegap.onDeviceReady
+                onReady: phonegap.get('onDeviceReady')
             })
         };
     });
