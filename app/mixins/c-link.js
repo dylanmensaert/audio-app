@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import clickMixin from 'audio-app/mixins/c-click';
-import btnMixin from 'audio-app/mixins/c-btn';
 
-export default Ember.Mixin.create(clickMixin, btnMixin, {
+export default Ember.Mixin.create(clickMixin, {
     utils: Ember.inject.service(),
     route: null,
     model: null,
     queryParams: null,
-    onClick: function() {
+    onClick: function () {
         let queryParams = this.get('queryParams'),
             model = this.get('model'),
             parameters;

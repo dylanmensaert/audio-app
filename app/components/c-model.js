@@ -1,11 +1,11 @@
-import ComponentMdl from 'audio-app/components/c-mdl';
+import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
-export default ComponentMdl.extend({
+export default Ember.Component.extend({
     model: null,
     showQueued: false,
     click: null,
-    didInsertElement: function() {
+    didInsertElement: function () {
         var outerImage = this.$('.my-outer-image'),
             innerImage = this.$('.my-inner-image');
 
@@ -17,7 +17,7 @@ export default ComponentMdl.extend({
         this._super();
     },
     actions: {
-        toggleIsSelected: function() {
+        toggleIsSelected: function () {
             var model = this.get('model');
 
             model.toggleProperty('isSelected');

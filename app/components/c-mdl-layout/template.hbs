@@ -1,13 +1,17 @@
-<!-- TODO: Show current user when implemented google login, http://www.getmdl.io/templates/dashboard/index.html -->
-
-<div class="mdl-layout__drawer">
-  <nav class="mdl-navigation">
+<ul id="slide-out" class="side-nav fixed">
     {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
     {{c-menu-item value='My Collections' route='collection.my' icon='loyalty'}}
     {{c-menu-item value='Download Later' route='collection.index' model='download-later' icon='queue_music'}}
     {{c-menu-item value='History' route='collection.index' model='history' icon='library_books'}}
     {{c-menu-item value='Settings' route='settings' icon='settings'}}
-  </nav>
-</div>
+</ul>
 
-{{yield}}
+<nav>
+    <div class="nav-wrapper">
+        <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
+            <i class="material-icons">menu</i>
+        </a>
+    </div>
+</nav>
+
+{{!-- {{yield}}--}}

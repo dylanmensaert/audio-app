@@ -4,7 +4,7 @@
         "ember": "~2.8.0",
         "ember-cli-shims": "0.1.1",
         "moment": "2.15.1",
-        "material-design-lite": "1.2.1",
+        "materialize": "git://github.com/Dogfalo/materialize.git#5dab6f021e22456d55753f6d9b6aabbafd6d6383",
         "material-design-icons": "3.0.1",
         "fastclick": "^1.0.6"
     }
