@@ -1,20 +1,24 @@
+/* global Materialize */
 import Ember from 'ember';
 
 export default Ember.Service.extend({
     fileSystem: null,
     selectedTrackIds: [],
     playedTrackIds: [],
-    showMessage: null,
+    // TODO: place somewhere else.
+    showMessage: function (message) {
+        Materialize.toast(message, 3000);
+    },
     audioSlider: null,
     isBusy: false,
     transitionToRoute: null,
     history: [],
-    back: function() {
+    back: function () {
         let history = this.get('history'),
             removeLast,
             previousTransition;
 
-        removeLast = function() {
+        removeLast = function () {
             history.removeAt(history.get('length') - 1);
         };
 

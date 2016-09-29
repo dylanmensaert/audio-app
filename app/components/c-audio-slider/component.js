@@ -1,37 +1,43 @@
+/* global noUiSlider */
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    tagName: 'input',
-    classNames: ['mdl-slider', 'mdl-js-slider', 'my-audio-slider'],
-    attributeBindings: ['type', 'min', 'max'],
-    type: 'range',
-    min: 0,
-    max: 0,
+    classNames: ['slider', 'shor', 'slider-material-orange'],
     slider: null,
     didInsertElement: function () {
-        var element = this.$(),
-            slider = this.get('slider');
+        var slider = this.get('slider'),
+            element = this.get('element');
 
-        this._super();
+        noUiSlider.create(element, {
+            start: 0,
+            range: {
+                min: 0,
+                max: slider.get('max')
+            },
+            connect: 'lower'
+        });
 
-        element.on('input', function () {
-            slider.set('value', element.val());
+        element.noUiSlider.on('slide', function () {
+            slider.set('value', element.noUiSlider.get());
 
-            slider.set('isDragged', true);
-        }.bind(this));
+            if (!slider.get('isDragged')) {
+                slider.set('isDragged', true);
+            }
+        });
 
-        element.on('change', function () {
-            slider.onSlideStop(element.val());
+        element.noUiSlider.on('set', function () {
+            slider.set('value', element.noUiSlider.get());
+        });
+
+        element.noUiSlider.on('change', function () {
+            slider.onSlideStop(element.noUiSlider.get());
 
             slider.set('isDragged', false);
-        }.bind(this));
+        });
 
-        this.set('slider.component', this);
+        slider.set('element', element);
     },
     willDestroyElement: function () {
-        var element = this.$();
-
-        element.off('input');
-        element.off('change');
+        this.$().destroy();
     }
 });

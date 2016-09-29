@@ -1,19 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend({
-    component: null,
+    element: null,
     value: null,
-    max: null,
+    max: 1,
     isDragged: false,
     onSlideStop: null,
-    setValue: function(value) {
-        if(!this.get('isDragged')) {
-            this.set('value', value);
-
-            this.get('component.element').MaterialSlider.change(value);
+    setValue: function (value) {
+        if (!this.get('isDragged')) {
+            this.get('element').noUiSlider.set(value);
         }
     },
-    updateMax: Ember.observer('max', function() {
-        this.set('component.max', this.get('max'));
+    updateMax: Ember.observer('max', function () {
+        this.get('element').noUiSlider.updateOptions({
+            range: {
+                min: 0,
+                max: this.get('max')
+            }
+        });
     })
 });

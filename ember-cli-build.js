@@ -33,9 +33,12 @@ module.exports = function (defaults) {
     // along with the exports of each module as its value.
 
     app.import('bower_components/materialize/bin/materialize.css');
+    app.import('bower_components/materialize/bin/materialize.js');
+
     app.import('bower_components/material-design-icons/iconfont/material-icons.css');
 
-    app.import('bower_components/materialize/bin/materialize.js');
+    app.import('bower_components/materialize/extras/noUiSlider/nouislider.css');
+    app.import('bower_components/nouislider/distribute/nouislider.js');
 
     // TODO: dont export moment.js as global
     app.import('bower_components/moment/moment.js');

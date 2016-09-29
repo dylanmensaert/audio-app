@@ -2,7 +2,6 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Component.extend({
-    utils: Ember.inject.service(),
     didInsertElement: function () {
         Ember.$(window).resize(function () {
             this.$('.my-outer-image').each(function () {
@@ -18,9 +17,9 @@ export default Ember.Component.extend({
             });
         }.bind(this));
 
-        this._super();
-
-        this.$(".button-collapse").sideNav();
+        this.$(".button-collapse").sideNav({
+            closeOnClick: true
+        });
     },
     willDestroyElement: function () {
         Ember.$(window).off('resize');
