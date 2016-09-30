@@ -1,9 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    attributeBindings: ['style'],
     didInsertElement: function () {
-        this.$(".button-collapse").sideNav({
-            closeOnClick: true
-        });
+        this.$('ul.tabs').tabs();
     }
 });

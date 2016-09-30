@@ -7,15 +7,15 @@ const keyCodeUp = 38,
 var timer;
 
 export default Ember.Component.extend({
-    classNames: ['my-suggestions-body'],
-    liveQuery: '',
+    classNames: ['my-autocomplete'],
+    value: '',
     suggestions: null,
     showSuggestions: false,
     showAutoComplete: Ember.computed('showSuggestions', 'suggestions.length', function () {
         return this.get('showSuggestions') && this.get('suggestions.length');
     }),
-    updateShowSuggestions: Ember.observer('liveQuery', function () {
-        this.set('showSuggestions', !this.get('liveQuery'));
+    updateShowSuggestions: Ember.observer('value', function () {
+        this.set('showSuggestions', !!this.get('value'));
     }),
     keyDown: function (event) {
         if (event.keyCode === keyCodeUp) {
@@ -82,7 +82,7 @@ export default Ember.Component.extend({
                 selectedSuggestion = suggestions.findBy('isSelected');
 
             if (selectedSuggestion) {
-                this.set('liveQuery', selectedSuggestion.get('value'));
+                this.set('value', selectedSuggestion.get('value'));
             }
 
             this.hideSuggestions();
@@ -90,16 +90,23 @@ export default Ember.Component.extend({
             this.sendAction('search');
         },
         searchSuggestion: function (suggestion) {
-            this.set('liveQuery', suggestion.get('value'));
+            this.set('value', suggestion.get('value'));
 
             this.hideSuggestions();
 
             this.sendAction('search');
         },
         didFocusOut: function () {
-            if (!this.$('.my-autocomplete:hover').length) {
+            if (this.$('.my-clear:hover').length) {
+                this.$('input').focus();
+            } else if (!this.$('ul:hover').length) {
                 this.hideSuggestions();
+
+                this.sendAction('didFocusOut');
             }
+        },
+        clear: function () {
+            this.set('value', '');
         }
     }
 });

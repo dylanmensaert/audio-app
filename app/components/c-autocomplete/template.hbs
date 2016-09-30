@@ -1,15 +1,17 @@
-<div class="mdl-textfield mdl-js-textfield my-suggestions-textfield">
-  {{c-mdl-input value=(mut liveQuery) action='searchSelected' didFocusOut='didFocusOut' class='my-suggestions-input'}}
+{{c-input value=value action='searchSelected' didFocusOut='didFocusOut'}}
 
-  <label class="mdl-textfield__label"></label>
-</div>
+{{#if value}}
+  <div class="my-clear" {{action 'clear'}}>
+    <i class="material-icons">close</i>
+  </div>
+{{/if}}
 
 {{#if showAutoComplete}}
-  <div class="my-autocomplete mdl-shadow--2dp">
+  <ul>
     {{#each suggestions as |suggestion|}}
-      {{#c-mdl action='searchSuggestion' param=suggestion class='mdl-button mdl-js-button mdl-js-ripple-effect my-suggestion' classNameBindings='suggestion.isSelected:active'}}
-        {{suggestion.value}}
-      {{/c-mdl}}
+      <li {{action 'searchSuggestion' suggestion}} class={{if suggestion.isSelected 'active'}}>
+          {{suggestion.value}}
+      </li>
     {{/each}}
-  </div>
+  </ul>
 {{/if}}

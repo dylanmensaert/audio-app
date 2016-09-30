@@ -2,7 +2,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['slider', 'shor', 'slider-material-orange'],
+    classNames: ['slider', 'my-slider'],
     slider: null,
     didInsertElement: function () {
         var slider = this.get('slider'),

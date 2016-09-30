@@ -1,0 +1,41 @@
+{{#c-mdl-layout transitionToRoute='transitionTo'}}
+  {{#if selectedTracks}}
+      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
+  {{else if utils.hasPreviousTransition}}
+      {{c-transition-bar title=query selectAll='selectAll'}}
+  {{/if}}
+
+  {{#if utils.hasPreviousTransition}}
+      <header class="mdl-layout__header hidden" />
+  {{else}}
+    {{c-menu-bar title=query selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}
+  {{/if}}
+
+  {{#c-endless-scroll tagName='main' class='mdl-layout__content mdl-color--grey-100' didScrollToBottom='didScrollToBottom'}}
+    {{#if showNotFound}}
+     <div class="mdl-grid my-grid-panel">
+        No tracks found
+      </div>
+    {{/if}}
+
+    {{#if tracks}}
+      <div class="mdl-grid my-grid">
+        {{#each sortedTracks as |track|}}
+            {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued}}
+
+            <div class="my-separator">
+                <div class="my-line" />
+            </div>
+        {{/each}}
+      </div>
+    {{/if}}
+
+    {{#if isPending}}
+      <div class="my-loading-bar">
+        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      </div>
+    {{/if}}
+  {{/c-endless-scroll}}
+
+  {{c-audio-player play='play' pause='pause' previous='previous' next='next'}}
+{{/c-mdl-layout}}

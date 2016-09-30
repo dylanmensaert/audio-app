@@ -1,105 +1,33 @@
-{{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if selectedTracks}}
-      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo'}}
-  {{else if selectedCollections}}
-      {{c-collections-bar collections=selectedCollections}}
-  {{else if utils.hasPreviousTransition}}
-    {{#c-mdl class='mdl-layout__header-row my-header-bar my-suggestions-header'}}
-      <label {{action 'back'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
-        <i class="material-icons">
-          arrow_back
-        </i>
-      </label>
+{{#if showMenu}}
+  {{#c-nav}}
+    <div class="brand-logo truncate" style="width: calc(100% - 115px);">
+      {{query}}
+    </div>
 
-      {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
+    <ul class="right">
+      <li>
+        <a href="javascript:void(0)" {{action 'hideMenu'}}>
+          <i class="material-icons">search</i>
+        </a>
+      </li>
+    </ul>
+  {{/c-nav}}
+{{else}}
+  {{c-autocomplete search='search' value=value suggestions=suggestions didFocusOut='didFocusOut'}}
+{{/if}}
 
-      <div class="mdl-layout-spacer"></div>
+{{#c-tabs style='margin-top: 2px;'}}
+  <li class="tab col s6">
+    {{#link-to 'search.tracks' (query-params query=query)}}
+      Tracks
+    {{/link-to}}
+  </li>
 
-      {{#if liveQuery}}
-        {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-          <i class="material-icons">
-            close
-          </i>
-        {{/c-mdl}}
-      {{/if}}
-    {{/c-mdl}}
+  <li class="tab col s6">
+    {{#link-to 'search.collections' (query-params query=query)}}
+      Collections
+    {{/link-to}}
+  </li>
+{{/c-tabs}}
 
-    <header class="mdl-layout__header hidden" />
-  {{/if}}
-
-  {{#unless utils.hasPreviousTransition}}
-    <header class="mdl-layout__header {{if hideMdlHeader 'hidden'}}">
-      <div class="mdl-layout__header-row my-suggestions-header">
-        {{c-autocomplete search='search' liveQuery=liveQuery suggestions=suggestions}}
-
-        <div class="mdl-layout-spacer"></div>
-
-        {{#if liveQuery}}
-          {{#c-mdl tagName='button' action='clear' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-            <i class="material-icons">close</i>
-          {{/c-mdl}}
-        {{/if}}
-      </div>
-    </header>
-  {{/unless}}
-
-  <main class="mdl-layout__content mdl-color--grey-100">
-      {{#if showNotFound}}
-        <div class="mdl-grid my-grid-panel">
-          No records found
-        </div>
-      {{/if}}
-
-      {{#if isLoading}}
-        <div class="my-loading-bar">
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-        </div>
-      {{/if}}
-
-      {{#if tracks}}
-        <div class="mdl-grid my-grid-title">
-            <h4>
-                Tracks
-            </h4>
-        </div>
-
-        <div class="mdl-grid my-grid">
-            {{#each sortedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued toggleIsSelected='deselectCollections'}}
-
-                <div class="my-separator">
-                    <div class="my-line" />
-                </div>
-            {{/each}}
-
-            {{#link-to 'track.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
-              <i class="material-icons">
-                expand_more
-              </i>
-            {{/link-to }}
-        </div>
-      {{/if}}
-
-      {{#if collections}}
-        <div class="mdl-grid my-grid-title">
-            <h4>
-                Collections
-            </h4>
-        </div>
-
-        <div class="mdl-grid my-grid">
-            {{#each sortedCollections as |collection|}}
-                {{c-collection model=collection action='transitionTo' toggleIsSelected='deselectTracks'}}
-            {{/each}}
-
-            {{#link-to 'collection.list' (query-params query=query) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
-              <i class="material-icons">
-                expand_more
-              </i>
-            {{/link-to}}
-        </div>
-      {{/if}}
-  </main>
-
-  {{c-audio-player audioplay='play' pause='pause' previous='previous' next='next'}}
-{{/c-mdl-layout}}
+{{!-- {{outlet}} --}}

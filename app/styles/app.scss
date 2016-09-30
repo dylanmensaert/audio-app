@@ -11,3 +11,76 @@ footer {
         padding-left: 0;
     }
 }
+
+.my-audio-player {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.my-slider {
+    position: absolute;
+    top: 0;
+}
+
+.my-audio-icon {
+    font-size: 48px;
+}
+
+.my-audio-spinner {
+    width: 30px;
+    height: 30px;
+    margin: 9px;
+}
+
+.my-center {
+    text-align: center;
+}
+
+.my-autocomplete {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 100%;
+    ul {
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+        left: 0;
+        li {
+            font-size: 16px;
+            padding: 10px 13px;
+            background: white;
+            &.active,
+            &:hover {
+                background: #eee;
+                cursor: pointer;
+            }
+            .my-hightlight {
+                color: #26a69a;
+            }
+        }
+    }
+    input[type=text] {
+        height: 56px;
+        margin-bottom: 2px;
+        font-size: 16px;
+        padding-left: 13px;
+        &,
+        &:focus {
+            border-bottom: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.my-clear {
+    position: absolute;
+    right: 6px;
+    top: 13px;
+    i {
+        font-size: 31px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}

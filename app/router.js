@@ -6,13 +6,13 @@ const Router = Ember.Router.extend({
     rootURL: config.rootURL
 });
 
-Router.map(function() {
-    this.route('track', function() {
+Router.map(function () {
+    this.route('track', function () {
         this.route('list');
         this.route('collections');
     });
 
-    this.route('collection', function() {
+    this.route('collection', function () {
         this.route('index', {
             path: '/:collection_id'
         });
@@ -21,7 +21,10 @@ Router.map(function() {
         this.route('my');
     });
 
-    this.route('search');
+    this.route('search', function () {
+        this.route('tracks');
+        this.route('collections');
+    });
 
     this.route('settings');
 });

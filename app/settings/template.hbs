@@ -20,13 +20,14 @@
       </label>
 
       <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-        <div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect my-btn-file">
-          <i class="material-icons">
-            file_download
-          </i>
-
-          Import audio
-          {{c-file-input}}
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Import</span>
+            {{c-file-input}}
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
         </div>
       </div>
     </div>

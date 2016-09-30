@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import logic from 'audio-app/utils/logic';
+import searchMixin from 'audio-app/mixins/search';
 
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(searchMixin, {
     utils: Ember.inject.service(),
-    sortSnippet: function(snippets, snippet, other, keepGivenOrder) {
+    sortSnippet: function (snippets, snippet, other, keepGivenOrder) {
         var result = -1;
 
         if (keepGivenOrder) {
@@ -15,8 +15,5 @@ export default Ember.Mixin.create({
         }
 
         return result;
-    },
-    find: function() {
-        return logic.find.apply(this, arguments);
     }
 });

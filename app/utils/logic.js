@@ -1,29 +1,24 @@
-import Ember from 'ember';
-import DS from 'ember-data';
-
-function isMatch(value, query) {
-    return query.trim().split(' ').every(function(queryPart) {
-        return value.toLowerCase().includes(queryPart.toLowerCase());
-    });
-}
-
 export default {
-    isMatch: isMatch,
-    generateRandomId: function() {
+    isMatch: function (value, query) {
+        return query.trim().split(' ').every(function (queryPart) {
+            return value.toLowerCase().includes(queryPart.toLowerCase());
+        });
+    },
+    generateRandomId: function () {
         var randomId = '',
             possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
             index = 0;
 
-        for(index; index < 5; index++) {
+        for (index; index < 5; index++) {
             randomId += possible.charAt(Math.floor(Math.random() * possible.length));
         }
 
         return randomId;
     },
-    getTopRecords: function(records, limit) {
+    getTopRecords: function (records, limit) {
         var topRecords = [];
 
-        records.any(function(record, index) {
+        records.any(function (record, index) {
             topRecords.pushObject(record);
 
             return index + 1 >= limit;
@@ -31,49 +26,13 @@ export default {
 
         return topRecords;
     },
-    find: function(modelName, options, searchOnline) {
-        var store = this.get('store'),
-            promise,
-            promiseArray;
-
-        if(!searchOnline) {
-            promise = new Ember.RSVP.Promise(function(resolve) {
-                var snippets;
-
-                if(options.collectionId) {
-                    snippets = store.peekRecord('collection', options.collectionId).get('trackIds').map(function(trackId) {
-                        return store.peekRecord('track', trackId);
-                    });
-                } else {
-                    snippets = store.peekAll(modelName).filter(function(snippet) {
-                        return !snippet.get('permission') && isMatch(snippet.get('name'), options.query);
-                    });
-                }
-
-                resolve(snippets);
-            });
-
-            promiseArray = DS.PromiseArray.create({
-                promise: promise
-            });
-
-        } else {
-            options.setNextPageToken = function(nextPageToken) {
-                this.set('nextPageToken', nextPageToken);
-            }.bind(this);
-
-            promiseArray = store.query(modelName, options);
-        }
-
-        return promiseArray;
-    },
-    setOuterHeight: function(element) {
+    setOuterHeight: function (element) {
         return element.height(element.width() / 30 * 17);
     },
-    setInnerHeight: function(element) {
+    setInnerHeight: function (element) {
         return element.height(element.width() / 12 * 9);
     },
-    setTop: function(element, outerHeight) {
+    setTop: function (element, outerHeight) {
         return element.css('top', -Math.floor((element.height() - outerHeight) / 2));
     }
 };
