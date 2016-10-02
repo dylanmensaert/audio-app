@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import loadingMixin from 'audio-app/mixins/c-loading';
-import redrawMixin from 'audio-app/mixins/c-redraw';
 
-export default Ember.Mixin.create(loadingMixin, redrawMixin, {
+export default Ember.Mixin.create(loadingMixin, {
     attributeBindings: ['disabled'],
     onClick: null,
     click: function() {

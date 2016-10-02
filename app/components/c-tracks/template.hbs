@@ -1,0 +1,63 @@
+ {{#if hasSelected}}
+  <nav>
+    <div class="nav-wrapper">
+      <span class="new badge" data-badge={{givenTotal}} />
+
+      <ul class="right">
+        <li>
+          <a href="javascript:void(0)" {{action 'transitionToCollections'}}>
+              <span class="material-icons">loyalty</span>
+          </a>
+        </li>
+
+        <li>
+          {{#if isEveryUnQueued}}
+            <a href="javascript:void(0)" {{action 'queue'}}>
+                <span class="material-icons">queue_music</span>
+            </a>
+          {{else}}
+            <a href="javascript:void(0)">
+                &nbsp;
+            </a>
+          {{/if}}
+        </li>
+
+        <li>
+          {{#if isEveryDownloaded}}
+            <a href="javascript:void(0)" {{action 'delete'}}>
+                <span class="material-icons">delete</span>
+            </a>
+          {{else if isEveryDownloadable}}
+            <a href="javascript:void(0)" {{action 'download'}}>
+                <span class="material-icons">file_download</span>
+            </a>
+          {{else}}
+            <a href="javascript:void(0)">
+                &nbsp;
+            </a>
+          {{/if}}
+        </li>
+
+        <li>
+            <a href="javascript:void(0)" {{action 'deselect'}}>
+                <span class="material-icons">deselect</span>
+            </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+{{/if}}
+
+{{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
+  {{#each models as |track|}}
+      {{c-track model=track showQueued=track.isQueued}}
+
+      <div class="my-separator">
+          <div class="my-line" />
+      </div>
+  {{/each}}
+
+  {{#if isPending}}
+    {{c-spinner}}
+  {{/if}}
+{{/c-endless-scroll}}

@@ -1,18 +1,14 @@
-<div class="mdl-grid my-track-grid">
-  <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop my-track-cell">
-    <div class="mdl-button mdl-js-button mdl-button--fab">
-      <i class="material-icons">
-        queue_music
-      </i>
-    </div>
+<div class="row">
+  <div class="col s6">
+    <i class="material-icons my-audio-icon">
+      queue_music
+    </i>
   </div>
 
-  <div class="mdl-cell mdl-cell--2-col-phone mdl-cell--4-col-tablet mdl-cell--6-col-desktop my-track-cell my-text-right">
-    <div class="mdl-button mdl-js-button mdl-button--fab">
-      <i class="material-icons">
-        shop_two
-      </i>
-    </div>
+  <div class="col s6 my-right">
+    <i class="material-icons my-audio-icon">
+      shop_two
+    </i>
   </div>
 </div>
 
@@ -25,23 +21,19 @@
       </div>
   </div>
 
-  <div {{action 'click'}} class="my-track-body my-text">
+  <div {{action 'click'}} class="truncate my-track-body">
     {{model.name}}
-
-    <div class="my-track-paragraph-end" />
   </div>
 
   <div class="my-track-middle my-status-bar">
       {{#if model.isPlaying}}
           <i class="material-icons">headset</i>
-      {{else}}
-          {{#if showQueued}}
-              <i class="material-icons">schedule</i>
-          {{/if}}
+      {{else if showQueued}}
+          <i class="material-icons">schedule</i>
       {{/if}}
 
       {{#if model.isDownloading}}
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+          {{c-spinner}}
       {{/if}}
 
       {{#if model.isDownloaded}}
@@ -49,9 +41,7 @@
       {{/if}}
   </div>
 
-  <div {{action 'toggleIsSelected'}} class="my-track-middle">
-    <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">more_vert</i>
-    </div>
+  <div {{action 'select'}} class="my-track-middle">
+    <i class="material-icons">more_vert</i>
   </div>
 </div>

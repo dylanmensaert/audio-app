@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 function split(fileName) {
-    var lastIndex = fileName.lastIndexOf('.');
+    let lastIndex = fileName.lastIndexOf('.');
 
     return {
         value: fileName.substr(0, lastIndex),
@@ -16,12 +16,12 @@ export default Ember.TextField.extend({
     type: 'file',
     multiple: 'multiple',
     accept: 'audio/*,video/*',
-    didInsertElement: function () {
-        var fileSystem = this.get('fileSystem');
+    didInsertElement: function() {
+        let fileSystem = this.get('fileSystem');
 
-        this.$().onchange = function () {
-            this.files.forEach(function (file) {
-                var fileName = split(file.name);
+        this.$().onchange = function() {
+            this.files.forEach(function(file) {
+                let fileName = split(file.name);
 
                 fileSystem.get('store').pushPayload('track', {
                     id: fileName.value,
@@ -30,11 +30,11 @@ export default Ember.TextField.extend({
                 });
             });
 
-            this.files.forEach(function (file) {
+            this.files.forEach(function(file) {
                 fileSystem.get('instance').root.getFile(file.name, {
                     create: true
-                }, function (fileEntry) {
-                    fileEntry.createWriter(function (fileWriter) {
+                }, function(fileEntry) {
+                    fileEntry.createWriter(function(fileWriter) {
                         fileWriter.write(file);
                     });
                 });

@@ -1,4 +1,8 @@
-{{c-input value=value action='searchSelected' didFocusOut='didFocusOut'}}
+<div class="my-back" {{action 'back'}}>
+  <i class="material-icons">arrow_back</i>
+</div>
+
+{{c-input value=value action='searchSelected' style='width: calc(100% - 55px);' didFocusOut='didFocusOut'}}
 
 {{#if value}}
   <div class="my-clear" {{action 'clear'}}>

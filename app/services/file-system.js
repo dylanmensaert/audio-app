@@ -2,7 +2,7 @@
 
 import Ember from 'ember';
 
-var lastWriter;
+let lastWriter;
 // TODO: implement correctly
 /*import Collection from 'audio-app/collection/model';
 import Track from 'audio-app/track/model';*/
@@ -10,7 +10,7 @@ import Track from 'audio-app/track/model';*/
 window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
 function write(resolve) {
-    var json = this.serialize();
+    let json = this.serialize();
 
     this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
         fileEntry.createWriter(function(fileWriter) {
@@ -79,7 +79,7 @@ export default Ember.Service.extend({
         }.bind(this));
     },
     createFiles: function(instance) {
-        var deserialize = this.deserialize.bind(this);
+        let deserialize = this.deserialize.bind(this);
 
         return new Ember.RSVP.Promise(function(resolve) {
             instance.root.getDirectory('thumbnails', {
@@ -92,7 +92,7 @@ export default Ember.Service.extend({
 
             instance.root.getFile('data.json', {}, function(fileEntry) {
                 fileEntry.file(function(file) {
-                    var reader = new FileReader();
+                    let reader = new FileReader();
 
                     reader.onloadend = function() {
                         deserialize(this.result);
@@ -139,11 +139,11 @@ export default Ember.Service.extend({
         }.bind(this));
     },
     deserialize: function(json) {
-        var store = this.get('store'),
+        let store = this.get('store'),
             parsedJSON = JSON.parse(json);
 
         parsedJSON.collectionIds = parsedJSON.collections.map(function(collection) {
-            var id = collection.id;
+            let id = collection.id;
 
             delete collection.id;
 
@@ -161,7 +161,7 @@ export default Ember.Service.extend({
         delete parsedJSON.collections;
 
         parsedJSON.trackIds = parsedJSON.tracks.map(function(track) {
-            var id = track.id;
+            let id = track.id;
 
             delete track.id;
 
@@ -181,7 +181,7 @@ export default Ember.Service.extend({
         this.setProperties(parsedJSON);
     },
     serialize: function() {
-        var store = this.get('store'),
+        let store = this.get('store'),
             data = {
                 playingTrackId: this.get('playingTrackId')
             };

@@ -7,7 +7,7 @@ function convertImageUrl(url) {
 
 export default Ember.Mixin.create({
     pushPayload: function(store, payload, modelName) {
-        var id = payload.id;
+        let id = payload.id;
 
         delete payload.id;
 
@@ -20,17 +20,17 @@ export default Ember.Mixin.create({
         });
     },
     normalizeResponse: function(store, primaryModelClass, payload) {
-        var data = [];
+        let data = [];
 
         payload.items.forEach(function(item) {
-            var snippet = this.normalize(store, primaryModelClass, item);
+            let snippet = this.normalize(store, primaryModelClass, item);
 
-            if(snippet) {
+            if (snippet) {
                 data.pushObject(snippet);
             }
         }.bind(this));
 
-        if(payload.deserializeSingleRecord) {
+        if (payload.deserializeSingleRecord) {
             data = data.get(0);
         }
 
@@ -39,17 +39,36 @@ export default Ember.Mixin.create({
         };
     },
     peekSnippet: function(store, modelName, id, item) {
-        var snippet = store.peekRecord(modelName, id);
+        let snippet = store.peekRecord(modelName, id);
 
-        if(snippet) {
+        if (snippet) {
             snippet = snippet.serialize();
 
             delete snippet.id;
         } else {
+            let thumbnails = item.snippet.thumbnails,
+                url,
+                thumbnail;
+
+            if (thumbnails.maxres && thumbnails.maxres.url) {
+                url = thumbnails.maxres.url;
+            } else if (thumbnails.maxres && thumbnails.standard.url) {
+                url = thumbnails.standard.url;
+            } else if (thumbnails.maxres && thumbnails.high.url) {
+                url = thumbnails.high.url;
+            } else if (thumbnails.maxres && thumbnails.medium.url) {
+                url = thumbnails.medium.url;
+            } else if (thumbnails.maxres && thumbnails.default.url) {
+                url = thumbnails.default.url;
+            }
+
+            if (url) {
+                thumbnail = convertImageUrl(url);
+            }
+
             snippet = {
                 name: item.snippet.title,
-                // TODO: support higher resolutions (for desktop) when available?: standard, maxres
-                thumbnail: convertImageUrl(item.snippet.thumbnails.high.url)
+                thumbnail: thumbnail
             };
         }
 

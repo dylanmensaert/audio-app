@@ -1,0 +1,9 @@
+{{c-collections collections=sortedCollections}}
+
+{{#if isCreatedMode}}
+  {{c-input-bar query=name done='save'}}
+{{else}}
+  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red" {{action 'setupCreate'}}>
+    <i class="material-icons">add</i>
+  </a>
+{{/if}}

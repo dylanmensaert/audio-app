@@ -1,1 +1,9 @@
-{{outlet}}
+{{#if isEditMode}}
+  {{c-input-bar query=name done='save'}}
+{{else}}
+  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red" {{action 'setupEdit'}}>
+    <i class="material-icons">mode_edit</i>
+  </a>
+{{/if}}
+
+{{c-tracks tracks=sortedModels}}

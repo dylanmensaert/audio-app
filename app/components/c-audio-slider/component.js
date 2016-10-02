@@ -4,8 +4,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
     classNames: ['slider', 'my-slider'],
     slider: null,
-    didInsertElement: function () {
-        var slider = this.get('slider'),
+    didInsertElement: function() {
+        let slider = this.get('slider'),
             element = this.get('element');
 
         noUiSlider.create(element, {
@@ -17,7 +17,7 @@ export default Ember.Component.extend({
             connect: 'lower'
         });
 
-        element.noUiSlider.on('slide', function () {
+        element.noUiSlider.on('slide', function() {
             slider.set('value', element.noUiSlider.get());
 
             if (!slider.get('isDragged')) {
@@ -25,11 +25,11 @@ export default Ember.Component.extend({
             }
         });
 
-        element.noUiSlider.on('set', function () {
+        element.noUiSlider.on('set', function() {
             slider.set('value', element.noUiSlider.get());
         });
 
-        element.noUiSlider.on('change', function () {
+        element.noUiSlider.on('change', function() {
             slider.onSlideStop(element.noUiSlider.get());
 
             slider.set('isDragged', false);
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
 
         slider.set('element', element);
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         this.$().destroy();
     }
 });

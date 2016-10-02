@@ -4,28 +4,28 @@ const keyCodeUp = 38,
     keyCodeDown = 40,
     keyCodeEscape = 27;
 
-var timer;
+let timer;
 
 export default Ember.Component.extend({
     classNames: ['my-autocomplete'],
-    value: '',
+    value: null,
     suggestions: null,
     showSuggestions: false,
-    showAutoComplete: Ember.computed('showSuggestions', 'suggestions.length', function () {
+    showAutoComplete: Ember.computed('showSuggestions', 'suggestions.length', function() {
         return this.get('showSuggestions') && this.get('suggestions.length');
     }),
-    updateShowSuggestions: Ember.observer('value', function () {
+    updateShowSuggestions: Ember.observer('value', function() {
         this.set('showSuggestions', !!this.get('value'));
     }),
-    keyDown: function (event) {
+    keyDown: function(event) {
         if (event.keyCode === keyCodeUp) {
-            this.selectAdjacent(function (selectedIndex) {
+            this.selectAdjacent(function(selectedIndex) {
                 return selectedIndex - 1;
             });
 
             event.preventDefault();
         } else if (event.keyCode === keyCodeDown) {
-            this.selectAdjacent(function (selectedIndex) {
+            this.selectAdjacent(function(selectedIndex) {
                 return selectedIndex + 1;
             });
 
@@ -34,8 +34,8 @@ export default Ember.Component.extend({
             this.hideSuggestions();
         }
     },
-    selectAdjacent: function (getAdjacentIndex) {
-        var suggestions = this.get('suggestions'),
+    selectAdjacent: function(getAdjacentIndex) {
+        let suggestions = this.get('suggestions'),
             selectedSuggestion,
             adjacentIndex,
             adjacentSuggestion;
@@ -64,11 +64,11 @@ export default Ember.Component.extend({
             this.send('searchSelected');
         }
     },
-    willDestroyElement: function () {
+    willDestroyElement: function() {
         Ember.run.cancel(timer);
     },
-    hideSuggestions: function () {
-        var selectedSuggestion = this.get('suggestions').findBy('isSelected');
+    hideSuggestions: function() {
+        let selectedSuggestion = this.get('suggestions').findBy('isSelected');
 
         if (selectedSuggestion) {
             selectedSuggestion.set('isSelected', false);
@@ -77,8 +77,8 @@ export default Ember.Component.extend({
         this.set('showSuggestions', false);
     },
     actions: {
-        searchSelected: function () {
-            var suggestions = this.get('suggestions'),
+        searchSelected: function() {
+            let suggestions = this.get('suggestions'),
                 selectedSuggestion = suggestions.findBy('isSelected');
 
             if (selectedSuggestion) {
@@ -89,24 +89,25 @@ export default Ember.Component.extend({
 
             this.sendAction('search');
         },
-        searchSuggestion: function (suggestion) {
+        searchSuggestion: function(suggestion) {
             this.set('value', suggestion.get('value'));
 
             this.hideSuggestions();
 
             this.sendAction('search');
         },
-        didFocusOut: function () {
+        didFocusOut: function() {
             if (this.$('.my-clear:hover').length) {
                 this.$('input').focus();
-            } else if (!this.$('ul:hover').length) {
+            } else if (!this.$('ul:hover').length || this.$('.my-back:hover').length) {
                 this.hideSuggestions();
-
-                this.sendAction('didFocusOut');
             }
         },
-        clear: function () {
+        clear: function() {
             this.set('value', '');
+        },
+        back: function() {
+            this.sendAction('back');
         }
     }
 });

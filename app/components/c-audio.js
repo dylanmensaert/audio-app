@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-var errors = Ember.Map.create();
+let errors = Ember.Map.create();
 
 errors.set(1, 'Fetching process aborted by user');
 errors.set(2, 'Error occurred when downloading');
@@ -11,7 +11,7 @@ export default Ember.Component.extend({
     tagName: 'audio',
     audioPlayer: Ember.inject.service(),
     didInsertElement: function() {
-        var element = this.get('element'),
+        let element = this.get('element'),
             audioPlayer = this.get('audioPlayer'),
             track = audioPlayer.get('track');
 
@@ -69,7 +69,7 @@ export default Ember.Component.extend({
         }
     },
     willDestroyElement: function() {
-        var element = this.get('element');
+        let element = this.get('element');
 
         element.removeEventListener('durationchange');
         element.removeEventListener('timeupdate');

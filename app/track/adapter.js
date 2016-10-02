@@ -6,7 +6,7 @@ export default DS.Adapter.extend(adapterMixin, {
     query: function(store, type, options) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             this._super(store, type, options).then(function(payload) {
-                var collection;
+                let collection;
 
                 if (options.collectionId) {
                     collection = store.peekRecord('collection', options.collectionId);
@@ -21,7 +21,7 @@ export default DS.Adapter.extend(adapterMixin, {
         }.bind(this));
     },
     buildUrl: function(modelName, id, snapshot, requestType, options) {
-        var url;
+        let url;
 
         if (options.collectionId) {
             options.maxResults = 50;

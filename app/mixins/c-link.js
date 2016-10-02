@@ -6,7 +6,7 @@ export default Ember.Mixin.create(clickMixin, {
     route: null,
     model: null,
     queryParams: null,
-    onClick: function () {
+    onClick: function() {
         let queryParams = this.get('queryParams'),
             model = this.get('model'),
             parameters;

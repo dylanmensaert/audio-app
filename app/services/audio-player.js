@@ -22,9 +22,9 @@ export default Ember.Service.extend({
         this.get('element').currentTime = currentTime;
     },
     play: function(track) {
-        var element = this.get('element');
+        let element = this.get('element');
 
-        if(!track) {
+        if (!track) {
             element.play();
         } else {
             this.load(track).then(function() {
@@ -36,13 +36,13 @@ export default Ember.Service.extend({
         this.get('element').pause();
     },
     load: function(track) {
-        var audio = track.get('audio');
+        let audio = track.get('audio');
 
         this.set('status', 'loading');
         this.set('track', track);
 
         return new Ember.RSVP.Promise(function(resolve) {
-            if(!audio) {
+            if (!audio) {
                 track.fetchDownload().then(function(url) {
                     this.loadSource(url);
 
@@ -56,9 +56,9 @@ export default Ember.Service.extend({
         }.bind(this));
     },
     loadSource: function(source) {
-        var element = this.get('element');
+        let element = this.get('element');
 
-        if(element) {
+        if (element) {
             element.src = source;
             element.load();
         }

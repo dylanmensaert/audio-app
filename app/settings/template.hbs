@@ -1,38 +1,42 @@
-{{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{c-menu-bar title='Settings' hideSelectAll=true}}
+{{#c-nav}}
+  <div class="brand-logo truncate">
+    Settings
+  </div>
 
-  <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-grid my-settings-grid">
-      <label class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-later">
-        <input type="checkbox" id="download-later" class="mdl-switch__input" checked={{fileSystem.downloadLater}} />
+  <ul class="right">
+    <li>
+      <a href="javascript:void(0)">
+        <i class="material-icons">search</i>
+      </a>
+    </li>
+  </ul>
+{{/c-nav}}
 
-        <span class="mdl-switch__label">
-          Download track when you have wifi
-        </span>
-      </label>
+<p>
+  {{input type='checkbox' id="download-later" checked=fileSystem.downloadLater}}
 
-      <label class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop mdl-switch mdl-js-switch mdl-js-ripple-effect" for="download-before">
-        <input type="checkbox" id="download-before" class="mdl-switch__input" checked={{fileSystem.downloadBeforePlaying}} />
+  <label for="download-later">
+    Download track when you have wifi
+  </label>
+</p>
 
-        <span class="mdl-switch__label">
-          Download track before playing
-        </span>
-      </label>
+<p>
+  {{input type='checkbox' id="download-before" checked=fileSystem.downloadBeforePlaying}}
 
-      <div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Import</span>
-            {{c-file-input}}
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <label for="download-before">
+    Download track when you have wifi
+  </label>
+</p>
 
-  {{c-audio-player play='play' pause='pause' previous='previous' next='next'}}
-{{/c-mdl-layout}}
+<p>
+<div class="file-field input-field">
+  <div class="btn">
+    <span>File</span>
+    {{c-file-input}}
+  </div>
 
+  <div class="file-path-wrapper">
+    <input class="file-path validate" placeholder="Upload one or more files">
+  </div>
+</div>
+</p>

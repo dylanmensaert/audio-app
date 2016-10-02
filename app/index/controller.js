@@ -1,18 +1,17 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import controllerMixin from 'audio-app/mixins/controller';
-import trackActionsMixin from 'audio-app/track/actions-mixin';
+import findControllerMixin from 'audio-app/mixins/controller-find';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
 const lastHistoryTracksLimit = 8;
 
-export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
+export default Ember.Controller.extend(findControllerMixin, {
     showNotFound: Ember.computed('lastHistoryTracks.isPending', 'lastHistoryTracks.length', 'lastHistoryTracks.length', function() {
         return !this.get('lastHistoryTracks.isPending') && !this.get('lastHistoryTracks.length') && !this.get('lastHistoryTracks.length');
     }),
     lastHistoryTracks: Ember.computed('collections.@each.trackIds', function() {
-        var store = this.get('store'),
+        let store = this.get('store'),
             historyTrackIds = store.peekRecord('collection', 'history').get('trackIds'),
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
@@ -27,7 +26,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
     }),
     relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
         return this.get('sortedLastHistoryTracks').map(function(historyTrack) {
-            var options,
+            let options,
                 promise;
 
             options = {
@@ -52,10 +51,10 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         }.bind(this));
     }),
     sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
-        return this.sortSnippet(this.get('lastHistoryTracks'), track, other, !connection.isMobile());
+        return this.sort(this.get('lastHistoryTracks'), track, other, !connection.isMobile());
     }),
     selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', function() {
-        var selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),
+        let selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),
             selectedTracks = [];
 
         selectedTracks.pushObjects(selectedLastHistoryTracks);
@@ -67,14 +66,7 @@ export default Ember.Controller.extend(controllerMixin, trackActionsMixin, {
         return selectedTracks;
     }),
     actions: {
-        selectAll: function() {
-            this.get('lastHistoryTracks').setEach('isSelected', true);
-
-            this.get('relatedByTracks').forEach(function(relatedByTrack) {
-                relatedByTrack.get('relatedTracks').setEach('isSelected', true);
-            });
-        },
-        toggleIsSelected: function() {
+        changeSelect: function() {
             this.notifyPropertyChange('selectedTracks');
         }
     }

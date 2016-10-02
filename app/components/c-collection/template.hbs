@@ -1,29 +1,20 @@
-<div class="mdl-card mdl-shadow--2dp my-card">
-  <div {{action 'click'}} class="my-outer-image">
+<div {{action 'click'}} class="card-image waves-effect waves-block waves-light">
+  <div class="my-outer-image">
     <img class="my-inner-image" src={{model.thumbnail}} draggable="false" />
   </div>
+</div>
 
-  <div class="mdl-grid my-card-grid">
-    <div {{action 'click'}} class="mdl-card__supporting-text my-card-text">
-      {{model.name}}
+<div class="card-content">
+  <span class="card-title activator grey-text text-darken-4">
+    {{model.name}}
 
-      <div class="my-paragraph-end" />
-    </div>
+    <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
+  </span>
+</div>
 
-    <div {{action 'toggleIsSelected'}} class="my-card-vert">
-      <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons">
-          more_vert
-        </i>
-      </div>
-    </div>
-  </div>
-
-  {{#if hasStatus}}
-    <div class="my-card-actions-placeholder" />
-
-    <div class="mdl-card__actions mdl-card--border my-card-actions">
-      {{#if model.isPlaying}}
+<div class="card-action">
+  <p>
+   {{#if model.isPlaying}}
         <i class="material-icons">
           headset
         </i>
@@ -44,6 +35,5 @@
             offline_pin
           </i>
       {{/if}}
-    </div>
-   {{/if}}
+  </p>
 </div>

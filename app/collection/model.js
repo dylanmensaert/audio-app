@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import modelMixin from 'audio-app/mixins/model';
+import searchMixin from 'audio-app/mixins/search';
 
-export default DS.Model.extend(modelMixin, {
+export default DS.Model.extend(modelMixin, searchMixin, {
     permission: DS.attr('string'),
     isLocalOnly: DS.attr('boolean', {
         defaultValue: false
@@ -11,8 +12,8 @@ export default DS.Model.extend(modelMixin, {
         defaultValue: []
     }),
     totalTracks: DS.attr('number'),
-    thumbnail: Ember.computed('trackIds.firstObject', 'fileSystem.tracks.[]', function () {
-        var tracks = this.get('fileSystem.tracks'),
+    thumbnail: Ember.computed('trackIds.firstObject', 'fileSystem.tracks.[]', function() {
+        let tracks = this.get('fileSystem.tracks'),
             firstTrackId,
             thumbnail;
 
@@ -24,8 +25,8 @@ export default DS.Model.extend(modelMixin, {
 
         return thumbnail;
     }),
-    numberOfTracks: Ember.computed('trackIds.length', 'totalTracks', function () {
-        var numberOfTracks = this.get('totalTracks');
+    numberOfTracks: Ember.computed('trackIds.length', 'totalTracks', function() {
+        let numberOfTracks = this.get('totalTracks');
 
         if (!numberOfTracks) {
             numberOfTracks = this.get('trackIds.length');
@@ -33,28 +34,28 @@ export default DS.Model.extend(modelMixin, {
 
         return numberOfTracks;
     }),
-    isSaved: Ember.computed('fileSystem.tracks.[]', function () {
+    isSaved: Ember.computed('fileSystem.tracks.[]', function() {
         return this.get('fileSystem.collectionIds').contains(this.get('id'));
     }),
-    isReadOnly: Ember.computed('permission', function () {
+    isReadOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
     }),
-    isPushOnly: Ember.computed('permission', function () {
+    isPushOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'push-only';
     }),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
-    isQueue: Ember.computed('id', function () {
+    isQueue: Ember.computed('id', function() {
         return this.get('id') === 'queue';
     }),
     nextPageToken: null,
-    download: function (nextPageToken) {
+    download: function(nextPageToken) {
         this.set('nextPageToken', nextPageToken);
 
         this.saveNextTracks();
         this.downloadNextTrack(0);
     },
-    saveNextTracks: function () {
-        var nextPageToken = this.get('nextPageToken'),
+    saveNextTracks: function() {
+        let nextPageToken = this.get('nextPageToken'),
             options;
 
         if (!nextPageToken) {
@@ -64,10 +65,10 @@ export default DS.Model.extend(modelMixin, {
                 nextPageToken: nextPageToken
             };
 
-            this.find('track', options, true).then(function (tracks) {
+            this.find('track', options, true).then(function(tracks) {
                 this.get('trackIds').pushObjects(tracks.mapBy('id'));
 
-                tracks.forEach(function (track) {
+                tracks.forEach(function(track) {
                     track.save();
                 });
 
@@ -75,22 +76,22 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }
     },
-    downloadNextTrack: function (index) {
-        var trackId = this.get('trackIds').objectAt(index),
+    downloadNextTrack: function(index) {
+        let trackId = this.get('trackIds').objectAt(index),
             track;
 
         if (trackId) {
             track = this.get('store').peekRecord('track', trackId);
 
             if (track.get('isDownloadable')) {
-                track.download().then(function () {
+                track.download().then(function() {
                     this.downloadNextTrack(index + 1);
                 }.bind(this));
             }
         }
     },
-    pushTrackById: function (trackId) {
-        var track = this.get('store').peekRecord('track', trackId);
+    pushTrackById: function(trackId) {
+        let track = this.get('store').peekRecord('track', trackId);
 
         this.get('trackIds').pushObject(trackId);
         this.save();
@@ -99,8 +100,8 @@ export default DS.Model.extend(modelMixin, {
             track.save();
         }
     },
-    removeTrackById: function (trackId) {
-        var track = this.get('store').peekRecord('track', trackId);
+    removeTrackById: function(trackId) {
+        let track = this.get('store').peekRecord('track', trackId);
 
         this.get('trackIds').removeObject(trackId);
         this.save();
@@ -109,8 +110,8 @@ export default DS.Model.extend(modelMixin, {
             track.destroyRecord();
         }
     },
-    destroy: function () {
-        this.get('trackIds').forEach(function (trackId) {
+    destroy: function() {
+        this.get('trackIds').forEach(function(trackId) {
             this.removeTrackById(trackId);
         }.bind(this));
 

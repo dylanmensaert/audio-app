@@ -1,77 +1,52 @@
-{{!-- {{#c-mdl-layout transitionToRoute='transitionTo'}}
-  {{#if selectedTracks}}
-      {{c-tracks-bar tracks=selectedTracks transitionToCollections='transitionTo' deselect='toggleIsSelected'}}
-  {{else if utils.hasPreviousTransition}}
-      {{c-transition-bar title='Recommended' selectAll='selectAll'}}
-  {{/if}}
+{{#c-nav}}
+  <div class="brand-logo truncate" style="width: calc(100% - 115px);">
+    Recommended
+  </div>
+{{/c-nav}}
 
-  {{#if utils.hasPreviousTransition}}
-      <header class="mdl-layout__header hidden" />
-  {{else}}
-   {{c-menu-bar title='Recommended' selectAll='selectAll' classNameBindings='selectedTracks.length:hidden'}}
-  {{/if}}
+{{#if lastHistoryTracks}}
+  <div class="mdl-grid my-grid-title">
+    <h4>
+        History
+    </h4>
+  </div>
+  <div class="mdl-grid my-grid">
+    {{#each sortedLastHistoryTracks as |track|}}
+        {{c-track model=track showQueued=track.isQueued}}
 
-  <main class="mdl-layout__content mdl-color--grey-100">
-      {{#if showNotFound}}
-        <div class="mdl-grid my-grid-panel">
-          No records found
+        <div class="my-separator">
+            <div class="my-line" />
         </div>
-      {{/if}}
+    {{/each}}
 
-      {{#if tracks.isPending}}
-        <div class="my-loading-bar">
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-        </div>
-      {{/if}}
+    {{#link-to 'collection.index' 'history'}}
+      <i class="material-icons">
+        expand_more
+      </i>
+    {{/link-to}}
+  </div>
+{{/if}}
+{{#each relatedByTracks as |relatedByTrack|}}
+  <div class="mdl-grid my-grid-title">
+    <h5>
+        {{relatedByTrack.track.name}}
+    </h5>
+  </div>
 
-      {{#if lastHistoryTracks}}
-        <div class="mdl-grid my-grid-title">
-          <h4>
-              History
-          </h4>
-        </div>
-
-        <div class="mdl-grid my-grid">
-            {{#each sortedLastHistoryTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued}}
-
-                <div class="my-separator">
-                    <div class="my-line" />
-                </div>
-            {{/each}}
-
-            {{#link-to 'collection.index' 'history' class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
-              <i class="material-icons">
-                expand_more
-              </i>
-            {{/link-to }}
-        </div>
-      {{/if}}
-
-      {{#each relatedByTracks as |relatedByTrack|}}
-        <div class="mdl-grid my-grid-title">
-          <h5>
-              {{relatedByTrack.track.name}}
-          </h5>
-        </div>
-
-        <div class="mdl-grid my-grid">
-            {{#each relatedByTrack.relatedTracks as |track|}}
-                {{c-track model=track action='play' swipeLeft='queueSingle' swipeRight='downloadSingle' showQueued=track.isQueued toggleIsSelected='toggleIsSelected'}}
-
-                <div class="my-separator">
-                    <div class="my-line" />
-                </div>
-            {{/each}}
-
-            {{#link-to 'track.list' (query-params relatedVideoId=relatedByTrack.track.id) class='mdl-button mdl-js-button mdl-js-ripple-effect my-more-btn'}}
-              <i class="material-icons">
-                expand_more
-              </i>
-            {{/link-to }}
-        </div>
+  <div class="mdl-grid my-grid">
+      {{#each relatedByTrack.relatedTracks as |track|}}
+          {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
+          <div class="my-separator">
+              <div class="my-line" />
+          </div>
       {{/each}}
-  </main>
 
-  {{c-audio-player play='play' pause='pause' previous='previous' next='next'}}
-{{/c-mdl-layout}} --}}
+      {{#link-to 'track.list' (query-params relatedVideoId=relatedByTrack.track.id)}}
+        <i class="material-icons">
+          expand_more
+        </i>
+      {{/link-to }}
+  </div>
+{{/each}}
+
+{{!-- {{outlet}} --}}

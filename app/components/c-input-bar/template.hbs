@@ -1,21 +1,11 @@
-<label {{action 'clearInput'}} class="mdl-button mdl-js-button mdl-button--icon my-spaced-icon">
-  <i class="material-icons">
-    arrow_back
-  </i>
-</label>
-
-<div class="mdl-textfield mdl-js-textfield">
-  {{c-mdl-input value=(mut value) action='done'}}
-
-  <label class="mdl-textfield__label"></label>
+<div class="my-back" {{action 'clear'}}>
+  <i class="material-icons">arrow_back</i>
 </div>
 
-<div class="mdl-layout-spacer"></div>
+{{c-input value=value action='done'}}
 
 {{#if value}}
-  {{#c-mdl tagName='button' action='done' class='mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon'}}
-    <i class="material-icons">
-      done
-    </i>
-  {{/c-mdl}}
+  <div class="my-clear" {{action 'done'}}>
+    <i class="material-icons">done</i>
+  </div>
 {{/if}}

@@ -1,0 +1,41 @@
+{{#if hasSelected}}
+<nav>
+  <div class="nav-wrapper">
+    <span class="new badge" data-badge={{givenTotal}} />
+
+    <ul class="right">
+      <li>
+        {{#if isEverySaved}}
+          <a href="javascript:void(0)" {{action 'delete'}}>
+              <span class="material-icons">delete</span>
+          </a>
+        {{else if isEveryUnsaved}}
+          <a href="javascript:void(0)" {{action 'save'}}>
+              <span class="material-icons">shop_two</span>
+          </a>
+        {{else}}
+          <a href="javascript:void(0)">
+              &nbsp;
+          </a>
+        {{/if}}
+      </li>
+
+      <li>
+          <a href="javascript:void(0)" {{action 'deselect'}}>
+              <span class="material-icons">deselect</span>
+          </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{{/if}}
+
+{{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
+  {{#each collections as |collection|}}
+      {{c-collection model=collection}}
+  {{/each}}
+
+  {{#if isPending}}
+    {{c-spinner}}
+  {{/if}}
+{{/c-endless-scroll}}

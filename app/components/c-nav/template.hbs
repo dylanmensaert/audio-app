@@ -1,8 +1,8 @@
 <ul id="slide-out" class="side-nav fixed">
-  {{c-menu-item value='Search' route='index' icon='whatshot'}}
-  {{c-menu-item value='My Collections' route='collection.my' icon='loyalty'}}
-  {{c-menu-item value='Download Later' route='collection.index' model='download-later' icon='queue_music'}}
-  {{c-menu-item value='History' route='collection.index' model='history' icon='library_books'}}
+  {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
+  {{c-menu-item value='My Collections' route='collections' icon='loyalty'}}
+  {{c-menu-item value='Download Later' route='collection' model='download-later' icon='queue_music'}}
+  {{c-menu-item value='History' route='collection' model='history' icon='library_books'}}
 
   <li>
     <div class="divider"></div>
@@ -17,6 +17,14 @@
           <i class="material-icons">menu</i>
       </a>
 
-      {{yield}}
+      <ul class="right">
+        {{yield}}
+
+        <li>
+          {{#link-to 'search.tracks' }}
+            <i class="material-icons">search</i>
+          {{/link-to}}
+        </li>
+      </ul>
     </div>
 </nav>

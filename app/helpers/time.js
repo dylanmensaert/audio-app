@@ -2,7 +2,7 @@
 import Ember from "ember";
 
 export default Ember.Helper.helper(function(parameters) {
-    var seconds = parameters[0];
+    let seconds = parameters[0];
 
     if (!seconds) {
         seconds = 0;

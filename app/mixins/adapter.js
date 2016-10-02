@@ -5,14 +5,14 @@ import apiKey from 'api-key';
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     buildUrlByEndpoint: function(endpoint, options) {
-        var url = domainData.searchName + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + apiKey;
+        let url = domainData.searchName + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + apiKey;
 
-        if(options) {
-            if(options.maxResults) {
+        if (options) {
+            if (options.maxResults) {
                 url += '&maxResults=' + options.maxResults;
             }
 
-            if(options.nextPageToken) {
+            if (options.nextPageToken) {
                 url += '&pageToken=' + options.nextPageToken;
             }
         }
@@ -20,16 +20,16 @@ export default Ember.Mixin.create({
         return url;
     },
     buildUrlByType: function(type, options) {
-        var url = this.buildUrlByEndpoint('search', options) + '&order=viewCount&type=' + type;
+        let url = this.buildUrlByEndpoint('search', options) + '&order=viewCount&type=' + type;
 
-        if(options.query) {
+        if (options.query) {
             url += '&q=' + options.query;
         }
 
         return url;
     },
     findRecord: function(store, type, id, endpoint) {
-        var url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;
+        let url = this.buildUrlByEndpoint(endpoint) + '&id=' + id;
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
             Ember.$.getJSON(url).then(function(payload) {
@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
         }.bind(this));
     },
     query: function(store, type, options) {
-        var url = this.buildUrl(type.modelName, null, null, 'query', options);
+        let url = this.buildUrl(type.modelName, null, null, 'query', options);
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
             Ember.$.getJSON(url).then(function(payload) {
@@ -55,16 +55,16 @@ export default Ember.Mixin.create({
         });
     },
     updateRecord: function(store, type, snapshot) {
-        var fileSystem = this.get('fileSystem'),
+        let fileSystem = this.get('fileSystem'),
             snippetIds = fileSystem.get(type.modelName + 'Ids');
 
-        if(!snippetIds.contains(snapshot.id)) {
+        if (!snippetIds.contains(snapshot.id)) {
             snippetIds.pushObject(snapshot.id);
         }
 
         return new Ember.RSVP.Promise(function(resolve) {
             fileSystem.save().then(function() {
-                var response = {
+                let response = {
                     deserializeSingleRecord: true,
                     items: [{
                         id: snapshot.id
@@ -76,13 +76,13 @@ export default Ember.Mixin.create({
         });
     },
     deleteRecord: function(store, type, snapshot) {
-        var fileSystem = this.get('fileSystem');
+        let fileSystem = this.get('fileSystem');
 
         fileSystem.get(type.modelName + 'Ids').removeObject(snapshot.id);
 
         return new Ember.RSVP.Promise(function(resolve) {
             fileSystem.save().then(function() {
-                var response = {
+                let response = {
                     deserializeSingleRecord: true,
                     items: [{
                         id: snapshot.id

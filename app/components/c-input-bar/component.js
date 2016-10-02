@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['mdl-layout__header-row', 'my-header-bar', 'my-edit-bar'],
+    classNames: ['my-input-bar'],
     value: null,
     actions: {
-        clearInput: function () {
+        clear: function() {
             this.set('value', null);
         },
-        done: function () {
+        done: function() {
             this.sendAction('done');
         }
     }

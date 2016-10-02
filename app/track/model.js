@@ -8,7 +8,7 @@ import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
 
 function signateUrl(url) {
-    var host = 'http://www.youtube-mp3.org';
+    let host = 'http://www.youtube-mp3.org';
 
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
@@ -45,23 +45,23 @@ export default DS.Model.extend(modelMixin, {
         return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
     }),
     isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds', function() {
-        var store = this.get('store'),
+        let store = this.get('store'),
             id = this.get('id');
 
         return this.get('fileSystem.collectionIds').any(function(collectionId) {
-            var collection = store.peekRecord('collection', collectionId);
+            let collection = store.peekRecord('collection', collectionId);
 
             return collection.get('trackIds').contains(id);
         });
     }),
     createFilePath: function(type, extension) {
-        var fileName = this.get('name') + '.' + extension,
+        let fileName = this.get('name') + '.' + extension,
             directory = Inflector.inflector.pluralize(type);
 
         return directory + '/' + fileName;
     },
     fetchDownload: function() {
-        var videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
+        let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
             url;
 
         url = '/a/pushItem/?';
@@ -105,7 +105,7 @@ export default DS.Model.extend(modelMixin, {
         }.bind(this));
     },
     insert: function() {
-        var audio = this.createFilePath('audio', this.get('extension')),
+        let audio = this.createFilePath('audio', this.get('extension')),
             currentThumbnail = this.get('thumbnail'),
             thumbnail = this.createFilePath('thumbnail', extractExtension(currentThumbnail)),
             promises;
@@ -137,7 +137,7 @@ export default DS.Model.extend(modelMixin, {
         }.bind(this));
     },
     downloadSource: function(url, source) {
-        var fileSystem = this.get('fileSystem'),
+        let fileSystem = this.get('fileSystem'),
             xhr = new XMLHttpRequest(),
             response;
 
@@ -165,7 +165,7 @@ export default DS.Model.extend(modelMixin, {
         });
     },
     remove: function() {
-        var fileSystem = this.get('fileSystem'),
+        let fileSystem = this.get('fileSystem'),
             promises;
 
         promises = {

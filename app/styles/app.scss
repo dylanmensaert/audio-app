@@ -12,6 +12,18 @@ footer {
     }
 }
 
+@mixin input-icon {
+    position: absolute;
+    /* TODO: remove top? */
+    top: 13px;
+    i {
+        font-size: 31px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .my-audio-player {
     position: fixed;
     bottom: 0;
@@ -37,10 +49,14 @@ footer {
     text-align: center;
 }
 
-.my-autocomplete {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+.my-input-bar {
     position: relative;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     width: 100%;
+    padding-left: 31px;
+}
+
+.my-autocomplete {
     ul {
         position: absolute;
         width: 100%;
@@ -74,13 +90,64 @@ footer {
 }
 
 .my-clear {
-    position: absolute;
+    @include input-icon;
     right: 6px;
-    top: 13px;
-    i {
-        font-size: 31px;
-    }
-    &:hover {
-        cursor: pointer;
-    }
+}
+
+.my-back {
+    @include input-icon;
+    left: 6px;
+}
+
+.my-track-draggable {
+    position: absolute;
+    background-color: rgb(245, 245, 245);
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.my-track-part {
+    display: table-cell;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.my-track-body {
+    @extend .my-track-part;
+    position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100%;
+}
+
+.my-track-middle {
+    @extend .my-track-part;
+    vertical-align: middle;
+}
+
+.my-static-image {
+    width: 120px;
+    height: 68px;
+}
+
+.my-track {
+    position: relative;
+    width: 100%;
+}
+
+.my-right {
+    text-align: right;
+}
+
+.my-inner-image {
+    width: 100%;
+    position: absolute;
+}
+
+.my-outer-image {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-color: #e1e1e1;
 }
