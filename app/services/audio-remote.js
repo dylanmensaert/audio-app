@@ -54,9 +54,9 @@ export default Ember.Service.extend({
 
         if (track) {
             id = track.get('id');
-            history = store.peekRecord('collection', 'history');
+            history = store.peekRecord('playlist', 'history');
             historyTrackIds = history.get('trackIds');
-            queue = store.peekRecord('collection', 'queue');
+            queue = store.peekRecord('playlist', 'queue');
             queueTrackIds = queue.get('trackIds');
             playedTrackIds = this.get('utils.playedTrackIds');
 
@@ -110,7 +110,7 @@ export default Ember.Service.extend({
             trackId,
             previousTrack;
 
-        queueTrackIds = store.peekRecord('collection', 'queue').get('trackIds');
+        queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds');
         currentIndex = queueTrackIds.indexOf(this.get('audioPlayer.track.id'));
 
         if (currentIndex > 0) {
@@ -126,7 +126,7 @@ export default Ember.Service.extend({
     },
     next: function() {
         let store = this.get('store'),
-            queueTrackIds = store.peekRecord('collection', 'queue').get('trackIds'),
+            queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds'),
             trackId,
             nextTrack,
             unplayedTrackIds;

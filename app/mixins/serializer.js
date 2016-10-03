@@ -1,8 +1,27 @@
 import Ember from 'ember';
 import domainData from 'domain-data';
 
+const sizes = ['maxres', 'standard', 'high', 'medium', 'default'];
+
 function convertImageUrl(url) {
     return domainData.imageName + new URL(url).pathname;
+}
+
+function getUrlFor(thumbnails, index) {
+    let image = thumbnails[sizes.objectAt(index)],
+        url;
+
+    if (image) {
+        url = image.url;
+    } else {
+        index += 1;
+
+        if (sizes.get('length') > index) {
+            url = getUrlFor(thumbnails, index);
+        }
+    }
+
+    return url;
 }
 
 export default Ember.Mixin.create({
@@ -47,20 +66,8 @@ export default Ember.Mixin.create({
             delete snippet.id;
         } else {
             let thumbnails = item.snippet.thumbnails,
-                url,
+                url = getUrlFor(thumbnails, 0),
                 thumbnail;
-
-            if (thumbnails.maxres && thumbnails.maxres.url) {
-                url = thumbnails.maxres.url;
-            } else if (thumbnails.maxres && thumbnails.standard.url) {
-                url = thumbnails.standard.url;
-            } else if (thumbnails.maxres && thumbnails.high.url) {
-                url = thumbnails.high.url;
-            } else if (thumbnails.maxres && thumbnails.medium.url) {
-                url = thumbnails.medium.url;
-            } else if (thumbnails.maxres && thumbnails.default.url) {
-                url = thumbnails.default.url;
-            }
 
             if (url) {
                 thumbnail = convertImageUrl(url);

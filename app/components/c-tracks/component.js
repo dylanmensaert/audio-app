@@ -4,6 +4,7 @@ import modelsMixin from 'audio-app/mixins/c-models';
 export default Ember.Component.extend(modelsMixin, {
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
+    isPending: null,
     isEveryDownloadable: Ember.computed('models.@each.isDownloaded', 'models.length', function() {
         let downloadableTracks = this.get('models').filterBy('isDownloadable');
 
@@ -39,7 +40,7 @@ export default Ember.Component.extend(modelsMixin, {
             });
         },
         queue: function() {
-            let queue = this.get('store').peekRecord('collection', 'queue'),
+            let queue = this.get('store').peekRecord('playlist', 'queue'),
                 trackIds = queue.get('trackIds');
 
             this.get('models').forEach(function(track) {
@@ -50,12 +51,12 @@ export default Ember.Component.extend(modelsMixin, {
 
             this.get('utils').showMessage('Added to queue');
         },
-        transitionToCollections: function() {
+        transitionToPlaylists: function() {
             let utils = this.get('utils');
 
             utils.set('selectedTrackIds', this.get('models').mapBy('id'));
 
-            utils.transitionToRoute('track.collections');
+            utils.transitionToRoute('track.playlists');
         }
     }
 });

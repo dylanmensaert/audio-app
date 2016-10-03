@@ -3,7 +3,7 @@ import serializerMixin from 'audio-app/mixins/serializer';
 
 export default DS.Serializer.extend(serializerMixin, {
     pushPayload: function(store, payload) {
-        this._super(store, payload, 'collection');
+        this._super(store, payload, 'playlist');
     },
     normalize: function(store, typeClass, item) {
         let id;

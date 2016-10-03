@@ -38,20 +38,20 @@ export default DS.Model.extend(modelMixin, {
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
-    isQueued: Ember.computed('collections.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('collection', 'queue').get('trackIds').includes(this.get('id'));
+    isQueued: Ember.computed('playlists.@each.trackIds', 'id', function() {
+        return this.get('store').peekRecord('playlist', 'queue').get('trackIds').includes(this.get('id'));
     }),
-    isDownloadLater: Ember.computed('collections.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('collection', 'download-later').get('trackIds').includes(this.get('id'));
+    isDownloadLater: Ember.computed('playlists.@each.trackIds', 'id', function() {
+        return this.get('store').peekRecord('playlist', 'download-later').get('trackIds').includes(this.get('id'));
     }),
-    isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds', function() {
+    isReferenced: Ember.computed('id', 'fileSystem.playlistIds', 'playlists.@each.trackIds', function() {
         let store = this.get('store'),
             id = this.get('id');
 
-        return this.get('fileSystem.collectionIds').any(function(collectionId) {
-            let collection = store.peekRecord('collection', collectionId);
+        return this.get('fileSystem.playlistIds').any(function(playlistId) {
+            let playlist = store.peekRecord('playlist', playlistId);
 
-            return collection.get('trackIds').includes(id);
+            return playlist.get('trackIds').includes(id);
         });
     }),
     createFilePath: function(type, extension) {
@@ -122,7 +122,7 @@ export default DS.Model.extend(modelMixin, {
                 this.set('audio', hash.audio);
                 this.set('thumbnail', hash.thumbnail);
 
-                this.get('fileSystem.collections').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
+                this.get('fileSystem.playlists').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
 
                 if (!this.get('isSaved')) {
                     this.get('fileSystem.tracks').pushObject(this);

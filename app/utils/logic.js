@@ -1,5 +1,6 @@
 export default {
     maxResults: 50,
+    timeToRender: 300,
     sortByName: function(model, other) {
         let name = model.get('name'),
             otherName = other.get('name'),

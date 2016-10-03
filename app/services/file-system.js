@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 let lastWriter;
 // TODO: implement correctly
-/*import Collection from 'audio-app/collection/model';
+/*import Playlist from 'audio-app/playlist/model';
 import Track from 'audio-app/track/model';*/
 
 window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
@@ -32,7 +32,7 @@ function write(resolve) {
 export default Ember.Service.extend({
     store: Ember.inject.service(),
     instance: null,
-    collectionIds: null,
+    playlistIds: null,
     trackIds: null,
     playingTrackId: null,
     downloadLater: false,
@@ -108,7 +108,7 @@ export default Ember.Service.extend({
                 }, function() {
                     deserialize(JSON.stringify({
                         tracks: [],
-                        collections: [{
+                        playlists: [{
                             id: 'download-later',
                             name: 'Download later',
                             isLocalOnly: true,
@@ -142,23 +142,23 @@ export default Ember.Service.extend({
         let store = this.get('store'),
             parsedJSON = JSON.parse(json);
 
-        parsedJSON.collectionIds = parsedJSON.collections.map(function(collection) {
-            let id = collection.id;
+        parsedJSON.playlistIds = parsedJSON.playlists.map(function(playlist) {
+            let id = playlist.id;
 
-            delete collection.id;
+            delete playlist.id;
 
             store.push({
                 data: {
-                    type: 'collection',
+                    type: 'playlist',
                     id: id,
-                    attributes: collection
+                    attributes: playlist
                 }
             });
 
             return id;
         });
 
-        delete parsedJSON.collections;
+        delete parsedJSON.playlists;
 
         parsedJSON.trackIds = parsedJSON.tracks.map(function(track) {
             let id = track.id;
@@ -186,8 +186,8 @@ export default Ember.Service.extend({
                 playingTrackId: this.get('playingTrackId')
             };
 
-        data.collections = this.get('collectionIds').map(function(id) {
-            return store.peekRecord('collection', id).serialize();
+        data.playlists = this.get('playlistIds').map(function(id) {
+            return store.peekRecord('playlist', id).serialize();
         });
 
         data.tracks = this.get('trackIds').map(function(id) {

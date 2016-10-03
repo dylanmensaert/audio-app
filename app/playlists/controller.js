@@ -1,23 +1,23 @@
 import Ember from 'ember';
-import logic from 'logic';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend({
-    collections: Ember.computed('fileSystem.collectionIds.[]', 'collections.[]', function() {
+    playlists: Ember.computed('fileSystem.playlistIds.[]', 'playlists.[]', function() {
         let store = this.store,
-            collections = [];
+            playlists = [];
 
-        this.get('fileSystem.collectionIds').forEach(function(collectionId) {
-            let collection = store.peekRecord('collection', collectionId);
+        this.get('fileSystem.playlistIds').forEach(function(playlistId) {
+            let playlist = store.peekRecord('playlist', playlistId);
 
-            if (!collection.get('permission')) {
-                collections.pushObject(collection);
+            if (!playlist.get('permission')) {
+                playlists.pushObject(playlist);
             }
         });
 
-        return collections;
+        return playlists;
     }),
-    sortedCollections: Ember.computed.sort('collections', function(collection, other) {
-        return logic.sortByName(collection, other);
+    sortedPlaylists: Ember.computed.sort('playlists', function(playlist, other) {
+        return logic.sortByName(playlist, other);
     }),
     isCreatedMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
         let store = this.get('store'),
             randomId = logic.generateRandomId();
 
-        while (store.peekRecord('collection', randomId)) {
+        while (store.peekRecord('playlist', randomId)) {
             randomId = logic.generateRandomId();
         }
 
@@ -40,21 +40,21 @@ export default Ember.Controller.extend({
                 store = this.store,
                 id;
 
-            if (store.peekRecord('collection', name)) {
-                utils.showMessage('Collection already exists');
+            if (store.peekRecord('playlist', name)) {
+                utils.showMessage('Playlist already exists');
             } else {
                 id = this.createUniqueId();
 
-                store.pushPayload('collection', {
+                store.pushPayload('playlist', {
                     id: id,
                     name: name,
                     isLocalOnly: true
                 });
 
-                store.peekRecord('collection', id).save().then(function() {
+                store.peekRecord('playlist', id).save().then(function() {
                     this.set('name', null);
 
-                    utils.showMessage('Saved new collection');
+                    utils.showMessage('Saved new playlist');
                 }.bind(this));
             }
         },
@@ -64,9 +64,9 @@ export default Ember.Controller.extend({
     }
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
-        if (!this.get('collections.length')) {
+        if (!this.get('playlists.length')) {
             this.get('utils').showMessage('No songs found');
         }
-    }.observes('collections.length'),*/
+    }.observes('playlists.length'),*/
     /*TODO: Implement another way?*/
 });

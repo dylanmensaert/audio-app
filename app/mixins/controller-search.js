@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import findControllerMixin from 'audio-app/mixins/controller-find';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create(findControllerMixin, {
     init: function() {
@@ -17,7 +18,7 @@ export default Ember.Mixin.create(findControllerMixin, {
             this.reset();
 
             if (!Ember.isNone(this.get('search.query'))) {
-                this.updateModels();
+                this.start();
             }
         }
     })

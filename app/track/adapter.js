@@ -7,13 +7,13 @@ export default DS.Adapter.extend(adapterMixin, {
     query: function(store, type, options) {
         return new Ember.RSVP.Promise(function(resolve, reject) {
             this._super(store, type, options).then(function(payload) {
-                let collection;
+                let playlist;
 
-                if (options.collectionId) {
-                    collection = store.peekRecord('collection', options.collectionId);
+                if (options.playlistId) {
+                    playlist = store.peekRecord('playlist', options.playlistId);
 
-                    if (collection && !collection.get('totalTracks')) {
-                        collection.set('totalTracks', payload.pageInfo.totalResults);
+                    if (playlist && !playlist.get('totalTracks')) {
+                        playlist.set('totalTracks', payload.pageInfo.totalResults);
                     }
                 }
 
@@ -24,10 +24,10 @@ export default DS.Adapter.extend(adapterMixin, {
     buildUrl: function(modelName, id, snapshot, requestType, options) {
         let url;
 
-        if (options.collectionId) {
+        if (options.playlistId) {
             options.maxResults = logic.maxResults;
 
-            url = this.buildUrlByEndpoint('playlistItems', options) + '&playlistId=' + options.collectionId;
+            url = this.buildUrlByEndpoint('playlistItems', options) + '&playlistId=' + options.playlistId;
         } else {
             url = this.buildUrlByType('video', options);
 

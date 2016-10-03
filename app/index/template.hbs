@@ -19,13 +19,14 @@
         </div>
     {{/each}}
 
-    {{#link-to 'collection.index' 'history'}}
+    {{#link-to 'playlist' 'history'}}
       <i class="material-icons">
         expand_more
       </i>
     {{/link-to}}
   </div>
 {{/if}}
+
 {{#each relatedByTracks as |relatedByTrack|}}
   <div class="mdl-grid my-grid-title">
     <h5>
@@ -36,17 +37,16 @@
   <div class="mdl-grid my-grid">
       {{#each relatedByTrack.relatedTracks as |track|}}
           {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
+
           <div class="my-separator">
               <div class="my-line" />
           </div>
       {{/each}}
 
-      {{#link-to 'track.list' (query-params relatedVideoId=relatedByTrack.track.id)}}
+      {{#link-to 'track' relatedByTrack.track}}
         <i class="material-icons">
           expand_more
         </i>
       {{/link-to }}
   </div>
 {{/each}}
-
-{{!-- {{outlet}} --}}

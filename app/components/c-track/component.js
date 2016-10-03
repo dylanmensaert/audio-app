@@ -83,14 +83,14 @@ export default Ember.Component.extend(modelMixin, {
 
         if (track.get('isDownloadable')) {
             if (!!connection.isMobile()) {
-                trackIds = this.get('store').peekRecord('collection', 'download-later').get('trackIds');
+                trackIds = this.get('store').peekRecord('playlist', 'download-later').get('trackIds');
                 id = track.get('id');
 
                 if (!trackIds.includes(id)) {
                     trackIds.pushObject(id);
                 }
 
-                utils.showMessage('Added to collection: Download later');
+                utils.showMessage('Added to playlist: Download later');
             } else {
                 track.download().then(function() {
 
@@ -104,7 +104,7 @@ export default Ember.Component.extend(modelMixin, {
         }
     },
     swipeRight: function(track) {
-        let queue = this.get('store').peekRecord('collection', 'queue'),
+        let queue = this.get('store').peekRecord('playlist', 'queue'),
             trackIds = queue.get('trackIds'),
             utils = this.get('utils');
 

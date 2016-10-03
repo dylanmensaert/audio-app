@@ -37,6 +37,9 @@ export default Ember.Mixin.create({
     actions: {
         deselect: function() {
             this.get('models').setEach('isSelected', false);
+        },
+        didScrollToBottom: function() {
+            this.sendAction('didScrollToBottom');
         }
     }
 });

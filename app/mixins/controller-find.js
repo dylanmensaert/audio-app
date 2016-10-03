@@ -4,7 +4,7 @@ import connection from 'connection';
 import searchMixin from 'audio-app/mixins/search';
 
 export default Ember.Mixin.create(searchMixin, {
-    isPending: true,
+    isPending: false,
     isLocked: false,
     nextPageToken: null,
     searchOnline: function() {
@@ -33,9 +33,14 @@ export default Ember.Mixin.create(searchMixin, {
     },
     reset: function() {
         this.set('nextPageToken', null);
-        this.set('isPending', true);
+        this.set('isPending', false);
         this.set('isLocked', false);
         this.set('models', []);
+    },
+    start: function() {
+        this.set('isPending', true);
+
+        Ember.run.later(this, this.updateModels, logic.timeToRender);
     },
     sortedModels: Ember.computed.sort('models', function(model, other) {
         let models = this.get('models'),

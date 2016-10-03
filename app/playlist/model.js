@@ -38,7 +38,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return numberOfTracks;
     }),
     isSaved: Ember.computed('fileSystem.tracks.[]', function() {
-        return this.get('fileSystem.collectionIds').includes(this.get('id'));
+        return this.get('fileSystem.playlistIds').includes(this.get('id'));
     }),
     isReadOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
@@ -63,7 +63,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         if (!nextPageToken) {
             options = {
-                collectionId: this.get('id'),
+                playlistId: this.get('id'),
                 maxResults: logic.maxResults,
                 nextPageToken: nextPageToken
             };

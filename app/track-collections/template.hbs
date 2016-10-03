@@ -30,23 +30,23 @@
   <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-grid my-grid-title">
       <h5>
-          Which collections should contain these tracks?
+          Which playlists should contain these tracks?
       </h5>
     </div>
 
     {{#if showNotFound}}
       <div class="mdl-grid">
-        No collections found
+        No playlists found
       </div>
     {{/if}}
 
-    {{#if collections}}
+    {{#if playlists}}
       <div class="mdl-grid my-grid">
-        {{#each sortedCollections as |collection|}}
-          {{c-collection model=collection action='transitionTo' changeSelect='changeSelect'}}
+        {{#each sortedPlaylists as |playlist|}}
+          {{c-playlist model=playlist action='transitionTo' changeSelect='changeSelect'}}
 
-          <div class="my-collection-separator">
-              <div class="my-collection-line" />
+          <div class="my-playlist-separator">
+              <div class="my-playlist-line" />
           </div>
         {{/each}}
       </div>

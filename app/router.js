@@ -9,14 +9,18 @@ const Router = Ember.Router.extend({
 Router.map(function() {
     this.route('search', function() {
         this.route('tracks');
-        this.route('collections');
+        this.route('playlists');
     });
 
-    this.route('collection', {
-        path: '/:collection_id'
+    this.route('playlist', {
+        path: '/:playlist_id'
     });
 
-    this.route('collections');
+    this.route('track', {
+        path: '/:track_id'
+    });
+
+    this.route('playlists');
 
     this.route('settings');
 });

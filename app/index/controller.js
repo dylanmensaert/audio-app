@@ -1,18 +1,18 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import findControllerMixin from 'audio-app/mixins/controller-find';
+import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
 const lastHistoryTracksLimit = 8;
 
-export default Ember.Controller.extend(findControllerMixin, {
+export default Ember.Controller.extend(searchMixin, {
     showNotFound: Ember.computed('lastHistoryTracks.isPending', 'lastHistoryTracks.length', 'lastHistoryTracks.length', function() {
         return !this.get('lastHistoryTracks.isPending') && !this.get('lastHistoryTracks.length') && !this.get('lastHistoryTracks.length');
     }),
-    lastHistoryTracks: Ember.computed('collections.@each.trackIds', function() {
+    lastHistoryTracks: Ember.computed('playlists.@each.trackIds', function() {
         let store = this.get('store'),
-            historyTrackIds = store.peekRecord('collection', 'history').get('trackIds'),
+            historyTrackIds = store.peekRecord('playlist', 'history').get('trackIds'),
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
 
@@ -51,7 +51,14 @@ export default Ember.Controller.extend(findControllerMixin, {
         }.bind(this));
     }),
     sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
-        return this.sort(this.get('lastHistoryTracks'), track, other, !connection.isMobile());
+        let models = this.get('lastHistoryTracks'),
+            result = -1;
+
+        if (!connection.isMobile()) {
+            result = logic.sortByName(track, other);
+        } else if (models.indexOf(track) > models.indexOf(other)) {
+            result = 1;
+        }
     }),
     selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', function() {
         let selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),

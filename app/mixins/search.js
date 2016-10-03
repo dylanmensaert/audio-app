@@ -16,8 +16,8 @@ export default Ember.Mixin.create({
         } else {
             let snippets;
 
-            if (options.collectionId) {
-                snippets = store.peekRecord('collection', options.collectionId).get('trackIds').map(function(trackId) {
+            if (options.playlistId) {
+                snippets = store.peekRecord('playlist', options.playlistId).get('trackIds').map(function(trackId) {
                     return store.peekRecord('track', trackId);
                 });
             } else {

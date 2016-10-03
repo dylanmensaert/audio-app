@@ -15,7 +15,7 @@ export default Ember.Route.extend({
 
             this.get('audioRemote').connect();
 
-            if (!this.store.peekRecord('collection', 'history').get('trackIds.length')) {
+            if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
                 utils.transitionToRoute('search.tracks');
             }
         }

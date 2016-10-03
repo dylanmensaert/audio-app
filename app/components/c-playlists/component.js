@@ -10,14 +10,14 @@ export default Ember.Component.extend(modelsMixin, {
     }),
     actions: {
         save: function() {
-            this.get('models').forEach(function(collection) {
-                collection.save();
+            this.get('models').forEach(function(playlist) {
+                playlist.save();
             });
         },
         delete: function() {
-            this.get('models').forEach(function(collection) {
-                collection.destroy().then(function() {
-                    collection.set('isSelected', false);
+            this.get('models').forEach(function(playlist) {
+                playlist.destroy().then(function() {
+                    playlist.set('isSelected', false);
                 });
             });
         }

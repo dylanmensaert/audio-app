@@ -7,7 +7,7 @@ export default Ember.Component.extend(modelMixin, {
     classNameBindings: ['model.isSelected:my-active'],
     actions: {
         click: function() {
-            this.sendAction('action', 'collection', this.get('model'));
+            this.sendAction('action', 'playlist', this.get('model'));
         }
     }
 });

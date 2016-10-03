@@ -3,65 +3,65 @@ import findControllerMixin from 'audio-app/mixins/controller-find';
 import connection from 'connection';
 
 export default Ember.Controller.extend(findControllerMixin, {
-    collections: Ember.computed('utils.selectedTrackIds', 'collections.@each.trackIds', function() {
+    playlists: Ember.computed('utils.selectedTrackIds', 'playlists.@each.trackIds', function() {
         let selectedTrackIds = this.get('utils.selectedTrackIds');
 
-        return this.get('store').peekAll('collection').filter(function(collection) {
+        return this.get('store').peekAll('playlist').filter(function(playlist) {
             let isSelected,
-                isReadOnly = collection.get('isReadOnly');
+                isReadOnly = playlist.get('isReadOnly');
 
             if (!isReadOnly) {
                 isSelected = selectedTrackIds.every(function(selectedTrackId) {
-                    return collection.get('trackIds').includes(selectedTrackId);
+                    return playlist.get('trackIds').includes(selectedTrackId);
                 });
 
-                collection.set('isSelected', isSelected);
+                playlist.set('isSelected', isSelected);
             }
 
             return !isReadOnly;
         });
     }),
-    sortedCollections: Ember.computed.sort('collections', function(snippet, other) {
-        return this.sort(this.get('collections'), snippet, other, !connection.isMobile());
+    sortedPlaylists: Ember.computed.sort('playlists', function(snippet, other) {
+        return this.sort(this.get('playlists'), snippet, other, !connection.isMobile());
     }),
     // TODO: Implement - avoid triggering on init?
     /*updateMessage: function() {
-        if (!this.get('collections.length')) {
+        if (!this.get('playlists.length')) {
             this.get('utils').showMessage('No songs found');
         }
-    }.observes('collections.length'),*/
+    }.observes('playlists.length'),*/
     /*TODO: Implement another way?*/
     actions: {
         back: function() {
             let utils = this.get('utils');
 
-            this.get('collections').setEach('isSelected', false);
+            this.get('playlists').setEach('isSelected', false);
 
             utils.get('selectedTrackIds').clear();
 
             utils.back();
         },
-        changeSelect: function(collection) {
+        changeSelect: function(playlist) {
             let utils = this.get('utils'),
                 selectedTrackIds = utils.get('selectedTrackIds'),
-                trackIds = collection.get('trackIds');
+                trackIds = playlist.get('trackIds');
 
-            if (collection.get('isSelected')) {
+            if (playlist.get('isSelected')) {
                 selectedTrackIds.forEach(function(selectedTrackId) {
                     if (!trackIds.includes(selectedTrackId)) {
-                        collection.pushTrackById(selectedTrackId);
+                        playlist.pushTrackById(selectedTrackId);
                     }
                 });
 
-                utils.showMessage('Added to collection');
+                utils.showMessage('Added to playlist');
             } else {
                 selectedTrackIds.forEach(function(selectedTrackId) {
                     if (trackIds.includes(selectedTrackId)) {
-                        collection.removeTrackById(selectedTrackIds);
+                        playlist.removeTrackById(selectedTrackIds);
                     }
                 });
 
-                utils.showMessage('Removed from collection');
+                utils.showMessage('Removed from playlist');
             }
         }
     }

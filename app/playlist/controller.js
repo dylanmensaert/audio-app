@@ -9,7 +9,7 @@ export default Ember.Controller.extend(findControllerMixin, {
         return !this.get('model.isLocalOnly') && this._super();
     },
     setOptions: function(options) {
-        options.collectionId = this.get('model.id');
+        options.playlistId = this.get('model.id');
 
         if (this.searchOnline()) {
             options.maxResults = logic.maxResults;
@@ -35,25 +35,25 @@ export default Ember.Controller.extend(findControllerMixin, {
         return !Ember.isNone(this.get('name'));
     }),
     actions: {
-        // TODO: implement more actions? (every action defined in collections?)
+        // TODO: implement more actions? (every action defined in playlists?)
         download: function() {
-            let collection = this.get('model');
+            let playlist = this.get('model');
 
-            if (collection.get('isSelected')) {
-                collection.download(this.get('nextPageToken'));
+            if (playlist.get('isSelected')) {
+                playlist.download(this.get('nextPageToken'));
             } else {
                 this._super();
             }
         },
-        removeFromCollection: function() {
+        removeFromPlaylist: function() {
             let trackIds = this.get('selectedTracks').mapBy('id'),
                 store = this.get('store'),
-                collection = this.get('model');
+                playlist = this.get('model');
 
             trackIds.forEach(function(trackId) {
                 let track = store.peekRecord('track', trackId);
 
-                collection.removeTrackById(trackId);
+                playlist.removeTrackById(trackId);
 
                 track.set('isSelected', false);
             });
@@ -64,11 +64,11 @@ export default Ember.Controller.extend(findControllerMixin, {
             this.set('name', name);
         },
         save: function() {
-            let collection = this.get('model');
+            let playlist = this.get('model');
 
-            collection.set('name', this.get('name'));
+            playlist.set('name', this.get('name'));
 
-            collection.save();
+            playlist.save();
 
             this.set('name', null);
         }

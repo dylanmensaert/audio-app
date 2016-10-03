@@ -97,14 +97,14 @@ export default Ember.Component.extend({
             this.sendAction('search');
         },
         didFocusOut: function() {
-            if (this.$('.my-clear:hover').length) {
-                this.$('input').focus();
-            } else if (!this.$('ul:hover').length || this.$('.my-back:hover').length) {
+            if (!this.$('ul:hover').length || this.$('.my-back:hover').length) {
                 this.hideSuggestions();
             }
         },
         clear: function() {
             this.set('value', '');
+
+            this.$('input').focus();
         },
         back: function() {
             this.sendAction('back');

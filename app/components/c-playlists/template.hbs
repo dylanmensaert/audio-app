@@ -31,8 +31,8 @@
 {{/if}}
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
-  {{#each collections as |collection|}}
-      {{c-collection model=collection}}
+  {{#each playlists as |playlist|}}
+      {{c-playlist model=playlist}}
   {{/each}}
 
   {{#if isPending}}
