@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 import adapterMixin from 'audio-app/mixins/adapter';
+import logic from 'audio-app/utils/logic';
 
 export default DS.Adapter.extend(adapterMixin, {
     query: function(store, type, options) {
@@ -24,7 +25,7 @@ export default DS.Adapter.extend(adapterMixin, {
         let url;
 
         if (options.collectionId) {
-            options.maxResults = 50;
+            options.maxResults = logic.maxResults;
 
             url = this.buildUrlByEndpoint('playlistItems', options) + '&playlistId=' + options.collectionId;
         } else {

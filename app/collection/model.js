@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import modelMixin from 'audio-app/mixins/model';
 import searchMixin from 'audio-app/mixins/search';
+import logic from 'audio-app/utils/logic';
 
 export default DS.Model.extend(modelMixin, searchMixin, {
     permission: DS.attr('string'),
@@ -9,7 +10,9 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         defaultValue: false
     }),
     trackIds: DS.attr({
-        defaultValue: []
+        defaultValue: function() {
+            return [];
+        }
     }),
     totalTracks: DS.attr('number'),
     thumbnail: Ember.computed('trackIds.firstObject', 'fileSystem.tracks.[]', function() {
@@ -35,7 +38,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return numberOfTracks;
     }),
     isSaved: Ember.computed('fileSystem.tracks.[]', function() {
-        return this.get('fileSystem.collectionIds').contains(this.get('id'));
+        return this.get('fileSystem.collectionIds').includes(this.get('id'));
     }),
     isReadOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
@@ -61,7 +64,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         if (!nextPageToken) {
             options = {
                 collectionId: this.get('id'),
-                maxResults: 50,
+                maxResults: logic.maxResults,
                 nextPageToken: nextPageToken
             };
 

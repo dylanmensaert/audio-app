@@ -86,7 +86,7 @@ export default Ember.Component.extend(modelMixin, {
                 trackIds = this.get('store').peekRecord('collection', 'download-later').get('trackIds');
                 id = track.get('id');
 
-                if (!trackIds.contains(id)) {
+                if (!trackIds.includes(id)) {
                     trackIds.pushObject(id);
                 }
 
@@ -108,7 +108,7 @@ export default Ember.Component.extend(modelMixin, {
             trackIds = queue.get('trackIds'),
             utils = this.get('utils');
 
-        if (!trackIds.contains(track.get('id'))) {
+        if (!trackIds.includes(track.get('id'))) {
             if (track.get('isDownloadable')) {
                 track.download().then(function() {}, function() {
                     // TODO: show error?

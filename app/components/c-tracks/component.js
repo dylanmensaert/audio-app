@@ -43,7 +43,7 @@ export default Ember.Component.extend(modelsMixin, {
                 trackIds = queue.get('trackIds');
 
             this.get('models').forEach(function(track) {
-                if (!trackIds.contains(track.get('id'))) {
+                if (!trackIds.includes(track.get('id'))) {
                     this.queueSingle(trackIds, track);
                 }
             });

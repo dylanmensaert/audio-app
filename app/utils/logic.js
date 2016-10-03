@@ -1,4 +1,5 @@
 export default {
+    maxResults: 50,
     sortByName: function(model, other) {
         let name = model.get('name'),
             otherName = other.get('name'),

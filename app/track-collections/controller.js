@@ -12,7 +12,7 @@ export default Ember.Controller.extend(findControllerMixin, {
 
             if (!isReadOnly) {
                 isSelected = selectedTrackIds.every(function(selectedTrackId) {
-                    return collection.get('trackIds').contains(selectedTrackId);
+                    return collection.get('trackIds').includes(selectedTrackId);
                 });
 
                 collection.set('isSelected', isSelected);
@@ -48,7 +48,7 @@ export default Ember.Controller.extend(findControllerMixin, {
 
             if (collection.get('isSelected')) {
                 selectedTrackIds.forEach(function(selectedTrackId) {
-                    if (!trackIds.contains(selectedTrackId)) {
+                    if (!trackIds.includes(selectedTrackId)) {
                         collection.pushTrackById(selectedTrackId);
                     }
                 });
@@ -56,7 +56,7 @@ export default Ember.Controller.extend(findControllerMixin, {
                 utils.showMessage('Added to collection');
             } else {
                 selectedTrackIds.forEach(function(selectedTrackId) {
-                    if (trackIds.contains(selectedTrackId)) {
+                    if (trackIds.includes(selectedTrackId)) {
                         collection.removeTrackById(selectedTrackIds);
                     }
                 });

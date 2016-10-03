@@ -58,7 +58,7 @@ export default Ember.Mixin.create({
         let fileSystem = this.get('fileSystem'),
             snippetIds = fileSystem.get(type.modelName + 'Ids');
 
-        if (!snippetIds.contains(snapshot.id)) {
+        if (!snippetIds.includes(snapshot.id)) {
             snippetIds.pushObject(snapshot.id);
         }
 

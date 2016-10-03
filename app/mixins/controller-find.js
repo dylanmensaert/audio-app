@@ -10,10 +10,10 @@ export default Ember.Mixin.create(searchMixin, {
     searchOnline: function() {
         return !connection.isMobile();
     },
-    models: [],
+    models: null,
     updateModels: function() {
         let options = {
-            maxResults: 50,
+            maxResults: logic.maxResults,
             nextPageToken: this.get('nextPageToken')
         };
 
@@ -36,8 +36,6 @@ export default Ember.Mixin.create(searchMixin, {
         this.set('isPending', true);
         this.set('isLocked', false);
         this.set('models', []);
-
-        this.updateModels();
     },
     sortedModels: Ember.computed.sort('models', function(model, other) {
         let models = this.get('models'),

@@ -23,7 +23,7 @@ export default DS.Model.extend(modelMixin, {
     isDownloading: false,
     isDownloaded: false,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
-        return this.get('fileSystem.trackIds').contains(this.get('id'));
+        return this.get('fileSystem.trackIds').includes(this.get('id'));
     }),
     isPlaying: Ember.computed('fileSystem.playingTrackId', 'id', function() {
         return this.get('fileSystem.playingTrackId') === this.get('id');
@@ -39,10 +39,10 @@ export default DS.Model.extend(modelMixin, {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
     isQueued: Ember.computed('collections.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('collection', 'queue').get('trackIds').contains(this.get('id'));
+        return this.get('store').peekRecord('collection', 'queue').get('trackIds').includes(this.get('id'));
     }),
     isDownloadLater: Ember.computed('collections.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('collection', 'download-later').get('trackIds').contains(this.get('id'));
+        return this.get('store').peekRecord('collection', 'download-later').get('trackIds').includes(this.get('id'));
     }),
     isReferenced: Ember.computed('id', 'fileSystem.collectionIds', 'collections.@each.trackIds', function() {
         let store = this.get('store'),
@@ -51,7 +51,7 @@ export default DS.Model.extend(modelMixin, {
         return this.get('fileSystem.collectionIds').any(function(collectionId) {
             let collection = store.peekRecord('collection', collectionId);
 
-            return collection.get('trackIds').contains(id);
+            return collection.get('trackIds').includes(id);
         });
     }),
     createFilePath: function(type, extension) {

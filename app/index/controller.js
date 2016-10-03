@@ -31,7 +31,7 @@ export default Ember.Controller.extend(findControllerMixin, {
 
             options = {
                 relatedVideoId: historyTrack.get('id'),
-                maxResults: 50
+                maxResults: logic.maxResults
             };
 
             promise = this.find('track', options, !connection.isMobile());

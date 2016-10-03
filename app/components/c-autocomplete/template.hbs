@@ -11,7 +11,7 @@
 {{/if}}
 
 {{#if showAutoComplete}}
-  <ul>
+  <ul class="z-depth-2">
     {{#each suggestions as |suggestion|}}
       <li {{action 'searchSuggestion' suggestion}} class={{if suggestion.isSelected 'active'}}>
           {{suggestion.value}}

@@ -1,8 +1,8 @@
 import Ember from 'ember';
+import safeStyleMixin from 'audio-app/mixins/safe-style';
 
 // TODO: send action on suggestion click
-export default Ember.TextField.extend({
-    attributeBindings: ['style'],
+export default Ember.TextField.extend(safeStyleMixin, {
     value: null,
     insertNewline: function() {
         this.sendAction('action');

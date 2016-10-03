@@ -1,19 +1,1 @@
-<div class="my-input-bar">
-  {{c-autocomplete search='search' value=value suggestions=suggestions back='back'}}
-</div>
-
-{{#c-tabs style='margin-top: 2px;'}}
-  <li class="tab col s6">
-    {{#link-to 'search.tracks' (query-params query=query)}}
-      Tracks
-    {{/link-to}}
-  </li>
-
-  <li class="tab col s6">
-    {{#link-to 'search.collections' (query-params query=query)}}
-      Collections
-    {{/link-to}}
-  </li>
-{{/c-tabs}}
-
 {{c-collections models=sortedModels}}

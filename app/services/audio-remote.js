@@ -60,7 +60,7 @@ export default Ember.Service.extend({
             queueTrackIds = queue.get('trackIds');
             playedTrackIds = this.get('utils.playedTrackIds');
 
-            if (historyTrackIds.contains(id)) {
+            if (historyTrackIds.includes(id)) {
                 historyTrackIds.removeObject(id);
             }
 
@@ -68,7 +68,7 @@ export default Ember.Service.extend({
 
             history.save();
 
-            if (!queueTrackIds.contains(id)) {
+            if (!queueTrackIds.includes(id)) {
                 if (audioPlayer.get('track.id')) {
                     queueTrackIds.insertAt(queueTrackIds.indexOf(audioPlayer.get('track.id')) + 1, id);
                 } else {
@@ -78,7 +78,7 @@ export default Ember.Service.extend({
                 queue.save();
             }
 
-            if (!playedTrackIds.contains(id)) {
+            if (!playedTrackIds.includes(id)) {
                 playedTrackIds.pushObject(id);
             }
 
@@ -132,7 +132,7 @@ export default Ember.Service.extend({
             unplayedTrackIds;
 
         unplayedTrackIds = queueTrackIds.filter(function(trackId) {
-            return !this.get('utils.playedTrackIds').contains(trackId);
+            return !this.get('utils.playedTrackIds').includes(trackId);
         }.bind(this));
 
         if (!unplayedTrackIds.get('length')) {
