@@ -1,6 +1,10 @@
+import Ember from 'ember';
+
 export default {
     maxResults: 50,
-    timeToRender: 300,
+    later: function(context, callback) {
+        Ember.run.later(context, callback, 300)
+    },
     sortByName: function(model, other) {
         let name = model.get('name'),
             otherName = other.get('name'),

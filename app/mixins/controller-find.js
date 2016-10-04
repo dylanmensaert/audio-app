@@ -19,15 +19,17 @@ export default Ember.Mixin.create(searchMixin, {
 
         this.setOptions(options);
 
+        this.set('latestOptions', options);
+
         this.find(this.get('type'), options, this.searchOnline()).then(function(promise) {
-            this.get('models').pushObjects(promise.toArray());
+            if (this.get('latestOptions') === options) {
+                this.get('models').pushObjects(promise.toArray());
 
-            Ember.run.scheduleOnce('afterRender', this, function() {
                 this.set('isLocked', false);
-            });
 
-            if (!this.get('nextPageToken')) {
-                this.set('isPending', false);
+                if (!this.get('nextPageToken')) {
+                    this.set('isPending', false);
+                }
             }
         }.bind(this));
     },
@@ -40,7 +42,7 @@ export default Ember.Mixin.create(searchMixin, {
     start: function() {
         this.set('isPending', true);
 
-        Ember.run.later(this, this.updateModels, logic.timeToRender);
+        logic.later(this, this.updateModels);
     },
     sortedModels: Ember.computed.sort('models', function(model, other) {
         let models = this.get('models'),
@@ -54,7 +56,7 @@ export default Ember.Mixin.create(searchMixin, {
     }),
     actions: {
         didScrollToBottom: function() {
-            if (!this.get('isLocked') && this.get('nextPageToken')) {
+            if (!this.set('isLocked') && this.get('nextPageToken')) {
                 this.set('isLocked', true);
 
                 this.updateModels();

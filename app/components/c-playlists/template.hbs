@@ -20,7 +20,7 @@
 
           <li>
             <a href="javascript:void(0)" {{action 'deselect'}}>
-                <i class="material-icons">deselect</i>
+                <i class="material-icons">close</i>
             </a>
         </li>
       </ul>
@@ -34,6 +34,6 @@
   {{/each}}
 
   {{#if isPending}}
-    {{c-spinner}}
+    {{c-spinner class='my-spinner'}}
   {{/if}}
 {{/c-endless-scroll}}

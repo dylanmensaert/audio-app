@@ -15,7 +15,7 @@
 <div {{action 'click'}} class="my-track-draggable waves-effect {{if model.isSelected 'my-active'}}">
   <div class="my-track-middle">
       <div class="my-static-image">
-        <div class="my-image" style="background-image: url('{{model.thumbnail}}');" />
+        {{c-image src=model.thumbnail}}
       </div>
   </div>
 
@@ -26,21 +26,29 @@
 
     <div class="my-track-status">
         {{#if model.isPlaying}}
-          <div class="eq">
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
+          <div class="my-track-icon">
+            <div class="eq">
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+            </div>
           </div>
         {{else if showQueued}}
+          <div class="my-track-icon">
             <i class="material-icons">schedule</i>
+          </div>
         {{/if}}
 
         {{#if model.isDownloading}}
-            {{c-spinner}}
+          <div class="my-track-icon">
+            {{c-spinner type='my-track-spinner'}}
+          </div>
         {{/if}}
 
         {{#if model.isDownloaded}}
+          <div class="my-track-icon">
             <i class="material-icons">offline_pin</i>
+          </div>
         {{/if}}
     </div>
   </div>
