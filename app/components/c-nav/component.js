@@ -1,9 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    didInsertElement: function() {
-        this.$(".button-collapse").sideNav({
-            closeOnClick: true
-        });
+    classNames: ['navbar-fixed'],
+    actions: {
+        back: function() {
+            this.sendAction('back');
+        }
     }
 });

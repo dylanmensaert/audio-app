@@ -18,24 +18,6 @@ export default Ember.Mixin.create({
 
         return models && models.isAny('isSelected');
     }),
-    didInsertElement: function() {
-        Ember.$(window).resize(function() {
-            this.$('.my-outer-image').each(function() {
-                logic.setOuterHeight(Ember.$(this));
-            });
-
-            this.$('.my-inner-image').each(function() {
-                let currentElement = Ember.$(this);
-
-                logic.setInnerHeight(currentElement);
-
-                logic.setTop(currentElement, currentElement.parent().height());
-            });
-        }.bind(this));
-    },
-    willDestroyElement: function() {
-        Ember.$(window).off('resize');
-    },
     actions: {
         deselect: function() {
             this.get('models').setEach('isSelected', false);

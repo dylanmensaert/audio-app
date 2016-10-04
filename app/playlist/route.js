@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import clearRouteMixin from 'audio-app/mixins/route-clear';
+import backRouteMixin from 'audio-app/mixins/route-back';
 
-export default Ember.Route.extend(clearRouteMixin, {
+export default Ember.Route.extend(backRouteMixin, {
     setupController: function(controller, model) {
         this._super(controller, model);
 

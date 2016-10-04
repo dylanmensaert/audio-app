@@ -12,12 +12,10 @@
   </div>
 </div>
 
-<div class="my-track-draggable {{if model.isSelected 'my-active'}}">
+<div class="my-track-draggable waves-effect {{if model.isSelected 'my-active'}}">
   <div {{action 'click'}} class="my-track-middle">
       <div class="my-static-image">
-        <div class="my-outer-image">
-            <img class="my-inner-image" src={{model.thumbnail}} draggable="false" />
-        </div>
+        <div class="my-image" style="background-image: url('{{model.thumbnail}}');" />
       </div>
   </div>
 
@@ -29,7 +27,13 @@
 
   <div class="my-track-middle my-status-bar">
       {{#if model.isPlaying}}
-          <i class="material-icons">headset</i>
+        <div class="pl-playing">
+          <div class="eq">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+          </div>
+        </div>
       {{else if showQueued}}
           <i class="material-icons">schedule</i>
       {{/if}}

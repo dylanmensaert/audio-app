@@ -138,18 +138,6 @@ footer {
     text-align: right;
 }
 
-.my-inner-image {
-    width: 100%;
-    position: absolute;
-}
-
-.my-outer-image {
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-    background-color: #A4C3DE;
-}
-
 .my-spinner {
     width: 100%;
     text-align: center;
@@ -192,21 +180,57 @@ footer {
     right: 8px;
 }
 
-.waves-effect {
-    img {
-        z-index: 0;
-    }
-}
-
 .card {
     margin: 0;
 }
 
-.my-cover {
-    padding-bottom: 40%;
-    background-position-y: 4%;
+.my-image {
+    padding-bottom: 56%;
+    background-position-y: 50%;
     background-size: cover;
     position: relative;
     box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
     background-color: #A4C3DE;
+}
+
+@keyframes eq {
+    0% {
+        height: 3px;
+    }
+    50% {
+        height: 20px;
+    }
+    100% {
+        height: 3px;
+    }
+}
+
+.eq {
+    display: flex;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.eq-bar {
+    width: 4px;
+    background: rgba(0, 0, 0, .7);
+}
+
+.eq-bar:nth-child(1) {
+    animation: eq .8s ease-in-out infinite 0s;
+}
+
+.eq-bar:nth-child(2) {
+    animation: eq .8s ease-in-out infinite .2s;
+}
+
+.eq-bar:nth-child(3) {
+    animation: eq .8s ease-in-out infinite .4s;
+}
+
+.my-cover-action {
+    padding-bottom: 50px;
 }

@@ -2,9 +2,8 @@
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
 import connection from 'connection';
-import imageComponent from 'audio-app/components/c-image';
 
-export default imageComponent.extend(modelMixin, {
+export default Ember.Component.extend(modelMixin, {
     audioRemote: Ember.inject.service(),
     utils: Ember.inject.service(),
     store: Ember.inject.service(),

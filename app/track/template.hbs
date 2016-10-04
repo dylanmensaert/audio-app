@@ -1,3 +1,71 @@
-{{c-track model=model showQueued=model.isQueued}}
+{{#c-nav back='back'}}
+  {{model.track}}
+{{/c-nav}}
+
+<div class="card">
+  <div class="card-image waves-effect waves-block waves-light">
+    <img class="my-image" style="background-image: url('{{model.thumbnail}}');" />
+  </div>
+
+  <div class="card-content my-relative">
+    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px; position: initial;">
+      <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
+        <i class="material-icons">menu</i>
+      </a>
+
+      <ul>
+        <li>
+          <a href="javascript:void(0)" class="btn-floating yellow orange" {{action 'transitionToPlaylists'}}>
+              <i class="material-icons">loyalty</i>
+          </a>
+        </li>
+
+        {{#if isEveryUnQueued}}
+          <li>
+            <a href="javascript:void(0)" class="btn-floating yellow teal" {{action 'queue'}}>
+                <i class="material-icons">queue_music</i>
+            </a>
+          </li>
+        {{/if}}
+
+        {{#if isEveryDownloaded}}
+          <li>
+            <a href="javascript:void(0)" class="btn-floating red" {{action 'delete'}}>
+                <i class="material-icons">delete</i>
+            </a>
+          </li>
+        {{else if isEveryDownloadable}}
+          <li>
+            <a href="javascript:void(0)" class="btn-floating blue" {{action 'download'}}>
+                <i class="material-icons">file_download</i>
+            </a>
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+
+    <span class="card-title activator grey-text text-darken-4">
+      {{model.name}}
+    </span>
+  </div>
+
+  <div class="card-action my-cover-action">
+      {{#if showQueued}}
+          <i class="material-icons">
+            schedule
+          </i>
+      {{/if}}
+
+      {{#if model.isDownloading}}
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      {{/if}}
+
+      {{#if model.isDownloaded}}
+          <i class="material-icons">
+            offline_pin
+          </i>
+      {{/if}}
+  </div>
+</div>
 
 {{c-tracks models=sortedModels isPending=isPending didScrollToBottom='didScrollToBottom'}}

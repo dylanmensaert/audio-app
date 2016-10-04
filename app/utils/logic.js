@@ -40,14 +40,5 @@ export default {
         });
 
         return topRecords;
-    },
-    setOuterHeight: function(element) {
-        return element.height(element.width() / 30 * 17);
-    },
-    setInnerHeight: function(element) {
-        return element.height(element.width() / 12 * 9);
-    },
-    setTop: function(element, outerHeight) {
-        return element.css('top', -Math.floor((element.height() - outerHeight) / 2));
     }
 };

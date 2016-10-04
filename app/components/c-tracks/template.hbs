@@ -1,51 +1,51 @@
  {{#if hasSelected}}
-  <nav>
-    <div class="nav-wrapper">
-      <span class="new badge" data-badge={{givenTotal}} />
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <ul class="right">
+          <li>
+            <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
+                <i class="material-icons">loyalty</i>
+            </a>
+          </li>
 
-      <ul class="right">
-        <li>
-          <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
-              <i class="material-icons">loyalty</i>
-          </a>
-        </li>
+          <li>
+            {{#if isEveryUnQueued}}
+              <a href="javascript:void(0)" {{action 'queue'}}>
+                  <i class="material-icons">queue_music</i>
+              </a>
+            {{else}}
+              <a href="javascript:void(0)">
+                  &nbsp;
+              </a>
+            {{/if}}
+          </li>
 
-        <li>
-          {{#if isEveryUnQueued}}
-            <a href="javascript:void(0)" {{action 'queue'}}>
-                <i class="material-icons">queue_music</i>
-            </a>
-          {{else}}
-            <a href="javascript:void(0)">
-                &nbsp;
-            </a>
-          {{/if}}
-        </li>
+          <li>
+            {{#if isEveryDownloaded}}
+              <a href="javascript:void(0)" {{action 'delete'}}>
+                  <i class="material-icons">delete</i>
+              </a>
+            {{else if isEveryDownloadable}}
+              <a href="javascript:void(0)" {{action 'download'}}>
+                  <i class="material-icons">file_download</i>
+              </a>
+            {{else}}
+              <a href="javascript:void(0)">
+                  &nbsp;
+              </a>
+            {{/if}}
+          </li>
 
-        <li>
-          {{#if isEveryDownloaded}}
-            <a href="javascript:void(0)" {{action 'delete'}}>
-                <i class="material-icons">delete</i>
-            </a>
-          {{else if isEveryDownloadable}}
-            <a href="javascript:void(0)" {{action 'download'}}>
-                <i class="material-icons">file_download</i>
-            </a>
-          {{else}}
-            <a href="javascript:void(0)">
-                &nbsp;
-            </a>
-          {{/if}}
-        </li>
-
-        <li>
-            <a href="javascript:void(0)" {{action 'deselect'}}>
-                <i class="material-icons">deselect</i>
-            </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+          <li>
+              <a href="javascript:void(0)" {{action 'deselect'}}>
+                  <i class="material-icons">deselect</i>
+              </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 {{/if}}
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}

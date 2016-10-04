@@ -1,48 +1,72 @@
 {{#if isEditMode}}
   {{c-input-bar query=name done='save'}}
+{{else}}
+  {{#c-nav back='back'}}
+    Playlist
+  {{/c-nav}}
 {{/if}}
 
 <div class="card">
   <div class="card-image waves-effect waves-block waves-light">
-    <div class="my-image" style="background-image: url('{{model.thumbnail}}');" />
+    <img class="my-image" style="background-image: url('{{model.thumbnail}}');" />
   </div>
 
   <div class="card-content my-relative">
-    {{#unless isEditMode}}
-      <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-model-btn" {{action 'setupEdit'}}>
-        <i class="material-icons">mode_edit</i>
-      </a>
-    {{/unless}}
+    {{#if model.isEditable}}
+      <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px; position: initial;">
+        <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
+          <i class="material-icons">menu</i>
+        </a>
+
+        <ul>
+          <li>
+            <a href="javascript:void(0)" class="btn-floating yellow darken-1" {{action 'setupEdit'}}>
+              <i class="material-icons">mode_edit</i>
+            </a>
+          </li>
+
+          {{#if model.isSaved}}
+            <li>
+              <a href="javascript:void(0)" class="btn-floating red" {{action 'delete'}}>
+                  <i class="material-icons">delete</i>
+              </a>
+            </li>
+          {{else}}
+            <li>
+              <a href="javascript:void(0)" class="btn-floating blue" {{action 'save'}}>
+                  <i class="material-icons">shop_two</i>
+              </a>
+            </li>
+          {{/if}}
+        </ul>
+      </div>
+    {{/if}}
 
     <span class="card-title activator grey-text text-darken-4">
       {{model.name}}
-
-      <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
     </span>
   </div>
 
-  <div class="card-action">
-    <p>
-     {{#if model.isPlaying}}
+  <div class="card-action my-cover-action">
+   {{#if model.isPlaying}}
+        <i class="material-icons">
+          headset
+        </i>
+      {{else if showQueued}}
           <i class="material-icons">
-            headset
+            schedule
           </i>
-        {{else if showQueued}}
-            <i class="material-icons">
-              schedule
-            </i>
-        {{/if}}
+      {{/if}}
 
-        {{#if model.isDownloading}}
-            {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-        {{/if}}
+      {{#if model.isDownloading}}
+          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+      {{/if}}
 
-        {{#if model.isDownloaded}}
-            <i class="material-icons">
-              offline_pin
-            </i>
-        {{/if}}
-    </p>
+      {{#if model.isDownloaded}}
+          <i class="material-icons">
+            offline_pin
+          </i>
+      {{/if}}
   </div>
 </div>
 

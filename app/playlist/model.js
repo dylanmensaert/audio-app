@@ -58,6 +58,9 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     isPushOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'push-only';
     }),
+    isEditable: Ember.computed('isReadOnly', 'isPushOnly', function() {
+        return !this.get('isReadOnly') && !this.get('isPushOnly');
+    }),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
     isQueue: Ember.computed('id', function() {
         return this.get('id') === 'queue';

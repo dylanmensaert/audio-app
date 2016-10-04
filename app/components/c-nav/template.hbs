@@ -1,24 +1,13 @@
-<ul id="slide-out" class="side-nav fixed">
-  {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
-  {{c-menu-item value='My Playlists' route='playlists' icon='loyalty'}}
-  {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='queue_music'}}
-  {{c-menu-item value='History' route='playlist' model='history' icon='library_books'}}
-
-  <li>
-    <div class="divider"></div>
-  </li>
-
-  {{c-menu-item value='Settings' route='settings' icon='settings'}}
-</ul>
-
 <nav>
     <div class="nav-wrapper">
-      <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
-          <i class="material-icons">menu</i>
-      </a>
+      <div class="my-back" {{action 'back'}} style="top: 0;">
+        <i class="material-icons">arrow_back</i>
+      </div>
 
       <ul class="right">
-        {{yield}}
+        <div class="brand-logo truncate">
+          {{yield}}
+        </div>
 
         <li>
           {{#link-to 'search.tracks' }}
