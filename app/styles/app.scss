@@ -30,11 +30,19 @@ main {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 2;
 }
 
 .my-audio-player {
     bottom: 0;
     width: 100%;
+    top: initial;
+}
+
+.my-audio-row {
+    margin-bottom: 0;
+    padding-top: 8px;
+    background: white;
 }
 
 .my-slider {
@@ -110,20 +118,27 @@ main {
     position: absolute;
     top: 0;
     background-color: white;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 8px 0;
+}
+
+.my-track-placeholder {
+    height: 92.89px;
+    margin-bottom: 0;
 }
 
 .my-track-text {
-    height: calc(84px - 16px);
+    height: 46.78px;
     overflow: hidden;
+    padding-bottom: 5px;
+}
+
+.my-track-status {
+    height: 30px;
 }
 
 .my-track-body {
     display: table-cell;
-    position: relative;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 0 8px;
     width: 100%;
 }
 
@@ -153,8 +168,7 @@ main {
 
 .my-separator {
     width: 100%;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding: 1px 0;
 }
 
 .my-line {
@@ -211,7 +225,6 @@ main {
     display: flex;
     width: 20px;
     height: 20px;
-    margin: 0 auto;
     justify-content: space-between;
     align-items: flex-end;
 }
