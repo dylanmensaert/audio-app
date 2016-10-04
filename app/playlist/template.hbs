@@ -1,9 +1,25 @@
 {{#if isEditMode}}
   {{c-input-bar query=name done='save'}}
 {{else}}
-  {{#c-nav back='back'}}
-    Playlist
-  {{/c-nav}}
+  {{#c-fixed tagName='nav'}}
+    <div class="nav-wrapper">
+      <div class="my-back" {{action 'back'}} style="top: 0;">
+        <i class="material-icons">arrow_back</i>
+      </div>
+
+      <div class="brand-logo truncate">
+        Playlist
+      </div>
+
+      <ul class="right">
+        <li>
+          {{#link-to 'search.tracks' }}
+            <i class="material-icons">search</i>
+          {{/link-to}}
+        </li>
+      </ul>
+    </div>
+  {{/c-fixed}}
 {{/if}}
 
 <div class="card">

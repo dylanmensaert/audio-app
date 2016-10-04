@@ -1,42 +1,34 @@
 {{#c-menu}}
-  <div class="brand-logo truncate">
-    Settings
-  </div>
-
-  <ul class="right">
-    <li>
-      <a href="javascript:void(0)">
-        <i class="material-icons">search</i>
-      </a>
-    </li>
-  </ul>
+  Settings
 {{/c-menu}}
 
-<p>
-  {{input type='checkbox' id="download-later" checked=fileSystem.downloadLater}}
+<main>
+  <p>
+    {{input type='checkbox' id="download-later" checked=fileSystem.downloadLater}}
 
-  <label for="download-later">
-    Download track when you have wifi
-  </label>
-</p>
+    <label for="download-later">
+      Download track when you have wifi
+    </label>
+  </p>
 
-<p>
-  {{input type='checkbox' id="download-before" checked=fileSystem.downloadBeforePlaying}}
+  <p>
+    {{input type='checkbox' id="download-before" checked=fileSystem.downloadBeforePlaying}}
 
-  <label for="download-before">
-    Download track when you have wifi
-  </label>
-</p>
+    <label for="download-before">
+      Download track when you have wifi
+    </label>
+  </p>
 
-<p>
-<div class="file-field input-field">
-  <div class="btn">
-    <span>File</span>
-    {{c-file-input}}
+  <p>
+  <div class="file-field input-field">
+    <div class="btn">
+      <span>File</span>
+      {{c-file-input}}
+    </div>
+
+    <div class="file-path-wrapper">
+      <input class="file-path validate" placeholder="Upload one or more files">
+    </div>
   </div>
-
-  <div class="file-path-wrapper">
-    <input class="file-path validate" placeholder="Upload one or more files">
-  </div>
-</div>
-</p>
+  </p>
+</main>

@@ -7,7 +7,6 @@ export default DS.Serializer.extend(serializerMixin, {
     },
     normalize: function(store, typeClass, item) {
         let id,
-            track,
             data;
 
         if (item.id.videoId && item.id.videoId !== 'AAAAAAAAAAA') {

@@ -11,20 +11,22 @@
   {{c-menu-item value='Settings' route='settings' icon='settings'}}
 </ul>
 
-<nav>
-    <div class="nav-wrapper">
-      <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
-          <i class="material-icons">menu</i>
-      </a>
+{{#c-fixed tagName='nav'}}
+  <div class="nav-wrapper">
+    <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
+        <i class="material-icons">menu</i>
+    </a>
 
-      <ul class="right">
-        {{yield}}
-
-        <li>
-          {{#link-to 'search.tracks' }}
-            <i class="material-icons">search</i>
-          {{/link-to}}
-        </li>
-      </ul>
+    <div class="brand-logo truncate">
+      {{yield}}
     </div>
-</nav>
+
+    <ul class="right">
+      <li>
+        {{#link-to 'search.tracks' }}
+          <i class="material-icons">search</i>
+        {{/link-to}}
+      </li>
+    </ul>
+  </div>
+{{/c-fixed}}

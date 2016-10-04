@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    layout: 'none'
+    classNames: ['my-spinner'],
+    type: null
 });

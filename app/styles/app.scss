@@ -1,14 +1,16 @@
-header,
-main,
-footer {
-    padding-left: 300px;
+main {
+    margin-left: 300px;
+    .brand-logo {
+        margin-left: 18px;
+    }
 }
 
 @media only screen and (max-width: 992px) {
-    header,
-    main,
-    footer {
-        padding-left: 0;
+    main {
+        margin-left: 0;
+        .brand-logo {
+            margin-left: 0;
+        }
     }
 }
 
@@ -24,8 +26,13 @@ footer {
     }
 }
 
-.my-audio-player {
+.my-fixed {
     position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.my-audio-player {
     bottom: 0;
     width: 100%;
 }
@@ -50,17 +57,17 @@ footer {
 }
 
 .my-input-bar {
-    position: relative;
+    left: 0;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     width: 100%;
     padding-left: 31px;
 }
 
 .my-autocomplete {
+    z-index: 1;
     ul {
         position: absolute;
         width: 100%;
-        z-index: 1;
         left: 0;
         li {
             font-size: 16px;
@@ -141,6 +148,7 @@ footer {
 .my-spinner {
     width: 100%;
     text-align: center;
+    margin: 20px 0;
 }
 
 .my-separator {
@@ -153,12 +161,6 @@ footer {
     width: calc(100% - 90px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     float: right;
-}
-
-.my-nav {
-    z-index: 1;
-    position: fixed;
-    top: 0;
 }
 
 .my-next {
@@ -190,7 +192,7 @@ footer {
     background-size: cover;
     position: relative;
     box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
-    background-color: #A4C3DE;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 @keyframes eq {

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
     total: null,
