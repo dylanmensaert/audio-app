@@ -101,20 +101,19 @@ footer {
 
 .my-track-draggable {
     position: absolute;
-    background-color: rgb(245, 245, 245);
-    width: 100%;
     top: 0;
-    left: 0;
-}
-
-.my-track-part {
-    display: table-cell;
+    background-color: white;
     padding-top: 8px;
     padding-bottom: 8px;
 }
 
+.my-track-text {
+    height: calc(84px - 16px);
+    overflow: hidden;
+}
+
 .my-track-body {
-    @extend .my-track-part;
+    display: table-cell;
     position: relative;
     padding-left: 8px;
     padding-right: 8px;
@@ -122,7 +121,7 @@ footer {
 }
 
 .my-track-middle {
-    @extend .my-track-part;
+    display: table-cell;
     vertical-align: middle;
 }
 
@@ -131,9 +130,8 @@ footer {
     height: 68px;
 }
 
-.my-track {
+.my-relative {
     position: relative;
-    width: 100%;
 }
 
 .my-right {
@@ -149,10 +147,66 @@ footer {
     overflow: hidden;
     position: relative;
     width: 100%;
-    background-color: #e1e1e1;
+    background-color: #A4C3DE;
 }
 
 .my-spinner {
     width: 100%;
     text-align: center;
+}
+
+.my-separator {
+    width: 100%;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.my-line {
+    width: calc(100% - 90px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    float: right;
+}
+
+.my-nav {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+}
+
+.my-next {
+    text-align: right;
+    padding-right: 8px;
+    width: 100%;
+    background-color: #f0eeee;
+    i {
+        font-size: 29px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.my-model-btn {
+    position: absolute;
+    top: -28px;
+    right: 8px;
+}
+
+.waves-effect {
+    img {
+        z-index: 0;
+    }
+}
+
+.card {
+    margin: 0;
+}
+
+.my-cover {
+    padding-bottom: 40%;
+    background-position-y: 4%;
+    background-size: cover;
+    position: relative;
+    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+    background-color: #A4C3DE;
 }

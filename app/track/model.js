@@ -13,13 +13,46 @@ function signateUrl(url) {
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
 
-function extractExtension(source) {
-    return source.substr(source.lastIndexOf('.') + 1, source.length);
-}
+let extension = {
+    audio: 'mp3',
+    thumbnail: 'jpg'
+};
 
 export default DS.Model.extend(modelMixin, {
-    audio: DS.attr('string'),
-    thumbnail: DS.attr('string'),
+    init: function() {
+        this._super();
+
+        if (this.get('isSaved')) {
+            this.get('fileSystem.instance').root.getFile(this.createFilePath('audio'), {}, function() {
+                this.set('isDownloaded', true);
+            }.bind(this), function() {
+                this.set('isDownloaded', false);
+            }.bind(this));
+        }
+    },
+    onlineAudio: null,
+    thumbnail: Ember.computed('onlineThumbnail', 'isSaved', function() {
+        let thumbnail;
+
+        if (this.get('isSaved')) {
+            thumbnail = domainData.fileSystemName + '/' + this.createFilePath('thumbnail');
+        } else {
+            thumbnail = this.get('onlineThumbnail');
+        }
+
+        return thumbnail;
+    }),
+    audio: Ember.computed('onlineAudio', 'isSaved', function() {
+        let audio;
+
+        if (this.get('isSaved')) {
+            audio = domainData.fileSystemName + '/' + this.createFilePath('audio');
+        } else {
+            audio = this.get('onlineAudio');
+        }
+
+        return audio;
+    }),
     isDownloading: false,
     isDownloaded: false,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
@@ -27,13 +60,6 @@ export default DS.Model.extend(modelMixin, {
     }),
     isPlaying: Ember.computed('fileSystem.playingTrackId', 'id', function() {
         return this.get('fileSystem.playingTrackId') === this.get('id');
-    }),
-    updateIsDownloaded: Ember.observer('audio', 'fileSystem.instance', 'extension', function() {
-        this.get('fileSystem.instance').root.getFile(this.createFilePath('audio', this.get('extension')), {}, function() {
-            this.set('isDownloaded', true);
-        }.bind(this), function() {
-            this.set('isDownloaded', false);
-        }.bind(this));
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
@@ -54,8 +80,8 @@ export default DS.Model.extend(modelMixin, {
             return playlist.get('trackIds').includes(id);
         });
     }),
-    createFilePath: function(type, extension) {
-        let fileName = this.get('name') + '.' + extension,
+    createFilePath: function(type) {
+        let fileName = this.get('name') + '.' + extension[type],
             directory = Inflector.inflector.pluralize(type);
 
         return directory + '/' + fileName;
@@ -85,9 +111,9 @@ export default DS.Model.extend(modelMixin, {
                 url += '&r=' + info.r;
                 url += '&h2=' + info.h2;
 
-                this.set('audio', signateUrl(url));
+                this.set('onlineAudio', signateUrl(url));
 
-                return this.get('audio');
+                return this.get('onlineAudio');
             }.bind(this));
         }.bind(this));
     },
@@ -95,7 +121,7 @@ export default DS.Model.extend(modelMixin, {
         this.set('isDownloading', true);
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (!this.get('audio')) {
+            if (!this.get('onlineAudio')) {
                 this.fetchDownload().then(function() {
                     this.insert().then(resolve, reject);
                 }.bind(this));
@@ -105,36 +131,27 @@ export default DS.Model.extend(modelMixin, {
         }.bind(this));
     },
     insert: function() {
-        let audio = this.createFilePath('audio', this.get('extension')),
-            currentThumbnail = this.get('thumbnail'),
-            thumbnail = this.createFilePath('thumbnail', extractExtension(currentThumbnail)),
-            promises;
-
-        promises = {
+        let promises = [
             // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-            audio: this.downloadSource(this.get('audio'), audio),
+            this.downloadSource(this.get('onlineAudio'), this.createFilePath('audio')),
             // TODO: write to filesystem on track property change
-            thumbnail: this.downloadSource(currentThumbnail, thumbnail)
-        };
+            this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'))
+        ];
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.RSVP.hash(promises).then(function(hash) {
-                this.set('audio', hash.audio);
-                this.set('thumbnail', hash.thumbnail);
+        Ember.RSVP.all(promises).then(function() {
+            let fileSystem = this.get('fileSystem');
 
-                this.get('fileSystem.playlists').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
+            fileSystem.get('playlists').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
 
-                if (!this.get('isSaved')) {
-                    this.get('fileSystem.tracks').pushObject(this);
-                }
+            if (!this.get('isSaved')) {
+                fileSystem.get('tracks').pushObject(this);
+            }
 
-                this.set('isDownloading', false);
-
-                resolve();
-            }.bind(this), function(reason) {
-                reject(reason.message);
-            });
-        }.bind(this));
+            this.set('isDownloading', false);
+            this.set('isDownloaded', true);
+        }.bind(this), function(reason) {
+            return reason.message;
+        });
     },
     downloadSource: function(url, source) {
         let fileSystem = this.get('fileSystem'),
@@ -187,6 +204,5 @@ export default DS.Model.extend(modelMixin, {
                 this.destroyRecord();
             }
         }.bind(this));
-    },
-    propertyNames: 'extension'
+    }
 });

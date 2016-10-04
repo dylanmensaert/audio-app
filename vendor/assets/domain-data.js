@@ -9,7 +9,8 @@
                 downloadName: hostName,
                 suggestName: hostName,
                 searchName: hostName,
-                imageName: hostName
+                imageName: hostName,
+                fileSystemName: 'filesystem:' + hostName + '/persistent'
             }
         };
     });

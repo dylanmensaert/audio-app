@@ -14,16 +14,28 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return [];
         }
     }),
+    tracks: Ember.computed('trackIds.[]', function() {
+        let store = this.store;
+
+        return this.get('trackIds').map(function(trackId) {
+            return store.peekRecord('track', trackId);
+        });
+    }),
     totalTracks: DS.attr('number'),
-    thumbnail: Ember.computed('trackIds.firstObject', 'fileSystem.tracks.[]', function() {
-        let tracks = this.get('fileSystem.tracks'),
-            firstTrackId,
+    thumbnail: Ember.computed('tracks.firstObject.thumbnail', 'onlineThumbnail', function() {
+        let tracks = this.get('tracks'),
             thumbnail;
 
-        if (tracks) {
-            firstTrackId = this.get('trackIds.firstObject');
+        if (tracks.get('length')) {
+            let track = tracks.get('firstObject');
 
-            thumbnail = tracks.findBy('id', firstTrackId).thumbnail;
+            thumbnail = track.get('thumbnail');
+        } else {
+            let onlineThumbnail = this.get('onlineThumbnail');
+
+            if (onlineThumbnail) {
+                thumbnail = onlineThumbnail;
+            }
         }
 
         return thumbnail;

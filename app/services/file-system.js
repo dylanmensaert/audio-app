@@ -140,9 +140,25 @@ export default Ember.Service.extend({
     },
     deserialize: function(json) {
         let store = this.get('store'),
-            parsedJSON = JSON.parse(json);
+            parsedJSON = JSON.parse(json),
+            playlists = parsedJSON.playlists,
+            tracks = parsedJSON.tracks;
 
-        parsedJSON.playlistIds = parsedJSON.playlists.map(function(playlist) {
+        parsedJSON.playlistIds = playlists.map(function(playlist) {
+            return playlist.id;
+        });
+
+        delete parsedJSON.playlists;
+
+        parsedJSON.trackIds = tracks.map(function(track) {
+            return track.id;
+        });
+
+        delete parsedJSON.tracks;
+
+        this.setProperties(parsedJSON);
+
+        playlists.map(function(playlist) {
             let id = playlist.id;
 
             delete playlist.id;
@@ -154,13 +170,9 @@ export default Ember.Service.extend({
                     attributes: playlist
                 }
             });
-
-            return id;
         });
 
-        delete parsedJSON.playlists;
-
-        parsedJSON.trackIds = parsedJSON.tracks.map(function(track) {
+        tracks.forEach(function(track) {
             let id = track.id;
 
             delete track.id;
@@ -172,13 +184,7 @@ export default Ember.Service.extend({
                     attributes: track
                 }
             });
-
-            return id;
         });
-
-        delete parsedJSON.tracks;
-
-        this.setProperties(parsedJSON);
     },
     serialize: function() {
         let store = this.get('store'),

@@ -13,11 +13,11 @@ Router.map(function() {
     });
 
     this.route('playlist', {
-        path: '/:playlist_id'
+        path: 'playlist/:playlist_id'
     });
 
     this.route('track', {
-        path: '/:track_id'
+        path: 'track/:track_id'
     });
 
     this.route('playlists');

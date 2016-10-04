@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="height: 84px; margin-bottom: 0;">
   <div class="col s6">
     <i class="material-icons my-audio-icon">
       queue_music
@@ -21,8 +21,10 @@
       </div>
   </div>
 
-  <div {{action 'click'}} class="truncate my-track-body">
-    {{model.name}}
+  <div {{action 'click'}} class="my-track-body">
+    <div class="my-track-text">
+      {{model.name}}
+    </div>
   </div>
 
   <div class="my-track-middle my-status-bar">
@@ -41,7 +43,7 @@
       {{/if}}
   </div>
 
-  <div {{action 'select'}} class="my-track-middle">
+  <div {{action 'changeSelect'}} class="my-track-middle">
     <i class="material-icons">more_vert</i>
   </div>
 </div>

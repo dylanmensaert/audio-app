@@ -19,16 +19,10 @@ export default DS.Serializer.extend(serializerMixin, {
         }
 
         if (id) {
-            track = this.peekSnippet(store, typeClass.modelName, id, item);
-
-            if (!track.extension) {
-                track.extension = 'mp3';
-            }
-
             data = {
                 type: typeClass.modelName,
                 id: id,
-                attributes: track
+                attributes: this.peekSnippet(store, typeClass.modelName, id, item)
             };
         }
 

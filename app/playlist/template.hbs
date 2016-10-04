@@ -1,9 +1,49 @@
 {{#if isEditMode}}
   {{c-input-bar query=name done='save'}}
-{{else}}
-  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red" {{action 'setupEdit'}}>
-    <i class="material-icons">mode_edit</i>
-  </a>
 {{/if}}
 
-{{c-tracks tracks=sortedModels}}
+<div class="card">
+  <div class="card-image waves-effect waves-block waves-light">
+    <div class="my-image" style="background-image: url('{{model.thumbnail}}');" />
+  </div>
+
+  <div class="card-content my-relative">
+    {{#unless isEditMode}}
+      <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-model-btn" {{action 'setupEdit'}}>
+        <i class="material-icons">mode_edit</i>
+      </a>
+    {{/unless}}
+
+    <span class="card-title activator grey-text text-darken-4">
+      {{model.name}}
+
+      <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
+    </span>
+  </div>
+
+  <div class="card-action">
+    <p>
+     {{#if model.isPlaying}}
+          <i class="material-icons">
+            headset
+          </i>
+        {{else if showQueued}}
+            <i class="material-icons">
+              schedule
+            </i>
+        {{/if}}
+
+        {{#if model.isDownloading}}
+            {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+        {{/if}}
+
+        {{#if model.isDownloaded}}
+            <i class="material-icons">
+              offline_pin
+            </i>
+        {{/if}}
+    </p>
+  </div>
+</div>
+
+{{c-tracks models=sortedModels isPending=isPending didScrollToBottom='didScrollToBottom'}}

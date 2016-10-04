@@ -5,48 +5,37 @@
 {{/c-nav}}
 
 {{#if lastHistoryTracks}}
-  <div class="mdl-grid my-grid-title">
-    <h4>
-        History
-    </h4>
-  </div>
-  <div class="mdl-grid my-grid">
-    {{#each sortedLastHistoryTracks as |track|}}
-        {{c-track model=track showQueued=track.isQueued}}
+  <h4>
+      History
+  </h4>
+
+  {{#each sortedLastHistoryTracks as |track|}}
+      {{c-track model=track showQueued=track.isQueued}}
+
+      <div class="my-separator">
+          <div class="my-line" />
+      </div>
+  {{/each}}
+
+  {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
+    <i class="material-icons">chevron_right</i>
+  {{/link-to}}
+{{/if}}
+
+{{#each relatedByTracks as |relatedByTrack|}}
+  <h5 class="truncate" style="margin: 25px 0;">
+      {{relatedByTrack.track.name}}
+  </h5>
+
+    {{#each relatedByTrack.relatedTracks as |track|}}
+        {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
 
         <div class="my-separator">
             <div class="my-line" />
         </div>
     {{/each}}
 
-    {{#link-to 'playlist' 'history'}}
-      <i class="material-icons">
-        expand_more
-      </i>
-    {{/link-to}}
-  </div>
-{{/if}}
-
-{{#each relatedByTracks as |relatedByTrack|}}
-  <div class="mdl-grid my-grid-title">
-    <h5>
-        {{relatedByTrack.track.name}}
-    </h5>
-  </div>
-
-  <div class="mdl-grid my-grid">
-      {{#each relatedByTrack.relatedTracks as |track|}}
-          {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
-
-          <div class="my-separator">
-              <div class="my-line" />
-          </div>
-      {{/each}}
-
-      {{#link-to 'track' relatedByTrack.track}}
-        <i class="material-icons">
-          expand_more
-        </i>
+    {{#link-to 'track' relatedByTrack tagName='div' class='my-next'}}
+        <i class="material-icons">chevron_right</i>
       {{/link-to }}
-  </div>
 {{/each}}

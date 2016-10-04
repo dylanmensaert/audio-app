@@ -75,7 +75,7 @@ export default Ember.Mixin.create({
 
             snippet = {
                 name: item.snippet.title,
-                thumbnail: thumbnail
+                onlineThumbnail: thumbnail
             };
         }
 

@@ -2,12 +2,13 @@
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
 import connection from 'connection';
+import imageComponent from 'audio-app/components/c-image';
 
-export default Ember.Component.extend(modelMixin, {
+export default imageComponent.extend(modelMixin, {
     audioRemote: Ember.inject.service(),
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
-    classNames: ['my-track'],
+    classNames: ['my-relative'],
     doClick: false,
     startPosition: null,
     lastPosition: null,

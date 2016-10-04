@@ -4,6 +4,7 @@ import DS from 'ember-data';
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     name: DS.attr('string'),
+    onlineThumbnail: DS.attr('string'),
     concatenatedProperties: ['propertyNames'],
     isSelected: false,
     propertyNames: ['id', 'name'],

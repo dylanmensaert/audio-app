@@ -14,7 +14,9 @@ export default Ember.Mixin.create({
         return givenTotal;
     }),
     hasSelected: Ember.computed('models.@each.isSelected', function() {
-        return this.get('models').isAny('isSelected');
+        let models = this.get('models');
+
+        return models && models.isAny('isSelected');
     }),
     didInsertElement: function() {
         Ember.$(window).resize(function() {

@@ -6,14 +6,14 @@
       <ul class="right">
         <li>
           <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
-              <span class="material-icons">loyalty</span>
+              <i class="material-icons">loyalty</i>
           </a>
         </li>
 
         <li>
           {{#if isEveryUnQueued}}
             <a href="javascript:void(0)" {{action 'queue'}}>
-                <span class="material-icons">queue_music</span>
+                <i class="material-icons">queue_music</i>
             </a>
           {{else}}
             <a href="javascript:void(0)">
@@ -25,11 +25,11 @@
         <li>
           {{#if isEveryDownloaded}}
             <a href="javascript:void(0)" {{action 'delete'}}>
-                <span class="material-icons">delete</span>
+                <i class="material-icons">delete</i>
             </a>
           {{else if isEveryDownloadable}}
             <a href="javascript:void(0)" {{action 'download'}}>
-                <span class="material-icons">file_download</span>
+                <i class="material-icons">file_download</i>
             </a>
           {{else}}
             <a href="javascript:void(0)">
@@ -40,7 +40,7 @@
 
         <li>
             <a href="javascript:void(0)" {{action 'deselect'}}>
-                <span class="material-icons">deselect</span>
+                <i class="material-icons">deselect</i>
             </a>
         </li>
       </ul>
