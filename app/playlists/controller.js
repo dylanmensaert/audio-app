@@ -2,17 +2,21 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend({
-    playlists: Ember.computed('fileSystem.playlistIds.[]', 'playlists.[]', function() {
-        let store = this.store,
+    utils: Ember.inject.service(),
+    playlists: Ember.computed('fileSystem.playlistIds.[]', function() {
+        let playlistIds = this.get('fileSystem.playlistIds'),
+            store = this.store,
             playlists = [];
 
-        this.get('fileSystem.playlistIds').forEach(function(playlistId) {
-            let playlist = store.peekRecord('playlist', playlistId);
+        if (playlistIds) {
+            playlistIds.forEach(function(playlistId) {
+                let playlist = store.peekRecord('playlist', playlistId);
 
-            if (!playlist.get('permission')) {
-                playlists.pushObject(playlist);
-            }
-        });
+                if (!playlist.get('permission')) {
+                    playlists.pushObject(playlist);
+                }
+            });
+        }
 
         return playlists;
     }),
@@ -54,7 +58,7 @@ export default Ember.Controller.extend({
                 store.peekRecord('playlist', id).save().then(function() {
                     this.set('name', null);
 
-                    utils.showMessage('Saved new playlist');
+                    utils.showMessage('Added playlist');
                 }.bind(this));
             }
         },

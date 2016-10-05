@@ -1,9 +1,9 @@
 {{c-playlists playlists=sortedPlaylists}}
 
 {{#if isCreatedMode}}
-  {{c-input-bar query=name done='save'}}
+  {{c-input-bar value=name done='save'}}
 {{else}}
-  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red" {{action 'setupCreate'}}>
+  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-fixed my-action-btn" {{action 'setupCreate'}}>
     <i class="material-icons">add</i>
   </a>
 {{/if}}

@@ -14,6 +14,13 @@ main {
     }
 }
 
+@media only screen and (min-width: 601px) {
+    nav {
+        height: 56px;
+        line-height: 56px;
+    }
+}
+
 @mixin input-icon {
     position: absolute;
     /* TODO: remove top? */
@@ -80,6 +87,18 @@ main {
     width: 100%;
     padding-left: 31px;
     background-color: white;
+    input[type=text] {
+        width: calc(100% - 55px);
+        height: 56px;
+        margin-bottom: 2px;
+        font-size: 16px;
+        padding-left: 13px;
+        &,
+        &:focus {
+            border-bottom: none;
+            box-shadow: none;
+        }
+    }
 }
 
 .my-autocomplete {
@@ -100,17 +119,6 @@ main {
             .my-hightlight {
                 color: #26a69a;
             }
-        }
-    }
-    input[type=text] {
-        height: 56px;
-        margin-bottom: 2px;
-        font-size: 16px;
-        padding-left: 13px;
-        &,
-        &:focus {
-            border-bottom: none;
-            box-shadow: none;
         }
     }
 }
@@ -304,4 +312,10 @@ main {
 
 .noUi-background {
     background-color: #cfd8dc;
+}
+
+.my-action-btn {
+    bottom: 79px;
+    right: 10px;
+    top: initial;
 }
