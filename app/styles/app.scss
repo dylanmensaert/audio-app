@@ -196,35 +196,8 @@ main {
     float: right;
 }
 
-.tabs {
-    overflow: initial;
-    background-color: #ee6e73;
-    margin-bottom: 2px;
-    .tab a {
-        color: white;
-        &.active,
-        &:hover {
-            color: #fbe9e7;
-        }
-    }
-    .indicator {
-        background-color: #dd2c00;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-    }
-}
-
-.spinner-blue-only {
-    border-color: #42a5f5;
-}
-
-.progress {
-    background-color: #bbdefb;
-    .indeterminate {
-        background-color: #1e88e5;
-    }
-}
-
 .my-next {
+    margin-top: 3px;
     text-align: right;
     padding-right: 8px;
     width: 100%;
@@ -294,4 +267,41 @@ main {
 
 .my-cover-action {
     padding-bottom: 50px;
+}
+
+.tabs {
+    overflow: initial;
+    background-color: #ee6e73;
+    margin-bottom: 2px;
+    .tab a {
+        color: white;
+        &.active,
+        &:hover {
+            color: #fbe9e7;
+        }
+    }
+    .indicator {
+        background-color: #dd2c00;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.spinner-blue-only {
+    border-color: #42a5f5;
+}
+
+.progress {
+    background-color: #bbdefb;
+    .indeterminate {
+        background-color: #1e88e5;
+    }
+}
+
+.noUi-connect,
+.noUi-horizontal .noUi-handle {
+    background-color: #2196f3;
+}
+
+.noUi-background {
+    background-color: #cfd8dc;
 }

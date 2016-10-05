@@ -42,23 +42,16 @@ export default Ember.Service.extend({
         audioPlayer.set('didEnd', this.next.bind(this));
     },
     play: function(track) {
-        let store = this.get('store'),
-            fileSystem = this.get('fileSystem'),
-            audioPlayer = this.get('audioPlayer'),
-            history,
-            historyTrackIds,
-            queue,
-            queueTrackIds,
-            playedTrackIds,
-            id;
+        let audioPlayer = this.get('audioPlayer');
 
         if (track) {
-            id = track.get('id');
-            history = store.peekRecord('playlist', 'history');
-            historyTrackIds = history.get('trackIds');
-            queue = store.peekRecord('playlist', 'queue');
-            queueTrackIds = queue.get('trackIds');
-            playedTrackIds = this.get('utils.playedTrackIds');
+            let store = this.get('store'),
+                fileSystem = this.get('fileSystem'),
+                id = track.get('id'),
+                history = store.peekRecord('playlist', 'history'),
+                historyTrackIds = history.get('trackIds'),
+                queue = store.peekRecord('playlist', 'queue'),
+                queueTrackIds = queue.get('trackIds');
 
             if (historyTrackIds.includes(id)) {
                 historyTrackIds.removeObject(id);
@@ -78,23 +71,21 @@ export default Ember.Service.extend({
                 queue.save();
             }
 
-            if (!playedTrackIds.includes(id)) {
-                playedTrackIds.pushObject(id);
-            }
+            this.get('utils.playedTrackIds').addObject(id);
 
             fileSystem.set('playingTrackId', id);
 
             fileSystem.save();
-        }
 
-        if (track) {
             track.save();
-        }
 
-        if (track && fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
-            track.download().then(function() {
+            if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
+                track.download().then(function() {
+                    audioPlayer.play(track);
+                });
+            } else {
                 audioPlayer.play(track);
-            });
+            }
         } else {
             audioPlayer.play(track);
         }
