@@ -79,6 +79,7 @@ main {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     width: 100%;
     padding-left: 31px;
+    background-color: white;
 }
 
 .my-autocomplete {
@@ -176,15 +177,51 @@ main {
     margin: 20px 0;
 }
 
+.my-track-progress {
+    margin: 0;
+}
+
 .my-separator {
     width: 100%;
-    padding: 1px 0;
+    height: 0.5px;
+    &.my-loading {
+        height: 2px;
+    }
 }
 
 .my-line {
     width: calc(100% - 90px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 100%;
     float: right;
+}
+
+.tabs {
+    overflow: initial;
+    background-color: #ee6e73;
+    margin-bottom: 2px;
+    .tab a {
+        color: white;
+        &.active,
+        &:hover {
+            color: #fbe9e7;
+        }
+    }
+    .indicator {
+        background-color: #dd2c00;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.spinner-blue-only {
+    border-color: #42a5f5;
+}
+
+.progress {
+    background-color: #bbdefb;
+    .indeterminate {
+        background-color: #1e88e5;
+    }
 }
 
 .my-next {
@@ -214,7 +251,6 @@ main {
     padding-bottom: 56%;
     background-position-y: 50%;
     background-size: cover;
-    position: relative;
     box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.2);
 }

@@ -39,12 +39,6 @@
           </div>
         {{/if}}
 
-        {{#if model.isDownloading}}
-          <div class="my-track-icon">
-            {{c-spinner type='my-track-spinner'}}
-          </div>
-        {{/if}}
-
         {{#if model.isDownloaded}}
           <div class="my-track-icon">
             <i class="material-icons">offline_pin</i>
@@ -56,4 +50,14 @@
   <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
     <i class="material-icons">more_vert</i>
   </div>
+</div>
+
+<div class="my-separator {{if model.isDownloading 'my-loading'}}">
+    <div class="my-line">
+      {{#if model.isDownloading}}
+        <div class="progress my-track-progress">
+          <div class="indeterminate" />
+        </div>
+      {{/if}}
+    </div>
 </div>

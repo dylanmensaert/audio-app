@@ -49,10 +49,6 @@
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
   {{#each models as |track|}}
       {{c-track model=track showQueued=track.isQueued}}
-
-      <div class="my-separator">
-          <div class="my-line" />
-      </div>
   {{/each}}
 
   {{#if isPending}}
