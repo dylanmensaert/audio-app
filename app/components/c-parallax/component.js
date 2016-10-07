@@ -1,32 +1,28 @@
 import Ember from 'ember';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Component.extend({
     src: null,
     didInsertElement: function() {
         Ember.$(window).scroll(function() {
-            let menuHeight = 56,
-                image = this.$('.my-image'),
-                display = Ember.$(window),
+            let image = this.$('.my-image'),
                 height = this.$().height(),
-                displayScollTop = display.scrollTop(),
-                imageOffset = this.$().offset().top,
-                overlappingTopHeight = displayScollTop - menuHeight + display.height() - imageOffset,
-                overlappingBottomHeight = imageOffset + height - displayScollTop - menuHeight,
-                overlappingHeight = 0;
+                overlay = logic.getWindowOverlayWith(this.$()),
+                overlayHeight = 0;
 
-            if (overlappingTopHeight > 0 && overlappingBottomHeight > 0) {
+            if (overlay.isVisible) {
                 let calcHeight = function(givenHeight) {
                     return 100 - (givenHeight / height * 100);
                 };
 
-                if (overlappingTopHeight < height) {
-                    overlappingHeight = -calcHeight(overlappingTopHeight);
-                } else if (overlappingBottomHeight < height) {
-                    overlappingHeight = calcHeight(overlappingBottomHeight);
+                if (overlay.topHeight < height) {
+                    overlayHeight = -calcHeight(overlay.topHeight);
+                } else if (overlay.bottomHeight < height) {
+                    overlayHeight = calcHeight(overlay.bottomHeight);
                 }
             }
 
-            image.css('background-position-y', (50 - overlappingHeight) + '%');
+            image.css('background-position-y', (50 - overlayHeight) + '%');
         }.bind(this));
     },
     willDestroyElement: function() {

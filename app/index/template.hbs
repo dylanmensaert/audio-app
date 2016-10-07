@@ -26,7 +26,7 @@
           {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
       {{/each}}
 
-      {{#link-to 'track' relatedByTrack tagName='div' class='my-next'}}
+      {{#link-to 'track' relatedByTrack.track tagName='div' class='my-next'}}
           <i class="material-icons">chevron_right</i>
         {{/link-to }}
   {{/each}}

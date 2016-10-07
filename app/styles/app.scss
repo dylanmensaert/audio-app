@@ -301,3 +301,17 @@ main {
 .my-icon-placeholder {
     width: 28px;
 }
+
+.my-fixed-title {
+    width: calc(100% - 90px);
+}
+
+.my-back-top {
+    top: 0;
+}
+
+.my-card-content {
+    bottom: 45px;
+    right: 24px;
+    position: initial;
+}

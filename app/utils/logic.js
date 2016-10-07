@@ -1,6 +1,22 @@
 import Ember from 'ember';
 
 export default {
+    // TODO: is this completely correct?
+    getWindowOverlayWith: function(element) {
+        let menuHeight = 56,
+            display = Ember.$(window),
+            height = element.height(),
+            displayScollTop = display.scrollTop(),
+            imageOffset = element.offset().top,
+            topHeight = displayScollTop - menuHeight + display.height() - imageOffset,
+            bottomHeight = imageOffset + height - displayScollTop - menuHeight;
+
+        return {
+            isVisible: topHeight > 0 && bottomHeight > 0,
+            topHeight,
+            bottomHeight
+        };
+    },
     maxResults: 50,
     later: function(context, callback) {
         Ember.run.later(context, callback, 300);

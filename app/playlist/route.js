@@ -1,20 +1,6 @@
 import Ember from 'ember';
-import backRouteMixin from 'audio-app/mixins/route-back';
+import modelRouteMixin from 'audio-app/mixins/route-model';
 
-export default Ember.Route.extend(backRouteMixin, {
-    setupController: function(controller, model) {
-        this._super(controller, model);
-
-        controller.start();
-    },
-    model: function(parameters) {
-        let playlistId = parameters.playlist_id,
-            playlist = this.store.peekRecord('playlist', playlistId);
-
-        if (!playlist) {
-            playlist = this.store.findRecord('playlist', playlistId);
-        }
-
-        return playlist;
-    }
+export default Ember.Route.extend(modelRouteMixin, {
+    type: 'playlist'
 });

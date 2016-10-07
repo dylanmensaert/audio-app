@@ -1,4 +1,6 @@
 import Ember from 'ember';
-import backRouteMixin from 'audio-app/mixins/route-back';
+import modelRouteMixin from 'audio-app/mixins/route-model';
 
-export default Ember.Route.extend(backRouteMixin);
+export default Ember.Route.extend(modelRouteMixin, {
+    type: 'track'
+});

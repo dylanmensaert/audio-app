@@ -1,11 +1,11 @@
 {{#c-fixed tagName='nav'}}
   <div class="nav-wrapper">
-    <div class="my-back" {{action 'back'}} style="top: 0;">
+    <div class="my-back my-back-top" {{action 'back'}}>
       <i class="material-icons">arrow_back</i>
     </div>
 
-    <div class="brand-logo truncate">
-      {{model.track}}
+    <div class="brand-logo truncate my-fixed-title">
+      {{model.name}}
     </div>
 
     <ul class="right">
@@ -24,7 +24,7 @@
   </div>
 
   <div class="card-content my-relative">
-    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 24px; position: initial;">
+    <div class="fixed-action-btn horizontal click-to-toggle my-card-content">
       <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
         <i class="material-icons">menu</i>
       </a>
@@ -61,7 +61,7 @@
     </div>
 
     <span class="card-title activator grey-text text-darken-4">
-      {{model.name}}
+      Track
     </span>
   </div>
 
