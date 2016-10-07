@@ -1,63 +1,63 @@
 <div class="row my-track-placeholder">
-  <div class="col s6">
-    <i class="material-icons my-audio-icon">
-      queue_music
-    </i>
-  </div>
+    <div class="col s6">
+        <i class="material-icons my-audio-icon">
+            queue_music
+        </i>
+    </div>
 
-  <div class="col s6 my-right">
-    <i class="material-icons my-audio-icon">
-      shop_two
-    </i>
-  </div>
+    <div class="col s6 my-right">
+        <i class="material-icons my-audio-icon">
+            shop_two
+        </i>
+    </div>
 </div>
 
 <div {{action 'click'}} class="my-track-draggable waves-effect {{if model.isSelected 'my-active'}}">
-  <div class="my-track-middle">
-      <div class="my-static-image">
-        {{c-image src=model.thumbnail}}
-      </div>
-  </div>
-
-  <div class="my-track-body">
-    <div class="my-track-text">
-      {{model.name}}
+    <div class="my-track-middle">
+        <div class="my-static-image">
+            {{c-image src=model.thumbnail}}
+        </div>
     </div>
 
-    <div class="my-track-status">
-        {{#if model.isPlaying}}
-          <div class="my-track-icon">
-            <div class="eq">
-              <div class="eq-bar"></div>
-              <div class="eq-bar"></div>
-              <div class="eq-bar"></div>
-            </div>
-          </div>
-        {{else if showQueued}}
-          <div class="my-track-icon">
-            <i class="material-icons">schedule</i>
-          </div>
-        {{/if}}
+    <div class="my-track-body">
+        <div class="my-track-text">
+            {{model.name}}
+        </div>
 
-        {{#if model.isDownloaded}}
-          <div class="my-track-icon">
-            <i class="material-icons">offline_pin</i>
-          </div>
-        {{/if}}
+        <div class="my-track-status">
+            {{#if model.isPlaying}}
+                <div class="my-track-icon">
+                    <div class="eq">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
+                {{else if showQueued}}
+                <div class="my-track-icon">
+                    <i class="material-icons">schedule</i>
+                </div>
+            {{/if}}
+
+            {{#if model.isDownloaded}}
+                <div class="my-track-icon">
+                    <i class="material-icons">offline_pin</i>
+                </div>
+            {{/if}}
+        </div>
     </div>
-  </div>
 
-  <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
-    <i class="material-icons">more_vert</i>
-  </div>
+    <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
+        <i class="material-icons">more_vert</i>
+    </div>
 </div>
 
 <div class="my-separator {{if model.isDownloading 'my-loading'}}">
     <div class="my-line">
-      {{#if model.isDownloading}}
-        <div class="progress my-track-progress">
-          <div class="indeterminate" />
-        </div>
-      {{/if}}
+        {{#if model.isDownloading}}
+            <div class="progress my-track-progress">
+                <div class="indeterminate" />
+            </div>
+        {{/if}}
     </div>
 </div>

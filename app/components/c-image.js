@@ -6,8 +6,10 @@ export default Ember.Component.extend({
     src: null,
     updateBackground: Ember.observer('src', function() {
         logic.later(this, function() {
-            if (!this.get('isDestroyed')) {
-                this.$().css('background-image', 'url(\'' + this.get('src') + '\')');
+            let src = this.get('src');
+
+            if (!this.get('isDestroyed') && src) {
+                this.$().css('background-image', 'url(\'' + src + '\')');
             }
         });
     }),

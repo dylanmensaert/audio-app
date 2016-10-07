@@ -1,39 +1,41 @@
 {{#if hasSelected}}
-  <nav class="my-fixed">
-    <div class="nav-wrapper">
-      <ul class="right">
-        <li>
-          {{#if isEverySaved}}
-            <a href="javascript:void(0)" {{action 'delete'}}>
-                <i class="material-icons">delete</i>
-              </a>
-            {{else if isEveryUnsaved}}
-              <a href="javascript:void(0)" {{action 'save'}}>
-                  <i class="material-icons">shop_two</i>
-              </a>
-            {{else}}
-              <a href="javascript:void(0)">
-                  <i class="my-icon-placeholder" />
-              </a>
-            {{/if}}
-          </li>
+    <nav class="my-fixed">
+        <div class="nav-wrapper">
+            <ul class="right">
+                <li>
+                    {{#if isEverySaved}}
+                        <a href="javascript:void(0)" {{action 'delete'}}>
+                            <i class="material-icons">delete</i>
+                        </a>
+                        {{else if isEveryUnsaved}}
+                        <a href="javascript:void(0)" {{action 'save'}}>
+                            <i class="material-icons">shop_two</i>
+                        </a>
+                    {{else}}
+                        <a href="javascript:void(0)">
+                            <i class="my-icon-placeholder" />
+                        </a>
+                    {{/if}}
+                </li>
 
-          <li>
-            <a href="javascript:void(0)" {{action 'deselect'}}>
-                <i class="material-icons">cancel</i>
-            </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+                <li>
+                    <a href="javascript:void(0)" {{action 'deselect'}}>
+                        <i class="material-icons">cancel</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 {{/if}}
 
-{{#c-endless-scroll didScrollToBottom='didScrollToBottom'}}
-  {{#each playlists as |playlist|}}
-      {{c-playlist model=playlist}}
-  {{/each}}
+<div class="container">
+    {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
+        {{#each models as |playlist|}}
+            {{c-playlist model=playlist}}
+        {{/each}}
 
-  {{#if isPending}}
-    {{c-spinner class='my-spinner'}}
-  {{/if}}
-{{/c-endless-scroll}}
+        {{#if isPending}}
+            {{c-spinner class='my-spinner'}}
+        {{/if}}
+    {{/c-endless-scroll}}
+</div>

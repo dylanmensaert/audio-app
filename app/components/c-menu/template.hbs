@@ -1,32 +1,32 @@
 <ul id="slide-out" class="side-nav fixed">
-  {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
-  {{c-menu-item value='My Playlists' route='playlists' icon='loyalty' action='clearHistory'}}
-  {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='queue_music' action='clearHistory'}}
-  {{c-menu-item value='History' route='playlist' model='history' icon='library_books' action='clearHistory'}}
+    {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
+    {{c-menu-item value='My Playlists' route='playlists' icon='loyalty' action='clearHistory'}}
+    {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='queue_music' action='clearHistory'}}
+    {{c-menu-item value='History' route='playlist' model='history' icon='library_books' action='clearHistory'}}
 
-  <li>
-    <div class="divider"></div>
-  </li>
+    <li>
+        <div class="divider"></div>
+    </li>
 
-  {{c-menu-item value='Settings' route='settings' icon='settings'}}
+    {{c-menu-item value='Settings' route='settings' icon='settings'}}
 </ul>
 
-{{#c-fixed tagName='nav'}}
-  <div class="nav-wrapper">
-    <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
-        <i class="material-icons">menu</i>
-    </a>
+{{#c-fixed tagName='nav' }}
+    <div class="nav-wrapper">
+        <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
+            <i class="material-icons">menu</i>
+        </a>
 
-    <div class="brand-logo truncate">
-      {{yield}}
+        <div class="brand-logo truncate">
+            {{yield}}
+        </div>
+
+        <ul class="right">
+            <li>
+                {{#link-to 'search.tracks' }}
+                    <i class="material-icons">search</i>
+                {{/link-to}}
+            </li>
+        </ul>
     </div>
-
-    <ul class="right">
-      <li>
-        {{#link-to 'search.tracks' }}
-          <i class="material-icons">search</i>
-        {{/link-to}}
-      </li>
-    </ul>
-  </div>
 {{/c-fixed}}

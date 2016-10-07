@@ -1,13 +1,13 @@
 {{#c-menu}}
-  My Playlists
+    My Playlists
 {{/c-menu}}
 
-{{c-playlists playlists=sortedPlaylists}}
-
 {{#if isCreatedMode}}
-  {{c-input-bar value=name done='save'}}
+    {{c-input-bar value=name done='save'}}
 {{else}}
-  <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-fixed my-action-btn" {{action 'setupCreate'}}>
-    <i class="material-icons">add</i>
-  </a>
+    <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-fixed my-action-btn" {{action 'setupCreate'}}>
+        <i class="material-icons">add</i>
+    </a>
 {{/if}}
+
+{{c-playlists models=sortedPlaylists isPending=isPending didScrollToBottom='didScrollToBottom'}}

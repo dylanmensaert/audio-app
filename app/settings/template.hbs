@@ -1,36 +1,36 @@
 {{#c-menu}}
-  Settings
+    Settings
 {{/c-menu}}
 
 <main>
-  <div class="container">
-    <p>
-      {{input type='checkbox' id="download-later" checked=fileSystem.downloadLater}}
+    <div class="container">
+        <p>
+            {{input type='checkbox' id="download-later" checked=fileSystem.downloadLater}}
 
-      <label for="download-later">
-        Download track when you have wifi
-      </label>
-    </p>
+            <label for="download-later">
+                Download track when you have wifi
+            </label>
+        </p>
 
-    <p>
-      {{input type='checkbox' id="download-before" checked=fileSystem.downloadBeforePlaying}}
+        <p>
+            {{input type='checkbox' id="download-before" checked=fileSystem.downloadBeforePlaying}}
 
-      <label for="download-before">
-        Download track when you have wifi
-      </label>
-    </p>
+            <label for="download-before">
+                Download track when you have wifi
+            </label>
+        </p>
 
-    <p>
-    <div class="file-field input-field">
-      <div class="btn">
-        <span>File</span>
-        {{c-file-input}}
-      </div>
+        <p>
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>File</span>
+                    {{c-file-input}}
+                </div>
 
-      <div class="file-path-wrapper">
-        <input class="file-path validate" placeholder="Upload one or more files">
-      </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" placeholder="Upload one or more files">
+                </div>
+            </div>
+        </p>
     </div>
-    </p>
-  </div>
 </main>

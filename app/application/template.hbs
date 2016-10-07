@@ -7,31 +7,30 @@
 {{outlet}}
 
 {{#if audioPlayer.track}}
-  {{#c-fixed class='my-audio-player'}}
-      {{c-audio-slider slider=utils.audioSlider}}
+    {{#c-fixed class='my-audio-player' }}
+        {{c-audio-slider slider=utils.audioSlider}}
 
-      <div class="row my-audio-row">
-        {{#link-to 'track' audioPlayer.track tagName='div' class='col s10'}}
-          <h5 class="truncate">
-            {{audioPlayer.track.name}}
-          </h5>
-        {{/link-to}}
+        <div class="row my-audio-row">
+            {{#link-to 'track' audioPlayer.track tagName='div' class='col s10' }}
+                <h5 class="truncate">
+                    {{audioPlayer.track.name}}
+                </h5>
+            {{/link-to}}
 
-        <div class="col s2 my-center">
-          {{#if audioPlayer.isLoading}}
-              {{c-spinner type='my-audio-spinner'}}
-          {{else if audioPlayer.isPlaying}}
-            <div {{action 'pause'}}>
-                <i class="material-icons my-audio-icon">pause</i>
+            <div class="col s2 my-center">
+                {{#if audioPlayer.isLoading}}
+                    {{c-spinner type='my-audio-spinner'}} {{else if audioPlayer.isPlaying}}
+                    <div {{action 'pause'}}>
+                        <i class="material-icons my-audio-icon">pause</i>
+                    </div>
+                    {{else if audioPlayer.isIdle}}
+                    <div {{action 'play'}}>
+                        <i class="material-icons my-audio-icon">play_arrow</i>
+                    </div>
+                {{/if}}
             </div>
-          {{else if audioPlayer.isIdle}}
-            <div {{action 'play'}}>
-                <i class="material-icons my-audio-icon">play_arrow</i>
-            </div>
-          {{/if}}
         </div>
-      </div>
-  {{/c-fixed}}
+    {{/c-fixed}}
 {{/if}}
 
 {{c-audio}}

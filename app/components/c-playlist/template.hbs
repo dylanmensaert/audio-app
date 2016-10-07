@@ -2,36 +2,30 @@
     {{c-image src=model.thumbnail}}
 </div>
 
-<div class="card-content">
-  <span class="card-title activator grey-text text-darken-4">
+<div class="card-content truncate">
     {{model.name}}
-
-    <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
-  </span>
 </div>
 
 <div class="card-action">
-  <p>
-   {{#if model.isPlaying}}
-        <i class="material-icons">
-          headset
-        </i>
-      {{else}}
-          {{#if showQueued}}
-              <i class="material-icons">
-                schedule
-              </i>
-          {{/if}}
-      {{/if}}
+    {{#if model.isPlaying}}
+        <div class="my-track-icon">
+            <div class="eq">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+            </div>
+        </div>
+        {{else if showQueued}}
+        <i class="material-icons">schedule</i>
+    {{/if}}
 
-      {{#if model.isDownloading}}
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-      {{/if}}
+    {{#if model.isDownloading}}
+        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
+    {{/if}}
 
-      {{#if model.isDownloaded}}
-          <i class="material-icons">
-            offline_pin
-          </i>
-      {{/if}}
-  </p>
+    {{#if model.isDownloaded}}
+        <i class="material-icons">offline_pin</i>
+    {{/if}}
+
+    <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
 </div>

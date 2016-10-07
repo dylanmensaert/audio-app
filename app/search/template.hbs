@@ -1,19 +1,19 @@
-{{#c-fixed class='my-input-bar'}}
-  {{c-autocomplete search='search' value=value suggestions=suggestions back='back'}}
+{{#c-fixed class='my-input-bar' }}
+    {{c-autocomplete search='search' value=value suggestions=suggestions back='back'}}
 {{/c-fixed}}
 
 {{#c-tabs}}
-  <li class="tab col s6">
-    {{#link-to 'search.tracks'}}
-      Tracks
-    {{/link-to}}
-  </li>
+    <li class="tab col s6">
+        {{#link-to 'search.tracks'}}
+            Tracks
+        {{/link-to}}
+    </li>
 
-  <li class="tab col s6">
-    {{#link-to 'search.playlists'}}
-      Playlists
-    {{/link-to}}
-  </li>
+    <li class="tab col s6">
+        {{#link-to 'search.playlists'}}
+            Playlists
+        {{/link-to}}
+    </li>
 {{/c-tabs}}
 
 {{outlet}}

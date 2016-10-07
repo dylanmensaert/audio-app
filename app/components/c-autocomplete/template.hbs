@@ -1,21 +1,21 @@
 <div class="my-back" {{action 'back'}}>
-  <i class="material-icons">arrow_back</i>
+    <i class="material-icons">arrow_back</i>
 </div>
 
 {{c-input value=value action='searchSelected' didFocusOut='didFocusOut'}}
 
 {{#if value}}
-  <div class="my-clear" {{action 'clear'}}>
-    <i class="material-icons">close</i>
-  </div>
+    <div class="my-clear" {{action 'clear'}}>
+        <i class="material-icons">close</i>
+    </div>
 {{/if}}
 
 {{#if showAutoComplete}}
-  <ul class="z-depth-2">
-    {{#each suggestions as |suggestion|}}
-      <li {{action 'searchSuggestion' suggestion}} class={{if suggestion.isSelected 'active'}}>
-          {{suggestion.value}}
-      </li>
-    {{/each}}
-  </ul>
+    <ul class="z-depth-2">
+        {{#each suggestions as |suggestion|}}
+            <li {{action 'searchSuggestion' suggestion}} class= {{if suggestion.isSelected 'active'}}>
+                {{suggestion.value}}
+            </li>
+        {{/each}}
+    </ul>
 {{/if}}
