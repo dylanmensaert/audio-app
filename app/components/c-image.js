@@ -2,6 +2,7 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Component.extend({
+    tagName: 'img',
     classNames: ['my-image'],
     src: null,
     updateBackground: Ember.observer('src', function() {
