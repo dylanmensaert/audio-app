@@ -1,5 +1,9 @@
 {{#if isEditMode}}
   {{c-input-bar value=name done='save'}}
+{{else if (is-equal utils.history.length 1)}}
+  {{#c-menu}}
+    {{model.name}}
+  {{/c-menu}}
 {{else}}
   {{#c-fixed tagName='nav'}}
     <div class="nav-wrapper">

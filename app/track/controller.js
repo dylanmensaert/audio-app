@@ -6,9 +6,6 @@ export default Ember.Controller.extend(findControllerMixin, {
     model: null,
     type: 'track',
     setOptions: function(options) {
-        options.maxResults = logic.maxResults;
-
-        options.nextPageToken = this.get('nextPageToken');
         options.relatedVideoId = this.get('model.id');
     }
 });

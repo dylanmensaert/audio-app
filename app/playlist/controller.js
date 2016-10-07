@@ -3,6 +3,7 @@ import findControllerMixin from 'audio-app/mixins/controller-find';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend(findControllerMixin, {
+    utils: Ember.inject.service(),
     model: null,
     type: 'track',
     searchOnline: function() {
@@ -11,10 +12,7 @@ export default Ember.Controller.extend(findControllerMixin, {
     setOptions: function(options) {
         options.playlistId = this.get('model.id');
 
-        if (this.searchOnline()) {
-            options.maxResults = logic.maxResults;
-            options.nextPageToken = this.get('nextPageToken');
-        } else {
+        if (!this.searchOnline()) {
             this.set('models', []);
         }
     },

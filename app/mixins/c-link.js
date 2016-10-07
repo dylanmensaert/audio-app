@@ -11,6 +11,10 @@ export default Ember.Mixin.create(clickMixin, {
             model = this.get('model'),
             parameters;
 
+        if (this.get('action')) {
+            this.sendAction();
+        }
+
         parameters = [
             this.get('route')
         ];
