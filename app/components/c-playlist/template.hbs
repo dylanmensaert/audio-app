@@ -2,30 +2,18 @@
     {{c-image src=model.thumbnail}}
 </div>
 
-<div class="card-content truncate">
-    {{model.name}}
+<div class="card-content my-playlist-content">
+  <div class="row">
+    <div class="truncate">
+      {{model.name}}
+    </div>
+
+    <i class="material-icons" {{action 'changeSelect'}}>more_vert</i>
+  </div>
 </div>
 
-<div class="card-action">
-    {{#if model.isPlaying}}
-        <div class="my-track-icon">
-            <div class="eq">
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-            </div>
-        </div>
-        {{else if showQueued}}
-        <i class="material-icons">schedule</i>
-    {{/if}}
-
-    {{#if model.isDownloading}}
-        {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-    {{/if}}
-
-    {{#if model.isDownloaded}}
-        <i class="material-icons">offline_pin</i>
-    {{/if}}
-
-    <i class="material-icons right" {{action 'changeSelect'}}>more_vert</i>
-</div>
+{{#if model.isSaved}}
+  <div class="card-action">
+      <i class="material-icons">shop_two</i>
+  </div>
+{{/if}}
