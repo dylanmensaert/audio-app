@@ -43,7 +43,7 @@
         {{#if playlists}}
             <div class="mdl-grid my-grid">
                 {{#each sortedPlaylists as |playlist|}}
-                    {{c-playlist model=playlist action='transitionTo' changeSelect='changeSelect'}}
+                    {{c-playlist model=playlist}}
 
                     <div class="my-playlist-separator">
                         <div class="my-playlist-line" />

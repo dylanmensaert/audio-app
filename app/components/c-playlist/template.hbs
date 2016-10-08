@@ -1,6 +1,6 @@
-<div {{action 'click'}} class="card-image waves-effect waves-block waves-light">
+{{#link-to 'playlist' model tagName='div' class='card-image waves-effect waves-block waves-light'}}
     {{c-image src=model.thumbnail}}
-</div>
+{{/link-to}}
 
 <div class="card-content my-playlist-content">
   <div class="row">
