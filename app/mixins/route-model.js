@@ -12,11 +12,5 @@ export default Ember.Mixin.create(backRouteMixin, {
         }
 
         return model;
-    },
-    setupController: function(controller, model) {
-        this._super(controller, model);
-
-        controller.reset();
-        controller.start();
     }
 });

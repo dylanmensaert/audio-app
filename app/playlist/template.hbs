@@ -48,7 +48,7 @@
           {{else}}
             <li>
               <a href="javascript:void(0)" class="btn-floating blue" {{action 'save'}}>
-                  <i class="material-icons">shop_two</i>
+                  <i class="material-icons">save</i>
               </a>
             </li>
           {{/if}}
@@ -60,35 +60,21 @@
       Playlist
     </span>
 
-    <div class="my-subtext">
-      {{model.name}}
+    <div class="row my-subtext">
+      <div class="truncate">
+        {{model.name}}
+      </div>
+
+     {{#if model.isSaved}}
+        <i class="material-icons left">save</i>
+      {{/if}}
     </div>
   </div>
 
-  <div class="card-action my-cover-action">
-   {{#if model.isPlaying}}
-        <i class="material-icons">
-          headset
-        </i>
-      {{else if showQueued}}
-          <i class="material-icons">
-            schedule
-          </i>
-      {{/if}}
-
-      {{#if model.isDownloading}}
-          {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-      {{/if}}
-
-      {{#if model.isDownloaded}}
-          <i class="material-icons">
-            offline_pin
-          </i>
-      {{/if}}
-  </div>
+  <div class="card-action" />
 </div>
 
-<h5>
+<h5 class="my-center my-cover-section">
   Tracks
 </h5>
 

@@ -1,4 +1,3 @@
-/* global Math: true */
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
 import connection from 'connection';
@@ -127,7 +126,7 @@ export default Ember.Component.extend(modelMixin, {
         queue.save();
     },
     actions: {
-        click: function() {
+        play: function() {
             if (this.get('doClick')) {
                 this.get('audioRemote').play(this.get('model'));
             }

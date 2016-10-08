@@ -22,7 +22,7 @@
 
         {{c-tracks models=relatedByTrack.relatedTracks}}
 
-        {{#link-to 'track' relatedByTrack.track tagName='div' class='my-next' }}
+        {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next' }}
             <i class="material-icons">chevron_right</i>
         {{/link-to }}
     {{/each}}

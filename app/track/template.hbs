@@ -15,7 +15,7 @@
 {{/c-fixed}}
 
 <div class="card my-card-cover">
-    <div class="card-image">
+    <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
         {{c-parallax src=model.thumbnail}}
     </div>
 
@@ -32,21 +32,21 @@
                     </a>
                 </li>
 
-                {{#if isEveryUnQueued}}
+                {{#unless model.isQueued}}
                     <li>
                         <a href="javascript:void(0)" class="btn-floating yellow teal" {{action 'queue'}}>
                             <i class="material-icons">queue_music</i>
                         </a>
                     </li>
-                {{/if}}
+                {{/unless}}
 
-                {{#if isEveryDownloaded}}
+                {{#if model.isDownloaded}}
                     <li>
                         <a href="javascript:void(0)" class="btn-floating red" {{action 'delete'}}>
                             <i class="material-icons">delete</i>
                         </a>
                     </li>
-                    {{else if isEveryDownloadable}}
+                {{else if model.isDownloadable}}
                     <li>
                         <a href="javascript:void(0)" class="btn-floating blue" {{action 'download'}}>
                             <i class="material-icons">file_download</i>
@@ -60,32 +60,38 @@
             Track
         </span>
 
-        <div class="my-subtext">
-          {{model.name}}
+        <div class="row my-subtext">
+          <div class="truncate">
+            {{model.name}}
+          </div>
+
+          {{#if model.isDownloaded}}
+            <i class="material-icons left">offline_pin</i>
+          {{/if}}
         </div>
     </div>
 
-    <div class="card-action my-cover-action">
-        {{#if showQueued}}
-            <i class="material-icons">
-                schedule
-            </i>
-        {{/if}}
+    {{#if model.isDownloading}}
+      <div class="progress my-track-progress my-loading">
+          <div class="indeterminate" />
+      </div>
+    {{/if}}
 
-        {{#if model.isDownloading}}
-            {{c-mdl class='mdl-spinner mdl-js-spinner is-active'}}
-        {{/if}}
-
-        {{#if model.isDownloaded}}
-            <i class="material-icons">
-                offline_pin
-            </i>
-        {{/if}}
-    </div>
+  <div class="card-action" />
 </div>
 
-<h5>
-  Related
-</h5>
+{{#c-tabs}}
+    <li class="tab col s6">
+        {{#link-to 'track.related'}}
+            Related
+        {{/link-to}}
+    </li>
 
-{{c-tracks models=sortedModels isPending=isPending didScrollToBottom='didScrollToBottom'}}
+    <li class="tab col s6 {{unless model.isQueued 'disabled'}}">
+        {{#link-to 'track.queue'}}
+            Queue
+        {{/link-to}}
+    </li>
+{{/c-tabs}}
+
+{{outlet}}

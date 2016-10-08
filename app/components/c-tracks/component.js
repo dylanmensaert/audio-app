@@ -12,7 +12,7 @@ export default Ember.Component.extend(modelsMixin, {
     }),
     isEveryDownloaded: Ember.computed('models.@each.isDownloaded', 'models.length', function() {
         let downloadedTracks = this.get('models').filter(function(track) {
-            return track.get('isDownloaded') || track.get('isDownloading');
+            return track.get('isDownloaded');
         });
 
         return downloadedTracks.get('length') === this.get('models.length');
