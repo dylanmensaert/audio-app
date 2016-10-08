@@ -8,9 +8,7 @@
             History
         </h4>
 
-        {{#each sortedLastHistoryTracks as |track|}}
-            {{c-track model=track showQueued=track.isQueued}}
-        {{/each}}
+        {{c-tracks models=sortedLastHistoryTracks}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next' }}
             <i class="material-icons">chevron_right</i>
@@ -22,9 +20,7 @@
             {{relatedByTrack.track.name}}
         </h5>
 
-        {{#each relatedByTrack.relatedTracks as |track|}}
-            {{c-track model=track showQueued=track.isQueued changeSelect='changeSelect'}}
-        {{/each}}
+        {{c-tracks models=relatedByTrack.relatedTracks}}
 
         {{#link-to 'track' relatedByTrack.track tagName='div' class='my-next' }}
             <i class="material-icons">chevron_right</i>

@@ -12,7 +12,8 @@ export default Ember.Component.extend(modelMixin, {
     startPosition: null,
     lastPosition: null,
     action: null,
-    resetPosition: function() {
+    /*TODO: Implement swiping*/
+    /*resetPosition: function() {
         this.$('.my-track-draggable').animate({
             left: 0
         });
@@ -75,7 +76,7 @@ export default Ember.Component.extend(modelMixin, {
         if (this.get('startPosition')) {
             this.resetPosition();
         }
-    },
+    },*/
     swipeLeft: function(track) {
         let utils = this.get('utils'),
             trackIds,
