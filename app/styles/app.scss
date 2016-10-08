@@ -312,11 +312,6 @@ main {
     width: 28px;
 }
 
-.my-fixed-title {
-    width: calc(100% - 90px);
-    text-align: center;
-}
-
 .my-back-top {
     top: 0;
 }
@@ -379,4 +374,8 @@ main {
         color: #ebf3f5;
     }
     box-shadow: none;
+}
+
+.my-subtext {
+    color: #999;
 }

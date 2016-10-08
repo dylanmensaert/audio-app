@@ -4,10 +4,6 @@
             <i class="material-icons">arrow_back</i>
         </div>
 
-        <div class="brand-logo truncate my-fixed-title">
-            {{model.name}}
-        </div>
-
         <ul class="right">
             <li>
                 {{#link-to 'search.tracks' }}
@@ -63,6 +59,10 @@
         <span class="card-title activator grey-text text-darken-4">
             Track
         </span>
+
+        <div class="my-subtext">
+          {{model.name}}
+        </div>
     </div>
 
     <div class="card-action my-cover-action">

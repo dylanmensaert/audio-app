@@ -1,18 +1,12 @@
 {{#if isEditMode}}
   {{c-input-bar value=name done='save'}}
 {{else if (is-equal utils.history.length 1)}}
-  {{#c-menu}}
-    {{model.name}}
-  {{/c-menu}}
+  {{c-menu}}
 {{else}}
   {{#c-fixed tagName='nav'}}
     <div class="nav-wrapper">
       <div class="my-back my-back-top" {{action 'back'}}>
         <i class="material-icons">arrow_back</i>
-      </div>
-
-      <div class="brand-logo truncate my-fixed-title">
-        {{model.name}}
       </div>
 
       <ul class="right">
@@ -65,6 +59,10 @@
     <span class="card-title activator grey-text text-darken-4">
       Playlist
     </span>
+
+    <div class="my-subtext">
+      {{model.name}}
+    </div>
   </div>
 
   <div class="card-action my-cover-action">
