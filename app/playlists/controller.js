@@ -3,6 +3,7 @@ import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend({
     utils: Ember.inject.service(),
+    fileSystem: Ember.inject.service(),
     playlists: Ember.computed('fileSystem.playlistIds.[]', function() {
         let playlistIds = this.get('fileSystem.playlistIds'),
             store = this.store,
