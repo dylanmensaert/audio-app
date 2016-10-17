@@ -11,14 +11,18 @@ export default Ember.Component.extend(modelsMixin, {
     actions: {
         save: function() {
             this.get('models').forEach(function(playlist) {
-                playlist.save();
+                if (playlist.get('isSelected')) {
+                    playlist.save();
+                }
             });
         },
         delete: function() {
             this.get('models').forEach(function(playlist) {
-                playlist.destroy().then(function() {
-                    playlist.set('isSelected', false);
-                });
+                if (playlist.get('isSelected')) {
+                    playlist.destroyRecord().then(function() {
+                        playlist.set('isSelected', false);
+                    });
+                }
             });
         }
     }
