@@ -5,58 +5,63 @@ export default Ember.Component.extend(modelsMixin, {
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
     isPending: null,
-    isEveryDownloadable: Ember.computed('models.@each.isDownloaded', 'models.length', function() {
-        let downloadableTracks = this.get('models').filterBy('isDownloadable');
-
-        return downloadableTracks.get('length') === this.get('models.length');
+    queueableTracks: Ember.computed('selectedModels.@each.isQueued', function() {
+        return this.get('selectedModels').filterBy('isQueued', false);
     }),
-    isEveryDownloaded: Ember.computed('models.@each.isDownloaded', 'models.length', function() {
-        let downloadedTracks = this.get('models').filter(function(track) {
-            return track.get('isDownloaded');
-        });
-
-        return downloadedTracks.get('length') === this.get('models.length');
+    downloadableTracks: Ember.computed('selectedModels.@each.isDownloaded', function() {
+        return this.get('selectedModels').filterBy('isDownloadable');
     }),
-    isEveryUnQueued: Ember.computed('models.@each.isQueued', 'models.length', function() {
-        let unQueuedTracks = this.get('models').filterBy('isQueued', false);
-
-        return unQueuedTracks.get('length') === this.get('models.length');
+    downloadedTracks: Ember.computed('selectedModels.@each.isDownloaded', function() {
+        return this.get('selectedModels').filterBy('isDownloaded');
     }),
     actions: {
+        queue: function() {
+            let queueableTracks = this.get('queueableTracks'),
+                length = queueableTracks.get('length');
+
+            if (length) {
+                let queue = this.get('store').peekRecord('playlist', 'queue'),
+                    trackIds = queue.get('trackIds');
+
+                queueableTracks.forEach(function(track) {
+                    trackIds.pushObject(track.get('id'));
+                });
+
+                this.get('utils').showMessage(length + ' Added to queue');
+            }
+        },
         download: function() {
-            this.get('models').forEach(function(track) {
-                if (track.get('isDownloadable')) {
+            let downloadableTracks = this.get('downloadableTracks'),
+                length = downloadableTracks.get('length');
+
+            if (length) {
+                downloadableTracks.forEach(function(track) {
                     track.download();
-                }
-            });
+                });
+
+                this.get('utils').showMessage(length + ' Downloading');
+            }
         },
         delete: function() {
-            this.get('models').forEach(function(track) {
-                track.remove().then(function() {
-                    track.destroyRecord().then(function() {
-                        track.set('isSelected', false);
+            let downloadedTracks = this.get('downloadedTracks'),
+                length = downloadedTracks.get('length');
+
+            if (length) {
+                downloadedTracks.forEach(function(track) {
+                    track.remove().then(function() {
+                        track.destroyRecord();
                     });
                 });
-            });
-        },
-        queue: function() {
-            let queue = this.get('store').peekRecord('playlist', 'queue'),
-                trackIds = queue.get('trackIds');
 
-            this.get('models').forEach(function(track) {
-                if (!trackIds.includes(track.get('id'))) {
-                    this.queueSingle(trackIds, track);
-                }
-            });
-
-            this.get('utils').showMessage('Added to queue');
+                this.get('utils').showMessage(length + ' Removed locally');
+            }
         },
         transitionToPlaylists: function() {
             let utils = this.get('utils');
 
-            utils.set('selectedTrackIds', this.get('models').mapBy('id'));
+            utils.set('selectedTrackIds', this.get('selectedModels').mapBy('id'));
 
-            utils.transitionToRoute('track.playlists');
+            utils.transitionToRoute('subscribe');
         }
     }
 });

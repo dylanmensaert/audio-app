@@ -19,13 +19,7 @@ export default Ember.Controller.extend({
             });
         },
         queue: function() {
-            let queue = this.get('store').peekRecord('playlist', 'queue'),
-                trackIds = queue.get('trackIds'),
-                track = this.get('model');
-
-            if (!trackIds.includes(track.get('id'))) {
-                this.queueSingle(trackIds, track);
-            }
+            this.store.peekRecord('playlist', 'queue').get('trackIds').addObject(this.get('model.id'));
 
             this.get('utils').showMessage('Added to queue');
         },

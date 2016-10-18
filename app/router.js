@@ -16,6 +16,8 @@ Router.map(function() {
         path: 'playlist/:playlist_id'
     });
 
+    this.route('subscribe');
+
     this.route('track', {
         path: 'track/:track_id'
     }, function() {

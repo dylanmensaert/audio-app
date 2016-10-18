@@ -41,6 +41,9 @@ export default Ember.Mixin.create({
             }
 
             return true;
+        },
+        back: function() {
+            this.get('utils').back(true);
         }
     }
 });

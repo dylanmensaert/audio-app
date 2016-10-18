@@ -1,4 +1,4 @@
-{{#if hasSelected}}
+{{#if selectedModels.length}}
     <nav class="my-fixed my-action-bar">
         <div class="nav-wrapper">
             <ul class="right">
@@ -9,31 +9,21 @@
                 </li>
 
                 <li>
-                    {{#if isEveryUnQueued}}
-                        <a href="javascript:void(0)" {{action 'queue'}}>
-                            <i class="material-icons">queue_music</i>
-                        </a>
-                    {{else}}
-                        <a href="javascript:void(0)">
-                            <i class="my-icon-placeholder" />
-                        </a>
-                    {{/if}}
+                  <a href="javascript:void(0)" {{action 'queue'}}>
+                      <i class="material-icons {{unless queueableTracks.length 'my-icon-disabled'}}">queue_music</i>
+                  </a>
                 </li>
 
                 <li>
-                    {{#if isEveryDownloaded}}
-                        <a href="javascript:void(0)" {{action 'delete'}}>
-                            <i class="material-icons">delete</i>
-                        </a>
-                        {{else if isEveryDownloadable}}
-                        <a href="javascript:void(0)" {{action 'download'}}>
-                            <i class="material-icons">file_download</i>
-                        </a>
-                    {{else}}
-                        <a href="javascript:void(0)">
-                            <i class="my-icon-placeholder" />
-                        </a>
-                    {{/if}}
+                  <a href="javascript:void(0)" {{action 'download'}}>
+                      <i class="material-icons {{unless downloadableTracks.length 'my-icon-disabled'}}">file_download</i>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="javascript:void(0)" {{action 'delete'}}>
+                      <i class="material-icons {{unless downloadedTracks.length 'my-icon-disabled'}}">delete</i>
+                  </a>
                 </li>
 
                 <li>

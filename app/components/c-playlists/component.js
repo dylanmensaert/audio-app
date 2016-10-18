@@ -2,28 +2,37 @@ import Ember from 'ember';
 import modelsMixin from 'audio-app/mixins/c-models';
 
 export default Ember.Component.extend(modelsMixin, {
-    isEveryUnsaved: Ember.computed('models.@each.isSaved', 'models.length', function() {
-        return this.get('models').filterBy('isSaved', false).get('length') === this.get('models.length');
+    unsavedPlaylists: Ember.computed('selectedModels.@each.isSaved', function() {
+        return this.get('selectedModels').filterBy('isSaved', false);
     }),
-    isEverySaved: Ember.computed('models.@each.isSaved', 'models.length', function() {
-        return this.get('models').filterBy('isSaved').get('length') === this.get('models.length');
+    savedPlaylists: Ember.computed('selectedModels.@each.isSaved', function() {
+        return this.get('selectedModels').filterBy('isSaved');
     }),
+    showSaved: true,
     actions: {
         save: function() {
-            this.get('models').forEach(function(playlist) {
-                if (playlist.get('isSelected')) {
+            let unsavedPlaylists = this.get('unsavedPlaylists'),
+                length = unsavedPlaylists.get('length');
+
+            if (length) {
+                this.get('unsavedPlaylists').forEach(function(playlist) {
                     playlist.save();
-                }
-            });
+                });
+
+                this.get('utils').showMessage(length + ' Saved locally');
+            }
         },
         delete: function() {
-            this.get('models').forEach(function(playlist) {
-                if (playlist.get('isSelected')) {
-                    playlist.destroyRecord().then(function() {
-                        playlist.set('isSelected', false);
-                    });
-                }
-            });
+            let savedPlaylists = this.get('savedPlaylists'),
+                length = savedPlaylists.get('length');
+
+            if (length) {
+                savedPlaylists.forEach(function(playlist) {
+                    playlist.destroyRecord();
+                });
+
+                this.get('utils').showMessage(length + ' Removed locally');
+            }
         }
     }
 });

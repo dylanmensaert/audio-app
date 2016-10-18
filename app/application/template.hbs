@@ -10,6 +10,8 @@
     {{#c-fixed class='my-audio-player' }}
         {{c-audio-slider slider=utils.audioSlider}}
 
+        {{time utils.audioSlider.value}} {{time utils.audioSlider.max}}
+
         <div class="row my-audio-row">
             {{#link-to 'track.queue' audioPlayer.track tagName='div' class='col s10' }}
                 <h5 class="truncate">

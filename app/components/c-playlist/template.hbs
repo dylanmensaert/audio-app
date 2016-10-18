@@ -12,7 +12,7 @@
   </div>
 </div>
 
-{{#if model.isSaved}}
+{{#if (is-and showSaved model.isSaved)}}
   <div class="card-action">
       <i class="material-icons">save</i>
   </div>

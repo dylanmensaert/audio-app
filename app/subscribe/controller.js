@@ -1,45 +1,28 @@
 import Ember from 'ember';
-import findControllerMixin from 'audio-app/mixins/controller-find';
-import connection from 'connection';
+import playlistsControllerMixin from 'audio-app/mixins/controller-playlists';
 
-export default Ember.Controller.extend(findControllerMixin, {
-    playlists: Ember.computed('utils.selectedTrackIds', 'playlists.@each.trackIds', function() {
+export default Ember.Controller.extend(playlistsControllerMixin, {
+    updateSelection: Ember.observer('utils.selectedTrackIds.[]', 'playlists.[]', function() {
         let selectedTrackIds = this.get('utils.selectedTrackIds');
 
-        return this.get('store').peekAll('playlist').filter(function(playlist) {
-            let isSelected,
-                isReadOnly = playlist.get('isReadOnly');
-
-            if (!isReadOnly) {
-                isSelected = selectedTrackIds.every(function(selectedTrackId) {
+        if (selectedTrackIds.get('length')) {
+            this.get('playlists').forEach(function(playlist) {
+                let isSelected = selectedTrackIds.every(function(selectedTrackId) {
                     return playlist.get('trackIds').includes(selectedTrackId);
                 });
 
                 playlist.set('isSelected', isSelected);
-            }
-
-            return !isReadOnly;
-        });
-    }),
-    sortedPlaylists: Ember.computed.sort('playlists', function(snippet, other) {
-        return this.sort(this.get('playlists'), snippet, other, !connection.isMobile());
-    }),
-    // TODO: Implement - avoid triggering on init?
-    /*updateMessage: function() {
-        if (!this.get('playlists.length')) {
-            this.get('utils').showMessage('No songs found');
+            });
         }
-    }.observes('playlists.length'),*/
-    /*TODO: Implement another way?*/
+    }),
     actions: {
         back: function() {
             let utils = this.get('utils');
 
             this.get('playlists').setEach('isSelected', false);
-
             utils.get('selectedTrackIds').clear();
 
-            utils.back();
+            return true;
         },
         changeSelect: function(playlist) {
             let utils = this.get('utils'),

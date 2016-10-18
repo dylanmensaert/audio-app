@@ -9,18 +9,23 @@ export default Ember.Route.extend({
         return this.get('fileSystem').forge().then(connection.onReady);
     },
     afterModel: function() {
-            let utils = this.get('utils');
+        let utils = this.get('utils');
 
-            utils.set('transitionToRoute', this.transitionTo.bind(this));
+        utils.set('transitionToRoute', this.transitionTo.bind(this));
 
-            this.get('audioRemote').connect();
+        this.get('audioRemote').connect();
 
-            if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
-                utils.transitionToRoute('search.tracks');
-            }
+        if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
+            utils.transitionToRoute('search.tracks');
         }
-        // TODO: remove?
-        /*   actions: {
+    },
+    actions: {
+        back: function() {
+            this.get('utils').back(false);
+        }
+    }
+    // TODO: remove?
+    /*   actions: {
  loading: function() {
                     if (this.get('controller')) {
                         this.set('controller.isLoading', true);
