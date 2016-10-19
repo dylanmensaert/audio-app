@@ -127,9 +127,9 @@ export default Ember.Component.extend(modelMixin, {
     },
     actions: {
         play: function() {
-            if (this.get('doClick')) {
-                this.get('audioRemote').play(this.get('model'));
-            }
+            /*if (this.get('doClick')) {*/
+            this.get('audioRemote').play(this.get('model'));
+            /*}*/
         }
     }
 });
