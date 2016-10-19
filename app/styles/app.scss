@@ -25,6 +25,10 @@ main {
     }
 }
 
+.button-collapse {
+    padding-left: 5px;
+}
+
 @mixin input-icon {
     position: absolute;
     /* TODO: remove top? */
