@@ -15,6 +15,12 @@
                 </li>
 
                 <li>
+                  <a href="javascript:void(0)" {{action 'downloadLater'}}>
+                      <i class="material-icons {{unless downloadableTracks.length 'my-icon-disabled'}}">shop_two</i>
+                  </a>
+                </li>
+
+                <li>
                   <a href="javascript:void(0)" {{action 'download'}}>
                       <i class="material-icons {{unless downloadableTracks.length 'my-icon-disabled'}}">file_download</i>
                   </a>

@@ -15,6 +15,19 @@ export default Ember.Route.extend({
 
         this.get('audioRemote').connect();
 
+        connection.onMobile(function() {
+            let downloadLater = this.store.peekRecord('playlist', 'download-later'),
+                trackIds = downloadLater.get('trackIds');
+
+            trackIds.toArray().forEach(function(trackId) {
+                let track = this.store.peekRecord('track', trackId);
+
+                trackIds.removeObject(trackId);
+
+                track.download();
+            }.bind(this));
+        }.bind(this));
+
         if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
             utils.transitionToRoute('search.tracks');
         }

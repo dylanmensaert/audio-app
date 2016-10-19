@@ -27,7 +27,22 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.pushObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage(length + ' Added to queue');
+                this.get('utils').showMessage(length + ' Added to Queue');
+            }
+        },
+        downloadLater: function() {
+            let downloadableTracks = this.get('downloadableTracks'),
+                length = downloadableTracks.get('length');
+
+            if (length) {
+                let downloadLater = this.get('store').peekRecord('playlist', 'download-later'),
+                    trackIds = downloadLater.get('trackIds');
+
+                downloadableTracks.forEach(function(track) {
+                    trackIds.pushObject(track.get('id'));
+                });
+
+                this.get('utils').showMessage(length + ' Added to Download later');
             }
         },
         download: function() {
@@ -35,8 +50,13 @@ export default Ember.Component.extend(modelsMixin, {
                 length = downloadableTracks.get('length');
 
             if (length) {
+                let downloadLater = this.get('store').peekRecord('playlist', 'download-later'),
+                    trackIds = downloadLater.get('trackIds');
+
                 downloadableTracks.forEach(function(track) {
                     track.download();
+
+                    trackIds.removeObject(track.get('id'));
                 });
 
                 this.get('utils').showMessage(length + ' Downloading');
