@@ -11,7 +11,7 @@
 {{/c-fixed}}
 
 {{#if isCreatedMode}}
-    {{c-input-bar value=name done='save'}}
+    {{c-input-bar value=name placeholder='Create' done='save'}}
 {{else}}
     <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-fixed my-action-btn" {{action 'setupCreate'}}>
         <i class="material-icons">add</i>

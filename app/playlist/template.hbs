@@ -1,5 +1,5 @@
 {{#if isEditMode}}
-  {{c-input-bar value=name done='save'}}
+  {{c-input-bar value=name placeholder='Edit' done='save'}}
 {{else if (is-equal utils.history.length 1)}}
   {{c-menu}}
 {{else}}

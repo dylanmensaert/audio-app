@@ -14,6 +14,7 @@
                 isMobile: function() {
                     return window.isMobile;
                 },
+                onMobile: function() {},
                 onReady: Ember.RSVP.resolve()
             })
         };
