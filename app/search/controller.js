@@ -16,8 +16,6 @@ export default Ember.Controller.extend({
         let value = this.get('value'),
             suggestions = [];
 
-        this.set('suggestions', suggestions);
-
         if (value) {
             this.peek('track');
             this.peek('playlist');
@@ -33,6 +31,8 @@ export default Ember.Controller.extend({
 
                         return suggestions.get('length') >= maxSuggestions;
                     });
+
+                    this.set('suggestions', suggestions);
                 }.bind(this));
             }
         }
