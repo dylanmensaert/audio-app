@@ -1,12 +1,15 @@
 import Ember from 'ember';
 import connection from 'connection';
+import phonegap from 'phonegap';
 
 export default Ember.Route.extend({
     fileSystem: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     utils: Ember.inject.service(),
     beforeModel: function() {
-        return this.get('fileSystem').forge().then(connection.onReady);
+        return phonegap.get('onDeviceReady').then(function() {
+            return this.get('fileSystem').forge();
+        }.bind(this));
     },
     afterModel: function() {
         let utils = this.get('utils');
@@ -31,6 +34,8 @@ export default Ember.Route.extend({
         if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
             utils.transitionToRoute('search.tracks');
         }
+
+        Ember.$('.my-splash-spinner').remove();
     },
     actions: {
         back: function() {

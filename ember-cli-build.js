@@ -14,7 +14,7 @@ extraAssets.push(new Funnel('bower_components/materialize/fonts/roboto', {
     destDir: '/fonts/roboto'
 }));
 
-module.exports = function (defaults) {
+module.exports = function(defaults) {
     var app = new EmberApp(defaults, {
         // Add options here
     });
@@ -60,7 +60,12 @@ module.exports = function (defaults) {
         exports: 'connection'
     });
 
-    app.import('vendor/phonegap.js');
+    app.import({
+        development: 'vendor/phonegap.js',
+        production: 'vendor/phonegap.prod.js'
+    }, {
+        exports: 'phonegap'
+    });
 
     return app.toTree(extraAssets);
 };

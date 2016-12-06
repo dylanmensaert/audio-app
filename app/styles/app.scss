@@ -398,3 +398,10 @@ main {
 i.my-icon-disabled {
     opacity: 0.5;
 }
+
+.my-splash-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

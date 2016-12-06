@@ -7,11 +7,10 @@
         Ember = Ember.default;
         phonegap = phonegap.default;
 
-        var connection,
-            onReady;
-
-        connection = Ember.Object.create({
+        var connection = Ember.Object.create({
             isOnline: function() {
+                var type = navigator.connection.type;
+
                 return type !== Connection.NONE && type !== Connection.UNKNOWN;
             },
             isMobile: function() {
@@ -20,6 +19,7 @@
                 return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
                     Connection.CELL;
             },
+            executables: [],
             onMobile: function(executable) {
                 if (this.isMobile()) {
                     executable();
@@ -36,13 +36,11 @@
             }
         });
 
-        onReady = phonegap.get('onDeviceReady').then(function() {
+        phonegap.get('onDeviceReady').then(function() {
             document.addEventListener('online', function() {
                 connection.execute();
             });
         });
-
-        connection.set('onReady', onReady);
 
         return {
             'default': connection

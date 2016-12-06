@@ -66,11 +66,14 @@ export default Ember.Mixin.create({
             delete snippet.id;
         } else {
             let thumbnails = item.snippet.thumbnails,
-                url = getUrlFor(thumbnails, 0),
                 thumbnail;
 
-            if (url) {
-                thumbnail = convertImageUrl(url);
+            if (thumbnails) {
+                let url = getUrlFor(thumbnails, 0);
+
+                if (url) {
+                    thumbnail = convertImageUrl(url);
+                }
             }
 
             snippet = {

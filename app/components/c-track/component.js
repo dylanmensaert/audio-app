@@ -1,18 +1,18 @@
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
-import connection from 'connection';
+/*import connection from 'connection';*/
 
 export default Ember.Component.extend(modelMixin, {
     audioRemote: Ember.inject.service(),
-    utils: Ember.inject.service(),
+    /*TODO: Implement swiping*/
+    /*utils: Ember.inject.service(),
     store: Ember.inject.service(),
     classNames: ['my-relative'],
     doClick: false,
     startPosition: null,
     lastPosition: null,
     action: null,
-    /*TODO: Implement swiping*/
-    /*resetPosition: function() {
+    resetPosition: function() {
         this.$('.my-track-draggable').animate({
             left: 0
         });
@@ -75,7 +75,7 @@ export default Ember.Component.extend(modelMixin, {
         if (this.get('startPosition')) {
             this.resetPosition();
         }
-    },*/
+    },
     swipeLeft: function(track) {
         let utils = this.get('utils'),
             trackIds,
@@ -124,7 +124,7 @@ export default Ember.Component.extend(modelMixin, {
         }
 
         queue.save();
-    },
+    },*/
     actions: {
         play: function() {
             /*if (this.get('doClick')) {*/

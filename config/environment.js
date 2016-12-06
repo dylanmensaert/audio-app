@@ -9,7 +9,6 @@ module.exports = function(environment) {
         },
         modulePrefix: 'audio-app',
         environment: environment,
-        rootURL: '/',
         locationType: 'auto',
         EmberENV: {
             FEATURES: {
@@ -44,7 +43,12 @@ module.exports = function(environment) {
     }
 
     if (environment === 'production') {
+        baseUrl = 'file:///android_asset/www/';
 
+        ENV.locationType = 'none';
+        ENV.baseURL = baseUrl;
+
+        ENV.APP.baseURL = baseUrl;
     }
 
     return ENV;
