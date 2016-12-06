@@ -12,16 +12,8 @@ export default Ember.Service.extend({
     store: Ember.inject.service(),
     connect: function() {
         let audioPlayer = this.get('audioPlayer'),
-            utils = this.get('utils'),
-            store = this.get('store'),
-            playingTrack,
             audioSlider;
 
-        playingTrack = store.peekRecord('track', this.get('fileSystem.playingTrackId'));
-
-        if (playingTrack) {
-            audioPlayer.load(playingTrack);
-        }
 
         audioSlider = AudioSlider.create({
             onSlideStop: function(value) {
@@ -37,7 +29,7 @@ export default Ember.Service.extend({
             audioSlider.set('max', this.get('duration'));
         });
 
-        utils.set('audioSlider', audioSlider);
+        this.set('utils.audioSlider', audioSlider);
 
         audioPlayer.set('didEnd', this.next.bind(this));
     },
@@ -76,8 +68,6 @@ export default Ember.Service.extend({
             fileSystem.set('playingTrackId', id);
 
             fileSystem.save();
-
-            track.save();
 
             if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
                 track.download().then(function() {

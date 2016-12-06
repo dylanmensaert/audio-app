@@ -24,12 +24,12 @@ export default Ember.Service.extend({
     play: function(track) {
         let element = this.get('element');
 
-        if (!track) {
-            element.play();
-        } else {
+        if (track) {
             this.load(track).then(function() {
                 element.play();
             });
+        } else {
+            element.play();
         }
     },
     pause: function() {

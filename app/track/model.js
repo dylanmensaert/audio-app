@@ -30,6 +30,7 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }
     },
+    audioPlayer: Ember.inject.service(),
     onlineAudio: null,
     thumbnail: Ember.computed('onlineThumbnail', 'isSaved', function() {
         let thumbnail;
@@ -58,8 +59,8 @@ export default DS.Model.extend(modelMixin, {
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
     }),
-    isPlaying: Ember.computed('fileSystem.playingTrackId', 'id', function() {
-        return this.get('fileSystem.playingTrackId') === this.get('id');
+    isPlaying: Ember.computed('audioPlayer.track.id', 'id', function() {
+        return this.get('audioPlayer.track.id') === this.get('id');
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
@@ -154,16 +155,16 @@ export default DS.Model.extend(modelMixin, {
         });
     },
     downloadSource: function(url, source) {
-        let fileSystem = this.get('fileSystem'),
-            xhr = new XMLHttpRequest(),
-            response;
-
-        xhr.open('GET', url, true);
-        xhr.responseType = 'arraybuffer';
+        let fileSystem = this.get('fileSystem');
 
         return new Ember.RSVP.Promise(function(resolve) {
+            let xhr = new XMLHttpRequest();
+
+            xhr.open('GET', url, true);
+            xhr.responseType = 'arraybuffer';
+
             xhr.onload = function() {
-                response = this.response;
+                let response = this.response;
 
                 fileSystem.get('instance').root.getFile(source, {
                     create: true

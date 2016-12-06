@@ -34,9 +34,9 @@ export default Ember.Service.extend({
     instance: null,
     playlistIds: null,
     trackIds: null,
-    playingTrackId: null,
     downloadLater: false,
-    downloadBeforePlaying: true,
+    // TODO: downloadBeforePlaying to true
+    downloadBeforePlaying: false,
     // TODO: http://stackoverflow.com/questions/30109066/html-5-file-system-how-to-increase-persistent-storage
     forge: function() {
         return new Ember.RSVP.Promise(function(resolve) {
@@ -188,9 +188,7 @@ export default Ember.Service.extend({
     },
     serialize: function() {
         let store = this.get('store'),
-            data = {
-                playingTrackId: this.get('playingTrackId')
-            };
+            data = {};
 
         data.playlists = this.get('playlistIds').map(function(id) {
             return store.peekRecord('playlist', id).serialize();
