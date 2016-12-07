@@ -65,13 +65,13 @@ export default DS.Model.extend(modelMixin, {
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
-    isQueued: Ember.computed('playlists.@each.trackIds', 'id', function() {
+    isQueued: Ember.computed('store.playlists.@each.trackIds', 'id', function() {
         return this.get('store').peekRecord('playlist', 'queue').get('trackIds').includes(this.get('id'));
     }),
-    isDownloadLater: Ember.computed('playlists.@each.trackIds', 'id', function() {
+    isDownloadLater: Ember.computed('store.playlists.@each.trackIds', 'id', function() {
         return this.get('store').peekRecord('playlist', 'download-later').get('trackIds').includes(this.get('id'));
     }),
-    isReferenced: Ember.computed('id', 'fileSystem.playlistIds', 'playlists.@each.trackIds', function() {
+    isReferenced: Ember.computed('id', 'fileSystem.playlistIds', 'store.playlists.@each.trackIds', function() {
         let store = this.get('store'),
             id = this.get('id');
 

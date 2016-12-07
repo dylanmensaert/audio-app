@@ -87,11 +87,19 @@
         {{/link-to}}
     </li>
 
-    <li class="tab col s6 {{unless model.isQueued 'disabled'}}">
+    {{#if model.isQueued}}
+      <li class="tab col s6">
         {{#link-to 'track.queue'}}
             Queue
         {{/link-to}}
-    </li>
+      </li>
+    {{else}}
+      <li class="tab col s6 disabled">
+        <a href="javascript:void(0)">
+          Queue
+        </a>
+      </li>
+    {{/if}}
 {{/c-tabs}}
 
 {{outlet}}
