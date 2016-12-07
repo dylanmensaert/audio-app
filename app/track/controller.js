@@ -22,9 +22,9 @@ export default Ember.Controller.extend({
         transitionToPlaylists: function() {
             let utils = this.get('utils');
 
-            utils.set('selectedTrackIds', this.get('models').mapBy('id'));
+            utils.set('selectedTrackIds', [this.get('model.id')]);
 
-            utils.transitionToRoute('track.playlists');
+            utils.transitionToRoute('subscribe');
         }
     }
 });
