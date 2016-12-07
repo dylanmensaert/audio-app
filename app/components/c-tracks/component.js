@@ -68,9 +68,7 @@ export default Ember.Component.extend(modelsMixin, {
 
             if (length) {
                 downloadedTracks.forEach(function(track) {
-                    track.remove().then(function() {
-                        track.destroyRecord();
-                    });
+                    track.remove();
                 });
 
                 this.get('utils').showMessage(length + ' Removed locally');

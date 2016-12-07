@@ -28,7 +28,7 @@ export default Ember.Component.extend(modelsMixin, {
 
             if (length) {
                 savedPlaylists.forEach(function(playlist) {
-                    playlist.destroyRecord();
+                    playlist.remove();
                 });
 
                 this.get('utils').showMessage(length + ' Removed locally');

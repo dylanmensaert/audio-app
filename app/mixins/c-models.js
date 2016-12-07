@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
     total: null,
-    models: null,
+    models: [],
     selectedModels: Ember.computed('models.@each.isSelected', function() {
         return this.get('models').filterBy('isSelected');
     }),

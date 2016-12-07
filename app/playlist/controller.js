@@ -50,7 +50,7 @@ export default Ember.Controller.extend(findControllerMixin, {
             trackIds.forEach(function(trackId) {
                 let track = store.peekRecord('track', trackId);
 
-                playlist.removeTrackById(trackId);
+                track.removeFromPlaylist(playlist);
 
                 track.set('isSelected', false);
             });

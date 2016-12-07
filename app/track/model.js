@@ -131,22 +131,26 @@ export default DS.Model.extend(modelMixin, {
             }
         }.bind(this));
     },
+    insertWithoutAudio: function() {
+        return this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'));
+    },
     insert: function() {
         let promises = [
             // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-            this.downloadSource(this.get('onlineAudio'), this.createFilePath('audio')),
-            // TODO: write to filesystem on track property change
-            this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'))
+            this.downloadSource(this.get('onlineAudio'), this.createFilePath('audio'))
         ];
 
+        if (!this.get('isSaved')) {
+            // TODO: write to filesystem on track property change
+            let promise = this.insertWithoutAudio().then(function() {
+                this.get('fileSystem.tracksIds').pushObject(this.get('id'));
+            }.bind(this));
+
+            promises.pushObject(promise);
+        }
+
         Ember.RSVP.all(promises).then(function() {
-            let fileSystem = this.get('fileSystem');
-
-            fileSystem.get('playlists').findBy('name', 'Download later').get('trackIds').removeObject(this.get('id'));
-
-            if (!this.get('isSaved')) {
-                fileSystem.get('tracks').pushObject(this);
-            }
+            this.get('store').peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
 
             this.set('isDownloading', false);
             this.set('isDownloaded', true);
@@ -182,28 +186,42 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
+    removeFromPlayList: function(playList) {
+        let promise;
+
+        playList.get('trackIds').removeObject(this.get('id'));
+
+        if (!this.get('isReferenced')) {
+            promise = this.remove();
+        }
+
+        return Ember.RSVP.resolve(promise);
+    },
     remove: function() {
         let fileSystem = this.get('fileSystem'),
-            promises;
+            isReferenced = this.get('isReferenced'),
+            promises = [
+                fileSystem.remove(this.get('audio'))
+            ];
 
-        promises = {
-            audio: fileSystem.remove(this.get('audio')),
-            thumbnail: fileSystem.remove(this.get('thumbnail'))
-        };
+        if (!isReferenced) {
+            let promise = fileSystem.remove(this.get('thumbnail'));
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            Ember.RSVP.all(promises).then(function() {
-                fileSystem.get('tracks').removeObject(this);
+            promises.pushObject(promise);
+        }
 
-                resolve();
-            }.bind(this), reject);
-        });
-    },
-    destroy: function() {
-        this.remove().then(function() {
-            if (!this.get('isReferenced')()) {
-                this.destroyRecord();
+        return Ember.RSVP.all(promises).then(function() {
+            let promises = [
+                this.destroyRecord()
+            ];
+
+            if (!isReferenced) {
+                fileSystem.get('trackIds').removeObject(this.get('id'));
+
+                promises.pushObject(fileSystem.save());
             }
+
+            return Ember.RSVP.all(promises);
         }.bind(this));
     }
 });

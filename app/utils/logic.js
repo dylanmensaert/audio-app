@@ -22,18 +22,15 @@ export default {
         Ember.run.later(context, callback, 300);
     },
     sortByName: function(model, other) {
-        let result = -1;
+        let result = -1,
+            name = model.get('name'),
+            otherName = other.get('name');
 
-        if (other) {
-            let name = model.get('name'),
-                otherName = other.get('name');
-
-            if (name.toLowerCase() > otherName.toLowerCase()) {
-                result = 1;
-            } else
-            if (name === otherName) {
-                result = 0;
-            }
+        if (name.toLowerCase() > otherName.toLowerCase()) {
+            result = 1;
+        } else
+        if (name === otherName) {
+            result = 0;
         }
 
         return result;

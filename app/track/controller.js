@@ -12,11 +12,7 @@ export default Ember.Controller.extend({
             this.get('model').download();
         },
         delete: function() {
-            let track = this.get('model');
-
-            track.remove().then(function() {
-                return track.destroyRecord();
-            });
+            this.get('model').remove();
         },
         queue: function() {
             this.store.peekRecord('playlist', 'queue').get('trackIds').addObject(this.get('model.id'));

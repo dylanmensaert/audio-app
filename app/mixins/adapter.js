@@ -56,23 +56,27 @@ export default Ember.Mixin.create({
     },
     updateRecord: function(store, type, snapshot) {
         let fileSystem = this.get('fileSystem'),
-            snippetIds = fileSystem.get(type.modelName + 'Ids');
+            snippetIds = fileSystem.get(type.modelName + 'Ids'),
+            promise;
 
         if (!snippetIds.includes(snapshot.id)) {
             snippetIds.pushObject(snapshot.id);
+
+            // TODO: Implement 'insertWithoutAudio' for playlist also?
+            if (snapshot.record.insertWithoutAudio) {
+                promise = snapshot.record.insertWithoutAudio();
+            }
         }
 
-        return new Ember.RSVP.Promise(function(resolve) {
-            fileSystem.save().then(function() {
-                let response = {
-                    deserializeSingleRecord: true,
-                    items: [{
-                        id: snapshot.id
-                    }]
-                };
-
-                resolve(response);
-            });
+        return Ember.RSVP.resolve(promise).then(function() {
+            return fileSystem.save();
+        }).then(function() {
+            return {
+                deserializeSingleRecord: true,
+                items: [{
+                    id: snapshot.id
+                }]
+            };
         });
     },
     deleteRecord: function(store, type, snapshot) {

@@ -68,6 +68,8 @@ export default Ember.Service.extend({
 
             fileSystem.save();
 
+            track.save();
+
             if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
                 track.download().then(function() {
                     audioPlayer.play(track);

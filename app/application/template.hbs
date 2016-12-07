@@ -6,26 +6,40 @@
     {{#c-fixed class='my-audio-player' }}
         {{c-audio-slider slider=utils.audioSlider}}
 
-        {{time utils.audioSlider.value}} {{time utils.audioSlider.max}}
-
         <div class="row my-audio-row">
-            {{#link-to 'track.queue' audioPlayer.track tagName='div' class='col s10' }}
-                <h5 class="truncate">
-                    {{audioPlayer.track.name}}
-                </h5>
-            {{/link-to}}
+            <div class="row my-audio-timer">
+              <div class="col s6">
+                <small>
+                  {{time utils.audioSlider.value}}
+                </small>
+              </div>
 
-            <div class="col s2 my-center">
-                {{#if audioPlayer.isLoading}}
-                    {{c-spinner type='my-audio-spinner'}} {{else if audioPlayer.isPlaying}}
-                    <div {{action 'pause'}}>
-                        <i class="material-icons my-audio-icon">pause</i>
-                    </div>
-                    {{else if audioPlayer.isIdle}}
-                    <div {{action 'play'}}>
-                        <i class="material-icons my-audio-icon">play_arrow</i>
-                    </div>
-                {{/if}}
+              <div class="col s6 my-right">
+                <small>
+                  {{time utils.audioSlider.max}}
+                </small>
+              </div>
+            </div>
+
+            <div style="margin-top: 4px">
+              {{#link-to 'track.queue' audioPlayer.track tagName='div' class='col s10' }}
+                  <h5 class="truncate">
+                      {{audioPlayer.track.name}}
+                  </h5>
+              {{/link-to}}
+
+              <div class="col s2 my-center">
+                  {{#if audioPlayer.isLoading}}
+                      {{c-spinner type='my-audio-spinner'}} {{else if audioPlayer.isPlaying}}
+                      <div {{action 'pause'}}>
+                          <i class="material-icons my-audio-icon">pause</i>
+                      </div>
+                      {{else if audioPlayer.isIdle}}
+                      <div {{action 'play'}}>
+                          <i class="material-icons my-audio-icon">play_arrow</i>
+                      </div>
+                  {{/if}}
+              </div>
             </div>
         </div>
     {{/c-fixed}}
