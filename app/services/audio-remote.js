@@ -14,7 +14,6 @@ export default Ember.Service.extend({
         let audioPlayer = this.get('audioPlayer'),
             audioSlider;
 
-
         audioSlider = AudioSlider.create({
             onSlideStop: function(value) {
                 audioPlayer.setCurrentTime(value);

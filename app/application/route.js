@@ -31,10 +31,6 @@ export default Ember.Route.extend({
             }.bind(this));
         }.bind(this));
 
-        if (!this.store.peekRecord('playlist', 'history').get('trackIds.length')) {
-            utils.transitionToRoute('search.tracks');
-        }
-
         Ember.$('.my-splash-spinner').remove();
     },
     actions: {
