@@ -64,8 +64,6 @@ export default Ember.Service.extend({
 
             this.get('utils.playedTrackIds').addObject(id);
 
-            fileSystem.set('playingTrackId', id);
-
             fileSystem.save();
 
             track.save();
