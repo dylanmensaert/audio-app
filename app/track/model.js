@@ -65,14 +65,20 @@ export default DS.Model.extend(modelMixin, {
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
-    isQueued: Ember.computed('store.playlists.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('playlist', 'queue').get('trackIds').includes(this.get('id'));
+    queue: Ember.computed(function() {
+        return this.store.peekRecord('playlist', 'queue');
     }),
-    isDownloadLater: Ember.computed('store.playlists.@each.trackIds', 'id', function() {
-        return this.get('store').peekRecord('playlist', 'download-later').get('trackIds').includes(this.get('id'));
+    isQueued: Ember.computed('queue.trackIds.[]', 'id', function() {
+        return this.get('queue.trackIds').includes(this.get('id'));
     }),
-    isReferenced: Ember.computed('id', 'fileSystem.playlistIds', 'store.playlists.@each.trackIds', function() {
-        let store = this.get('store'),
+    downloadLater: Ember.computed(function() {
+        return this.store.peekRecord('playlist', 'download-later');
+    }),
+    isDownloadLater: Ember.computed('downloadLater.trackIds.[]', 'id', function() {
+        return this.get('downloadLater.trackIds').includes(this.get('id'));
+    }),
+    isReferenced: function() {
+        let store = this.store,
             id = this.get('id');
 
         return this.get('fileSystem.playlistIds').any(function(playlistId) {
@@ -80,7 +86,7 @@ export default DS.Model.extend(modelMixin, {
 
             return playlist.get('trackIds').includes(id);
         });
-    }),
+    },
     createFilePath: function(type) {
         let fileName = this.get('name') + '.' + extension[type],
             directory = Inflector.inflector.pluralize(type);
@@ -150,7 +156,7 @@ export default DS.Model.extend(modelMixin, {
         }
 
         Ember.RSVP.all(promises).then(function() {
-            this.get('store').peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
+            this.store.peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
 
             this.set('isDownloading', false);
             this.set('isDownloaded', true);
@@ -191,7 +197,7 @@ export default DS.Model.extend(modelMixin, {
 
         playList.get('trackIds').removeObject(this.get('id'));
 
-        if (!this.get('isReferenced')) {
+        if (!this.isReferenced()) {
             promise = this.remove();
         }
 
@@ -199,7 +205,7 @@ export default DS.Model.extend(modelMixin, {
     },
     remove: function() {
         let fileSystem = this.get('fileSystem'),
-            isReferenced = this.get('isReferenced'),
+            isReferenced = this.isReferenced(),
             promises = [
                 fileSystem.remove(this.get('audio'))
             ];

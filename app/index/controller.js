@@ -7,9 +7,12 @@ import connection from 'connection';
 const lastHistoryTracksLimit = 8;
 
 export default Ember.Controller.extend(searchMixin, {
-    lastHistoryTracks: Ember.computed('playlists.@each.trackIds', function() {
+    history: Ember.computed(function() {
+        return this.store.peekRecord('playlist', 'history');
+    }),
+    lastHistoryTracks: Ember.computed('history.trackIds.[]', function() {
         let store = this.get('store'),
-            historyTrackIds = store.peekRecord('playlist', 'history').get('trackIds'),
+            historyTrackIds = this.get('history.trackIds'),
             length = historyTrackIds.get('length'),
             lastHistoryTracks = [];
 
