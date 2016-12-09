@@ -48,11 +48,13 @@ export default Ember.Mixin.create(searchMixin, {
         let models = this.get('models'),
             result = -1;
 
-        if (!connection.isMobile()) {
+        if (!connection.isOnline()) {
             result = logic.sortByName(model, other);
         } else if (models.indexOf(model) > models.indexOf(other)) {
             result = 1;
         }
+
+        return result;
     }),
     actions: {
         didScrollToBottom: function() {

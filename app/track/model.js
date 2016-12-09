@@ -13,10 +13,11 @@ function signateUrl(url) {
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
 
-let extension = {
-    audio: 'mp3',
-    thumbnail: 'jpg'
-};
+let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin),
+    extension = {
+        audio: 'mp3',
+        thumbnail: 'jpg'
+    };
 
 export default DS.Model.extend(modelMixin, {
     init: function() {
@@ -43,10 +44,10 @@ export default DS.Model.extend(modelMixin, {
 
         return thumbnail;
     }),
-    audio: Ember.computed('onlineAudio', 'isSaved', function() {
+    audio: Ember.computed('onlineAudio', 'isDownloaded', function() {
         let audio;
 
-        if (this.get('isSaved')) {
+        if (this.get('isDownloaded')) {
             audio = domainData.fileSystemName + '/' + this.createFilePath('audio');
         } else {
             audio = this.get('onlineAudio');
@@ -54,7 +55,6 @@ export default DS.Model.extend(modelMixin, {
 
         return audio;
     }),
-    isDownloading: false,
     isDownloaded: false,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
@@ -93,7 +93,7 @@ export default DS.Model.extend(modelMixin, {
 
         return directory + '/' + fileName;
     },
-    fetchDownload: function() {
+    findAudioSource: function() {
         let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
             url;
 
@@ -124,18 +124,34 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }.bind(this));
     },
-    download: function() {
-        this.set('isDownloading', true);
+    isDownloading: Ember.computed('_download', function() {
+        let download = this.get('_download');
 
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            if (!this.get('onlineAudio')) {
-                this.fetchDownload().then(function() {
+        return !Ember.isEmpty(download) && download.get('isPending');
+    }),
+    _download: null,
+    download: function() {
+        let download = this.get('_download');
+
+        if (!download || !download.get('isPending')) {
+            let promise = new Ember.RSVP.Promise(function(resolve, reject) {
+                if (!this.get('onlineAudio')) {
+                    this.findAudioSource().then(function() {
+                        this.insert().then(resolve, reject);
+                    }.bind(this));
+                } else {
                     this.insert().then(resolve, reject);
-                }.bind(this));
-            } else {
-                this.insert().then(resolve, reject);
-            }
-        }.bind(this));
+                }
+            }.bind(this));
+
+            download = ObjectPromiseProxy.create({
+                promise: promise
+            });
+
+            this.set('_download', download);
+        }
+
+        return download;
     },
     insertWithoutAudio: function() {
         return this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'));
@@ -158,7 +174,6 @@ export default DS.Model.extend(modelMixin, {
         Ember.RSVP.all(promises).then(function() {
             this.store.peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
 
-            this.set('isDownloading', false);
             this.set('isDownloaded', true);
         }.bind(this), function(reason) {
             return reason.message;

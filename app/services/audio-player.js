@@ -43,7 +43,7 @@ export default Ember.Service.extend({
 
         return new Ember.RSVP.Promise(function(resolve) {
             if (!audio) {
-                track.fetchDownload().then(function(url) {
+                track.findAudioSource().then(function(url) {
                     this.loadSource(url);
 
                     resolve();

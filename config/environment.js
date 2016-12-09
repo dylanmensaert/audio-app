@@ -9,11 +9,16 @@ module.exports = function(environment) {
         },
         modulePrefix: 'audio-app',
         environment: environment,
+        rootURL: '/',
         locationType: 'auto',
         EmberENV: {
             FEATURES: {
                 // Here you can enable experimental features on an ember canary build
                 // e.g. 'with-controller': true
+            },
+            EXTEND_PROTOTYPES: {
+                // Prevent Ember Data from overriding Date.parse.
+                Date: false
             }
         },
 
@@ -43,12 +48,7 @@ module.exports = function(environment) {
     }
 
     if (environment === 'production') {
-        baseUrl = 'file:///android_asset/www/';
-
-        ENV.locationType = 'none';
-        ENV.baseURL = baseUrl;
-
-        ENV.APP.baseURL = baseUrl;
+        ENV.rootURL = 'file:///android_asset/www/';
     }
 
     return ENV;

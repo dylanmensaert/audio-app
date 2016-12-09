@@ -4,26 +4,8 @@ import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
-const lastHistoryTracksLimit = 8;
-
 export default Ember.Controller.extend(searchMixin, {
-    history: Ember.computed(function() {
-        return this.store.peekRecord('playlist', 'history');
-    }),
-    lastHistoryTracks: Ember.computed('history.trackIds.[]', function() {
-        let store = this.get('store'),
-            historyTrackIds = this.get('history.trackIds'),
-            length = historyTrackIds.get('length'),
-            lastHistoryTracks = [];
-
-        historyTrackIds.forEach(function(trackId, index) {
-            if (length <= lastHistoryTracksLimit || length - lastHistoryTracksLimit >= index) {
-                lastHistoryTracks.pushObject(store.peekRecord('track', trackId));
-            }
-        });
-
-        return lastHistoryTracks;
-    }),
+    lastHistoryTracks: null,
     relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
         return this.get('sortedLastHistoryTracks').map(function(historyTrack) {
             let options,
