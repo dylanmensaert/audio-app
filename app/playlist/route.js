@@ -4,9 +4,10 @@ import modelRouteMixin from 'audio-app/mixins/route-model';
 export default Ember.Route.extend(modelRouteMixin, {
     type: 'playlist',
     setupController: function(controller, model) {
-        this._super(controller, model);
+            this._super(controller, model);
 
-        controller.reset();
-        controller.start();
-    }
+            controller.reset();
+            controller.start();
+        }
+        // TODO: fix bug where route-model does not call didTransition when model does not change
 });
