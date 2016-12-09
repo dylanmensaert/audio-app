@@ -50,14 +50,8 @@ main {
 
 .my-audio-player {
     bottom: 0;
-    width: 100%;
+    background-color: white;
     top: initial;
-}
-
-.my-audio-row {
-    margin-bottom: 0;
-    padding-top: 8px;
-    background: white;
 }
 
 .my-slider {
@@ -67,12 +61,38 @@ main {
 
 .my-audio-icon {
     font-size: 48px;
+    position: absolute;
+    top: 0;
+    left: calc(50% - 24px);
 }
 
 .my-audio-spinner {
     width: 30px;
     height: 30px;
-    margin: 9px;
+    margin-top: 11px;
+}
+
+.my-audio-btn {
+    position: relative;
+    height: 45.64px;
+}
+
+.my-audio-text {
+    padding-right: 0;
+}
+
+.my-audio-timer {
+    position: absolute;
+    top: -21px;
+    width: 100%;
+    .col {
+        padding: 0;
+        small {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 3px;
+            border-radius: 10%;
+        }
+    }
 }
 
 .my-track-icon {
@@ -406,8 +426,14 @@ i.my-icon-disabled {
     transform: translate(-50%, -50%);
 }
 
-.my-audio-timer {
-    position: absolute;
-    width: 100%;
-    top: 4px;
+.noUi-base {
+    height: 30px;
+    top: -13px;
+    .noUi-background {
+        top: 13px;
+    }
+}
+
+.my-audio-row {
+    margin-bottom: 0;
 }
