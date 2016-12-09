@@ -52,6 +52,9 @@ main {
     bottom: 0;
     background-color: white;
     top: initial;
+    .s10 {
+        padding-right: 0;
+    }
 }
 
 .my-slider {
@@ -75,10 +78,6 @@ main {
 .my-audio-btn {
     position: relative;
     height: 45.64px;
-}
-
-.my-audio-text {
-    padding-right: 0;
 }
 
 .my-audio-timer {
