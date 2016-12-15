@@ -1,3 +1,4 @@
+/*global history*/
 import Ember from 'ember';
 import playlistsControllerMixin from 'audio-app/mixins/controller-playlists';
 
@@ -22,7 +23,7 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
             this.get('playlists').setEach('isSelected', false);
             utils.get('selectedTrackIds').clear();
 
-            return true;
+            history.back();
         },
         changeSelect: function(playlist) {
             let utils = this.get('utils'),

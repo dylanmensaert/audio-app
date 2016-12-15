@@ -1,6 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+    queryParams: {
+        query: {
+            replace: true
+        }
+    },
     setupController: function(controller, model) {
         let query = controller.get('query');
 

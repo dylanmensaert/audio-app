@@ -107,7 +107,7 @@ export default Ember.Component.extend({
             this.$('input').focus();
         },
         back: function() {
-            this.sendAction('back');
+            history.back();
         }
     }
 });

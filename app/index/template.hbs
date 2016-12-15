@@ -4,11 +4,7 @@
 
 <main>
     {{#if lastHistoryTracks}}
-        <h4>
-            History
-        </h4>
-
-        {{c-tracks models=sortedLastHistoryTracks}}
+            {{c-tracks models=sortedLastHistoryTracks}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next' }}
             <i class="material-icons">chevron_right</i>
@@ -16,10 +12,6 @@
     {{/if}}
 
     {{#each relatedByTracks as |relatedByTrack|}}
-        <h5 class="truncate" style="margin: 25px 0;">
-            {{relatedByTrack.track.name}}
-        </h5>
-
         {{c-tracks models=relatedByTrack.relatedTracks}}
 
         {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next' }}

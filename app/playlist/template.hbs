@@ -1,23 +1,24 @@
 {{#if isEditMode}}
   {{c-input-bar value=name placeholder='Edit' done='save'}}
-{{else if (is-equal utils.history.length 1)}}
-  {{c-menu}}
 {{else}}
-  {{#c-fixed tagName='nav'}}
-    <div class="nav-wrapper">
-      <div class="my-back my-back-top" {{action 'back'}}>
-        <i class="material-icons">arrow_back</i>
-      </div>
+  {{c-menu}}
+  {{!-- TODO --}}
+  {{!-- {{else}}
+    {{#c-fixed tagName='nav'}}
+      <div class="nav-wrapper">
+        <div class="my-back my-back-top" {{action 'back'}}>
+          <i class="material-icons">arrow_back</i>
+        </div>
 
-      <ul class="right">
-        <li>
-          {{#link-to 'search.tracks' }}
-            <i class="material-icons">search</i>
-          {{/link-to}}
-        </li>
-      </ul>
-    </div>
-  {{/c-fixed}}
+        <ul class="right">
+          <li>
+            {{#link-to 'search.tracks' }}
+              <i class="material-icons">search</i>
+            {{/link-to}}
+          </li>
+        </ul>
+      </div>
+    {{/c-fixed}} --}}
 {{/if}}
 
 <div class="card my-card-cover">

@@ -1,10 +1,6 @@
 import Ember from 'ember';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
 
-function generateRandom(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 export default Ember.Service.extend({
     audioPlayer: Ember.inject.service(),
     fileSystem: Ember.inject.service(),
@@ -62,8 +58,6 @@ export default Ember.Service.extend({
                 queue.save();
             }
 
-            this.get('utils.playedTrackIds').addObject(id);
-
             fileSystem.save();
 
             track.save();
@@ -84,49 +78,30 @@ export default Ember.Service.extend({
     },
     previous: function() {
         let store = this.get('store'),
-            queueTrackIds,
-            currentIndex,
-            previousIndex,
-            trackId,
-            previousTrack;
+            queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds'),
+            currentTrackId = this.get('audioPlayer.track.id'),
+            previousIndex = queueTrackIds.indexOf(currentTrackId) - 1,
+            trackId;
 
-        queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds');
-        currentIndex = queueTrackIds.indexOf(this.get('audioPlayer.track.id'));
-
-        if (currentIndex > 0) {
-            previousIndex = currentIndex - 1;
-        } else {
-            previousIndex = queueTrackIds.get('length');
+        if (previousIndex === -1) {
+            previousIndex = queueTrackIds.get('length') - 1;
         }
 
         trackId = queueTrackIds.objectAt(previousIndex);
-        previousTrack = store.peekRecord('track', trackId);
-
-        this.play(previousTrack);
+        this.play(store.peekRecord('track', trackId));
     },
     next: function() {
         let store = this.get('store'),
             queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds'),
-            trackId,
-            nextTrack,
-            unplayedTrackIds;
+            currentTrackId = this.get('audioPlayer.track.id'),
+            nextIndex = queueTrackIds.indexOf(currentTrackId) + 1,
+            trackId;
 
-        unplayedTrackIds = queueTrackIds.filter(function(trackId) {
-            return !this.get('utils.playedTrackIds').includes(trackId);
-        }.bind(this));
-
-        if (!unplayedTrackIds.get('length')) {
-            this.set('utils.playedTrackIds', []);
-
-            unplayedTrackIds.pushObjects(queueTrackIds);
-
-            unplayedTrackIds.removeObject(this.get('audioPlayer.track.id'));
+        if (currentIndex === queueTrackIds.get('length')) {
+            nextIndex = 0;
         }
 
-        trackId = unplayedTrackIds.objectAt(generateRandom(0, unplayedTrackIds.get('length') - 1));
-
-        nextTrack = store.peekRecord('track', trackId);
-
-        this.play(nextTrack);
+        trackId = queueTrackIds.objectAt(nextIndex);
+        this.play(store.peekRecord('track', trackId));
     }
 });

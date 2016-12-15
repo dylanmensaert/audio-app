@@ -7,10 +7,5 @@ export default Ember.Component.extend({
         Ember.$(".button-collapse").sideNav({
             closeOnClick: true
         });
-    },
-    actions: {
-        clearHistory: function() {
-            this.get('utils.history').clear();
-        }
     }
 });

@@ -1,9 +1,8 @@
 import Ember from 'ember';
-import clearRouteMixin from 'audio-app/mixins/route-clear';
 
 const lastHistoryTracksLimit = 8;
 
-export default Ember.Route.extend(clearRouteMixin, {
+export default Ember.Route.extend({
     actions: {
         didTransition: function() {
             let history = this.store.peekRecord('playlist', 'history'),

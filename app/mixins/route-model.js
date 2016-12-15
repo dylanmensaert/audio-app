@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import registerRouteMixin from 'audio-app/mixins/route-register';
 
-export default Ember.Mixin.create(registerRouteMixin, {
+export default Ember.Mixin.create({
     type: null,
     model: function(parameters) {
         let modelId = parameters[this.get('type') + '_id'],

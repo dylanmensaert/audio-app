@@ -1,3 +1,4 @@
+/*global history*/
 import Ember from 'ember';
 import connection from 'connection';
 import phonegap from 'phonegap';
@@ -35,7 +36,7 @@ export default Ember.Route.extend({
     },
     actions: {
         back: function() {
-            this.get('utils').back(false);
+            history.back();
         }
     }
     // TODO: remove?
