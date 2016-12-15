@@ -9,9 +9,7 @@ export default Ember.Route.extend({
     setupController: function(controller, model) {
         let query = controller.get('query');
 
-        if (query) {
-            controller.set('value', query);
-        }
+        controller.set('value', query);
 
         this._super(controller, model);
     },
