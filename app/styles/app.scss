@@ -65,7 +65,7 @@ main {
 .my-audio-icon {
     font-size: 48px;
     position: absolute;
-    top: 0;
+    top: -9px;
     left: calc(50% - 24px);
 }
 
@@ -77,7 +77,7 @@ main {
 
 .my-audio-btn {
     position: relative;
-    height: 45.64px;
+    height: 25px;
 }
 
 .my-audio-timer {
@@ -426,13 +426,17 @@ i.my-icon-disabled {
 }
 
 .noUi-base {
-    height: 30px;
-    top: -13px;
+    height: 24px;
+    top: -10px;
     .noUi-background {
-        top: 13px;
+        top: 10px;
     }
 }
 
 .my-audio-row {
+    margin-top: 12px;
     margin-bottom: 0;
+    .col {
+        margin-bottom: 12px;
+    }
 }
