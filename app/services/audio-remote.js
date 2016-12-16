@@ -97,7 +97,7 @@ export default Ember.Service.extend({
             nextIndex = queueTrackIds.indexOf(currentTrackId) + 1,
             trackId;
 
-        if (currentIndex === queueTrackIds.get('length')) {
+        if (nextIndex === queueTrackIds.get('length')) {
             nextIndex = 0;
         }
 
