@@ -2,23 +2,6 @@
   {{c-input-bar value=name placeholder='Edit' done='save'}}
 {{else}}
   {{c-menu}}
-  {{!-- TODO --}}
-  {{!-- {{else}}
-    {{#c-fixed tagName='nav'}}
-      <div class="nav-wrapper">
-        <div class="my-back my-back-top" {{action 'back'}}>
-          <i class="material-icons">arrow_back</i>
-        </div>
-
-        <ul class="right">
-          <li>
-            {{#link-to 'search.tracks' (query-params query=null)}}
-              <i class="material-icons">search</i>
-            {{/link-to}}
-          </li>
-        </ul>
-      </div>
-    {{/c-fixed}} --}}
 {{/if}}
 
 <div class="card my-card-cover">
