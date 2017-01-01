@@ -1,27 +1,30 @@
 import Ember from 'ember';
 import safeStyleMixin from 'audio-app/mixins/safe-style';
+import scrollMixin from 'audio-app/mixins/c-scroll';
 
-export default Ember.Component.extend(safeStyleMixin, {
+function updatePosition() {
+    let placeholder = this.get('placeholder'),
+        position;
+
+    if (this.get('offsetTop') - this.get('top') < Ember.$(window).scrollTop()) {
+        position = 'fixed';
+        placeholder.show();
+    } else {
+        position = 'static';
+        placeholder.hide();
+    }
+
+    this.$().css({
+        position
+    });
+}
+
+export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     classNames: ['my-fixed'],
     placeholder: null,
     top: 0,
     offsetTop: null,
-    updatePosition: function() {
-        let placeholder = this.get('placeholder'),
-            position;
-
-        if (this.get('offsetTop') - this.get('top') < Ember.$(window).scrollTop()) {
-            position = 'fixed';
-            placeholder.show();
-        } else {
-            position = 'static';
-            placeholder.hide();
-        }
-
-        this.$().css({
-            position
-        });
-    },
+    onscroll: null,
     didInsertElement: function() {
         let element = this.$(),
             offsetTop,
@@ -32,14 +35,14 @@ export default Ember.Component.extend(safeStyleMixin, {
         });
 
         element.before(placeholder);
+        this.set('placeholder', placeholder);
 
         offsetTop = placeholder.offset().top;
 
-        this.set('offsetTop', offsetTop);
-        this.set('placeholder', placeholder);
+        if (offsetTop !== 0 && element.css('bottom') !== '0px') {
+            this.set('offsetTop', offsetTop);
 
-        if (offsetTop !== 0) {
-            Ember.$(window).scroll(this.updatePosition.bind(this));
+            this.scroll(updatePosition.bind(this));
 
             element.css({
                 top: this.get('top'),
@@ -50,9 +53,7 @@ export default Ember.Component.extend(safeStyleMixin, {
         }
     },
     willDestroyElement: function() {
-        if (this.get('offsetTop') !== 0) {
-            Ember.$(window).off('scroll', this.updatePosition);
-        }
+        this._super();
 
         this.get('placeholder').remove();
     }

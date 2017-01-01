@@ -6,8 +6,8 @@ export default Ember.Mixin.create({
         didTransition: function() {
             this._super();
 
-            /*    window.scrollTo(0, 0);
-                Ember.$(window).scroll();*/
+            window.scrollTo(0, 0);
+            Ember.$(window).scroll();
         }
     }
 });

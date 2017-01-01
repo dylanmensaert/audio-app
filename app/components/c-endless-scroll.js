@@ -1,17 +1,16 @@
 import Ember from 'ember';
+import scrollMixin from 'audio-app/mixins/c-scroll';
 
-export default Ember.Component.extend({
-    checkScrollToBottom: function() {
-        let display = Ember.$(window);
+function checkScrollToBottom() {
+    let display = Ember.$(window);
 
-        if (this.$().outerHeight() - display.scrollTop() <= 2 * display.outerHeight()) {
-            this.sendAction('didScrollToBottom');
-        }
-    },
+    if (this.$().outerHeight() - display.scrollTop() <= 2 * display.outerHeight()) {
+        this.sendAction('didScrollToBottom');
+    }
+}
+
+export default Ember.Component.extend(scrollMixin, {
     didInsertElement: function() {
-        Ember.$(window).scroll(this.checkScrollToBottom.bind(this));
-    },
-    willDestroyElement: function() {
-        Ember.$(window).off('scroll', this.checkScrollToBottom);
+        this.scroll(checkScrollToBottom.bind(this));
     }
 });
