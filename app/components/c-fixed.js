@@ -6,12 +6,14 @@ function updatePosition() {
     let placeholder = this.get('placeholder'),
         position;
 
-    if (this.get('offsetTop') - this.get('top') < Ember.$(window).scrollTop()) {
+    placeholder.show();
+
+    if (placeholder.offset().top < Ember.$(window).scrollTop() + this.get('top')) {
         position = 'fixed';
-        placeholder.show();
     } else {
-        position = 'static';
         placeholder.hide();
+
+        position = 'static';
     }
 
     this.$().css({
@@ -23,11 +25,8 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     classNames: ['my-fixed'],
     placeholder: null,
     top: 0,
-    offsetTop: null,
-    onscroll: null,
     didInsertElement: function() {
         let element = this.$(),
-            offsetTop,
             placeholder;
 
         placeholder = Ember.$('<div>', {
@@ -37,11 +36,7 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        offsetTop = placeholder.offset().top;
-
-        if (offsetTop !== 0 && element.css('bottom') !== '0px') {
-            this.set('offsetTop', offsetTop);
-
+        if (placeholder.offset().top !== 0 && element.css('bottom') !== '0px') {
             this.scroll(updatePosition.bind(this));
 
             element.css({
