@@ -5,6 +5,7 @@ import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
 export default Ember.Controller.extend(searchMixin, {
+    // TODO: remove duplicate tracks shown
     lastHistoryTracks: null,
     isPending: Ember.computed('relatedByTracks.@each.isPending', function() {
         return this.get('relatedByTracks').isAny('isPending');
