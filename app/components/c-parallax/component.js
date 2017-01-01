@@ -3,7 +3,7 @@ import scrollMixin from 'audio-app/mixins/c-scroll';
 
 function scrollBackGround() {
     let element = this.$(),
-        topDifference = Ember.$(window).scrollTop() - element.offset().top,
+        topDifference = Ember.$(window).scrollTop() + this.get('utils.menuHeight') - element.offset().top,
         percentage = 0;
 
     if (topDifference > 0) {
@@ -20,6 +20,7 @@ function scrollBackGround() {
 
 export default Ember.Component.extend(scrollMixin, {
     src: null,
+    utils: Ember.inject.service(),
     didInsertElement: function() {
         this.scroll(scrollBackGround.bind(this));
     }

@@ -9,5 +9,6 @@ export default Ember.Service.extend({
     },
     audioSlider: null,
     isBusy: false,
-    transitionToRoute: null
+    transitionToRoute: null,
+    menuHeight: 56
 });
