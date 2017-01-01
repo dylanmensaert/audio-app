@@ -6,6 +6,9 @@ import connection from 'connection';
 
 export default Ember.Controller.extend(searchMixin, {
     lastHistoryTracks: null,
+    isPending: Ember.computed('relatedByTracks.@each.isPending', function() {
+        return this.get('relatedByTracks').isAny('isPending');
+    }),
     relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
         return this.get('sortedLastHistoryTracks').map(function(historyTrack) {
             let options,
@@ -24,7 +27,9 @@ export default Ember.Controller.extend(searchMixin, {
                 });
             }.bind(this));
 
-            return Ember.Object.create({
+            return Ember.Object.extend({
+                isPending: Ember.computed.alias('relatedTracks.isPending')
+            }).create({
                 track: historyTrack,
                 relatedTracks: DS.PromiseArray.create({
                     promise: promise

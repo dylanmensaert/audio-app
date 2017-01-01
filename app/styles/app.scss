@@ -31,7 +31,6 @@ main {
 
 @mixin input-icon {
     position: absolute;
-    /* TODO: remove top? */
     top: 13px;
     i {
         font-size: 31px;
@@ -46,6 +45,10 @@ main {
     top: 0;
     width: 100%;
     z-index: 2;
+}
+
+nav.my-fixed {
+    z-index: 3;
 }
 
 .my-audio-player {
@@ -109,6 +112,7 @@ main {
     width: 100%;
     padding-left: 31px;
     background-color: white;
+    z-index: 3;
     input[type=text] {
         width: calc(100% - 71px);
         height: 54px;

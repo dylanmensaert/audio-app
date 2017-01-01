@@ -20,12 +20,6 @@ export default Ember.Controller.extend(findControllerMixin, {
             this.updateModels();
         }
     }),
-    // TODO: Implement - avoid triggering on init?
-    /*updateMessage: function() {
-        if (!this.get('tracks.length')) {
-            this.get('utils').showMessage('No songs found');
-        }
-    }.observes('tracks.length'),*/
     /*TODO: Implement another way?*/
     name: null,
     isEditMode: Ember.computed('name', function() {

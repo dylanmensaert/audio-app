@@ -39,23 +39,4 @@ export default Ember.Route.extend({
             history.back();
         }
     }
-    // TODO: remove?
-    /*   actions: {
- loading: function() {
-                    if (this.get('controller')) {
-                        this.set('controller.isLoading', true);
-
-                        this.router.one('didTransition', function() {
-                            this.set('controller.isLoading', false);
-                        }.bind(this));
-                    }
-                },
-        error: function(error) {
-            let controller = this.get('controller');
-
-            if (controller) {
-                controller.set('error', error);
-            }
-        }
-    }*/
 });

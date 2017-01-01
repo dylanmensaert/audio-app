@@ -49,7 +49,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return numberOfTracks;
     }),
-    isSaved: Ember.computed('fileSystem.tracks.[]', function() {
+    isSaved: Ember.computed('fileSystem.playlistIds.[]', function() {
         return this.get('fileSystem.playlistIds').includes(this.get('id'));
     }),
     isReadOnly: Ember.computed('permission', function() {
