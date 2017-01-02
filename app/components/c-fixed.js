@@ -1,14 +1,16 @@
+/*global window, parseInt*/
+
 import Ember from 'ember';
-import safeStyleMixin from 'audio-app/mixins/safe-style';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
 function updatePosition() {
     let placeholder = this.get('placeholder'),
+        element = this.$(),
         position;
 
     placeholder.show();
 
-    if (placeholder.offset().top < Ember.$(window).scrollTop() + this.get('top')) {
+    if (placeholder.offset().top < Ember.$(window).scrollTop() + element.data('top')) {
         position = 'fixed';
     } else {
         placeholder.hide();
@@ -16,15 +18,15 @@ function updatePosition() {
         position = 'static';
     }
 
-    this.$().css({
-        position
-    });
+    element.css('position', position);
 }
 
-export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
+export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
     placeholder: null,
-    top: 0,
+    getInt: function(attribute) {
+        return parseInt(this.$().css(attribute));
+    },
     didInsertElement: function() {
         let element = this.$(),
             placeholder;
@@ -36,13 +38,12 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        if (placeholder.offset().top !== 0 && element.css('bottom') !== '0px') {
+        element.data('top', this.getInt('top'));
+
+        if (placeholder.offset().top !== 0 && this.getInt('bottom') !== 0) {
             this.scroll(updatePosition.bind(this));
 
-            element.css({
-                top: this.get('top'),
-                position: 'static'
-            });
+            element.css('position', 'static');
 
             placeholder.hide();
         }

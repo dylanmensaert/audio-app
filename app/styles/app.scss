@@ -449,10 +449,15 @@
     }
     
     .fixed-action-btn {
-        .btn-floating:first-child {
+        > a {
             animation-iteration-count: 1;
             animation: show ease-in-out .5s;
         }
+    }
+    
+    .my-tabs-container {
+        top: 56px;
+        margin-bottom: 20px;
     }
     
     @keyframes show {

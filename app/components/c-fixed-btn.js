@@ -12,7 +12,7 @@ function updatePosition() {
     redraw = function() {
         btn.remove();
         element.prepend(btn);
-    }
+    };
 
     element.removeClass(className);
 
