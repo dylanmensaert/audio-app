@@ -22,7 +22,7 @@ function updatePosition() {
 }
 
 export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
-    classNames: ['my-fixed'],
+    classNames: ['my-fixed-row'],
     placeholder: null,
     top: 0,
     didInsertElement: function() {

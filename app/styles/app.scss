@@ -1,449 +1,465 @@
-main {
-    margin-left: 300px;
-    .brand-logo {
-        margin-left: 18px;
-    }
-}
-
-@media only screen and (max-width: 992px) {
     main {
-        margin-left: 0;
+        margin-left: 300px;
         .brand-logo {
-            margin-left: 0;
+            margin-left: 18px;
         }
     }
-}
-
-@media only screen and (min-width: 601px) {
-    nav {
-        height: 56px;
-        line-height: 56px;
-        .nav-wrapper i {
+    
+    @media only screen and (max-width: 992px) {
+        main {
+            margin-left: 0;
+            .brand-logo {
+                margin-left: 0;
+            }
+        }
+    }
+    
+    @media only screen and (min-width: 601px) {
+        nav {
             height: 56px;
             line-height: 56px;
+            .nav-wrapper i {
+                height: 56px;
+                line-height: 56px;
+            }
         }
     }
-}
-
-.button-collapse {
-    padding-left: 5px;
-}
-
-@mixin input-icon {
-    position: absolute;
-    top: 13px;
-    i {
-        font-size: 31px;
+    
+    .button-collapse {
+        padding-left: 5px;
     }
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.my-fixed {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 2;
-}
-
-nav.my-fixed {
-    z-index: 3;
-}
-
-.my-audio-player {
-    bottom: 0;
-    background-color: white;
-    top: initial;
-    .s10 {
-        padding-right: 0;
-    }
-}
-
-.my-slider {
-    position: absolute;
-    top: 0;
-}
-
-.my-audio-icon {
-    font-size: 48px;
-    position: absolute;
-    top: -9px;
-    left: calc(50% - 24px);
-}
-
-.my-audio-spinner {
-    width: 30px;
-    height: 30px;
-    left: calc(50% - 15px);
-}
-
-.my-audio-btn {
-    position: relative;
-    height: 25px;
-}
-
-.my-audio-timer {
-    position: absolute;
-    top: -21px;
-    width: 100%;
-    .col {
-        padding: 0;
-        small {
-            background-color: rgba(255, 255, 255, 0.5);
-            padding: 3px;
-            border-radius: 10%;
-        }
-    }
-}
-
-.my-track-icon {
-    float: left;
-    margin-right: 15px;
-}
-
-.my-center {
-    text-align: center;
-}
-
-.my-input-bar {
-    left: 0;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    width: 100%;
-    padding-left: 31px;
-    background-color: white;
-    z-index: 3;
-    input[type=text] {
-        width: calc(100% - 71px);
-        height: 54px;
-        margin-bottom: 2px;
-        font-size: 16px;
-        padding-left: 29px;
-        &,
-        &:focus {
-            border-bottom: none;
-            box-shadow: none;
-        }
-    }
-}
-
-.my-autocomplete {
-    z-index: 1;
-    ul {
+    
+    @mixin input-icon {
         position: absolute;
+        top: 13px;
+        i {
+            font-size: 31px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    
+    .my-fixed-row {
+        position: fixed;
+        top: 0;
         width: 100%;
-        left: 0;
-        li {
-            font-size: 16px;
-            padding: 10px 13px;
-            background: white;
-            &.active,
-            &:hover {
-                background: #eee;
-                cursor: pointer;
-            }
-            .my-hightlight {
-                color: #26a69a;
+        z-index: 2;
+    }
+    
+    nav.my-fixed-row {
+        z-index: 3;
+    }
+    
+    .my-audio-player {
+        bottom: 0;
+        background-color: white;
+        top: initial;
+        .s10 {
+            padding-right: 0;
+        }
+    }
+    
+    .my-slider {
+        position: absolute;
+        top: 0;
+    }
+    
+    .my-audio-icon {
+        font-size: 48px;
+        position: absolute;
+        top: -9px;
+        left: calc(50% - 24px);
+    }
+    
+    .my-audio-spinner {
+        width: 30px;
+        height: 30px;
+        left: calc(50% - 15px);
+    }
+    
+    .my-audio-btn {
+        position: relative;
+        height: 25px;
+    }
+    
+    .my-audio-timer {
+        position: absolute;
+        top: -21px;
+        width: 100%;
+        .col {
+            padding: 0;
+            small {
+                background-color: rgba(255, 255, 255, 0.5);
+                padding: 3px;
+                border-radius: 10%;
             }
         }
     }
-}
-
-.my-clear {
-    @include input-icon;
-    right: 6px;
-}
-
-.my-back {
-    @include input-icon;
-    left: 22px;
-}
-
-.my-track-draggable {
-    /* TODO: implement for swiping */
-    /* position: absolute;
+    
+    .my-track-icon {
+        float: left;
+        margin-right: 15px;
+    }
+    
+    .my-center {
+        text-align: center;
+    }
+    
+    .my-input-row {
+        left: 0;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        width: 100%;
+        padding-left: 31px;
+        background-color: white;
+        z-index: 3;
+        input[type=text] {
+            width: calc(100% - 71px);
+            height: 54px;
+            margin-bottom: 2px;
+            font-size: 16px;
+            padding-left: 29px;
+            &,
+            &:focus {
+                border-bottom: none;
+                box-shadow: none;
+            }
+        }
+    }
+    
+    .my-autocomplete {
+        z-index: 1;
+        ul {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            li {
+                font-size: 16px;
+                padding: 10px 13px;
+                background: white;
+                &.active,
+                &:hover {
+                    background: #eee;
+                    cursor: pointer;
+                }
+                .my-hightlight {
+                    color: #26a69a;
+                }
+            }
+        }
+    }
+    
+    .my-clear {
+        @include input-icon;
+        right: 6px;
+    }
+    
+    .my-back {
+        @include input-icon;
+        left: 22px;
+    }
+    
+    .my-track-draggable {
+        /* TODO: implement for swiping */
+        /* position: absolute;
     top: 0;
     background-color: white; */
-    padding: 8px 0;
-}
-
-.my-track-placeholder {
-    height: 92.89px;
-    margin-bottom: 0;
-}
-
-.my-track-text {
-    height: 46.78px;
-    overflow: hidden;
-    padding-bottom: 5px;
-}
-
-.my-track-status {
-    height: 30px;
-}
-
-.my-playlist-status {
-    height: 72px;
-    padding: 15px 15px 0 15px;
-}
-
-.my-track-body {
-    display: table-cell;
-    padding: 0 8px;
-    width: 100%;
-}
-
-.my-track-middle {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.my-static-image {
-    width: 120px;
-    height: 68px;
-}
-
-.my-relative {
-    position: relative;
-}
-
-.my-right {
-    text-align: right;
-}
-
-.my-spinner {
-    width: 100%;
-    text-align: center;
-    margin: 20px 0;
-}
-
-.my-track-progress {
-    margin: 0;
-}
-
-.my-separator {
-    width: 100%;
-    height: 1px;
-}
-
-.my-loading {
-    height: 2px;
-}
-
-.my-line {
-    width: calc(100% - 90px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    height: 100%;
-    float: right;
-}
-
-.my-next {
-    margin-top: 3px;
-    text-align: right;
-    padding-right: 8px;
-    width: 100%;
-    background-color: #f0eeee;
-    i {
-        font-size: 29px;
+        padding: 8px 0;
     }
-    &:hover {
-        cursor: pointer;
+    
+    .my-track-placeholder {
+        height: 92.89px;
+        margin-bottom: 0;
     }
-}
-
-.my-model-btn {
-    position: absolute;
-    top: -28px;
-    right: 8px;
-}
-
-.my-card-cover {
-    margin: 0;
-    box-shadow: none;
-}
-
-.my-image {
-    padding-bottom: 56%;
-    background-position-y: 50%;
-    background-size: cover;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
-    background-color: rgba(0, 0, 0, 0.2);
-    width: 100%;
-}
-
-@keyframes eq {
-    0% {
-        height: 3px;
+    
+    .my-track-text {
+        height: 46.78px;
+        overflow: hidden;
+        padding-bottom: 5px;
     }
-    50% {
-        height: 20px;
+    
+    .my-track-status {
+        height: 30px;
     }
-    100% {
-        height: 3px;
+    
+    .my-playlist-status {
+        height: 72px;
+        padding: 15px 15px 0 15px;
     }
-}
-
-.eq {
-    display: flex;
-    width: 20px;
-    height: 20px;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.eq-bar {
-    width: 4px;
-    background: rgba(0, 0, 0, .7);
-}
-
-.eq-bar:nth-child(1) {
-    animation: eq .8s ease-in-out infinite 0s;
-}
-
-.eq-bar:nth-child(2) {
-    animation: eq .8s ease-in-out infinite .2s;
-}
-
-.eq-bar:nth-child(3) {
-    animation: eq .8s ease-in-out infinite .4s;
-}
-
-.spinner-blue-only {
-    border-color: #42a5f5;
-}
-
-.progress {
-    background-color: #bbdefb;
-    .indeterminate {
-        background-color: #1e88e5;
+    
+    .my-track-body {
+        display: table-cell;
+        padding: 0 8px;
+        width: 100%;
     }
-}
-
-.noUi-connect,
-.noUi-horizontal .noUi-handle {
-    background-color: #2196f3;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-}
-
-.noUi-background {
-    background-color: #cfd8dc;
-}
-
-.my-action-btn {
-    bottom: 79px;
-    right: 10px;
-    top: initial;
-}
-
-.my-icon-placeholder {
-    width: 28px;
-}
-
-.my-back-top {
-    top: 0;
-}
-
-.my-card-content {
-    bottom: 45px;
-    right: 24px;
-    position: initial;
-}
-
-.my-cover-section {
-    margin-bottom: 20px;
-}
-
-.tabs {
-    &.my-tabs-darken {
-        overflow: initial;
-        background-color: #ee6e73;
-        .tab a {
-            color: white;
-            &.active,
-            &:hover {
-                color: #fbe9e7;
-            }
-        }
-        .indicator {
-            background-color: white;
-        }
+    
+    .my-track-middle {
+        display: table-cell;
+        vertical-align: middle;
     }
-}
-
-.my-playlist-content {
-    padding-right: 10px;
-    .row {
+    
+    .my-static-image {
+        width: 120px;
+        height: 68px;
+    }
+    
+    .my-relative {
+        position: relative;
+    }
+    
+    .my-right {
+        text-align: right;
+    }
+    
+    .my-spinner {
+        width: 100%;
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .my-track-progress {
         margin: 0;
     }
-    .truncate {
-        width: calc(100% - 35px);
-        float: left;
-        margin-right: 10px;
+    
+    .my-separator {
+        width: 100%;
+        height: 1px;
     }
-    i {
-        float: left;
+    
+    .my-loading {
+        height: 2px;
     }
-}
-
-.my-active {
-    background: rgba(147, 206, 222, 1);
-    background: -moz-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(147, 206, 222, 1)), color-stop(41%, rgba(117, 189, 209, 1)), color-stop(100%, rgba(73, 165, 191, 1)));
-    background: -webkit-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-    background: -o-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-    background: -ms-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-    background: linear-gradient(to right, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
-    color: white;
-    i {
-        color: rgba(0, 0, 0, 0.87);
+    
+    .my-line {
+        width: calc(100% - 90px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        height: 100%;
+        float: right;
     }
-}
-
-.my-action-bar {
-    @extend .my-active;
-    i {
-        color: #ebf3f5;
+    
+    .my-next {
+        margin-top: 3px;
+        text-align: right;
+        padding-right: 8px;
+        width: 100%;
+        background-color: #f0eeee;
+        i {
+            font-size: 29px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
     }
-    box-shadow: none;
-}
-
-.my-subtext {
-    margin-bottom: 0;
-    .truncate {
-        color: #999;
-        float: left;
-        width: calc(100% - 39px);
+    
+    .my-model-btn {
+        position: absolute;
+        top: -28px;
+        right: 8px;
     }
-}
-
-i.my-icon-disabled {
-    opacity: 0.5;
-}
-
-.my-splash-spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.noUi-base {
-    height: 24px;
-    top: -10px;
+    
+    .my-card-cover {
+        margin: 0;
+        box-shadow: none;
+    }
+    
+    .my-image {
+        padding-bottom: 56%;
+        background-position-y: 50%;
+        background-size: cover;
+        box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.2);
+        width: 100%;
+    }
+    
+    @keyframes eq {
+        0% {
+            height: 3px;
+        }
+        50% {
+            height: 20px;
+        }
+        100% {
+            height: 3px;
+        }
+    }
+    
+    .eq {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    
+    .eq-bar {
+        width: 4px;
+        background: rgba(0, 0, 0, .7);
+    }
+    
+    .eq-bar:nth-child(1) {
+        animation: eq .8s ease-in-out infinite 0s;
+    }
+    
+    .eq-bar:nth-child(2) {
+        animation: eq .8s ease-in-out infinite .2s;
+    }
+    
+    .eq-bar:nth-child(3) {
+        animation: eq .8s ease-in-out infinite .4s;
+    }
+    
+    .spinner-blue-only {
+        border-color: #42a5f5;
+    }
+    
+    .progress {
+        background-color: #bbdefb;
+        .indeterminate {
+            background-color: #1e88e5;
+        }
+    }
+    
+    .noUi-connect,
+    .noUi-horizontal .noUi-handle {
+        background-color: #2196f3;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+    
     .noUi-background {
-        top: 10px;
+        background-color: #cfd8dc;
     }
-}
-
-.my-audio-row {
-    margin-top: 12px;
-    margin-bottom: 0;
-    .col {
-        margin-bottom: 12px;
+    
+    .my-action-btn {
+        bottom: 79px;
+        right: 10px;
+        top: initial;
     }
-}
-
-.my-fixed-btn {
-    position: fixed;
-}
+    
+    .my-icon-placeholder {
+        width: 28px;
+    }
+    
+    .my-back-top {
+        top: 0;
+    }
+    
+    .my-card-content {
+        bottom: 45px;
+        right: 0;
+        position: initial;
+    }
+    
+    .my-cover-section {
+        margin-bottom: 20px;
+    }
+    
+    .tabs {
+        &.my-tabs-darken {
+            overflow: initial;
+            background-color: #ee6e73;
+            .tab a {
+                color: white;
+                &.active,
+                &:hover {
+                    color: #fbe9e7;
+                }
+            }
+            .indicator {
+                background-color: white;
+            }
+        }
+    }
+    
+    .my-playlist-content {
+        padding-right: 10px;
+        .row {
+            margin: 0;
+        }
+        .truncate {
+            width: calc(100% - 35px);
+            float: left;
+            margin-right: 10px;
+        }
+        i {
+            float: left;
+        }
+    }
+    
+    .my-active {
+        background: rgba(147, 206, 222, 1);
+        background: -moz-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(147, 206, 222, 1)), color-stop(41%, rgba(117, 189, 209, 1)), color-stop(100%, rgba(73, 165, 191, 1)));
+        background: -webkit-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        background: -o-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        background: -ms-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        background: linear-gradient(to right, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.2);
+        color: white;
+        i {
+            color: rgba(0, 0, 0, 0.87);
+        }
+    }
+    
+    .my-action-row {
+        @extend .my-active;
+        i {
+            color: #ebf3f5;
+        }
+        box-shadow: none;
+    }
+    
+    .my-subtext {
+        margin-bottom: 0;
+        .truncate {
+            color: #999;
+            float: left;
+            width: calc(100% - 39px);
+        }
+    }
+    
+    i.my-icon-disabled {
+        opacity: 0.5;
+    }
+    
+    .my-splash-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .noUi-base {
+        height: 24px;
+        top: -10px;
+        .noUi-background {
+            top: 10px;
+        }
+    }
+    
+    .my-audio-row {
+        margin-top: 12px;
+        margin-bottom: 0;
+        .col {
+            margin-bottom: 12px;
+        }
+    }
+    
+    .my-fixed {
+        position: fixed;
+    }
+    
+    .fixed-action-btn {
+        .btn-floating:first-child {
+            animation-iteration-count: 1;
+            animation: show ease-in-out .5s;
+        }
+    }
+    
+    @keyframes show {
+        0% {
+            transform: scaleX(0) scaleY(0);
+        }
+        100% {
+            transform: scaleX(1) scaleY(1);
+        }
+    }
