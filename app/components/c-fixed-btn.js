@@ -29,7 +29,7 @@ function updatePosition() {
 
 export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     style: Ember.computed('audioPlayer.track', 'utils.audioHeight', function() {
-        let bottom = 45;
+        let bottom = 70;
 
         if (this.get('audioPlayer.track')) {
             bottom += this.get('utils.audioHeight');

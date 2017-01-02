@@ -23,6 +23,8 @@ function updatePosition() {
 
 export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
+    classNameBindings: ['hideOnScroll:js-hide-on-scroll'],
+    hideOnScroll: true,
     placeholder: null,
     getInt: function(attribute) {
         return parseInt(this.$().css(attribute));
@@ -38,14 +40,16 @@ export default Ember.Component.extend(scrollMixin, {
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        element.data('top', this.getInt('top'));
+        if (this.get('hideOnScroll')) {
+            element.data('top', this.getInt('top'));
 
-        if (placeholder.offset().top !== 0 && this.getInt('bottom') !== 0) {
-            this.scroll(updatePosition.bind(this));
+            if (placeholder.offset().top !== 0 && this.getInt('bottom') !== 0) {
+                this.scroll(updatePosition.bind(this));
 
-            element.css('position', 'static');
+                element.css('position', 'static');
 
-            placeholder.hide();
+                placeholder.hide();
+            }
         }
     },
     willDestroyElement: function() {

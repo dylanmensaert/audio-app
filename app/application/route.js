@@ -39,7 +39,7 @@ export default Ember.Route.extend({
         Ember.$(window).scroll(function() {
             let scrollTop = Ember.$(window).scrollTop();
 
-            Ember.$('.my-fixed-row').each(function() {
+            Ember.$('.js-hide-on-scroll').each(function() {
                 let element = Ember.$(this),
                     isHidden = element.data('is-hidden'),
                     animate;
