@@ -4,21 +4,17 @@ import scrollMixin from 'audio-app/mixins/c-scroll';
 function scrollBackGround() {
     let element = this.$(),
         topDifference = Ember.$(window).scrollTop() + this.get('utils.menuHeight') - element.offset().top,
-        percentage = 0;
+        height = element.height();
 
-    if (topDifference > 0) {
-        let height = element.height(),
-            topDistance = height - topDifference;
+    if (0 <= topDifference && topDifference <= height) {
+        let percentage = topDifference / height * 100;
 
-        if (topDistance < height) {
-            percentage = 100 - (topDistance / height * 100);
-        }
+        this.$('.my-image').css('background-position-y', (50 - percentage) + '%');
     }
-
-    this.$('.my-image').css('background-position-y', (50 - percentage) + '%');
 }
 
 export default Ember.Component.extend(scrollMixin, {
+    classNames: ['my-parallax'],
     src: null,
     utils: Ember.inject.service(),
     didInsertElement: function() {

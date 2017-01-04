@@ -4,39 +4,59 @@ import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
+const relatedTracksLimit = 4;
+
 export default Ember.Controller.extend(searchMixin, {
     // TODO: remove duplicate tracks shown
     lastHistoryTracks: null,
-    isPending: Ember.computed('relatedByTracks.@each.isPending', function() {
-        return this.get('relatedByTracks').isAny('isPending');
-    }),
     relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
-        return this.get('sortedLastHistoryTracks').map(function(historyTrack) {
-            let options,
-                promise;
+        let sortedLastHistoryTracks = this.get('sortedLastHistoryTracks'),
+            shownTrackIds = [],
+            promises,
+            promise;
 
-            options = {
+        promises = sortedLastHistoryTracks.map(function(historyTrack) {
+            let options = {
                 relatedVideoId: historyTrack.get('id'),
                 maxResults: logic.maxResults
             };
 
-            promise = this.find('track', options, !connection.isMobile());
+            shownTrackIds.pushObject(historyTrack.get('id'));
 
-            promise = new Ember.RSVP.Promise(function(resolve) {
-                this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
-                    resolve(logic.getTopRecords(relatedTracks, 4));
+            return this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
+                return Ember.Object.create({
+                    track: historyTrack,
+                    relatedTracks: relatedTracks
                 });
-            }.bind(this));
-
-            return Ember.Object.extend({
-                isPending: Ember.computed.alias('relatedTracks.isPending')
-            }).create({
-                track: historyTrack,
-                relatedTracks: DS.PromiseArray.create({
-                    promise: promise
-                })
             });
         }.bind(this));
+
+        promise = Ember.RSVP.all(promises).then(function(relatedByTracks) {
+            relatedByTracks.forEach(function(relatedByTrack) {
+                let relatedTracks = relatedByTrack.get('relatedTracks'),
+                    topTracks = [];
+
+                relatedTracks.any(function(track) {
+                    let id = track.get('id');
+
+                    if (!shownTrackIds.includes(id)) {
+                        topTracks.pushObject(track);
+
+                        shownTrackIds.pushObject(id);
+                    }
+
+                    return topTracks.get('length') === relatedTracksLimit;
+                });
+
+                relatedByTrack.set('relatedTracks', topTracks);
+            });
+
+            return relatedByTracks;
+        });
+
+        return DS.PromiseArray.create({
+            promise: promise
+        });
     }),
     sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
         let models = this.get('lastHistoryTracks'),

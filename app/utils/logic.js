@@ -34,16 +34,5 @@ export default {
         }
 
         return randomId;
-    },
-    getTopRecords: function(records, limit) {
-        let topRecords = [];
-
-        records.any(function(record, index) {
-            topRecords.pushObject(record);
-
-            return index + 1 >= limit;
-        });
-
-        return topRecords;
     }
 };
