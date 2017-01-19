@@ -3,14 +3,24 @@
 import Ember from 'ember';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
+var lastScrollTop = 0;
+
 function updatePosition() {
     let placeholder = this.get('placeholder'),
         element = this.$(),
+        scrollTop = Ember.$(window).scrollTop(),
+        offset,
         position;
 
     placeholder.show();
 
-    if (placeholder.offset().top < Ember.$(window).scrollTop() + element.data('top')) {
+    if (lastScrollTop < scrollTop) {
+        offset = placeholder.outerHeight();
+    } else {
+        offset = 0 - element.data('top');
+    }
+
+    if (placeholder.offset().top + offset < scrollTop) {
         position = 'fixed';
     } else {
         placeholder.hide();
@@ -19,6 +29,8 @@ function updatePosition() {
     }
 
     element.css('position', position);
+
+    lastScrollTop = scrollTop;
 }
 
 export default Ember.Component.extend(scrollMixin, {
