@@ -9,7 +9,7 @@
     </div>
 </div> --}}
 
-<div {{action 'play'}} class="my-track-draggable waves-effect waves-block waves-light {{if model.isSelected 'my-active'}}">
+<div {{action 'play'}} class="my-track-draggable {{if model.isSelected 'my-active'}}">
     <div class="my-track-middle">
         <div class="my-static-image">
             {{c-image src=model.thumbnail}}
