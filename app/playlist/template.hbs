@@ -11,7 +11,7 @@
 
   <div class="card-content my-relative">
     {{#if model.isEditable}}
-      <div class="fixed-action-btn horizontal click-to-toggle my-card-content">
+      {{#c-fixed-btn class='fixed-action-btn horizontal click-to-toggle my-card-content'}}
         <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
           <i class="material-icons">menu</i>
         </a>
@@ -37,7 +37,7 @@
             </li>
           {{/if}}
         </ul>
-      </div>
+      {{/c-fixed-btn}}
     {{/if}}
 
     <span class="card-title activator grey-text text-darken-4">

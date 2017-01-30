@@ -3,6 +3,7 @@ import safeStyleMixin from 'audio-app/mixins/safe-style';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
 export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
+    classNames: ['my-fixed-btn'],
     style: Ember.computed('audioPlayer.track', 'utils.audioHeight', function() {
         let bottom = 70;
 

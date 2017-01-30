@@ -330,9 +330,9 @@
     }
     
     .my-action-btn {
-        bottom: 79px;
-        right: 10px;
-        top: initial;
+        right: 0;
+        z-index: 1;
+        position: fixed;
     }
     
     .my-icon-placeholder {
@@ -448,7 +448,7 @@
         position: fixed;
     }
     
-    .fixed-action-btn {
+    .my-fixed-btn {
         > a {
             animation-iteration-count: 1;
             animation: show ease-in-out .5s;

@@ -6,10 +6,9 @@ import scrollMixin from 'audio-app/mixins/c-scroll';
 export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
     classNameBindings: ['transitionClassName'],
-    placeholder: null,
+    placeholder: true,
     alignment: 'top',
-    isStatic: false,
-    transition: null,
+    _alignment: null,
     transitionClassName: Ember.computed('alignment', function() {
         return 'my-transition-' + this.get('alignment');
     }),
@@ -58,30 +57,39 @@ export default Ember.Component.extend(scrollMixin, {
     didInsertElement: function() {
         let alignment = this.get('alignment'),
             element = this.$(),
-            placeholder;
-
-        placeholder = Ember.$('<div>', {
-            height: element.outerHeight()
-        });
-
-        element.before(placeholder);
-        this.set('placeholder', placeholder);
+            placeholder = this.get('placeholder');
 
         this.set('_alignment', {
             name: alignment,
-            value: parseInt(this.$().css(alignment))
+            value: parseInt(element.css(alignment))
         });
 
-        if (placeholder.offset().top !== 0 && this.get('isStatic')) {
-            this.scroll(function(didScrollDown) {
-                this.updatePosition(didScrollDown);
-                this.updateTransition(didScrollDown);
+        if (placeholder) {
+            let offset,
+                onscroll;
+
+            placeholder = Ember.$('<div>', {
+                height: element.outerHeight()
             });
 
-            element.css('position', 'static');
-            placeholder.hide();
-        } else {
-            this.scroll(this.updateTransition);
+            offset = placeholder.offset();
+
+            element.before(placeholder);
+            this.set('placeholder', placeholder);
+
+            if (offset.top !== 0 && offset.bottom !== 0) {
+                onscroll = function(didScrollDown) {
+                    this.updatePosition(didScrollDown);
+                    this.updateTransition(didScrollDown);
+                };
+
+                element.css('position', 'static');
+                placeholder.hide();
+            } else {
+                onscroll = this.updateTransition;
+            }
+
+            this.scroll(onscroll);
         }
     },
     willDestroyElement: function() {
