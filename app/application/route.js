@@ -39,7 +39,7 @@ export default Ember.Route.extend({
         Ember.$(window).scroll(function() {
             let scrollTop = Ember.$(window).scrollTop();
 
-            $('.js-hide-on-scroll').each(function() {
+            Ember.$('.js-hide-on-scroll').each(function() {
                 let element = Ember.$(this),
                     attribute = element.data('hide-on-scroll'),
                     transitionTo;

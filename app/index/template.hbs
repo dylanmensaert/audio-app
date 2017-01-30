@@ -9,7 +9,7 @@
       {{#if lastHistoryTracks}}
         {{c-tracks models=sortedLastHistoryTracks}}
 
-        {{#link-to 'playlist' 'history' tagName='div' class='my-next' }}
+        {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
             <i class="material-icons">chevron_right</i>
         {{/link-to}}
       {{/if}}
@@ -17,9 +17,9 @@
       {{#each relatedByTracks as |relatedByTrack|}}
         {{c-tracks models=relatedByTrack.relatedTracks}}
 
-        {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next' }}
+        {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next'}}
             <i class="material-icons">chevron_right</i>
-        {{/link-to }}
+        {{/link-to}}
       {{/each}}
     {{/if}}
 </main>
