@@ -3,69 +3,85 @@
 import Ember from 'ember';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
-var lastScrollTop = 0;
-
-function updatePosition() {
-    let placeholder = this.get('placeholder'),
-        element = this.$(),
-        scrollTop = Ember.$(window).scrollTop(),
-        offset,
-        position;
-
-    placeholder.show();
-
-    if (lastScrollTop < scrollTop) {
-        offset = placeholder.outerHeight();
-    } else {
-        offset = 0 - element.data('hide-on-scroll').value;
-    }
-
-    if (placeholder.offset().top + offset < scrollTop) {
-        position = 'fixed';
-    } else {
-        placeholder.hide();
-
-        position = 'static';
-    }
-
-    element.css('position', position);
-
-    lastScrollTop = scrollTop;
-}
-
 export default Ember.Component.extend(scrollMixin, {
-    classNames: ['my-fixed-row', 'js-hide-on-scroll'],
+    classNames: ['my-fixed-row'],
+    classNameBindings: ['transitionClassName'],
     placeholder: null,
     alignment: 'top',
     isStatic: false,
+    transition: null,
+    transitionClassName: Ember.computed('alignment', function() {
+        return 'my-transition-' + this.get('alignment');
+    }),
+    updatePosition: function(didScrollDown) {
+        let placeholder = this.get('placeholder'),
+            offset,
+            position;
+
+        placeholder.show();
+
+        if (didScrollDown) {
+            offset = placeholder.outerHeight();
+        } else {
+            offset = 0 - this.get('_alignment').value;
+        }
+
+        if (placeholder.offset().top + offset < Ember.$(window).scrollTop()) {
+            position = 'fixed';
+        } else {
+            placeholder.hide();
+
+            position = 'static';
+        }
+
+        this.$().css('position', position);
+    },
+    transitionTo: function(doHide, value) {
+        let alignment = this.get('_alignment');
+
+        this.$().css(alignment.name, value);
+        alignment.isHidden = doHide;
+
+        this.set('_alignment', alignment);
+    },
+    updateTransition: function(didScrollDown) {
+        let alignment = this.get('_alignment');
+
+        if (didScrollDown) {
+            if (!alignment.isHidden) {
+                this.transitionTo(true, 0 - this.$().outerHeight());
+            }
+        } else if (alignment.isHidden) {
+            this.transitionTo(false, alignment.value);
+        }
+    },
     didInsertElement: function() {
         let alignment = this.get('alignment'),
             element = this.$(),
-            placeholder,
-            attribute;
+            placeholder;
 
         placeholder = Ember.$('<div>', {
             height: element.outerHeight()
         });
 
-        attribute = {
-            name: alignment,
-            value: parseInt(this.$().css(alignment))
-        };
-
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        element.data('hide-on-scroll', attribute);
+        this.set('_alignment', {
+            name: alignment,
+            value: parseInt(this.$().css(alignment))
+        });
 
-        if (placeholder.offset().top !== 0) {
-            if (this.get('isStatic')) {
-                this.scroll(updatePosition.bind(this));
-            }
+        if (placeholder.offset().top !== 0 && this.get('isStatic')) {
+            this.scroll(function(didScrollDown) {
+                this.updatePosition(didScrollDown);
+                this.updateTransition(didScrollDown);
+            });
 
             element.css('position', 'static');
-
             placeholder.hide();
+        } else {
+            this.scroll(this.updateTransition);
         }
     },
     willDestroyElement: function() {

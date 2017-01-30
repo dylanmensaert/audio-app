@@ -1,9 +1,7 @@
-/*global history, window*/
+/*global history*/
 import Ember from 'ember';
 import connection from 'connection';
 import phonegap from 'phonegap';
-
-var lastScrollTop = 0;
 
 export default Ember.Route.extend({
     fileSystem: Ember.inject.service(),
@@ -35,33 +33,6 @@ export default Ember.Route.extend({
         }.bind(this));
 
         Ember.$('.my-splash-spinner').remove();
-
-        Ember.$(window).scroll(function() {
-            let scrollTop = Ember.$(window).scrollTop();
-
-            Ember.$('.js-hide-on-scroll').each(function() {
-                let element = Ember.$(this),
-                    attribute = element.data('hide-on-scroll'),
-                    transitionTo;
-
-                transitionTo = function(doHide, value) {
-                    element.css(attribute.name, value);
-
-                    attribute.isHidden = doHide;
-                    element.data('hide-on-scroll', attribute);
-                };
-
-                if (lastScrollTop < scrollTop) {
-                    if (!attribute.isHidden) {
-                        transitionTo(true, 0 - element.outerHeight());
-                    }
-                } else if (attribute.isHidden) {
-                    transitionTo(false, attribute.value);
-                }
-            });
-
-            lastScrollTop = scrollTop;
-        });
     },
     actions: {
         back: function() {

@@ -2,42 +2,6 @@ import Ember from 'ember';
 import safeStyleMixin from 'audio-app/mixins/safe-style';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
-var lastScrollTop = 0;
-
-function updatePosition() {
-    let scrollTop = Ember.$(window).scrollTop(),
-        element = this.$(),
-        className = 'my-fixed',
-        btn = element.find('> a'),
-        wasFixed = element.hasClass(className),
-        redraw;
-
-    redraw = function() {
-        btn.remove();
-        element.prepend(btn);
-    };
-
-    element.removeClass(className);
-
-    if (scrollTop + this.get('utils.menuHeight') > btn.offset().top) {
-        if (lastScrollTop < scrollTop) {
-            if (wasFixed) {
-                redraw();
-            }
-        } else {
-            element.addClass(className);
-
-            if (!wasFixed) {
-                redraw();
-            }
-        }
-    } else if (wasFixed) {
-        redraw();
-    }
-
-    lastScrollTop = scrollTop;
-}
-
 export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     style: Ember.computed('audioPlayer.track', 'utils.audioHeight', function() {
         let bottom = 70;
@@ -50,7 +14,38 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     }),
     audioPlayer: Ember.inject.service(),
     utils: Ember.inject.service(),
+    redraw: function(btn) {
+        let element = this.$();
+
+        btn.remove();
+        element.prepend(btn);
+    },
+    updatePosition: function(didScrollDown) {
+        let scrollTop = Ember.$(window).scrollTop(),
+            element = this.$(),
+            className = 'my-fixed',
+            btn = element.find('> a'),
+            wasFixed = element.hasClass(className);
+
+        element.removeClass(className);
+
+        if (scrollTop + this.get('utils.menuHeight') > btn.offset().top) {
+            if (didScrollDown) {
+                if (wasFixed) {
+                    this.redraw(btn);
+                }
+            } else {
+                element.addClass(className);
+
+                if (!wasFixed) {
+                    this.redraw(btn);
+                }
+            }
+        } else if (wasFixed) {
+            this.redraw(btn);
+        }
+    },
     didInsertElement: function() {
-        this.scroll(updatePosition.bind(this));
+        this.scroll(this.updatePosition);
     }
 });

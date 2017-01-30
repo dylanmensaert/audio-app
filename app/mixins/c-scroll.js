@@ -1,17 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+    utils: Ember.inject.service(),
     onscroll: null,
-    scroll: function(onscroll) {
+    scroll: function(callback) {
+        let onscroll = callback.bind(this);
+
         this.set('onscroll', onscroll);
 
-        Ember.$(window).scroll(onscroll);
+        this.get('utils.scrolls').pushObject(onscroll);
     },
     willDestroyElement: function() {
-        let onscroll = this.get('onscroll');
-
-        if (onscroll) {
-            Ember.$(window).off('scroll', onscroll);
-        }
+        this.get('utils.scrolls').removeObject(this.get('onscroll'));
     }
 });

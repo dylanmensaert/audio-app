@@ -469,6 +469,10 @@
         }
     }
     
-    .js-hide-on-scroll {
-        transition: top 0.5s, bottom 0.5s;
+    .my-transition-top {
+        transition: top 0.5s;
+    }
+    
+    .my-transition-bottom {
+        transition: bottom 0.5s;
     }
