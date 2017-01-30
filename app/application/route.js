@@ -39,23 +39,24 @@ export default Ember.Route.extend({
         Ember.$(window).scroll(function() {
             let scrollTop = Ember.$(window).scrollTop();
 
-            Ember.$('.js-hide-on-scroll').each(function() {
+            $('.js-hide-on-scroll').each(function() {
                 let element = Ember.$(this),
-                    isHidden = element.data('is-hidden'),
+                    attribute = element.data('hide-on-scroll'),
                     transitionTo;
 
-                transitionTo = function(doHide, top) {
-                    element.css('top', top);
+                transitionTo = function(doHide, value) {
+                    element.css(attribute.name, value);
 
-                    element.data('is-hidden', doHide);
+                    attribute.isHidden = doHide;
+                    element.data('hide-on-scroll', attribute);
                 };
 
                 if (lastScrollTop < scrollTop) {
-                    if (!isHidden) {
+                    if (!attribute.isHidden) {
                         transitionTo(true, 0 - element.outerHeight());
                     }
-                } else if (isHidden) {
-                    transitionTo(false, element.data('top'));
+                } else if (attribute.isHidden) {
+                    transitionTo(false, attribute.value);
                 }
             });
 
