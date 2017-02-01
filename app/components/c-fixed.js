@@ -6,9 +6,9 @@ import scrollMixin from 'audio-app/mixins/c-scroll';
 export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
     classNameBindings: ['transitionClassName'],
-    placeholder: true,
+    placeholder: null,
     alignment: 'top',
-    _alignment: null,
+    initialAlignment: null,
     transitionClassName: Ember.computed('alignment', function() {
         return 'my-transition-' + this.get('alignment');
     }),
@@ -22,7 +22,7 @@ export default Ember.Component.extend(scrollMixin, {
         if (didScrollDown) {
             offset = placeholder.outerHeight();
         } else {
-            offset = 0 - this.get('_alignment').value;
+            offset = 0 - this.get('initialAlignment').value;
         }
 
         if (placeholder.offset().top + offset < Ember.$(window).scrollTop()) {
@@ -36,15 +36,15 @@ export default Ember.Component.extend(scrollMixin, {
         this.$().css('position', position);
     },
     transitionTo: function(doHide, value) {
-        let alignment = this.get('_alignment');
+        let alignment = this.get('initialAlignment');
 
         this.$().css(alignment.name, value);
         alignment.isHidden = doHide;
 
-        this.set('_alignment', alignment);
+        this.set('initialAlignment', alignment);
     },
     updateTransition: function(didScrollDown) {
-        let alignment = this.get('_alignment');
+        let alignment = this.get('initialAlignment');
 
         if (didScrollDown) {
             if (!alignment.isHidden) {
@@ -57,40 +57,37 @@ export default Ember.Component.extend(scrollMixin, {
     didInsertElement: function() {
         let alignment = this.get('alignment'),
             element = this.$(),
-            placeholder = this.get('placeholder');
+            placeholder,
+            offset,
+            onscroll;
 
-        this.set('_alignment', {
+        this.set('initialAlignment', {
             name: alignment,
             value: parseInt(element.css(alignment))
         });
 
-        if (placeholder) {
-            let offset,
-                onscroll;
+        placeholder = Ember.$('<div>', {
+            height: element.outerHeight()
+        });
 
-            placeholder = Ember.$('<div>', {
-                height: element.outerHeight()
-            });
+        element.before(placeholder);
+        this.set('placeholder', placeholder);
 
-            offset = placeholder.offset();
+        offset = placeholder.offset();
 
-            element.before(placeholder);
-            this.set('placeholder', placeholder);
+        if (offset.top !== 0 && offset.bottom !== 0) {
+            onscroll = function(didScrollDown) {
+                this.updatePosition(didScrollDown);
+                this.updateTransition(didScrollDown);
+            };
 
-            if (offset.top !== 0 && offset.bottom !== 0) {
-                onscroll = function(didScrollDown) {
-                    this.updatePosition(didScrollDown);
-                    this.updateTransition(didScrollDown);
-                };
-
-                element.css('position', 'static');
-                placeholder.hide();
-            } else {
-                onscroll = this.updateTransition;
-            }
-
-            this.scroll(onscroll);
+            element.css('position', 'static');
+            placeholder.hide();
+        } else {
+            onscroll = this.updateTransition;
         }
+
+        this.scroll(onscroll);
     },
     willDestroyElement: function() {
         this._super();

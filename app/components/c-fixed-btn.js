@@ -48,7 +48,6 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
     },
     updateFixedPosition: function(didScrollDown) {
         let element = this.$(),
-            btn = element.find('> a'),
             isHidden = element.css('display') === 'none';
 
         if (didScrollDown) {
@@ -59,7 +58,7 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
             element.show();
         }
     },
-    didInsertElement: function(didScrollDown) {
+    didInsertElement: function() {
         let onscroll;
 
         if (this.$().css('position') === 'fixed') {
