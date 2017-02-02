@@ -7,10 +7,19 @@ export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
     classNameBindings: ['transitionClassName'],
     placeholder: null,
-    alignment: 'top',
-    initialAlignment: null,
+    alignmentAtStart: 'top',
+    alignmentWithValue: null,
+    getAlignment: function() {
+        let alignment = this.get('alignment');
+
+        if (!alignment) {
+            alignment = 'top';
+        }
+
+        return alignment;
+    },
     transitionClassName: Ember.computed('alignment', function() {
-        return 'my-transition-' + this.get('alignment');
+        return 'my-transition-' + this.getAlignment();
     }),
     updatePosition: function(didScrollDown) {
         let placeholder = this.get('placeholder'),
@@ -22,7 +31,7 @@ export default Ember.Component.extend(scrollMixin, {
         if (didScrollDown) {
             offset = placeholder.outerHeight();
         } else {
-            offset = 0 - this.get('initialAlignment').value;
+            offset = 0 - this.get('alignmentWithValue').value;
         }
 
         if (placeholder.offset().top + offset < Ember.$(window).scrollTop()) {
@@ -35,33 +44,46 @@ export default Ember.Component.extend(scrollMixin, {
 
         this.$().css('position', position);
     },
-    transitionTo: function(doHide, value) {
-        let alignment = this.get('initialAlignment');
+    transitionTo: function(value) {
+        let alignment = this.get('alignmentWithValue');
 
         this.$().css(alignment.name, value);
-        alignment.isHidden = doHide;
-
-        this.set('initialAlignment', alignment);
     },
     updateTransition: function(didScrollDown) {
-        let alignment = this.get('initialAlignment');
+        let alignment = this.get('alignmentWithValue'),
+            placeholder = this.get('placeholder'),
+            element = this.$(),
+            isHidden = parseInt(element.css(alignment.name)) < 0,
+            display = Ember.$(window),
+            transition;
 
-        if (didScrollDown) {
-            if (!alignment.isHidden) {
-                this.transitionTo(true, 0 - this.$().outerHeight());
+        transition = function(doShow) {
+            let value = alignment.value;
+
+            if (doShow) {
+                value = 0 - element.outerHeight();
             }
-        } else if (alignment.isHidden) {
-            this.transitionTo(false, alignment.value);
+
+            element.css(alignment.name, value);
+        }
+
+        if (alignment.name === 'bottom' && placeholder.offset().top <= display.scrollTop() + display.height() && isHidden) {
+            transition();
+        } else if (didScrollDown) {
+            if (!isHidden) {
+                transition(true)
+            }
+        } else if (isHidden) {
+            transition();
         }
     },
     didInsertElement: function() {
-        let alignment = this.get('alignment'),
+        let alignment = this.getAlignment(),
             element = this.$(),
             placeholder,
-            offset,
             onscroll;
 
-        this.set('initialAlignment', {
+        this.set('alignmentWithValue', {
             name: alignment,
             value: parseInt(element.css(alignment))
         });
@@ -73,9 +95,9 @@ export default Ember.Component.extend(scrollMixin, {
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        offset = placeholder.offset();
-
-        if (offset.top !== 0 && offset.bottom !== 0) {
+        if (this.get('alignmentAtStart')) {
+            onscroll = this.updateTransition;
+        } else {
             onscroll = function(didScrollDown) {
                 this.updatePosition(didScrollDown);
                 this.updateTransition(didScrollDown);
@@ -83,8 +105,6 @@ export default Ember.Component.extend(scrollMixin, {
 
             element.css('position', 'static');
             placeholder.hide();
-        } else {
-            onscroll = this.updateTransition;
         }
 
         this.scroll(onscroll);
