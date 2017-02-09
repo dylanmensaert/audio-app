@@ -1,3 +1,5 @@
+/*global parseInt*/
+
 import Ember from 'ember';
 import domainData from 'domain-data';
 import apiKey from 'api-key';
@@ -54,7 +56,7 @@ export default {
             response.items.forEach(function(item) {
                 let record = trackByIds.get(item.id);
 
-                record.set('viewCount', item.statistics.viewCount);
+                record.set('viewCount', parseInt(item.statistics.viewCount));
             }.bind(this));
         }.bind(this));
     }
