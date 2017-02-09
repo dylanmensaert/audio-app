@@ -15,7 +15,7 @@
       {{/if}}
 
       {{#each relatedByTracks as |relatedByTrack|}}
-        {{c-tracks models=relatedByTrack.sortedRelatedTracks}}
+        {{c-tracks models=relatedByTrack.relatedTracks}}
 
         {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next'}}
             <i class="material-icons">chevron_right</i>
