@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import domainData from 'domain-data';
+import apiKey from 'api-key';
 
 export default {
     maxResults: 50,
@@ -34,5 +36,26 @@ export default {
         }
 
         return randomId;
+    },
+    getUrl: function(endpoint) {
+        return domainData.searchName + '/youtube/v3/' + endpoint + '?key=' + apiKey;
+    },
+    findDetails: function(tracks) {
+        let url = this.getUrl('videos') + '&part=statistics',
+            trackByIds = new Map();
+
+        tracks.forEach(function(track) {
+            trackByIds.set(track.get('id'), track);
+        });
+
+        url += '&id=' + Array.from(trackByIds.keys()).join(',');
+
+        return Ember.$.getJSON(url).then(function(response) {
+            response.items.forEach(function(item) {
+                let record = trackByIds.get(item.id);
+
+                record.set('viewCount', item.statistics.viewCount);
+            }.bind(this));
+        }.bind(this));
     }
 };

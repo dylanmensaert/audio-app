@@ -56,6 +56,7 @@ export default DS.Model.extend(modelMixin, {
         return audio;
     }),
     isDownloaded: false,
+    viewCount: null,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
     }),

@@ -24,16 +24,21 @@ export default Ember.Controller.extend(searchMixin, {
             shownTrackIds.pushObject(historyTrack.get('id'));
 
             return this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
-                return Ember.Object.create({
-                    track: historyTrack,
-                    relatedTracks: relatedTracks
+                return logic.findDetails(relatedTracks).then(function() {
+                    return Ember.Object.extend({
+                        trackSorting: ['viewCount:desc'],
+                        sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting')
+                    }).create({
+                        track: historyTrack,
+                        relatedTracks: relatedTracks
+                    });
                 });
             });
         }.bind(this));
 
         promise = Ember.RSVP.all(promises).then(function(relatedByTracks) {
             relatedByTracks.forEach(function(relatedByTrack) {
-                let relatedTracks = relatedByTrack.get('relatedTracks'),
+                let relatedTracks = relatedByTrack.get('sortedRelatedTracks'),
                     topTracks = [];
 
                 relatedTracks.any(function(track) {

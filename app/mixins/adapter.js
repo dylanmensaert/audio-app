@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import domainData from 'domain-data';
-import apiKey from 'api-key';
+import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create({
     fileSystem: Ember.inject.service(),
     buildUrlByEndpoint: function(endpoint, options) {
-        let url = domainData.searchName + '/youtube/v3/' + endpoint + '?part=snippet' + '&key=' + apiKey;
+        let url = logic.getUrl(endpoint) + '&part=snippet';
 
         if (options) {
             if (options.maxResults) {
