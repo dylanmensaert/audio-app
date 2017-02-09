@@ -12,7 +12,7 @@ export default Ember.Route.extend({
                 lastHistoryTracks = [];
 
             historyTrackIds.forEach(function(trackId, index) {
-                if (length <= lastHistoryTracksLimit || length - lastHistoryTracksLimit >= index) {
+                if (length - lastHistoryTracksLimit <= index) {
                     lastHistoryTracks.pushObject(store.peekRecord('track', trackId));
                 }
             });
