@@ -1,6 +1,10 @@
 {{#if selectedModels.length}}
     <nav class="my-fixed-row my-action-row">
         <div class="nav-wrapper">
+            <div class="my-badge">
+                {{selectedModels.length}}
+            </div>
+
             <ul class="right">
                 <li>
                   <a href="javascript:void(0)" {{action 'save'}}>

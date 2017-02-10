@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+let busyComponent;
+
 export default Ember.Mixin.create({
     utils: Ember.inject.service(),
     total: null,
@@ -15,6 +17,20 @@ export default Ember.Mixin.create({
         }
 
         return givenTotal;
+    }),
+    willDestroyElement: function() {
+        if (busyComponent === this) {
+            busyComponent = null;
+
+            this.get('models').setEach('isSelected', false);
+        }
+    },
+    onSelectModel: Ember.observer('models.@each.isSelected', function() {
+        if (busyComponent && busyComponent !== this) {
+            busyComponent.get('models').setEach('isSelected', false);
+        }
+
+        busyComponent = this;
     }),
     actions: {
         deselect: function() {

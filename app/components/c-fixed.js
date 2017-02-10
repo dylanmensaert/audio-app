@@ -9,6 +9,7 @@ export default Ember.Component.extend(scrollMixin, {
     placeholder: null,
     alignmentAtStart: 'top',
     alignmentWithValue: null,
+    offset: 0,
     getAlignment: function() {
         let alignment = this.get('alignment');
 
@@ -50,7 +51,7 @@ export default Ember.Component.extend(scrollMixin, {
             value = alignment.value;
 
         if (doShow) {
-            value = 0 - element.outerHeight();
+            value = this.get('offset') - element.outerHeight();
         }
 
         element.css(alignment.name, value);
