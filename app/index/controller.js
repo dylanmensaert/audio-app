@@ -7,7 +7,6 @@ import connection from 'connection';
 const relatedTracksLimit = 4;
 
 export default Ember.Controller.extend(searchMixin, {
-    // TODO: remove duplicate tracks shown
     lastHistoryTracks: null,
     relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
         let sortedLastHistoryTracks = this.get('sortedLastHistoryTracks'),
@@ -26,6 +25,7 @@ export default Ember.Controller.extend(searchMixin, {
             return this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
                 return logic.findDetails(relatedTracks).then(function() {
                     return Ember.Object.extend({
+                        // TODO: Youtube API, viewCount not working in combination with relatedVideoId
                         trackSorting: ['viewCount:desc'],
                         sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting')
                     }).create({

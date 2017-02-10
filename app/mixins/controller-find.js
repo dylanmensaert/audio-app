@@ -11,6 +11,9 @@ export default Ember.Mixin.create(searchMixin, {
         return !connection.isMobile();
     },
     models: null,
+    afterModels: function() {
+        return Ember.RSVP.resolve();
+    },
     updateModels: function() {
         let options = {
             maxResults: logic.maxResults,
@@ -23,13 +26,17 @@ export default Ember.Mixin.create(searchMixin, {
 
         this.find(this.get('type'), options, this.searchOnline()).then(function(promise) {
             if (this.get('latestOptions') === options) {
-                this.get('models').pushObjects(promise.toArray());
+                let models = promise.toArray();
 
-                this.set('isLocked', false);
+                this.afterModels(models).then(function() {
+                    this.get('models').pushObjects(models);
 
-                if (!this.get('nextPageToken')) {
-                    this.set('isPending', false);
-                }
+                    this.set('isLocked', false);
+
+                    if (!this.get('nextPageToken')) {
+                        this.set('isPending', false);
+                    }
+                }.bind(this));
             }
         }.bind(this));
     },
