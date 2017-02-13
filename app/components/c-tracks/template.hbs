@@ -48,7 +48,7 @@
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
     {{#each models as |track|}}
-        {{c-track model=track showQueued=track.isQueued}}
+        {{c-track model=track hideQueued=hideQueued}}
     {{/each}}
 
     {{#if isPending}}

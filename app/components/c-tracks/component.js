@@ -5,6 +5,7 @@ export default Ember.Component.extend(modelsMixin, {
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
     isPending: null,
+    hideQueued: false,
     queueableTracks: Ember.computed('selectedModels.@each.isQueued', function() {
         return this.get('selectedModels').filterBy('isQueued', false);
     }),

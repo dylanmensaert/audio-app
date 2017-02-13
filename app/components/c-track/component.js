@@ -125,6 +125,10 @@ export default Ember.Component.extend(modelMixin, {
 
         queue.save();
     },*/
+    hideQueued: null,
+    showQueued: Ember.computed('hideQueued', 'model.isQueued', function() {
+        return !this.get('hideQueued') && this.get('model.isQueued');
+    }),
     actions: {
         play: function() {
             /*if (this.get('doClick')) {*/
