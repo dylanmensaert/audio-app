@@ -175,7 +175,7 @@ export default DS.Model.extend(modelMixin, {
             promises.pushObject(promise);
         }
 
-        Ember.RSVP.all(promises).then(function() {
+        return Ember.RSVP.all(promises).then(function() {
             this.store.peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
 
             this.set('isDownloaded', true);
