@@ -40,17 +40,6 @@
         padding-left: 5px;
     }
     
-    @mixin input-icon {
-        position: absolute;
-        top: 13px;
-        i {
-            font-size: 31px;
-        }
-        &:hover {
-            cursor: pointer;
-        }
-    }
-    
     .my-fixed-row {
         position: fixed;
         top: 0;
@@ -117,19 +106,13 @@
         text-align: center;
     }
     
-    .my-input-row {
-        left: 0;
+    .my-input-bar {
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-        width: 100%;
-        padding-left: 31px;
-        background-color: white;
-        z-index: 3;
         input[type=text] {
             width: calc(100% - 71px);
             height: 54px;
             margin-bottom: 2px;
             font-size: 16px;
-            padding-left: 29px;
             &,
             &:focus {
                 border-bottom: none;
@@ -138,14 +121,26 @@
         }
     }
     
+    .my-input-bar__action {
+        @extend .my-input-bar;
+        background-color: white;
+        color: rgba(0, 0, 0, 0.87);
+    }
+    
     .my-autocomplete {
         z-index: 1;
-        padding: 0;
+        padding-left: 23px;
+        input::-webkit-input-placeholder {
+            color: #f7cfcf;
+        }
         ul {
+            color: rgba(0, 0, 0, 0.87);
+            margin: 14px 0;
             position: absolute;
-            width: 100%;
             left: 0;
             li {
+                line-height: initial;
+                width: 100%;
                 font-size: 16px;
                 padding: 10px 13px;
                 background: white;
@@ -162,13 +157,15 @@
     }
     
     .my-clear {
-        @include input-icon;
-        right: 6px;
-    }
-    
-    .my-back {
-        @include input-icon;
-        left: 22px;
+        top: 0;
+        position: absolute;
+        i {
+            font-size: 31px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+        right: 15px;
     }
     
     .my-track-draggable {

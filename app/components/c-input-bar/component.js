@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['my-input-row', 'my-fixed-row'],
+    tagName: 'nav',
+    classNames: ['my-input-bar__action', 'my-fixed-row'],
     value: null,
     placeholder: null,
     actions: {
