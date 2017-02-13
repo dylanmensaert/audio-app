@@ -1,4 +1,3 @@
-/*global history*/
 import Ember from 'ember';
 import playlistsControllerMixin from 'audio-app/mixins/controller-playlists';
 
