@@ -3,28 +3,8 @@ import Ember from 'ember';
 import playlistsControllerMixin from 'audio-app/mixins/controller-playlists';
 
 export default Ember.Controller.extend(playlistsControllerMixin, {
-    updateSelection: Ember.observer('utils.selectedTrackIds.[]', 'playlists.[]', function() {
-        let selectedTrackIds = this.get('utils.selectedTrackIds');
-
-        if (selectedTrackIds.get('length')) {
-            this.get('playlists').forEach(function(playlist) {
-                let isSelected = selectedTrackIds.every(function(selectedTrackId) {
-                    return playlist.get('trackIds').includes(selectedTrackId);
-                });
-
-                playlist.set('isSelected', isSelected);
-            });
-        }
-    }),
+    utils: Ember.inject.service(),
     actions: {
-        back: function() {
-            let utils = this.get('utils');
-
-            this.get('playlists').setEach('isSelected', false);
-            utils.get('selectedTrackIds').clear();
-
-            history.back();
-        },
         changeSelect: function(playlist) {
             let utils = this.get('utils'),
                 selectedTrackIds = utils.get('selectedTrackIds'),
