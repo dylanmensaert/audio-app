@@ -1,8 +1,7 @@
-{{!-- TODO: show 'Select Playlists' differently? --}}
-{{#c-fixed tagName='nav'}}
+{{#c-fixed tagName='nav' class="my-nav-selection"}}
   <div class="nav-wrapper">
     <div class="my-badge">
-        {{utils.selectedTrackIds.length}}
+        {{get-humanized utils.selectedTrackIds.length 'Track'}}
     </div>
 
     <div class="brand-logo truncate">
