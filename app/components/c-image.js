@@ -11,7 +11,7 @@ export default Ember.Component.extend({
                 src = this.get('src');
 
             if (element && src) {
-                element.css('background-image', 'url(\'' + src + '\')');
+                element.css('background-image', 'url("' + src + '")');
             }
         });
     }),

@@ -40,13 +40,13 @@
       {{/c-fixed-btn}}
     {{/if}}
 
-    <span class="card-title activator grey-text text-darken-4">
-      Playlist
+    <span class="card-title activator grey-text text-darken-4 truncate">
+      {{model.name}}
     </span>
 
     <div class="row my-subtext">
       <div class="truncate">
-        {{model.name}}
+        Playlist
       </div>
 
      {{#if model.isSaved}}

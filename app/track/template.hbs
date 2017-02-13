@@ -56,13 +56,13 @@
             </ul>
         {{/c-fixed-btn}}
 
-        <span class="card-title activator grey-text text-darken-4">
-            Track
+        <span class="card-title activator grey-text text-darken-4 truncate">
+            {{model.name}}
         </span>
 
         <div class="row my-subtext">
           <div class="truncate">
-            {{model.name}}
+            Track
           </div>
 
           {{#if model.isDownloaded}}
@@ -87,6 +87,7 @@
 
     {{#if model.isQueued}}
       <li class="tab col s6">
+      {{!-- TODO: queue is not active when landed on this route. --}}
         {{#link-to 'track.queue'}}
             Queue
         {{/link-to}}

@@ -1,4 +1,4 @@
-/* global escape, Blob */
+/* global encodeURIComponent, Blob */
 
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -37,7 +37,7 @@ export default DS.Model.extend(modelMixin, {
         let thumbnail;
 
         if (this.get('isSaved')) {
-            thumbnail = domainData.fileSystemName + '/' + this.createFilePath('thumbnail');
+            thumbnail = domainData.fileSystemName + '/' + this.getFilePath('thumbnail');
         } else {
             thumbnail = this.get('onlineThumbnail');
         }
@@ -48,7 +48,7 @@ export default DS.Model.extend(modelMixin, {
         let audio;
 
         if (this.get('isDownloaded')) {
-            audio = domainData.fileSystemName + '/' + this.createFilePath('audio');
+            audio = domainData.fileSystemName + '/' + this.getFilePath('audio');
         } else {
             audio = this.get('onlineAudio');
         }
@@ -88,6 +88,9 @@ export default DS.Model.extend(modelMixin, {
             return playlist.get('trackIds').includes(id);
         });
     },
+    getFilePath: function(type) {
+        return encodeURIComponent(this.createFilePath(type));
+    },
     createFilePath: function(type) {
         let fileName = this.get('name') + '.' + extension[type],
             directory = Inflector.inflector.pluralize(type);
@@ -99,7 +102,7 @@ export default DS.Model.extend(modelMixin, {
             url;
 
         url = '/a/pushItem/?';
-        url += 'item=' + escape(videoUrl);
+        url += 'item=' + encodeURIComponent(videoUrl);
         url += '&el=na&bf=false';
         url += '&r=' + new Date().getTime();
 
