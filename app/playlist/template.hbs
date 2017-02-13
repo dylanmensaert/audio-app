@@ -1,13 +1,19 @@
+{{c-menu}}
+
 {{#if isEditMode}}
   {{c-input-bar value=name placeholder='Edit' done='save'}}
-{{else}}
-  {{c-menu}}
 {{/if}}
 
 <div class="card my-card-cover">
-  <div class="card-image">
-    {{c-parallax src=model.thumbnail}}
-  </div>
+  {{#if model.trackIds}}
+    <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
+      {{c-parallax src=model.thumbnail}}
+    </div>
+  {{else}}
+    <div class="card-image">
+      {{c-parallax src=model.thumbnail}}
+    </div>
+  {{/if}}
 
   <div class="card-content my-relative">
     {{#if model.isEditable}}
@@ -32,7 +38,7 @@
           {{else}}
             <li>
               <a href="javascript:void(0)" class="btn-floating blue" {{action 'save'}}>
-                  <i class="material-icons">save</i>
+                  <i class="material-icons">file_download</i>
               </a>
             </li>
           {{/if}}
@@ -45,13 +51,15 @@
     </span>
 
     <div class="row my-subtext">
-      <div class="truncate">
-        Playlist
-      </div>
+      {{#if model.isEditable}}
+        <div class="truncate">
+          Playlist
+        </div>
 
-     {{#if model.isSaved}}
-        <i class="material-icons left">save</i>
-      {{/if}}
+         {{#if model.isSaved}}
+            <i class="material-icons left">offline_pin</i>
+          {{/if}}
+        {{/if}}
     </div>
   </div>
 </div>

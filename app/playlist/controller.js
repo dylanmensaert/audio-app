@@ -3,6 +3,7 @@ import findControllerMixin from 'audio-app/mixins/controller-find';
 
 export default Ember.Controller.extend(findControllerMixin, {
     utils: Ember.inject.service(),
+    audioRemote: Ember.inject.service(),
     model: null,
     type: 'track',
     searchOnline: function() {
@@ -27,6 +28,17 @@ export default Ember.Controller.extend(findControllerMixin, {
     }),
     actions: {
         // TODO: implement more actions? (every action defined in playlists?)
+        play: function() {
+            let queue = this.store.peekRecord('playlist', 'queue');
+
+            queue.clear();
+
+            this.get('model.trackIds').forEach(function(trackId) {
+                queue.pushTrackById(trackId);
+            });
+
+            this.get('audioRemote').play(queue.get('tracks.firstObject'));
+        },
         download: function() {
             let playlist = this.get('model');
 

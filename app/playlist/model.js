@@ -118,12 +118,15 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             track.save();
         }
     },
-    remove: function() {
+    clear: function() {
         this.get('trackIds').forEach(function(trackId) {
             let track = this.get('store').peekRecord('track', trackId);
 
             track.removeFromPlayList(this);
         }.bind(this));
+    },
+    remove: function() {
+        this.clear();
 
         this.destroyRecord();
     }

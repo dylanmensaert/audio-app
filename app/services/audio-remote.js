@@ -70,7 +70,7 @@ export default Ember.Service.extend({
                 audioPlayer.play(track);
             }
         } else {
-            audioPlayer.play(track);
+            audioPlayer.play();
         }
     },
     pause: function() {

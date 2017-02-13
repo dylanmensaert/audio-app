@@ -1,18 +1,4 @@
-{{#c-fixed tagName='nav' }}
-    <div class="nav-wrapper">
-        <div class="my-back my-back-top" {{action 'back'}}>
-            <i class="material-icons">arrow_back</i>
-        </div>
-
-        <ul class="right">
-            <li>
-                {{#link-to 'search.tracks' (query-params query=null)}}
-                    <i class="material-icons">search</i>
-                {{/link-to}}
-            </li>
-        </ul>
-    </div>
-{{/c-fixed}}
+{{c-menu}}
 
 <div class="card my-card-cover">
     <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
@@ -80,15 +66,15 @@
 
 {{#c-tabs}}
     <li class="tab col s6">
-        {{#link-to 'track.related'}}
+        {{#link-to 'track.related' replace=true}}
             Related
         {{/link-to}}
     </li>
 
     {{#if model.isQueued}}
       <li class="tab col s6">
-      {{!-- TODO: queue is not active when landed on this route. --}}
-        {{#link-to 'track.queue'}}
+      {{!-- TODO: queue tab is not active when landing on this route. --}}
+        {{#link-to 'track.queue' replace=true}}
             Queue
         {{/link-to}}
       </li>

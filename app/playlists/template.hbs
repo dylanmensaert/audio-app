@@ -1,12 +1,12 @@
 {{#c-menu}}
-    My Playlists
+    Playlists
 {{/c-menu}}
 
 {{#if isCreatedMode}}
     {{c-input-bar value=name placeholder='Create' done='save'}}
 {{else}}
     {{#c-fixed-btn class='my-action-btn'}}
-        <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red" {{action 'setupCreate'}}>
+        <a href="javascript:void(0)" class="btn-floating btn-large waves-effect waves-light red my-model-btn" {{action 'setupCreate'}}>
             <i class="material-icons">add</i>
         </a>
     {{/c-fixed-btn}}
