@@ -27,7 +27,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.pushObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage(length + ' Added to Queue');
+                this.get('utils').showMessage('Added to Queue');
             }
         },
         downloadLater: function() {
@@ -42,7 +42,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.pushObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage(length + ' Added to Download later');
+                this.get('utils').showMessage('Added to Download later');
             }
         },
         download: function() {
@@ -59,7 +59,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.removeObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage(length + ' Downloading');
+                this.get('utils').showMessage('Downloading');
             }
         },
         delete: function() {
@@ -71,7 +71,7 @@ export default Ember.Component.extend(modelsMixin, {
                     track.remove();
                 });
 
-                this.get('utils').showMessage(length + ' Removed locally');
+                this.get('utils').showMessage('Removed locally');
             }
         },
         transitionToPlaylists: function() {

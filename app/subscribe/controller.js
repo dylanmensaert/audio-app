@@ -39,9 +39,11 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
 
                 utils.showMessage('Added to playlist');
             } else {
+                let store = this.get('store');
+
                 selectedTrackIds.forEach(function(selectedTrackId) {
                     if (trackIds.includes(selectedTrackId)) {
-                        let track = this.get('store').peekRecord('track', selectedTrackId);
+                        let track = store.peekRecord('track', selectedTrackId);
 
                         track.removeFromPlayList(playlist);
                     }
