@@ -44,7 +44,7 @@ export default Ember.Service.extend({
                 historyTrackIds.removeObject(id);
             }
 
-            historyTrackIds.pushObject(id);
+            historyTrackIds.unshiftObject(id);
 
             history.save();
 

@@ -17,7 +17,7 @@ export default Ember.Controller.extend(findControllerMixin, {
         }
     },
     updateOffline: Ember.observer('model.trackIds.[]', function() {
-        if (!this.searchOnline()) {
+        if (!this.searchOnline() && this.get('model.id') !== 'history') {
             this.updateModels();
         }
     }),
