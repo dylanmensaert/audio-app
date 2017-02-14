@@ -216,37 +216,31 @@ export default DS.Model.extend(modelMixin, {
 
         playList.get('trackIds').removeObject(this.get('id'));
 
-        if (!this.isReferenced()) {
+        if (this.isReferenced()) {
+            promise = Ember.RSVP.resolve();
+        } else {
             promise = this.remove();
         }
 
-        return Ember.RSVP.resolve(promise);
+        return promise;
     },
     remove: function() {
         let fileSystem = this.get('fileSystem'),
-            isReferenced = this.isReferenced(),
             promises = [
                 fileSystem.remove(this.get('audio'))
             ];
 
-        if (!isReferenced) {
+        if (!this.isReferenced()) {
             let promise = fileSystem.remove(this.get('thumbnail'));
 
+            fileSystem.get('trackIds').removeObject(this.get('id'));
+
             promises.pushObject(promise);
+            promises.pushObject(fileSystem.save());
         }
 
         return Ember.RSVP.all(promises).then(function() {
-            let promises = [
-                this.destroyRecord()
-            ];
-
-            if (!isReferenced) {
-                fileSystem.get('trackIds').removeObject(this.get('id'));
-
-                promises.pushObject(fileSystem.save());
-            }
-
-            return Ember.RSVP.all(promises);
+            return this.destroyRecord();
         }.bind(this));
     }
 });

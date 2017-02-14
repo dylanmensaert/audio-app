@@ -5,7 +5,7 @@
 {{/if}}
 
 <div class="card my-card-cover">
-  {{#if model.trackIds}}
+  {{#if models.length}}
     <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
       {{c-parallax src=model.thumbnail}}
     </div>
@@ -56,12 +56,16 @@
           Playlist
         </div>
 
-         {{#if model.isSaved}}
-            <i class="material-icons left grey-text">file_download</i>
-          {{/if}}
+       {{#if model.isSaved}}
+          <i class="material-icons left grey-text">file_download</i>
         {{/if}}
+
+       {{#if isQueued}}
+          <i class="material-icons left grey-text">file_download</i>
+        {{/if}}
+      {{/if}}
     </div>
   </div>
 </div>
 
-{{c-tracks models=sortedModels isPending=isPending didScrollToBottom='didScrollToBottom'}}
+{{c-tracks models=sortedModels isPending=isPending hideQueued=isQueued didScrollToBottom='didScrollToBottom'}}

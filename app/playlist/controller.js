@@ -26,18 +26,21 @@ export default Ember.Controller.extend(findControllerMixin, {
     isEditMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
     }),
+    isQueued: Ember.computed('models.isQueued', function() {
+        return this.get('models').isEvery('isQueued');
+    }),
     actions: {
         // TODO: implement more actions? (every action defined in playlists?)
         play: function() {
             let queue = this.store.peekRecord('playlist', 'queue');
 
-            queue.clear();
+            queue.clear().then(function() {
+                this.get('sortedModels').forEach(function(track) {
+                    queue.pushTrackById(track.get('id'));
+                });
 
-            this.get('model.trackIds').forEach(function(trackId) {
-                queue.pushTrackById(trackId);
-            });
-
-            this.get('audioRemote').play(queue.get('tracks.firstObject'));
+                this.get('audioRemote').play(queue.get('tracks.firstObject'));
+            }.bind(this));
         },
         download: function() {
             let playlist = this.get('model');

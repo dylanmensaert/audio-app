@@ -71,11 +71,15 @@ export default Ember.Service.extend({
     },
     remove: function(source) {
         return new Ember.RSVP.Promise(function(resolve) {
-            this.get('instance').root.getFile(source, {}, function(fileEntry) {
-                fileEntry.remove(function() {
-                    resolve();
-                });
-            });
+            if (source) {
+                this.get('instance').root.getFile(source, {}, function(fileEntry) {
+                    fileEntry.remove(function() {
+                        resolve();
+                    });
+                }, resolve);
+            } else {
+                resolve();
+            }
         }.bind(this));
     },
     createFiles: function(instance) {

@@ -53,7 +53,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return this.get('fileSystem.playlistIds').includes(this.get('id'));
     }),
     isReadOnly: Ember.computed('permission', function() {
-        return this.get('permission') === 'read-only' || !this.get('isLocalOnly');
+        return this.get('permission') === 'read-only';
     }),
     isPushOnly: Ember.computed('permission', function() {
         return this.get('permission') === 'push-only';
@@ -119,11 +119,13 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         }
     },
     clear: function() {
-        this.get('trackIds').forEach(function(trackId) {
+        let promises = this.get('trackIds').map(function(trackId) {
             let track = this.get('store').peekRecord('track', trackId);
 
-            track.removeFromPlayList(this);
+            return track.removeFromPlayList(this);
         }.bind(this));
+
+        return Ember.RSVP.all(promises);
     },
     remove: function() {
         this.clear();
