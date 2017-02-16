@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
     onlineThumbnail: DS.attr('string'),
     concatenatedProperties: ['propertyNames'],
     isSelected: false,
-    propertyNames: ['id', 'name'],
+    propertyNames: ['id', 'name', 'onlineThumbnail'],
     serialize: function() {
         return this.getProperties(this.get('propertyNames'));
     }

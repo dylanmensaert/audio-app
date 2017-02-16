@@ -31,11 +31,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
             thumbnail = track.get('thumbnail');
         } else {
-            let onlineThumbnail = this.get('onlineThumbnail');
-
-            if (onlineThumbnail) {
-                thumbnail = onlineThumbnail;
-            }
+            thumbnail = this.get('onlineThumbnail');
         }
 
         return thumbnail;

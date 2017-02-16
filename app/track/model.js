@@ -140,6 +140,8 @@ export default DS.Model.extend(modelMixin, {
         if (!this.get('isDisabled')) {
             this.set('isDisabled', true);
 
+            this.remove(true);
+
             this.get('utils').showMessage('Track not available');
         }
     },
@@ -230,16 +232,25 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
-    remove: function() {
+    remove: function(isForced) {
         let fileSystem = this.get('fileSystem'),
+            id = this.get('id'),
             promises = [
                 fileSystem.remove(this.get('audio'))
             ];
 
-        if (!this.isReferenced()) {
+        if (isForced) {
+            fileSystem.get('playlistIds').forEach(function(playlistId) {
+                let playlist = store.peekRecord('playlist', playlistId);
+
+                playlist.get('trackIds').removeObject(id);
+            });
+        }
+
+        if (isForced || !this.isReferenced()) {
             let promise = fileSystem.remove(this.get('thumbnail'));
 
-            fileSystem.get('trackIds').removeObject(this.get('id'));
+            fileSystem.get('trackIds').removeObject(id);
 
             promises.pushObject(promise);
             promises.pushObject(fileSystem.save());
