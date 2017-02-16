@@ -46,14 +46,16 @@
             {{model.name}}
         </span>
 
-        <div class="row my-subtext">
-          <div class="truncate">
-            Track
+        <div class="row grey-text my-subtext">
+          <div class="col s6 truncate">
+              Track
           </div>
 
-          {{#if model.isDownloaded}}
-            <i class="material-icons left grey-text">file_download</i>
-          {{/if}}
+          <div class="col s6 my-right">
+            {{#if model.isDownloaded}}
+              <i class="material-icons">file_download</i>
+            {{/if}}
+          </div>
         </div>
     </div>
 

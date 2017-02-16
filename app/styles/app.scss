@@ -424,10 +424,11 @@
     
     .my-subtext {
         margin-bottom: 0;
-        .truncate {
-            color: #999;
-            float: left;
-            width: calc(100% - 39px);
+        .col {
+            padding: 0;
+            .material-icons {
+                padding-left: 3px;
+            }
         }
     }
     

@@ -50,21 +50,23 @@
       {{model.name}}
     </span>
 
-    <div class="row my-subtext">
-      {{#if model.isEditable}}
-        <div class="truncate">
+    {{#if model.isEditable}}
+      <div class="row grey-text my-subtext">
+        <div class="col s6 truncate">
           Playlist
         </div>
 
-       {{#if model.isSaved}}
-          <i class="material-icons left grey-text">file_download</i>
-        {{/if}}
+        <div class="col s6 my-right">
+          {{#if model.isSaved}}
+            <i class="material-icons">file_download</i>
+          {{/if}}
 
-       {{#if isQueued}}
-          <i class="material-icons left grey-text">file_download</i>
-        {{/if}}
-      {{/if}}
-    </div>
+          {{#if isQueued}}
+            <i class="material-icons">queue_music</i>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
   </div>
 </div>
 
