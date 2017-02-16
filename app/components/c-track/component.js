@@ -22,7 +22,7 @@ export default Ember.Component.extend(modelMixin, {
     },
     mouseDown: function(event) {
         this.set('startPosition', event.clientX);
-        this.get('lastPosition', event.clientX);
+        this.set('lastPosition', event.clientX);
 
         this.set('doClick', false);
     },

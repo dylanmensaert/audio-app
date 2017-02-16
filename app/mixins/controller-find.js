@@ -41,10 +41,12 @@ export default Ember.Mixin.create(searchMixin, {
         }.bind(this));
     },
     reset: function() {
-        this.set('nextPageToken', null);
-        this.set('isPending', false);
-        this.set('isLocked', false);
-        this.set('models', []);
+        this.setProperties({
+            nextPageToken: null,
+            isPending: false,
+            isLocked: false,
+            models: []
+        });
     },
     start: function() {
         this.set('isPending', true);

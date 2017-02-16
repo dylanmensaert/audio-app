@@ -1,12 +1,5 @@
 import Ember from 'ember';
 
-let errors = Ember.Map.create();
-
-errors.set(1, 'Fetching process aborted by user');
-errors.set(2, 'Error occurred when downloading');
-errors.set(3, 'Error occurred when decoding');
-errors.set(4, 'Audio not supported');
-
 export default Ember.Component.extend({
     tagName: 'audio',
     audioPlayer: Ember.inject.service(),
@@ -24,18 +17,11 @@ export default Ember.Component.extend({
         });
 
         element.addEventListener('abort', function(event) {
-            Ember.RSVP.reject(errors.get(event.target.error.code));
-
-            audioPlayer.set('status', 'idle');
+            audioPlayer.onError(event);
         });
 
         element.addEventListener('error', function(event) {
-            // TODO: Show errors via utils.showMessage?
-            console.log('event');
-            console.log(event);
-            Ember.RSVP.reject(errors.get(event.target.error.code));
-
-            audioPlayer.set('status', 'idle');
+            audioPlayer.onError(event);
         });
 
         element.addEventListener('loadstart', function() {
@@ -43,7 +29,11 @@ export default Ember.Component.extend({
         });
 
         element.addEventListener('canplay', function() {
+            let resolve = audioPlayer.get('resolve');
+
             audioPlayer.set('status', 'idle');
+
+            resolve();
         });
 
         element.addEventListener('waiting', function() {

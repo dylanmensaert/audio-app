@@ -137,9 +137,11 @@ export default DS.Model.extend(modelMixin, {
         }.bind(this));
     },
     setDisabled: function() {
-        this.set('isDisabled', true);
+        if (!this.get('isDisabled')) {
+            this.set('isDisabled', true);
 
-        this.get('utils').showMessage('Track not available');
+            this.get('utils').showMessage('Track not available');
+        }
     },
     isDownloading: Ember.computed('downloading', function() {
         let download = this.get('downloading');
