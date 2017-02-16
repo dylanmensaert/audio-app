@@ -69,7 +69,7 @@ export default Ember.Service.extend({
         return promise;
     },
     loadSource: function(source) {
-        return new Ember.RSVP.Promise(function(resolve, reject) {
+        let promise = new Ember.RSVP.Promise(function(resolve, reject) {
             let element = this.get('element');
 
             this.setProperties({
@@ -79,12 +79,16 @@ export default Ember.Service.extend({
 
             element.src = source;
             element.load();
-        }.bind(this)).finally(function() {
+        }.bind(this));
+
+        promise.finally(function() {
             this.setProperties({
                 resolve: null,
                 reject: null
             });
         }.bind(this));
+
+        return promise;
     },
     onError: function(event) {
         let reject = this.get('reject'),
