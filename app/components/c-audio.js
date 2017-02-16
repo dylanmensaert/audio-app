@@ -33,7 +33,9 @@ export default Ember.Component.extend({
 
             audioPlayer.set('status', 'idle');
 
-            resolve();
+            if (resolve) {
+                resolve();
+            }
         });
 
         element.addEventListener('waiting', function() {
