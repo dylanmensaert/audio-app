@@ -240,6 +240,8 @@ export default DS.Model.extend(modelMixin, {
             ];
 
         if (isForced) {
+            let store = this.get('store');
+
             fileSystem.get('playlistIds').forEach(function(playlistId) {
                 let playlist = store.peekRecord('playlist', playlistId);
 
