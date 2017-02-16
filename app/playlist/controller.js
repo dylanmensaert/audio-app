@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import findControllerMixin from 'audio-app/mixins/controller-find';
+import playlistControllerMixin from 'audio-app/mixins/controller-playlist';
 
-export default Ember.Controller.extend(findControllerMixin, {
+export default Ember.Controller.extend(findControllerMixin, playlistControllerMixin, {
     utils: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     model: null,
@@ -36,7 +37,7 @@ export default Ember.Controller.extend(findControllerMixin, {
 
             queue.clear().then(function() {
                 this.get('sortedModels').forEach(function(track) {
-                    queue.pushTrackById(track.get('id'));
+                    queue.pushTrack(track);
                 });
 
                 this.get('audioRemote').play(queue.get('tracks.firstObject'));
@@ -50,19 +51,6 @@ export default Ember.Controller.extend(findControllerMixin, {
             } else {
                 this._super();
             }
-        },
-        removeFromPlaylist: function() {
-            let trackIds = this.get('selectedTracks').mapBy('id'),
-                store = this.get('store'),
-                playlist = this.get('model');
-
-            trackIds.forEach(function(trackId) {
-                let track = store.peekRecord('track', trackId);
-
-                track.removeFromPlaylist(playlist);
-
-                track.set('isSelected', false);
-            });
         },
         setupEdit: function() {
             let name = this.get('model.name');

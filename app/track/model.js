@@ -211,19 +211,6 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
-    removeFromPlayList: function(playList) {
-        let promise;
-
-        playList.get('trackIds').removeObject(this.get('id'));
-
-        if (this.isReferenced()) {
-            promise = Ember.RSVP.resolve();
-        } else {
-            promise = this.remove();
-        }
-
-        return promise;
-    },
     remove: function() {
         let fileSystem = this.get('fileSystem'),
             promises = [

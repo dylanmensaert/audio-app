@@ -10,9 +10,13 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
                 trackIds = playlist.get('trackIds');
 
             if (playlist.get('isSelected')) {
-                selectedTrackIds.forEach(function(selectedTrackId) {
-                    if (!trackIds.includes(selectedTrackId)) {
-                        playlist.pushTrackById(selectedTrackId);
+                let store = this.get('store');
+
+                selectedTrackIds.forEach(function(trackId) {
+                    if (!trackIds.includes(trackId)) {
+                        let track = store.peekRecord('track', trackId);
+
+                        playlist.pushTrack(track);
                     }
                 });
 
@@ -20,11 +24,11 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
             } else {
                 let store = this.get('store');
 
-                selectedTrackIds.forEach(function(selectedTrackId) {
-                    if (trackIds.includes(selectedTrackId)) {
-                        let track = store.peekRecord('track', selectedTrackId);
+                selectedTrackIds.forEach(function(trackId) {
+                    if (trackIds.includes(trackId)) {
+                        let track = store.peekRecord('track', trackId);
 
-                        track.removeFromPlayList(playlist);
+                        playlist.removeTrack(track);
                     }
                 });
 

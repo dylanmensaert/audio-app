@@ -108,21 +108,30 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             }
         }
     },
-    pushTrackById: function(trackId) {
-        let track = this.get('store').peekRecord('track', trackId);
-
-        this.get('trackIds').pushObject(trackId);
+    pushTrack: function(track) {
+        this.get('trackIds').pushObject(track.get('id'));
         this.save();
 
         if (!track.get('isSaved')) {
             track.save();
         }
     },
+    removeTrack: function(track) {
+        let promise;
+
+        this.get('trackIds').removeObject(track.get('id'));
+
+        if (!track.isReferenced()) {
+            promise = track.remove();
+        }
+
+        return Ember.RSVP.resolve(promise);
+    },
     clear: function() {
         let promises = this.get('trackIds').map(function(trackId) {
             let track = this.get('store').peekRecord('track', trackId);
 
-            return track.removeFromPlayList(this);
+            return this.removeTrack(track);
         }.bind(this));
 
         return Ember.RSVP.all(promises);
