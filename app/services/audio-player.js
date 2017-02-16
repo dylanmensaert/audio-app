@@ -54,17 +54,19 @@ export default Ember.Service.extend({
             track
         });
 
-        if (!audio) {
+        if (audio) {
+            promise = this.loadSource(audio);
+        } else {
             promise = track.findAudioSource().then(function(url) {
                 return this.loadSource(url);
             }.bind(this));
-        } else {
-            promise = this.loadSource(audio);
         }
 
-        return promise.catch(function() {
+        promise.catch(function() {
             track.setDisabled();
         });
+
+        return promise;
     },
     loadSource: function(source) {
         return new Ember.RSVP.Promise(function(resolve, reject) {

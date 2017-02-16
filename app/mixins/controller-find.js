@@ -51,7 +51,9 @@ export default Ember.Mixin.create(searchMixin, {
     start: function() {
         this.set('isPending', true);
 
-        logic.later(this, this.updateModels);
+        logic.later(function() {
+            this.updateModels();
+        }.bind(this));
     },
     sortedModels: Ember.computed.sort('models', function(model, other) {
         let models = this.get('models'),

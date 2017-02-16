@@ -6,8 +6,8 @@ import apiKey from 'api-key';
 
 export default {
     maxResults: 50,
-    later: function(context, callback) {
-        Ember.run.later(context, callback, 300);
+    later: function(callback) {
+        Ember.run.later(null, callback, 300);
     },
     sortByName: function(model, other) {
         let result = -1,

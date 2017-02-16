@@ -61,8 +61,10 @@ export default DS.Model.extend(modelMixin, {
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
     }),
-    isPlaying: Ember.computed('audioPlayer.track.id', 'id', function() {
-        return this.get('audioPlayer.track.id') === this.get('id');
+    isPlaying: Ember.computed('audioPlayer.track.id', 'id', 'audioPlayer.isPlaying', function() {
+        let audioPlayer = this.get('audioPlayer');
+
+        return audioPlayer.get('track.id') === this.get('id') && audioPlayer.get('isPlaying');
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
@@ -132,9 +134,14 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }.bind(this));
 
-        return Ember.RSVP.resolve(promise).catch(function() {
+
+        promise = Ember.RSVP.resolve(promise);
+
+        promise.catch(function() {
             this.setDisabled();
         }.bind(this));
+
+        return promise;
     },
     setDisabled: function() {
         if (!this.get('isDisabled')) {

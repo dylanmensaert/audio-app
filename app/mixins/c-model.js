@@ -8,7 +8,9 @@ export default Ember.Mixin.create({
     showQueued: false,
     click: null,
     didInsertElement: function() {
-        Materialize.fadeInImage(this.$());
+        let element = this.$();
+
+        Materialize.fadeInImage(element);
     },
     actions: {
         changeSelect: function() {

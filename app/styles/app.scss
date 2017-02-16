@@ -506,7 +506,7 @@
     .my-track--disabled {
         background: #e8e8e8;
         opacity: 0.4;
-        .my-track-middle {
+        .my-track-middle:last-child {
             visibility: hidden;
         }
     }
