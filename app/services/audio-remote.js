@@ -38,7 +38,8 @@ export default Ember.Service.extend({
                 history = store.peekRecord('playlist', 'history'),
                 historyTrackIds = history.get('trackIds'),
                 queue = store.peekRecord('playlist', 'queue'),
-                queueTrackIds = queue.get('trackIds');
+                queueTrackIds = queue.get('trackIds'),
+                playing;
 
             if (historyTrackIds.includes(id)) {
                 historyTrackIds.removeObject(id);
@@ -63,12 +64,16 @@ export default Ember.Service.extend({
             track.save();
 
             if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
-                track.download().then(function() {
-                    audioPlayer.play(track);
+                playing = track.download().then(function() {
+                    return audioPlayer.play(track);
                 });
             } else {
-                audioPlayer.play(track);
+                playing = audioPlayer.play(track);
             }
+
+            playing.catch(function() {
+                this.next();
+            }.bind(this));
         } else {
             audioPlayer.play();
         }

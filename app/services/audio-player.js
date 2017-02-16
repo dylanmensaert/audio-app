@@ -22,15 +22,18 @@ export default Ember.Service.extend({
         this.get('element').currentTime = currentTime;
     },
     play: function(track) {
-        let element = this.get('element');
+        let element = this.get('element'),
+            promise;
 
         if (track) {
-            this.load(track).then(function() {
+            promise = this.load(track).then(function() {
                 element.play();
             });
         } else {
             element.play();
         }
+
+        return Ember.RSVP.resolve(promise);
     },
     pause: function() {
         this.get('element').pause();
@@ -41,13 +44,11 @@ export default Ember.Service.extend({
         this.set('status', 'loading');
         this.set('track', track);
 
-        return new Ember.RSVP.Promise(function(resolve) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             if (!audio) {
                 track.findAudioSource().then(function(url) {
                     this.loadSource(url);
-
-                    resolve();
-                }.bind(this));
+                }.bind(this), reject);
             } else {
                 this.loadSource(audio);
 

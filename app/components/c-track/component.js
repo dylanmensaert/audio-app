@@ -3,6 +3,7 @@ import modelMixin from 'audio-app/mixins/c-model';
 /*import connection from 'connection';*/
 
 export default Ember.Component.extend(modelMixin, {
+    classNameBindings: ['model.isDisabled:my-track--disabled'],
     audioRemote: Ember.inject.service(),
     /*TODO: Implement swiping*/
     /*utils: Ember.inject.service(),
@@ -131,8 +132,12 @@ export default Ember.Component.extend(modelMixin, {
     }),
     actions: {
         play: function() {
+            let model = this.get('model');
+
             /*if (this.get('doClick')) {*/
-            this.get('audioRemote').play(this.get('model'));
+            if (!model.get('isDisabled')) {
+                this.get('audioRemote').play(model);
+            }
             /*}*/
         }
     }

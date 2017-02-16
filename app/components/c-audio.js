@@ -31,6 +31,8 @@ export default Ember.Component.extend({
 
         element.addEventListener('error', function(event) {
             // TODO: Show errors via utils.showMessage?
+            console.log('event');
+            console.log(event);
             Ember.RSVP.reject(errors.get(event.target.error.code));
 
             audioPlayer.set('status', 'idle');

@@ -31,6 +31,7 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }
     },
+    utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     onlineAudio: null,
     thumbnail: Ember.computed('onlineThumbnail', 'isSaved', function() {
@@ -78,6 +79,7 @@ export default DS.Model.extend(modelMixin, {
     isDownloadLater: Ember.computed('downloadLater.trackIds.[]', 'id', function() {
         return this.get('downloadLater.trackIds').includes(this.get('id'));
     }),
+    isDisabled: false,
     isReferenced: function() {
         let store = this.store,
             id = this.get('id');
@@ -99,14 +101,14 @@ export default DS.Model.extend(modelMixin, {
     },
     findAudioSource: function() {
         let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
-            url;
+            url = '/a/pushItem/?',
+            promise;
 
-        url = '/a/pushItem/?';
         url += 'item=' + encodeURIComponent(videoUrl);
         url += '&el=na&bf=false';
         url += '&r=' + new Date().getTime();
 
-        return Ember.$.ajax(signateUrl(url)).then(function(videoId) {
+        promise = Ember.$.ajax(signateUrl(url)).then(function(videoId) {
             url = '/a/itemInfo/?';
             url += 'video_id=' + videoId;
             url += '&ac=www&t=grp';
@@ -122,40 +124,55 @@ export default DS.Model.extend(modelMixin, {
                 url += '&r=' + info.r;
                 url += '&h2=' + info.h2;
 
-                this.set('onlineAudio', signateUrl(url));
+                url = signateUrl(url);
 
-                return this.get('onlineAudio');
+                this.set('onlineAudio', url);
+
+                return url;
             }.bind(this));
         }.bind(this));
+
+        return Ember.RSVP.resolve(promise).catch(function() {
+            this.setDisabled();
+        }.bind(this));
     },
-    isDownloading: Ember.computed('_download', function() {
-        let download = this.get('_download');
+    setDisabled: function() {
+        this.set('isDisabled', true);
+
+        this.get('utils').showMessage('Track not available');
+    },
+    isDownloading: Ember.computed('downloading', function() {
+        let download = this.get('downloading');
 
         return !Ember.isEmpty(download) && download.get('isPending');
     }),
-    _download: null,
+    downloading: null,
     download: function() {
-        let download = this.get('_download');
+        let downloading = this.get('downloading');
 
-        if (!download || !download.get('isPending')) {
+        if (!downloading || !downloading.get('isPending')) {
             let promise = new Ember.RSVP.Promise(function(resolve, reject) {
                 if (!this.get('onlineAudio')) {
                     this.findAudioSource().then(function() {
                         this.insert().then(resolve, reject);
-                    }.bind(this));
+                    }.bind(this), reject);
                 } else {
                     this.insert().then(resolve, reject);
                 }
             }.bind(this));
 
-            download = ObjectPromiseProxy.create({
+            promise.catch(function() {
+                this.setDisabled();
+            }.bind(this));
+
+            downloading = ObjectPromiseProxy.create({
                 promise: promise
             });
 
-            this.set('_download', download);
+            this.set('downloading', downloading);
         }
 
-        return download;
+        return downloading;
     },
     insertWithoutAudio: function() {
         return this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'));

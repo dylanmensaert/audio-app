@@ -44,9 +44,15 @@
         </div>
     </div>
 
-    <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
+    {{#if model.isDisabled}}
+      <div class="my-track-middle">
         <i class="material-icons">more_vert</i>
-    </div>
+      </div>
+    {{else}}
+      <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
+          <i class="material-icons">more_vert</i>
+      </div>
+    {{/if}}
 </div>
 
 <div class="my-separator {{if model.isDownloading 'my-loading'}}">
