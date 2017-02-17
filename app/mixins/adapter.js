@@ -78,6 +78,7 @@ export default Ember.Mixin.create({
             };
         });
     },
+    // TODO: remove deleteRecord since not really used, maybe except for track.setDisabled?
     deleteRecord: function(store, type, snapshot) {
         let fileSystem = this.get('fileSystem');
 

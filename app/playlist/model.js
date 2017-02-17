@@ -133,8 +133,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return Ember.RSVP.all(promises);
     },
     remove: function() {
-        this.clear();
-
-        this.destroyRecord();
+        return this.clear().then(function() {
+            return this.removeRecord('playlist');
+        }.bind(this));
     }
 });

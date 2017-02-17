@@ -134,7 +134,6 @@ export default DS.Model.extend(modelMixin, {
             }.bind(this));
         }.bind(this));
 
-
         promise = Ember.RSVP.resolve(promise);
 
         promise.catch(function() {
@@ -145,10 +144,18 @@ export default DS.Model.extend(modelMixin, {
     },
     setDisabled: function() {
         if (!this.get('isDisabled')) {
+            let store = this.get('store'),
+                id = this.get('id');
+
+            this.get('fileSystem.playlistIds').forEach(function(playlistId) {
+                let playlist = store.peekRecord('playlist', playlistId);
+
+                playlist.get('trackIds').removeObject(id);
+            });
+
+            this.remove();
+
             this.set('isDisabled', true);
-
-            this.remove(true);
-
             this.get('utils').showMessage('Track not available');
         }
     },
@@ -239,34 +246,22 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
-    remove: function(isForced) {
+    remove: function() {
         let fileSystem = this.get('fileSystem'),
-            id = this.get('id'),
             promises = [
                 fileSystem.remove(this.get('audio'))
             ];
 
-        if (isForced) {
-            let store = this.get('store');
-
-            fileSystem.get('playlistIds').forEach(function(playlistId) {
-                let playlist = store.peekRecord('playlist', playlistId);
-
-                playlist.get('trackIds').removeObject(id);
-            });
-        }
-
-        if (isForced || !this.isReferenced()) {
+        if (!this.isReferenced()) {
             let promise = fileSystem.remove(this.get('thumbnail'));
 
-            fileSystem.get('trackIds').removeObject(id);
+            promise.then(function() {
+                return this.removeRecord('track');
+            }.bind(this));
 
             promises.pushObject(promise);
-            promises.pushObject(fileSystem.save());
         }
 
-        return Ember.RSVP.all(promises).then(function() {
-            return this.destroyRecord();
-        }.bind(this));
+        return Ember.RSVP.all(promises);
     }
 });
