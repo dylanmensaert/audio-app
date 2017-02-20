@@ -13,20 +13,14 @@
                 </li>
 
                 <li>
-                  <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
-                      <i class="material-icons {{unless playlist 'my-icon-disabled'}}">delete_sweep</i>
-                  </a>
-                </li>
-
-                <li>
                   <a href="javascript:void(0)" {{action 'queue'}}>
                       <i class="material-icons {{unless queueableTracks.length 'my-icon-disabled'}}">queue_music</i>
                   </a>
                 </li>
 
                 <li>
-                  <a href="javascript:void(0)" {{action 'downloadLater'}}>
-                      <i class="material-icons {{unless downloadableTracks.length 'my-icon-disabled'}}">shop_two</i>
+                  <a href="javascript:void(0)" {{action 'downloadLaterTracks'}}>
+                      <i class="material-icons {{unless downloadableLaterTracks.length 'my-icon-disabled'}}">shop_two</i>
                   </a>
                 </li>
 
@@ -40,6 +34,12 @@
                         <i class="material-icons" {{unless downloadedTracks.length 'my-icon-disabled'}}>delete</i>
                     </a>
                   {{/if}}
+                </li>
+
+                <li>
+                  <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
+                      <i class="material-icons {{unless playlist 'my-icon-disabled'}}">delete_sweep</i>
+                  </a>
                 </li>
 
                 <li>

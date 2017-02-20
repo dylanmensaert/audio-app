@@ -13,6 +13,9 @@ export default Ember.Component.extend(modelsMixin, {
     downloadableTracks: Ember.computed('selectedModels.@each.isDownloadable', function() {
         return this.get('selectedModels').filterBy('isDownloadable');
     }),
+    downloadLaterTracks: Ember.computed('selectedModels.@each.canDownloadLater', function() {
+        return this.get('selectedModels').filterBy('canDownloadLater');
+    }),
     downloadedTracks: Ember.computed('selectedModels.@each.isDownloaded', function() {
         return this.get('selectedModels').filterBy('isDownloaded');
     }),
@@ -25,7 +28,7 @@ export default Ember.Component.extend(modelsMixin, {
                     length = selectedTracks.get('length');
 
                 if (length) {
-                    selectedTracks.forEach(function(track) {
+                    selectedTracks.toArray().forEach(function(track) {
                         playlist.removeTrack(track);
                     });
 
@@ -41,7 +44,7 @@ export default Ember.Component.extend(modelsMixin, {
                 let queue = this.get('store').peekRecord('playlist', 'queue'),
                     trackIds = queue.get('trackIds');
 
-                queueableTracks.forEach(function(track) {
+                queueableTracks.toArray().forEach(function(track) {
                     trackIds.pushObject(track.get('id'));
                 });
 
@@ -50,14 +53,14 @@ export default Ember.Component.extend(modelsMixin, {
             }
         },
         downloadLater: function() {
-            let downloadableTracks = this.get('downloadableTracks'),
-                length = downloadableTracks.get('length');
+            let downloadLaterTracks = this.get('downloadLaterTracks'),
+                length = downloadLaterTracks.get('length');
 
             if (length) {
                 let downloadLater = this.get('store').peekRecord('playlist', 'download-later'),
                     trackIds = downloadLater.get('trackIds');
 
-                downloadableTracks.forEach(function(track) {
+                downloadLaterTracks.toArray().forEach(function(track) {
                     trackIds.pushObject(track.get('id'));
                 });
 
@@ -72,7 +75,7 @@ export default Ember.Component.extend(modelsMixin, {
                 let downloadLater = this.get('store').peekRecord('playlist', 'download-later'),
                     trackIds = downloadLater.get('trackIds');
 
-                downloadableTracks.forEach(function(track) {
+                downloadableTracks.toArray().forEach(function(track) {
                     track.download();
 
                     trackIds.removeObject(track.get('id'));
@@ -86,7 +89,7 @@ export default Ember.Component.extend(modelsMixin, {
                 length = downloadedTracks.get('length');
 
             if (length) {
-                downloadedTracks.forEach(function(track) {
+                downloadedTracks.toArray().forEach(function(track) {
                     track.remove();
                 });
 

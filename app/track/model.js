@@ -70,17 +70,19 @@ export default DS.Model.extend(modelMixin, {
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');
     }),
+    downloadLater: Ember.computed(function() {
+        return this.store.peekRecord('playlist', 'download-later');
+    }),
+    canDownloadLater: Ember.computed('isDownloadable', 'downloadLater.trackIds.[]', 'id', function() {
+        let downloadLater = this.get('downloadLater');
+
+        return this.get('isDownloadable') && downloadLater.get('trackIds').includes(this.get('id'));
+    }),
     queue: Ember.computed(function() {
         return this.store.peekRecord('playlist', 'queue');
     }),
     isQueued: Ember.computed('queue.trackIds.[]', 'id', function() {
         return this.get('queue.trackIds').includes(this.get('id'));
-    }),
-    downloadLater: Ember.computed(function() {
-        return this.store.peekRecord('playlist', 'download-later');
-    }),
-    isDownloadLater: Ember.computed('downloadLater.trackIds.[]', 'id', function() {
-        return this.get('downloadLater.trackIds').includes(this.get('id'));
     }),
     isDisabled: false,
     isReferenced: function() {

@@ -8,12 +8,22 @@
       {{model.name}}
     </div>
 
-    <i class="material-icons" {{action 'changeSelect'}}>more_vert</i>
+    {{#if isSubscribe}}
+      <div class="{{if model.isSelected 'btn-flat' 'btn'}} waves-effect waves-light my-btn--subscribe" {{action 'changeSelect'}}>
+        {{if model.isSelected 'Rem' 'Add'}}
+      </div>
+    {{else}}
+      <i class="material-icons" {{action 'changeSelect'}}>
+        more_vert
+      </i>
+    {{/if}}
   </div>
 </div>
 
-{{#if (is-and showSaved model.isSaved)}}
+<!-- TODO: remove? -->
+<!-- {{#if model.isSaved}}
   <div class="card-action my-card-action">
       <i class="material-icons">save</i>
   </div>
 {{/if}}
+ -->
