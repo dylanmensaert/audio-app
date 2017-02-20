@@ -3,7 +3,7 @@ import modelMixin from 'audio-app/mixins/c-model';
 import safeStyleMixin from 'audio-app/mixins/safe-style';
 
 export default Ember.Component.extend(modelMixin, safeStyleMixin, {
-    classNameBindings: ['model.isDisabled:my-track--disabled'],
+    classNameBindings: ['model.isActive:my-track--active', 'model.isDisabled:my-track--disabled'],
     audioRemote: Ember.inject.service(),
     style: Ember.computed('model.isDisabled', function() {
         let style;

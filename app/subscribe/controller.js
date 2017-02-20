@@ -7,11 +7,11 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
         changeSelect: function(playlist) {
             let utils = this.get('utils'),
                 selectedTrackIds = utils.get('selectedTrackIds'),
-                trackIds = playlist.get('trackIds');
+                length = selectedTrackIds.get('length'),
+                trackIds = playlist.get('trackIds'),
+                store = this.get('store');
 
             if (playlist.get('isSelected')) {
-                let store = this.get('store');
-
                 selectedTrackIds.forEach(function(trackId) {
                     if (!trackIds.includes(trackId)) {
                         let track = store.peekRecord('track', trackId);
@@ -20,10 +20,8 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
                     }
                 });
 
-                utils.showMessage('Added to playlist');
+                utils.showMessage('Added to playlist (' + length + ')');
             } else {
-                let store = this.get('store');
-
                 selectedTrackIds.forEach(function(trackId) {
                     if (trackIds.includes(trackId)) {
                         let track = store.peekRecord('track', trackId);
@@ -32,7 +30,7 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
                     }
                 });
 
-                utils.showMessage('Removed from playlist');
+                utils.showMessage('Removed from playlist (' + length + ')');
             }
         }
     }

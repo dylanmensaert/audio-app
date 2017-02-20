@@ -7,21 +7,15 @@
 
             <ul class="right">
                 <li>
-                    <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
-                        <i class="material-icons">loyalty</i>
-                    </a>
+                  {{c-icon-btn value='Toggle playlists' icon='loyalty' action='transitionToPlaylists'}}
                 </li>
 
                 <li>
-                  <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
-                      <i class="material-icons {{unless playlist 'my-icon-disabled'}}">delete_sweep</i>
-                  </a>
+                  {{c-icon-btn value='Remove from playlist' icon='delete_sweep' action='removeFromPlaylist' enabled=playlist}}
                 </li>
 
                 <li>
-                  <a href="javascript:void(0)" {{action 'queue'}}>
-                      <i class="material-icons {{unless queueableTracks.length 'my-icon-disabled'}}">queue_music</i>
-                  </a>
+                   {{c-icon-btn value='Added to Queue' icon='queue_music' action='queue' enabled=queueableTracks.length}}
                 </li>
 
                 <li>

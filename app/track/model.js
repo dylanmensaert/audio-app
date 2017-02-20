@@ -61,10 +61,11 @@ export default DS.Model.extend(modelMixin, {
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
     }),
-    isPlaying: Ember.computed('audioPlayer.track.id', 'id', 'audioPlayer.isPlaying', function() {
-        let audioPlayer = this.get('audioPlayer');
-
-        return audioPlayer.get('track.id') === this.get('id') && audioPlayer.get('isPlaying');
+    isActive: Ember.computed('audioPlayer.track.id', 'id', function() {
+        return this.get('audioPlayer.track.id') === this.get('id');
+    }),
+    isPlaying: Ember.computed('isActive', 'audioPlayer.isPlaying', function() {
+        return this.get('isActive') && this.get('audioPlayer.isPlaying');
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isDownloading', function() {
         return !this.get('isDownloaded') && !this.get('isDownloading');

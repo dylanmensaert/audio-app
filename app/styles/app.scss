@@ -504,6 +504,13 @@
         padding: 5px 20px;
     }
     
+    .my-track--active {
+        background: rgb(240, 248, 255);
+        i {
+            color: rgba(0, 0, 0, 0.7);
+        }
+    }
+    
     .my-track--disabled {
         background: #e8e8e8;
         opacity: 0.4;

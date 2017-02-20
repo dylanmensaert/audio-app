@@ -21,14 +21,15 @@ export default Ember.Component.extend(modelsMixin, {
             let playlist = this.get('playlist');
 
             if (playlist) {
-                let selectedTracks = this.get('selectedModels');
+                let selectedTracks = this.get('selectedModels'),
+                    length = selectedTracks.get('length');
 
-                if (selectedTracks.get('length')) {
+                if (length) {
                     selectedTracks.forEach(function(track) {
                         playlist.removeTrack(track);
                     });
 
-                    this.get('utils').showMessage('Removed from playlist');
+                    this.get('utils').showMessage('Removed from playlist (' + length + ')');
                 }
             }
         },
@@ -45,7 +46,7 @@ export default Ember.Component.extend(modelsMixin, {
                 });
 
                 // TODO: show length anyway? (make it uniform for removeFromPlaylist)
-                this.get('utils').showMessage('Added to Queue');
+                this.get('utils').showMessage('Added to Queue (' + length + ')');
             }
         },
         downloadLater: function() {
@@ -60,7 +61,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.pushObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage('Added to Download later');
+                this.get('utils').showMessage('Added to Download later (' + length + ')');
             }
         },
         download: function() {
@@ -77,7 +78,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.removeObject(track.get('id'));
                 });
 
-                this.get('utils').showMessage('Downloading');
+                this.get('utils').showMessage('Downloading (' + length + ')');
             }
         },
         delete: function() {
@@ -89,7 +90,7 @@ export default Ember.Component.extend(modelsMixin, {
                     track.remove();
                 });
 
-                this.get('utils').showMessage('Removed locally');
+                this.get('utils').showMessage('Removed locally (' + length ')');
             }
         },
         transitionToPlaylists: function() {
