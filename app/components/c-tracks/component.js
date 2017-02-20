@@ -4,18 +4,34 @@ import modelsMixin from 'audio-app/mixins/c-models';
 export default Ember.Component.extend(modelsMixin, {
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
+    playlist: null,
     isPending: null,
     hideQueued: false,
     queueableTracks: Ember.computed('selectedModels.@each.isQueued', function() {
         return this.get('selectedModels').filterBy('isQueued', false);
     }),
-    downloadableTracks: Ember.computed('selectedModels.@each.isDownloaded', function() {
+    downloadableTracks: Ember.computed('selectedModels.@each.isDownloadable', function() {
         return this.get('selectedModels').filterBy('isDownloadable');
     }),
     downloadedTracks: Ember.computed('selectedModels.@each.isDownloaded', function() {
         return this.get('selectedModels').filterBy('isDownloaded');
     }),
     actions: {
+        removeFromPlaylist: function() {
+            let playlist = this.get('playlist');
+
+            if (playlist) {
+                let selectedTracks = this.get('selectedModels');
+
+                if (selectedTracks.get('length')) {
+                    selectedTracks.forEach(function(track) {
+                        playlist.removeTrack(track);
+                    });
+
+                    this.get('utils').showMessage('Removed from playlist');
+                }
+            }
+        },
         queue: function() {
             let queueableTracks = this.get('queueableTracks'),
                 length = queueableTracks.get('length');
@@ -28,6 +44,7 @@ export default Ember.Component.extend(modelsMixin, {
                     trackIds.pushObject(track.get('id'));
                 });
 
+                // TODO: show length anyway? (make it uniform for removeFromPlaylist)
                 this.get('utils').showMessage('Added to Queue');
             }
         },

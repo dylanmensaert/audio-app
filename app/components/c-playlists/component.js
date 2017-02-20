@@ -19,7 +19,7 @@ export default Ember.Component.extend(modelsMixin, {
                     playlist.save();
                 });
 
-                this.get('utils').showMessage(length + ' Saved locally');
+                this.get('utils').showMessage('Saved locally');
             }
         },
         delete: function() {
@@ -31,7 +31,7 @@ export default Ember.Component.extend(modelsMixin, {
                     playlist.remove();
                 });
 
-                this.get('utils').showMessage(length + ' Removed locally');
+                this.get('utils').showMessage('Removed locally');
             }
         }
     }
