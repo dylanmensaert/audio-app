@@ -90,7 +90,7 @@ export default Ember.Component.extend(modelsMixin, {
                     track.remove();
                 });
 
-                this.get('utils').showMessage('Removed locally (' + length ')');
+                this.get('utils').showMessage('Removed locally (' + length + ')');
             }
         },
         transitionToPlaylists: function() {
