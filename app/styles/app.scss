@@ -109,7 +109,7 @@
     .my-input-bar {
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
         input[type=text] {
-            width: calc(100% - 71px);
+            width: calc(100% - 53px);
             height: 54px;
             margin-bottom: 2px;
             font-size: 16px;
@@ -125,6 +125,9 @@
         @extend .my-input-bar;
         background-color: white;
         color: rgba(0, 0, 0, 0.87);
+        input[type=text] {
+            width: calc(100% - 104px);
+        }
     }
     
     .my-autocomplete {
@@ -523,20 +526,8 @@
         }
     }
     
-    .my-btn--subscribe {
-        position: absolute;
-        right: 12px;
-        bottom: 12px;
-    }
-    
     .my-playlist-subscribe {
         .truncate {
-            width: calc(100% - 86px);
-        }
-        .btn {
-            @extend .my-linear-blue;
-        }
-        .btn-flat {
-            background: rgba(0, 0, 0, 0.1);
+            width: 100%;
         }
     }

@@ -2,24 +2,27 @@
     {{c-image src=model.thumbnail}}
 {{/link-to}}
 
-<div class="card-content my-playlist-content">
-  <div class="row">
-    <div class="truncate">
-      {{model.name}}
-    </div>
-
-    {{#if isSubscribe}}
-      <div class="{{if model.isSelected 'btn-flat' 'btn'}} waves-effect waves-light my-btn--subscribe" {{action 'changeSelect'}}>
-        {{if model.isSelected 'Rem' 'Add'}}
+{{#if isSubscribe}}
+  <div class="card-content my-playlist-content" {{action 'changeSelect'}}>
+    <div class="row">
+      <div class="truncate">
+        {{model.name}}
       </div>
-    {{else}}
+    </div>
+  </div>
+{{else}}
+  <div class="card-content my-playlist-content">
+    <div class="row">
+      <div class="truncate">
+        {{model.name}}
+      </div>
+
       <i class="material-icons" {{action 'changeSelect'}}>
         more_vert
       </i>
-    {{/if}}
+    </div>
   </div>
-</div>
-
+{{/if}}
 <!-- TODO: remove? -->
 <!-- {{#if model.isSaved}}
   <div class="card-action my-card-action">
