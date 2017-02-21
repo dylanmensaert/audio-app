@@ -133,10 +133,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             track.save();
         }
     },
-    removeTrack: function(track) {
+    clearTrack: function(track) {
         let promise;
-
-        this.get('trackIds').removeObject(track.get('id'));
 
         if (!track.isReferenced()) {
             promise = track.remove();
@@ -144,18 +142,22 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return Ember.RSVP.resolve(promise);
     },
-    clear: function() {
-        let promises = this.get('trackIds').map(function(trackId) {
-            let track = this.get('store').peekRecord('track', trackId);
+    removeTrack: function(track) {
+        this.get('trackIds').removeObject(track.get('id'));
 
-            return this.removeTrack(track);
-        }.bind(this));
-
-        return Ember.RSVP.all(promises);
+        return this.clearTrack(track);
     },
     remove: function() {
-        return this.clear().then(function() {
-            return this.removeRecord('playlist');
+        let store = this.get('store');
+
+        return this.removeRecord('playlist').then(function() {
+            let promises = this.get('trackIds').map(function(trackId) {
+                let track = store.peekRecord('track', trackId);
+
+                return this.clearTrack(track);
+            }.bind(this));
+
+            return Ember.RSVP.all(promises);
         }.bind(this));
     }
 });
