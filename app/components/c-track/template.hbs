@@ -9,14 +9,14 @@
     </div>
 </div> --}}
 
-<div {{action 'play'}} class="my-track-draggable {{if model.isSelected 'my-active'}}">
-    <div class="my-track-middle">
+<div class="my-track-draggable {{if model.isSelected 'my-active'}}">
+    {{#link-to 'track.related' model.id tagName='div' class='my-track-middle'}}
         <div class="my-static-image">
             {{c-image src=thumbnail}}
         </div>
-    </div>
+    {{/link-to}}
 
-    <div class="my-track-body">
+    <div {{action 'play'}} class="my-track-body">
         <div class="my-track-text">
             {{model.name}}
         </div>
