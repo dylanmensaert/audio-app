@@ -385,21 +385,6 @@
         }
     }
     
-    .my-playlist-content {
-        padding-right: 10px;
-        .row {
-            margin: 0;
-        }
-        .truncate {
-            width: calc(100% - 35px);
-            float: left;
-            margin-right: 10px;
-        }
-        i {
-            float: left;
-        }
-    }
-    
     .my-linear-blue {
         background: rgba(147, 206, 222, 1);
         background: -moz-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);

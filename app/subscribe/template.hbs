@@ -20,6 +20,8 @@
     {{/c-fixed-btn}}
 {{/if}}
 
-{{#each sortedPlaylists as |playlist|}}
-    {{c-playlist model=playlist changeSelect='changeSelect' isSubscribe=true}}
-{{/each}}
+<div class="container">
+  {{#each sortedPlaylists as |playlist|}}
+      {{c-playlist model=playlist changeSelect='changeSelect' isSubscribe=true}}
+  {{/each}}
+</div>
