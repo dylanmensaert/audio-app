@@ -59,5 +59,6 @@ export default {
                 record.set('viewCount', parseInt(item.statistics.viewCount));
             }.bind(this));
         }.bind(this));
-    }
+    },
+    ObjectPromiseProxy: Ember.ObjectProxy.extend(Ember.PromiseProxyMixin)
 };

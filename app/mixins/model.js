@@ -17,7 +17,7 @@ export default Ember.Mixin.create({
             records = fileSystem.get(type + 'Ids'),
             promise;
 
-        if (records.contains(id)) {
+        if (records.includes(id)) {
             records.removeObject(id);
 
             promise = fileSystem.save();

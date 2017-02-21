@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import findControllerMixin from 'audio-app/mixins/controller-find';
-import playlistControllerMixin from 'audio-app/mixins/controller-playlist';
 
-export default Ember.Controller.extend(findControllerMixin, playlistControllerMixin, {
+export default Ember.Controller.extend(findControllerMixin, {
     utils: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     model: null,
@@ -22,42 +21,45 @@ export default Ember.Controller.extend(findControllerMixin, playlistControllerMi
             this.updateModels();
         }
     }),
+    afterModels: function(tracks) {
+        let trackIds = this.get('model.trackIds');
+
+        tracks.forEach(function(track) {
+            trackIds.pushObject(track.get('id'));
+        });
+
+        return Ember.RSVP.resolve();
+    },
     /*TODO: Implement another way?*/
     name: null,
     isEditMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
     }),
-    isQueued: Ember.computed('models.isQueued', function() {
-        return this.get('models').isEvery('isQueued');
-    }),
     actions: {
-        // TODO: implement more actions? (every action defined in playlists?)
-        play: function() {
-            let queue = this.store.peekRecord('playlist', 'queue');
+        removeFromPlaylist: function() {
+            let trackIds = this.get('selectedTracks').mapBy('id'),
+                store = this.get('store'),
+                playlist = this.get('model');
 
-            queue.clear().then(function() {
-                this.get('sortedModels').forEach(function(track) {
-                    queue.pushTrack(track);
-                });
+            trackIds.forEach(function(trackId) {
+                let track = store.peekRecord('track', trackId);
 
-                this.get('audioRemote').play(queue.get('tracks.firstObject'));
-            }.bind(this));
+                playlist.removeTrack(track);
+
+                track.set('isSelected', false);
+            });
         },
-        download: function() {
+        play: function() {
             let playlist = this.get('model');
 
-            if (playlist.get('isSelected')) {
-                playlist.download(this.get('nextPageToken'));
-            } else {
-                this._super();
-            }
+            this.get('audioRemote').start('playlist', playlist);
         },
         setupEdit: function() {
             let name = this.get('model.name');
 
             this.set('name', name);
         },
-        save: function() {
+        saveEdit: function() {
             let playlist = this.get('model');
 
             playlist.set('name', this.get('name'));
@@ -65,6 +67,27 @@ export default Ember.Controller.extend(findControllerMixin, playlistControllerMi
             playlist.save();
 
             this.set('name', null);
+        },
+        download: function() {
+            let playlist = this.get('model');
+
+            playlist.download(this.get('nextPageToken'));
+            this.get('utils').showMessage('Downloading playlist');
+        },
+        save: function() {
+            let playlist = this.get('model');
+
+            playlist.saveTracks(this.get('nextPageToken')).then(function() {
+                return playlist.save();
+            });
+
+            this.get('utils').showMessage('Saving locally');
+        },
+        delete: function() {
+            let playlist = this.get('model');
+
+            playlist.remove();
+            this.get('utils').showMessage('Removing locally');
         }
     }
 });

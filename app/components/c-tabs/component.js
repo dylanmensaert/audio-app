@@ -7,6 +7,10 @@ export default FixedComponent.extend({
     didInsertElement: function() {
         this.$('.tabs').tabs();
 
-        this._super();
+        if (this.get('alignmentAtStart') === false) {
+            this.$().css('position', 'static');
+        } else {
+            this._super();
+        }
     }
 });

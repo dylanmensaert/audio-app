@@ -106,8 +106,12 @@ export default Ember.Component.extend(scrollMixin, {
         this.scroll(onscroll);
     },
     willDestroyElement: function() {
+        let placeholder = this.get('placeholder');
+
         this._super();
 
-        this.get('placeholder').remove();
+        if (placeholder) {
+            placeholder.remove();
+        }
     }
 });

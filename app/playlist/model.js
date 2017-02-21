@@ -14,6 +14,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return [];
         }
     }),
+    totalTracks: DS.attr('number'),
     tracks: Ember.computed('trackIds.[]', function() {
         let store = this.store;
 
@@ -21,7 +22,21 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return store.peekRecord('track', trackId);
         });
     }),
-    totalTracks: DS.attr('number'),
+    numberOfTracks: Ember.computed('trackIds.length', 'totalTracks', function() {
+        let numberOfTracks = this.get('totalTracks');
+
+        if (!numberOfTracks) {
+            numberOfTracks = this.get('trackIds.length');
+        }
+
+        return numberOfTracks;
+    }),
+    isSaved: Ember.computed('numberOfTracks', 'trackIds.length', 'fileSystem.playlistIds.[]', function() {
+        return this.get('numberOfTracks') === this.get('trackIds.length') && this.get('fileSystem.playlistIds').includes(this.get('id'));
+    }),
+    isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
+        return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
+    }),
     thumbnail: Ember.computed('tracks.firstObject.thumbnail', 'onlineThumbnail', function() {
         let tracks = this.get('tracks'),
             thumbnail;
@@ -36,73 +51,79 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return thumbnail;
     }),
-    numberOfTracks: Ember.computed('trackIds.length', 'totalTracks', function() {
-        let numberOfTracks = this.get('totalTracks');
-
-        if (!numberOfTracks) {
-            numberOfTracks = this.get('trackIds.length');
-        }
-
-        return numberOfTracks;
-    }),
-    isSaved: Ember.computed('fileSystem.playlistIds.[]', function() {
-        return this.get('fileSystem.playlistIds').includes(this.get('id'));
-    }),
-    isReadOnly: Ember.computed('permission', function() {
-        return this.get('permission') === 'read-only';
-    }),
-    isPushOnly: Ember.computed('permission', function() {
-        return this.get('permission') === 'push-only';
-    }),
-    isEditable: Ember.computed('isReadOnly', 'isPushOnly', function() {
-        return !this.get('isReadOnly') && !this.get('isPushOnly');
-    }),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
-    isQueue: Ember.computed('id', function() {
-        return this.get('id') === 'queue';
-    }),
     nextPageToken: null,
+    isBusy: Ember.computed('downloading.isPending', 'savingTracks.isPending', function() {
+        return this.get('downloading.isPending') || this.get('savingTracks.isPending');
+    }),
     download: function(nextPageToken) {
+        let downloading,
+            promise;
+
+        promise = this.saveTracks(nextPageToken).then(function() {
+            return this.downloadNextTrack(0);
+        }.bind(this));
+
+        downloading = logic.ObjectPromiseProxy.create({
+            promise: promise
+        });
+
+        this.set('downloading', downloading);
+
+        return downloading;
+    },
+    saveTracks: function(nextPageToken) {
+        let savingTracks;
+
         this.set('nextPageToken', nextPageToken);
 
-        this.saveNextTracks();
-        this.downloadNextTrack(0);
+        savingTracks = logic.ObjectPromiseProxy.create({
+            promise: this.saveNextTracks()
+        });
+
+        this.set('savingTracks', savingTracks);
+
+        return savingTracks;
     },
     saveNextTracks: function() {
         let nextPageToken = this.get('nextPageToken'),
-            options;
+            promise;
 
-        if (!nextPageToken) {
-            options = {
+        if (nextPageToken) {
+            let options = {
                 playlistId: this.get('id'),
                 maxResults: logic.maxResults,
                 nextPageToken: nextPageToken
             };
 
-            this.find('track', options, true).then(function(tracks) {
+            promise = this.find('track', options, true).then(function(tracks) {
                 this.get('trackIds').pushObjects(tracks.mapBy('id'));
 
                 tracks.forEach(function(track) {
                     track.save();
                 });
 
-                this.saveNextTracks(this.get('id'));
+                return this.saveNextTracks(this.get('id'));
             }.bind(this));
         }
+
+        return Ember.RSVP.resolve(promise);
     },
     downloadNextTrack: function(index) {
         let trackId = this.get('trackIds').objectAt(index),
-            track;
+            promise;
 
         if (trackId) {
-            track = this.get('store').peekRecord('track', trackId);
+            let track = this.get('store').peekRecord('track', trackId);
 
             if (track.get('isDownloadable')) {
-                track.download().then(function() {
-                    this.downloadNextTrack(index + 1);
+                promise = track.download().finally(function() {
+                    return this.downloadNextTrack(index + 1);
                 }.bind(this));
             }
         }
+
+        return Ember.RSVP.resolve(promise);
     },
     pushTrack: function(track) {
         this.get('trackIds').pushObject(track.get('id'));

@@ -24,11 +24,13 @@ export default Ember.Mixin.create(searchMixin, {
 
         this.set('latestOptions', options);
 
-        this.find(this.get('type'), options, this.searchOnline()).then(function(promise) {
-            if (this.get('latestOptions') === options) {
-                let models = promise.toArray();
+        return this.find(this.get('type'), options, this.searchOnline()).then(function(promiseArray) {
+            let promise;
 
-                this.afterModels(models).then(function() {
+            if (this.get('latestOptions') === options) {
+                let models = promiseArray.toArray();
+
+                promise = this.afterModels(models).then(function() {
                     this.get('models').pushObjects(models);
 
                     this.set('isLocked', false);
@@ -38,6 +40,8 @@ export default Ember.Mixin.create(searchMixin, {
                     }
                 }.bind(this));
             }
+
+            return promise;
         }.bind(this));
     },
     reset: function() {
@@ -51,8 +55,10 @@ export default Ember.Mixin.create(searchMixin, {
     start: function() {
         this.set('isPending', true);
 
-        logic.later(function() {
-            this.updateModels();
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+            logic.later(function() {
+                this.updateModels().then(resolve, reject);
+            }.bind(this));
         }.bind(this));
     },
     sortedModels: Ember.computed.sort('models', function(model, other) {

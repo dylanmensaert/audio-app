@@ -5,7 +5,6 @@ export default Ember.Mixin.create({
     attributeBindings: ['style'],
     style: Ember.String.htmlSafe('opacity: 0;'),
     model: null,
-    showQueued: false,
     click: null,
     didInsertElement: function() {
         let element = this.$();

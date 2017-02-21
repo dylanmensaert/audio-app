@@ -510,3 +510,16 @@
             visibility: hidden;
         }
     }
+    
+    .card-content.my-track-content {
+        padding-bottom: 0;
+        position: relative;
+    }
+    
+    .preloader-wrapper.small {
+        height: 15px;
+        width: 15px;
+        .circle-clipper .circle {
+            border-width: 2px;
+        }
+    }

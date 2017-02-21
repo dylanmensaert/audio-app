@@ -6,6 +6,12 @@ export default Ember.Route.extend(resetScrollMixin, {
         this._super(controller, model);
 
         controller.reset();
-        controller.start();
+        controller.start().then(function() {
+            let relatedTracks = controller.get('sortedModels').toArray();
+
+            relatedTracks.unshiftObject(model);
+
+            model.set('tracks', relatedTracks);
+        });
     }
 });

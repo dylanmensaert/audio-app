@@ -15,19 +15,15 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
         return style;
     }),
     thumbnail: null,
-    hideQueued: null,
-    showQueued: Ember.computed('hideQueued', 'model.isQueued', function() {
-        return !this.get('hideQueued') && this.get('model.isQueued');
-    }),
     didInsertElement: function() {
         this.set('thumbnail', this.get('model.thumbnail'));
     },
     actions: {
         play: function() {
-            let model = this.get('model');
+            let track = this.get('model');
 
-            if (!model.get('isDisabled')) {
-                this.get('audioRemote').play(model);
+            if (!track.get('isDisabled')) {
+                this.get('audioRemote').play(track);
             }
         }
     }

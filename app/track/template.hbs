@@ -5,7 +5,7 @@
         {{c-parallax src=model.thumbnail}}
     </div>
 
-    <div class="card-content my-relative">
+    <div class="card-content my-track-content">
         {{#c-fixed-btn class='fixed-action-btn horizontal click-to-toggle my-card-content'}}
             <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
                 <i class="material-icons">menu</i>
@@ -13,22 +13,14 @@
 
             <ul>
                 <li>
-                    <a href="javascript:void(0)" class="btn-floating yellow orange" {{action 'transitionToPlaylists'}}>
+                    <a href="javascript:void(0)" class="btn-floating green" {{action 'transitionToPlaylists'}}>
                         <i class="material-icons">loyalty</i>
                     </a>
                 </li>
 
-                {{#unless model.isQueued}}
-                    <li>
-                        <a href="javascript:void(0)" class="btn-floating yellow teal" {{action 'queue'}}>
-                            <i class="material-icons">queue_music</i>
-                        </a>
-                    </li>
-                {{/unless}}
-
                 {{#if model.isDownloaded}}
                     <li>
-                        <a href="javascript:void(0)" class="btn-floating red" {{action 'delete'}}>
+                        <a href="javascript:void(0)" class="btn-floating orange" {{action 'delete'}}>
                             <i class="material-icons">delete</i>
                         </a>
                     </li>
@@ -55,38 +47,21 @@
             {{#if model.isDownloaded}}
               <i class="material-icons">file_download</i>
             {{/if}}
+
+            {{#if model.isDownloading}}
+              {{c-spinner type='small'}}
+            {{/if}}
           </div>
         </div>
     </div>
-
-    {{#if model.isDownloading}}
-      <div class="progress my-track-progress my-loading">
-          <div class="indeterminate" />
-      </div>
-    {{/if}}
 </div>
 
-{{#c-tabs}}
-    <li class="tab col s6">
-        {{#link-to 'track.related' replace=true}}
-            Related
-        {{/link-to}}
-    </li>
-
-    {{#if model.isQueued}}
-      <li class="tab col s6">
-      {{!-- TODO: queue tab is not active when transition via player. --}}
-        {{#link-to 'track.queue' replace=true}}
-            Queue
-        {{/link-to}}
-      </li>
-    {{else}}
-      <li class="tab col s6 disabled">
-        <a href="javascript:void(0)">
-          Queue
-        </a>
-      </li>
-    {{/if}}
+{{#c-tabs alignmentAtStart=false}}
+  <li class="tab col s6">
+      <a href="javascript:void(0)">
+          Related
+      </a>
+  </li>
 {{/c-tabs}}
 
 {{outlet}}

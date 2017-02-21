@@ -1,11 +1,11 @@
 {{c-menu}}
 
 {{#if isEditMode}}
-  {{c-input-bar value=name placeholder='Edit' done='save'}}
+  {{c-input-bar value=name placeholder='Edit' done='saveEdit'}}
 {{/if}}
 
 <div class="card my-card-cover">
-  {{#if models.length}}
+  {{#if model.models.length}}
     <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
       {{c-parallax src=model.thumbnail}}
     </div>
@@ -16,58 +16,70 @@
   {{/if}}
 
   <div class="card-content my-relative">
-    {{#if model.isEditable}}
+    {{#unless model.permission}}
       {{#c-fixed-btn class='fixed-action-btn horizontal click-to-toggle my-card-content'}}
         <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
           <i class="material-icons">menu</i>
         </a>
 
         <ul>
-          <li>
-            <a href="javascript:void(0)" class="btn-floating yellow darken-1" {{action 'setupEdit'}}>
-              <i class="material-icons">mode_edit</i>
-            </a>
-          </li>
+          {{#if model.isEditable}}
+            <li>
+              <a href="javascript:void(0)" class="btn-floating green" {{action 'setupEdit'}}>
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </li>
+          {{/if}}
 
           {{#if model.isSaved}}
             <li>
-              <a href="javascript:void(0)" class="btn-floating red" {{action 'delete'}}>
+              <a href="javascript:void(0)" class="btn-floating orange" {{action 'delete'}}>
                   <i class="material-icons">delete</i>
               </a>
             </li>
           {{else}}
             <li>
-              <a href="javascript:void(0)" class="btn-floating blue" {{action 'save'}}>
-                  <i class="material-icons">file_download</i>
+              <a href="javascript:void(0)" class="btn-floating purple" {{action 'save'}}>
+                  <i class="material-icons">attachment</i>
               </a>
             </li>
           {{/if}}
+
+          {{#unless model.isDownloaded}}
+            <li>
+              <a href="javascript:void(0)" class="btn-floating blue" {{action 'download'}}>
+                  <i class="material-icons">file_download</i>
+              </a>
+            </li>
+          {{/unless}}
         </ul>
       {{/c-fixed-btn}}
-    {{/if}}
+    {{/unless}}
 
     <span class="card-title activator grey-text text-darken-4 truncate">
       {{model.name}}
     </span>
 
-    {{#if model.isEditable}}
+    {{#unless model.permission}}
       <div class="row grey-text my-subtext">
         <div class="col s6">
-          Playlist
+          Playlist - {{model.numberOfTracks}} tracks
         </div>
 
         <div class="col s6 my-right">
-          {{#if model.isSaved}}
+          {{#if model.isDownloaded}}
             <i class="material-icons">file_download</i>
+          {{else if model.isSaved}}
+            <i class="material-icons">attachment</i>
           {{/if}}
 
-          {{#if isQueued}}
-            <i class="material-icons">queue_music</i>
+          {{#if model.isBusy}}
+            {{c-spinner type='small'}}
           {{/if}}
         </div>
       </div>
-    {{/if}}
+    {{/unless}}
   </div>
 </div>
 
-{{c-tracks models=sortedModels isPending=isPending hideQueued=isQueued playlist=model didScrollToBottom='didScrollToBottom'}}
+{{c-tracks models=sortedModels isPending=isPending playlist=model didScrollToBottom='didScrollToBottom'}}

@@ -6,10 +6,6 @@ export default Ember.Component.extend(modelsMixin, {
     store: Ember.inject.service(),
     playlist: null,
     isPending: null,
-    hideQueued: false,
-    queueableTracks: Ember.computed('selectedModels.@each.isQueued', function() {
-        return this.get('selectedModels').filterBy('isQueued', false);
-    }),
     downloadableTracks: Ember.computed('selectedModels.@each.isDownloadable', function() {
         return this.get('selectedModels').filterBy('isDownloadable');
     }),
@@ -23,7 +19,7 @@ export default Ember.Component.extend(modelsMixin, {
         removeFromPlaylist: function() {
             let playlist = this.get('playlist');
 
-            if (playlist && !playlist.get('isReadOnly')) {
+            if (playlist && playlist.get('canRemoveTracks')) {
                 let selectedTracks = this.get('selectedModels'),
                     length = selectedTracks.get('length');
 
@@ -34,22 +30,6 @@ export default Ember.Component.extend(modelsMixin, {
 
                     this.get('utils').showMessage('Removed from playlist (' + length + ')');
                 }
-            }
-        },
-        queue: function() {
-            let queueableTracks = this.get('queueableTracks'),
-                length = queueableTracks.get('length');
-
-            if (length) {
-                let queue = this.get('store').peekRecord('playlist', 'queue'),
-                    trackIds = queue.get('trackIds');
-
-                queueableTracks.toArray().forEach(function(track) {
-                    trackIds.pushObject(track.get('id'));
-                });
-
-                // TODO: show length anyway? (make it uniform for removeFromPlaylist)
-                this.get('utils').showMessage('Added to Queue (' + length + ')');
             }
         },
         downloadLater: function() {

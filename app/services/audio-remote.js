@@ -28,52 +28,67 @@ export default Ember.Service.extend({
 
         audioPlayer.set('didEnd', this.next.bind(this));
     },
+    playable: null,
+    trackIds: Ember.computed('playable.tracks.@each.id', function() {
+        let tracks = this.get('playable.tracks'),
+            trackIds = [];
+
+        if (tracks) {
+            trackIds = tracks.mapBy('id');
+        }
+
+        return trackIds;
+    }),
+    type: null,
+    isTrack: Ember.computed('type', function() {
+        return this.get('type') === 'track';
+    }),
+    start: function(type, playable) {
+        let tracks = playable.get('tracks'),
+            track = tracks.get('firstObject');
+
+        this.set('type', type);
+        this.set('playable', playable);
+
+        this.play(track);
+    },
     play: function(track) {
         let audioPlayer = this.get('audioPlayer');
 
         if (track) {
-            let store = this.get('store'),
-                fileSystem = this.get('fileSystem'),
-                id = track.get('id'),
-                history = store.peekRecord('playlist', 'history'),
-                historyTrackIds = history.get('trackIds'),
-                queue = store.peekRecord('playlist', 'queue'),
-                queueTrackIds = queue.get('trackIds'),
-                playing;
+            let trackIds = this.get('trackIds'),
+                id = track.get('id');
 
-            if (historyTrackIds.includes(id)) {
-                historyTrackIds.removeObject(id);
-            }
+            if (!trackIds.includes(id)) {
+                this.start('track', track);
+            } else {
+                let store = this.get('store'),
+                    fileSystem = this.get('fileSystem'),
+                    history = store.peekRecord('playlist', 'history'),
+                    historyTrackIds = history.get('trackIds'),
+                    playing;
 
-            historyTrackIds.unshiftObject(id);
-
-            history.save();
-
-            if (!queueTrackIds.includes(id)) {
-                if (audioPlayer.get('track.id')) {
-                    queueTrackIds.insertAt(queueTrackIds.indexOf(audioPlayer.get('track.id')) + 1, id);
-                } else {
-                    queueTrackIds.pushObject(id);
+                if (historyTrackIds.includes(id)) {
+                    historyTrackIds.removeObject(id);
                 }
 
-                queue.save();
+                historyTrackIds.unshiftObject(id);
+
+                history.save();
+                track.save();
+
+                if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
+                    playing = track.download().then(function() {
+                        return audioPlayer.play(track);
+                    });
+                } else {
+                    playing = audioPlayer.play(track);
+                }
+
+                playing.catch(function() {
+                    this.next();
+                }.bind(this));
             }
-
-            fileSystem.save();
-
-            track.save();
-
-            if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
-                playing = track.download().then(function() {
-                    return audioPlayer.play(track);
-                });
-            } else {
-                playing = audioPlayer.play(track);
-            }
-
-            playing.catch(function() {
-                this.next();
-            }.bind(this));
         } else {
             audioPlayer.play();
         }
@@ -83,30 +98,30 @@ export default Ember.Service.extend({
     },
     previous: function() {
         let store = this.get('store'),
-            queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds'),
+            trackIds = this.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            previousIndex = queueTrackIds.indexOf(currentTrackId) - 1,
+            previousIndex = trackIds.indexOf(currentTrackId) - 1,
             trackId;
 
         if (previousIndex === -1) {
-            previousIndex = queueTrackIds.get('length') - 1;
+            previousIndex = trackIds.get('length') - 1;
         }
 
-        trackId = queueTrackIds.objectAt(previousIndex);
+        trackId = trackIds.objectAt(previousIndex);
         this.play(store.peekRecord('track', trackId));
     },
     next: function() {
         let store = this.get('store'),
-            queueTrackIds = store.peekRecord('playlist', 'queue').get('trackIds'),
+            trackIds = this.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            nextIndex = queueTrackIds.indexOf(currentTrackId) + 1,
+            nextIndex = trackIds.indexOf(currentTrackId) + 1,
             trackId;
 
-        if (nextIndex === queueTrackIds.get('length')) {
+        if (nextIndex === trackIds.get('length')) {
             nextIndex = 0;
         }
 
-        trackId = queueTrackIds.objectAt(nextIndex);
+        trackId = trackIds.objectAt(nextIndex);
         this.play(store.peekRecord('track', trackId));
     }
 });

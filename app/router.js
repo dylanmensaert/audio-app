@@ -21,7 +21,6 @@ Router.map(function() {
     this.route('track', {
         path: 'track/:track_id'
     }, function() {
-        this.route('queue');
         this.route('related');
     });
 

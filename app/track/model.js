@@ -6,6 +6,7 @@ import modelMixin from 'audio-app/mixins/model';
 import domainData from 'domain-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
+import logic from 'audio-app/utils/logic';
 
 function signateUrl(url) {
     let host = 'http://www.youtube-mp3.org';
@@ -13,11 +14,10 @@ function signateUrl(url) {
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
 
-let ObjectPromiseProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin),
-    extension = {
-        audio: 'mp3',
-        thumbnail: 'jpg'
-    };
+let extension = {
+    audio: 'mp3',
+    thumbnail: 'jpg'
+};
 
 export default DS.Model.extend(modelMixin, {
     init: function() {
@@ -30,7 +30,12 @@ export default DS.Model.extend(modelMixin, {
                 this.set('isDownloaded', false);
             }.bind(this));
         }
+
+        this.set('tracks', [
+            this
+        ]);
     },
+    tracks: null,
     utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     onlineAudio: null,
@@ -77,12 +82,6 @@ export default DS.Model.extend(modelMixin, {
         let downloadLater = this.get('downloadLater');
 
         return this.get('isDownloadable') && downloadLater.get('trackIds').includes(this.get('id'));
-    }),
-    queue: Ember.computed(function() {
-        return this.store.peekRecord('playlist', 'queue');
-    }),
-    isQueued: Ember.computed('queue.trackIds.[]', 'id', function() {
-        return this.get('queue.trackIds').includes(this.get('id'));
     }),
     isDisabled: false,
     isReferenced: function() {
@@ -162,36 +161,33 @@ export default DS.Model.extend(modelMixin, {
             this.get('utils').showMessage('Track not available');
         }
     },
-    isDownloading: Ember.computed('downloading', function() {
-        let download = this.get('downloading');
-
-        return !Ember.isEmpty(download) && download.get('isPending');
+    isDownloading: Ember.computed('downloading.isPending', function() {
+        return this.get('downloading.isPending');
     }),
     downloading: null,
     download: function() {
-        let downloading = this.get('downloading');
+        let downloading,
+            promise;
 
-        if (!downloading || !downloading.get('isPending')) {
-            let promise = new Ember.RSVP.Promise(function(resolve, reject) {
-                if (!this.get('onlineAudio')) {
-                    this.findAudioSource().then(function() {
-                        this.insert().then(resolve, reject);
-                    }.bind(this), reject);
-                } else {
+        promise = new Ember.RSVP.Promise(function(resolve, reject) {
+            if (!this.get('onlineAudio')) {
+                this.findAudioSource().then(function() {
                     this.insert().then(resolve, reject);
-                }
-            }.bind(this));
+                }.bind(this), reject);
+            } else {
+                this.insert().then(resolve, reject);
+            }
+        }.bind(this));
 
-            promise.catch(function() {
-                this.setDisabled();
-            }.bind(this));
+        promise.catch(function() {
+            this.setDisabled();
+        }.bind(this));
 
-            downloading = ObjectPromiseProxy.create({
-                promise: promise
-            });
+        downloading = logic.ObjectPromiseProxy.create({
+            promise: promise
+        });
 
-            this.set('downloading', downloading);
-        }
+        this.set('downloading', downloading);
 
         return downloading;
     },
