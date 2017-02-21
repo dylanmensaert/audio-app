@@ -38,7 +38,7 @@
 
                 <li>
                   <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
-                      <i class="material-icons {{unless playlist 'my-icon-disabled'}}">delete_sweep</i>
+                      <i class="material-icons {{unless playlist.isReadOnly 'my-icon-disabled'}}">delete_sweep</i>
                   </a>
                 </li>
 
