@@ -72,10 +72,9 @@ export default Ember.Service.extend({
                     historyTrackIds.removeObject(id);
                 }
 
-                historyTrackIds.unshiftObject(id);
+                history.unshiftTrack(track);
 
                 history.save();
-                track.save();
 
                 if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
                     playing = track.download().then(function() {

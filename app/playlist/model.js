@@ -127,25 +127,18 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     pushTrack: function(track) {
         this.get('trackIds').pushObject(track.get('id'));
-        this.save();
 
-        if (!track.get('isSaved')) {
-            track.save();
-        }
+        return track.save();
     },
-    clearTrack: function(track) {
-        let promise;
+    unshiftTrack: function(track) {
+        this.get('trackIds').unshiftObject(track.get('id'));
 
-        if (!track.isReferenced()) {
-            promise = track.remove();
-        }
-
-        return Ember.RSVP.resolve(promise);
+        return track.save();
     },
     removeTrack: function(track) {
         this.get('trackIds').removeObject(track.get('id'));
 
-        return this.clearTrack(track);
+        return track.didRemove();
     },
     remove: function() {
         let store = this.get('store');
@@ -154,7 +147,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             let promises = this.get('trackIds').map(function(trackId) {
                 let track = store.peekRecord('track', trackId);
 
-                return this.clearTrack(track);
+                return track.didRemove();
             }.bind(this));
 
             return Ember.RSVP.all(promises);

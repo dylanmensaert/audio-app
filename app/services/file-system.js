@@ -2,14 +2,15 @@
 
 import Ember from 'ember';
 
-let lastWriter;
+let lastWriter,
+    queue = [];
 // TODO: implement correctly
 /*import Playlist from 'audio-app/playlist/model';
 import Track from 'audio-app/track/model';*/
 
 window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
-function write(resolve) {
+function write() {
     let json = this.serialize();
 
     this.get('instance').root.getFile('data.json', {}, function(fileEntry) {
@@ -21,7 +22,9 @@ function write(resolve) {
                     }));
                 }
 
-                resolve();
+                queue.forEach(function(resolve) {
+                    resolve();
+                });
             };
 
             fileWriter.truncate(0);
@@ -134,7 +137,9 @@ export default Ember.Service.extend({
         Ember.run.cancel(lastWriter);
 
         return new Ember.RSVP.Promise(function(resolve) {
-            lastWriter = Ember.run.later(this, write, resolve, 100);
+            queue.pushObject(resolve);
+
+            lastWriter = Ember.run.later(this, write, 100);
         }.bind(this));
     },
     deserialize: function(json) {

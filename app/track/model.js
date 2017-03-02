@@ -14,6 +14,12 @@ function signateUrl(url) {
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
 }
 
+function buildFilePath(name, type) {
+    let directory = Inflector.inflector.pluralize(type);
+
+    return directory + '/' + name + '.' + extension[type];
+}
+
 let extension = {
     audio: 'mp3',
     thumbnail: 'jpg'
@@ -94,22 +100,18 @@ export default DS.Model.extend(modelMixin, {
             return playlist.get('trackIds').includes(id);
         });
     },
-    getFilePath: function(type) {
-        let name = encodeURIComponent(this.get('name'));
-
-        return this.createFilePath(type, name);
+    getFileName: function() {
+        return encodeURIComponent(this.get('name'));
     },
-    createFilePath: function(type, name) {
-        let fileName,
-            directory = Inflector.inflector.pluralize(type);
+    getFilePath: function(type) {
+        let name = encodeURIComponent(this.getFileName());
 
-        if (!name) {
-            name = this.get('name');
-        }
+        return buildFilePath(name, type);
+    },
+    createFilePath: function(type) {
+        let name = this.getFileName();
 
-        fileName = encodeURIComponent(name) + '.' + extension[type];
-
-        return directory + '/' + fileName;
+        return buildFilePath(name, type);
     },
     findAudioSource: function() {
         let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
@@ -174,59 +176,60 @@ export default DS.Model.extend(modelMixin, {
     }),
     downloading: null,
     download: function() {
-        let downloading,
-            promise;
+        if (!this.get('isDownloading')) {
+            let downloading,
+                promise;
 
-        promise = new Ember.RSVP.Promise(function(resolve, reject) {
-            if (!this.get('onlineAudio')) {
-                this.findAudioSource().then(function() {
-                    this.insert().then(resolve, reject);
-                }.bind(this), reject);
+            if (this.get('onlineAudio')) {
+                promise = Ember.RSVP.resolve();
             } else {
-                this.insert().then(resolve, reject);
+                promise = this.findAudioSource();
             }
-        }.bind(this));
 
-        promise.catch(function() {
-            this.setDisabled();
-        }.bind(this));
-
-        downloading = logic.ObjectPromiseProxy.create({
-            promise: promise
-        });
-
-        this.set('downloading', downloading);
-
-        return downloading;
-    },
-    insertWithoutAudio: function() {
-        return this.downloadSource(this.get('onlineThumbnail'), this.createFilePath('thumbnail'));
-    },
-    insert: function() {
-        let promises = [
-            // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-            this.downloadSource(this.get('onlineAudio'), this.createFilePath('audio'))
-        ];
-
-        if (!this.get('isSaved')) {
-            // TODO: write to filesystem on track property change
-            let promise = this.insertWithoutAudio().then(function() {
-                this.get('fileSystem.tracksIds').pushObject(this.get('id'));
+            promise = promise.then(function() {
+                return this.save();
+            }.bind(this)).then(function() {
+                return this.downloadAudio();
             }.bind(this));
 
-            promises.pushObject(promise);
+            promise.catch(function() {
+                this.setDisabled();
+            }.bind(this));
+
+            downloading = logic.ObjectPromiseProxy.create({
+                promise: promise
+            });
+
+            this.set('downloading', downloading);
         }
 
-        return Ember.RSVP.all(promises).then(function() {
-            this.store.peekRecord('playlist', 'download-later').get('trackIds').removeObject(this.get('id'));
+        return this.get('downloading');
+    },
+    save: function() {
+        let saving = this._super();
+
+        if (!this.get('isSaved')) {
+            saving = saving.then(function() {
+                return this.downloadSource('thumbnail');
+            }.bind(this));
+        }
+
+        return saving;
+    },
+    downloadAudio: function() {
+        // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
+        return this.downloadSource('audio').then(function() {
+            this.get('downloadLater.trackIds').removeObject(this.get('id'));
 
             this.set('isDownloaded', true);
         }.bind(this), function(reason) {
             return reason.message;
         });
     },
-    downloadSource: function(url, source) {
-        let fileSystem = this.get('fileSystem');
+    downloadSource: function(type) {
+        let url = this.get('online' + Ember.String.capitalize(type)),
+            source = this.createFilePath(type),
+            fileSystem = this.get('fileSystem');
 
         return new Ember.RSVP.Promise(function(resolve) {
             let xhr = new XMLHttpRequest();
@@ -253,22 +256,36 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
-    remove: function() {
-        let fileSystem = this.get('fileSystem'),
+    didRemove: function() {
+        let promise;
+
+        if (this.isReferenced()) {
+            promise = Ember.RSVP.resolve();
+        } else {
+            let fileSystem = this.get('fileSystem'),
+                promises;
+
             promises = [
-                fileSystem.remove(this.get('audio'))
+                fileSystem.remove(this.get('audio')),
+                fileSystem.remove(this.get('thumbnail'))
             ];
 
-        if (!this.isReferenced()) {
-            let promise = fileSystem.remove(this.get('thumbnail'));
-
-            promise.then(function() {
+            promise = Ember.RSVP.all(promises).then(function() {
                 return this.removeRecord('track');
             }.bind(this));
-
-            promises.pushObject(promise);
         }
 
-        return Ember.RSVP.all(promises);
+        return promise;
+    },
+    remove: function() {
+        let promise;
+
+        if (this.isReferenced()) {
+            promise = this.get('fileSystem').remove(this.get('audio'));
+        } else {
+            promise = this.didRemove();
+        }
+
+        return promise;
     }
 });
