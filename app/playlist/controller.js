@@ -16,11 +16,6 @@ export default Ember.Controller.extend(findControllerMixin, {
             this.set('models', []);
         }
     },
-    updateOffline: Ember.observer('model.trackIds.[]', function() {
-        if (!this.searchOnline() && this.get('model.id') !== 'history') {
-            this.updateModels();
-        }
-    }),
     afterModels: function(tracks) {
         let trackIds = this.get('model.trackIds');
 
@@ -39,14 +34,17 @@ export default Ember.Controller.extend(findControllerMixin, {
         removeFromPlaylist: function() {
             let trackIds = this.get('selectedTracks').mapBy('id'),
                 store = this.get('store'),
-                playlist = this.get('model');
+                playlist = this.get('model'),
+                tracks = this.get('models');
 
             trackIds.forEach(function(trackId) {
                 let track = store.peekRecord('track', trackId);
 
-                playlist.removeTrack(track);
+                playlist.removeTrack(track).then(function() {
+                    track.set('isSelected', false);
 
-                track.set('isSelected', false);
+                    tracks.removeObject(track);
+                });
             });
         },
         play: function() {
