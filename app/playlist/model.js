@@ -80,7 +80,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             savingTracks;
 
         loadTracks = function() {
-            let promise;
+            let promise = Ember.RSVP.resolve();
 
             if (this.get('hasNextPageToken')) {
                 promise = this.loadNextTracks().then(function() {
@@ -93,7 +93,13 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         savingTracks = logic.ObjectPromiseProxy.create({
             // TODO: implement correctly, buggy now
-            promise: loadTracks()
+            promise: loadTracks().then(function() {
+                let promises = this.get('tracks').map(function(track) {
+                    return track.save();
+                });
+
+                return Ember.RSVP.all(promises);
+            }.bind(this))
         });
 
         this.set('savingTracks', savingTracks);
@@ -112,6 +118,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             tracks.forEach(function(track) {
                 trackIds.pushObject(track.get('id'));
             });
+
+            return tracks;
         }.bind(this));
     },
     downloadNextTrack: function(index) {
