@@ -19,7 +19,7 @@ export default Ember.Component.extend(modelsMixin, {
         removeFromPlaylist: function() {
             let playlist = this.get('playlist');
 
-            if (playlist && playlist.get('canRemoveTracks')) {
+            if (playlist && playlist.get('isSaved')) {
                 let selectedTracks = this.get('selectedModels'),
                     length = selectedTracks.get('length');
 

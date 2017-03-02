@@ -31,8 +31,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return numberOfTracks;
     }),
-    isSaved: Ember.computed('numberOfTracks', 'trackIds.length', 'fileSystem.playlistIds.[]', function() {
-        return this.get('numberOfTracks') === this.get('trackIds.length') && this.get('fileSystem.playlistIds').includes(this.get('id'));
+    isSaved: Ember.computed('isLocalOnly', 'numberOfTracks', 'trackIds.length', 'fileSystem.playlistIds.[]', function() {
+        return this.get('isLocalOnly') || (this.get('numberOfTracks') === this.get('trackIds.length') && this.get('fileSystem.playlistIds').includes(this.get('id')));
     }),
     isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
         return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');

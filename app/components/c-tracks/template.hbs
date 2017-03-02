@@ -32,7 +32,7 @@
 
                 <li>
                   <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
-                      <i class="material-icons {{unless playlist.canRemoveTracks 'my-icon-disabled'}}">delete_sweep</i>
+                      <i class="material-icons {{unless playlist.isSaved 'my-icon-disabled'}}">delete_sweep</i>
                   </a>
                 </li>
 
