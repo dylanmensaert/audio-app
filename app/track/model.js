@@ -81,7 +81,7 @@ export default DS.Model.extend(modelMixin, {
     canDownloadLater: Ember.computed('isDownloadable', 'downloadLater.trackIds.[]', 'id', function() {
         let downloadLater = this.get('downloadLater');
 
-        return this.get('isDownloadable') && downloadLater.get('trackIds').includes(this.get('id'));
+        return this.get('isDownloadable') && !downloadLater.get('trackIds').includes(this.get('id'));
     }),
     isDisabled: false,
     isReferenced: function() {

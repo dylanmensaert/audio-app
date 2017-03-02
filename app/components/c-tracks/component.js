@@ -28,6 +28,8 @@ export default Ember.Component.extend(modelsMixin, {
                         playlist.removeTrack(track);
                     });
 
+                    playlist.save();
+
                     this.get('utils').showMessage('Removed from playlist (' + length + ')');
                 }
             }
@@ -43,6 +45,8 @@ export default Ember.Component.extend(modelsMixin, {
                 downloadLaterTracks.toArray().forEach(function(track) {
                     trackIds.pushObject(track.get('id'));
                 });
+
+                downloadLater.save();
 
                 this.get('utils').showMessage('Added to Download later (' + length + ')');
             }
@@ -60,6 +64,8 @@ export default Ember.Component.extend(modelsMixin, {
 
                     trackIds.removeObject(track.get('id'));
                 });
+
+                downloadLater.save();
 
                 this.get('utils').showMessage('Downloading (' + length + ')');
             }

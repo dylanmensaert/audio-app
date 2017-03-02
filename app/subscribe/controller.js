@@ -20,6 +20,8 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
                     }
                 });
 
+                playlist.save();
+
                 utils.showMessage('Added to playlist (' + length + ')');
             } else {
                 selectedTrackIds.forEach(function(trackId) {
@@ -29,6 +31,8 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
                         playlist.removeTrack(track);
                     }
                 });
+
+                playlist.save();
 
                 utils.showMessage('Removed from playlist (' + length + ')');
             }
