@@ -56,11 +56,11 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     isBusy: Ember.computed('downloading.isPending', 'savingTracks.isPending', function() {
         return this.get('downloading.isPending') || this.get('savingTracks.isPending');
     }),
-    download: function(nextPageToken) {
+    download: function() {
         let downloading,
             promise;
 
-        promise = this.saveTracks(nextPageToken).then(function() {
+        promise = this.saveTracks().then(function() {
             return this.downloadNextTrack(0);
         }.bind(this));
 
@@ -72,42 +72,47 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return downloading;
     },
-    saveTracks: function(nextPageToken) {
-        let savingTracks;
+    hasNextPageToken: Ember.computed('isLocalOnly', 'nextPageToken', function() {
+        return !this.get('isLocalOnly') && this.get('nextPageToken') !== undefined;
+    }),
+    saveTracks: function() {
+        let loadTracks,
+            savingTracks;
 
-        this.set('nextPageToken', nextPageToken);
+        loadTracks = function() {
+            let promise;
+
+            if (this.get('hasNextPageToken')) {
+                promise = this.loadNextTracks().then(function() {
+                    return loadTracks();
+                });
+            }
+
+            return promise;
+        }.bind(this);
 
         savingTracks = logic.ObjectPromiseProxy.create({
-            promise: this.saveNextTracks()
+            // TODO: implement correctly, buggy now
+            promise: loadTracks()
         });
 
         this.set('savingTracks', savingTracks);
 
         return savingTracks;
     },
-    saveNextTracks: function() {
-        let nextPageToken = this.get('nextPageToken'),
-            promise;
-
-        if (nextPageToken) {
-            let options = {
+    loadNextTracks: function() {
+        let trackIds = this.get('trackIds'),
+            options = {
                 playlistId: this.get('id'),
                 maxResults: logic.maxResults,
-                nextPageToken: nextPageToken
+                nextPageToken: this.get('nextPageToken')
             };
 
-            promise = this.find('track', options, true).then(function(tracks) {
-                this.get('trackIds').pushObjects(tracks.mapBy('id'));
-
-                tracks.forEach(function(track) {
-                    track.save();
-                });
-
-                return this.saveNextTracks(this.get('id'));
-            }.bind(this));
-        }
-
-        return Ember.RSVP.resolve(promise);
+        return this.find('track', options, true).then(function(tracks) {
+            tracks.forEach(function(track) {
+                trackIds.pushObject(track.get('id'));
+            });
+        }.bind(this));
     },
     downloadNextTrack: function(index) {
         let trackId = this.get('trackIds').objectAt(index),

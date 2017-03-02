@@ -1,36 +1,34 @@
 import Ember from 'ember';
-import findControllerMixin from 'audio-app/mixins/controller-find';
 
-export default Ember.Controller.extend(findControllerMixin, {
+export default Ember.Controller.extend({
     utils: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     model: null,
-    type: 'track',
-    searchOnline: function() {
-        return !this.get('model.isLocalOnly') && this._super();
-    },
-    setOptions: function(options) {
-        options.playlistId = this.get('model.id');
+    tracks: null,
+    updateTracks: Ember.observer('model.trackIds.[]', 'model.id', function() {
+        let playlist = this.get('model');
 
-        if (!this.searchOnline()) {
-            this.set('models', []);
+        if (playlist.get('id') !== 'history') {
+            let tracks = playlist.get('tracks');
+
+            this.set('tracks', tracks);
         }
-    },
-    afterModels: function(tracks) {
-        let trackIds = this.get('model.trackIds');
-
-        tracks.forEach(function(track) {
-            trackIds.pushObject(track.get('id'));
-        });
-
-        return Ember.RSVP.resolve();
-    },
+    }),
     /*TODO: Implement another way?*/
     name: null,
     isEditMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
     }),
     actions: {
+        didScrollToBottom: function() {
+            if (!this.get('isLocked') && this.get('model.hasNextPageToken')) {
+                this.set('isLocked', true);
+
+                this.get('model').loadNextTracks().finally(function() {
+                    this.set('isLocked', false);
+                }.bind(this));
+            }
+        },
         removeFromPlaylist: function() {
             let trackIds = this.get('selectedTracks').mapBy('id'),
                 store = this.get('store'),

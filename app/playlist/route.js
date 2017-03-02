@@ -6,7 +6,11 @@ export default Ember.Route.extend(modelRouteMixin, {
     setupController: function(controller, model) {
         this._super(controller, model);
 
-        controller.reset();
-        controller.start();
+        if (!model.get('isLocalOnly') && model.get('nextPageToken') === null) {
+            model.loadNextTracks();
+        }
+
+        controller.updateTracks();
+        this.set('tracks', model.get('tracks'));
     }
 });

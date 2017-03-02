@@ -78,4 +78,4 @@
   </div>
 </div>
 
-{{c-tracks models=sortedModels isPending=isPending playlist=model didScrollToBottom='didScrollToBottom'}}
+{{c-tracks models=tracks isPending=model.hasNextPageToken playlist=model didScrollToBottom='didScrollToBottom'}}
