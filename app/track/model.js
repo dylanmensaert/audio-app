@@ -95,11 +95,19 @@ export default DS.Model.extend(modelMixin, {
         });
     },
     getFilePath: function(type) {
-        return encodeURIComponent(this.createFilePath(type));
+        let name = encodeURIComponent(this.get('name'));
+
+        return this.createFilePath(type, name);
     },
-    createFilePath: function(type) {
-        let fileName = this.get('name') + '.' + extension[type],
+    createFilePath: function(type, name) {
+        let fileName,
             directory = Inflector.inflector.pluralize(type);
+
+        if (!name) {
+            name = this.get('name');
+        }
+
+        fileName = encodeURIComponent(name) + '.' + extension[type];
 
         return directory + '/' + fileName;
     },
