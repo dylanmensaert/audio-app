@@ -4,16 +4,6 @@ export default Ember.Controller.extend({
     utils: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     model: null,
-    tracks: null,
-    updateTracks: Ember.observer('model.trackIds.[]', 'model.id', function() {
-        let playlist = this.get('model');
-
-        if (playlist.get('id') !== 'history') {
-            let tracks = playlist.get('tracks');
-
-            this.set('tracks', tracks);
-        }
-    }),
     /*TODO: Implement another way?*/
     name: null,
     isEditMode: Ember.computed('name', function() {
