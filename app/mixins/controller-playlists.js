@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
             playlistIds.forEach(function(playlistId) {
                 let playlist = store.peekRecord('playlist', playlistId);
 
-                if (!playlist.get('permission')) {
+                if (playlist.get('canModify')) {
                     playlists.pushObject(playlist);
                 }
             });

@@ -5,6 +5,7 @@ import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
 
 export default DS.Model.extend(modelMixin, searchMixin, {
+    nextPageToken: DS.attr('string'),
     permission: DS.attr('string'),
     isLocalOnly: DS.attr('boolean', {
         defaultValue: false
@@ -15,6 +16,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         }
     }),
     totalTracks: DS.attr('number'),
+    propertyNames: ['isLocalOnly', 'trackIds', 'permission', 'nextPageToken'],
     tracks: Ember.computed('trackIds.[]', function() {
         let store = this.store;
 
@@ -22,17 +24,20 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return store.peekRecord('track', trackId);
         });
     }),
-    numberOfTracks: Ember.computed('trackIds.length', 'totalTracks', function() {
+    numberOfTracks: Ember.computed('trackIds.length', 'hasNextPageToken', 'totalTracks', function() {
         let numberOfTracks = this.get('totalTracks');
 
-        if (!numberOfTracks) {
+        if (!numberOfTracks || !this.get('hasNextPageToken')) {
             numberOfTracks = this.get('trackIds.length');
         }
 
         return numberOfTracks;
     }),
-    isSaved: Ember.computed('isLocalOnly', 'numberOfTracks', 'trackIds.length', 'fileSystem.playlistIds.[]', function() {
-        return this.get('isLocalOnly') || (this.get('numberOfTracks') === this.get('trackIds.length') && this.get('fileSystem.playlistIds').includes(this.get('id')));
+    isSaved: Ember.computed('fileSystem.playlistIds.[]', 'id', function() {
+        return this.get('fileSystem.playlistIds').includes(this.get('id'));
+    }),
+    canModify: Ember.computed('isSaved', 'permission', function() {
+        return this.get('isSaved') && this.get('permission') !== 'read-only';
     }),
     isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
         return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
@@ -51,8 +56,6 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return thumbnail;
     }),
-    propertyNames: ['isLocalOnly', 'trackIds', 'permission'],
-    nextPageToken: null,
     isBusy: Ember.computed('downloading.isPending', 'savingTracks.isPending', function() {
         return this.get('downloading.isPending') || this.get('savingTracks.isPending');
     }),
@@ -73,7 +76,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return downloading;
     },
     hasNextPageToken: Ember.computed('isLocalOnly', 'nextPageToken', function() {
-        return !this.get('isLocalOnly') && this.get('nextPageToken') !== undefined;
+        return !this.get('isLocalOnly') && this.get('nextPageToken') !== null;
     }),
     saveTracks: function() {
         let loadTracks,
@@ -94,6 +97,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         savingTracks = logic.ObjectPromiseProxy.create({
             // TODO: implement correctly, buggy now
             promise: loadTracks().then(function() {
+                return this.save();
+            }.bind(this)).then(function() {
                 let promises = this.get('tracks').map(function(track) {
                     return track.save();
                 });
@@ -108,6 +113,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     loadNextTracks: function() {
         let trackIds = this.get('trackIds'),
+            isSaved = this.get('isSaved'),
             options = {
                 playlistId: this.get('id'),
                 maxResults: logic.maxResults,
@@ -115,11 +121,19 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             };
 
         return this.find('track', options, true).then(function(tracks) {
-            tracks.forEach(function(track) {
+            let promises = tracks.map(function(track) {
+                let promise;
+
                 trackIds.pushObject(track.get('id'));
+
+                if (isSaved) {
+                    promise = track.save();
+                }
+
+                return promise;
             });
 
-            return tracks;
+            return Ember.RSVP.all(promises);
         }.bind(this));
     },
     downloadNextTrack: function(index) {

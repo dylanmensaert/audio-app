@@ -6,7 +6,7 @@ export default Ember.Route.extend(modelRouteMixin, {
     setupController: function(controller, model) {
         this._super(controller, model);
 
-        if (!model.get('isLocalOnly') && model.get('nextPageToken') === null) {
+        if (!model.get('isLocalOnly') && model.get('nextPageToken') === undefined) {
             model.loadNextTracks();
         }
 

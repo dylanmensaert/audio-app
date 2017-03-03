@@ -9,6 +9,10 @@ export default Ember.Mixin.create({
 
         if (searchOnline) {
             options.setNextPageToken = function(nextPageToken) {
+                if (!nextPageToken) {
+                    nextPageToken = null;
+                }
+
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
