@@ -1,14 +1,13 @@
 /*global history*/
 import Ember from 'ember';
 import connection from 'connection';
-import phonegap from 'phonegap';
 
 export default Ember.Route.extend({
     fileSystem: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     utils: Ember.inject.service(),
     beforeModel: function() {
-        return phonegap.get('onDeviceReady').then(function() {
+        return connection.get('onReady').then(function() {
             return this.get('fileSystem').forge();
         }.bind(this));
     },

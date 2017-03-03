@@ -1,46 +1,44 @@
 /* global document, navigator, Connection */
 
 (function() {
-    define('connection', ['ember', 'phonegap'], function(Ember, phonegap) {
+    define('connection', ['ember', 'phonegap', 'connection-mixin'], function(Ember, phonegap, connectionMixin) {
         'use strict';
 
         Ember = Ember.default;
         phonegap = phonegap.default;
+        connectionMixin = connectionMixin.default;
 
-        var connection = Ember.Object.create({
-            isOnline: function() {
-                var type = navigator.connection.type;
+        var connection = Ember.Object.extend(connectionMixin).create({
+                getIsOnline: function() {
+                    var type = navigator.connection.type;
 
-                return type !== Connection.NONE && type !== Connection.UNKNOWN;
-            },
-            isMobile: function() {
-                var type = navigator.connection.type;
+                    return type !== Connection.NONE && type !== Connection.UNKNOWN;
+                },
+                getIsMobile: function() {
+                    var type = navigator.connection.type;
 
-                return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
-                    Connection.CELL;
-            },
-            executables: [],
-            onMobile: function(executable) {
-                if (this.isMobile()) {
-                    executable();
+                    return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
+                        Connection.CELL;
                 }
+            }),
+            onReady;
 
-                this.get('executables').pushObject(executable);
-            },
-            execute: function() {
-                if (this.isMobile()) {
-                    this.get('executables').forEach(function(executable) {
-                        executable();
-                    });
-                }
-            }
-        });
+        onReady = phonegap.onDeviceReady.then(function() {
+            connection.set('isOnline', connection.getIsOnline());
 
-        phonegap.get('onDeviceReady').then(function() {
             document.addEventListener('online', function() {
-                connection.execute();
+                if (!connection.get('isOnline')) {
+                    connection.execute('online');
+                }
+            });
+            document.addEventListener('offline', function() {
+                if (connection.get('isOnline')) {
+                    connection.execute('offline');
+                }
             });
         });
+
+        connection.set('onReady', onReady);
 
         return {
             'default': connection

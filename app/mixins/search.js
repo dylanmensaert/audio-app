@@ -1,13 +1,15 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import logic from 'audio-app/utils/logic';
+import connection from 'connection';
 
 export default Ember.Mixin.create({
-    find: function(modelName, options, searchOnline) {
+    find: function(modelName, options) {
         let store = this.store,
-            promiseArray;
+            findOnline,
+            findOffline;
 
-        if (searchOnline) {
+        findOnline = function() {
             options.setNextPageToken = function(nextPageToken) {
                 if (!nextPageToken) {
                     nextPageToken = null;
@@ -16,25 +18,19 @@ export default Ember.Mixin.create({
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
-            promiseArray = store.query(modelName, options);
-        } else {
-            let snippets;
+            return store.query(modelName, options);
+        };
 
-            if (options.playlistId) {
-                snippets = store.peekRecord('playlist', options.playlistId).get('trackIds').map(function(trackId) {
-                    return store.peekRecord('track', trackId);
-                });
-            } else {
-                snippets = store.peekAll(modelName).filter(function(snippet) {
-                    return !snippet.get('permission') && logic.isMatch(snippet.get('name'), options.query);
-                });
-            }
-
-            promiseArray = DS.PromiseArray.create({
-                promise: Ember.RSVP.resolve(snippets)
+        findOffline = function() {
+            let snippets = store.peekAll(modelName).filter(function(snippet) {
+                return !snippet.get('permission') && logic.isMatch(snippet.get('name'), options.query);
             });
-        }
 
-        return promiseArray;
+            return Ember.RSVP.resolve(snippets);
+        };
+
+        return DS.PromiseArray.create({
+            promise: connection.resolve(findOnline, findOffline)
+        });
     }
 });

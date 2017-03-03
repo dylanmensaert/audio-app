@@ -7,9 +7,6 @@ export default Ember.Mixin.create(searchMixin, {
     isPending: false,
     isLocked: false,
     nextPageToken: null,
-    searchOnline: function() {
-        return !connection.isMobile();
-    },
     models: null,
     afterModels: function() {
         return Ember.RSVP.resolve();
@@ -24,7 +21,7 @@ export default Ember.Mixin.create(searchMixin, {
 
         this.set('latestOptions', options);
 
-        return this.find(this.get('type'), options, this.searchOnline()).then(function(promiseArray) {
+        return this.find(this.get('type'), options).then(function(promiseArray) {
             let promise;
 
             if (this.get('latestOptions') === options) {
