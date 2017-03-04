@@ -18,7 +18,7 @@ export default Ember.Route.extend({
 
         this.get('audioRemote').connect();
 
-        connection.onMobile(function() {
+        connection.onWifi(function() {
             let downloadLater = this.store.peekRecord('playlist', 'download-later'),
                 trackIds = downloadLater.get('trackIds');
 

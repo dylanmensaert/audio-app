@@ -7,6 +7,8 @@
         return {
             'default': Ember.Mixin.create({
                 isOnline: null,
+                isWifi: null,
+                wifiEvents: [],
                 onlineEvents: [],
                 offlineEvents: [],
                 getIsOnline: null,

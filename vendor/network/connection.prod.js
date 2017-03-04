@@ -14,11 +14,10 @@
 
                     return type !== Connection.NONE && type !== Connection.UNKNOWN;
                 },
-                getIsMobile: function() {
+                getIsWifi: function() {
                     var type = navigator.connection.type;
 
-                    return type === Connection.CELL_2G || type === Connection.CELL_3G || type === Connection.CELL_4G || type ===
-                        Connection.CELL;
+                    return type === Connection.WIFI;
                 }
             }),
             onReady;
@@ -29,6 +28,10 @@
             document.addEventListener('online', function() {
                 if (!connection.get('isOnline')) {
                     connection.execute('online');
+                }
+
+                if (connection.getIsWifi() !== connection.get('isWifi')) {
+                    connection.execute('wifi');
                 }
             });
             document.addEventListener('offline', function() {
