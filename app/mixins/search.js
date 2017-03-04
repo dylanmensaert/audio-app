@@ -5,8 +5,7 @@ import connection from 'connection';
 
 export default Ember.Mixin.create({
     find: function(modelName, options) {
-        let store = this.store,
-            findOnline,
+        let findOnline,
             findOffline;
 
         findOnline = function() {
@@ -18,16 +17,16 @@ export default Ember.Mixin.create({
                 this.set('nextPageToken', nextPageToken);
             }.bind(this);
 
-            return store.query(modelName, options);
-        };
+            return this.store.query(modelName, options);
+        }.bind(this);
 
         findOffline = function() {
-            let snippets = store.peekAll(modelName).filter(function(snippet) {
+            let snippets = this.store.peekAll(modelName).filter(function(snippet) {
                 return !snippet.get('permission') && logic.isMatch(snippet.get('name'), options.query);
             });
 
             return Ember.RSVP.resolve(snippets);
-        };
+        }.bind(this);
 
         return DS.PromiseArray.create({
             promise: connection.resolve(findOnline, findOffline)
