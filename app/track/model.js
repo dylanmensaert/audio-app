@@ -7,6 +7,7 @@ import domainData from 'domain-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
 import logic from 'audio-app/utils/logic';
+import connection from 'connection';
 
 function signateUrl(url) {
     let host = 'http://www.youtube-mp3.org';
@@ -84,10 +85,11 @@ export default DS.Model.extend(modelMixin, {
     downloadLater: Ember.computed(function() {
         return this.store.peekRecord('playlist', 'download-later');
     }),
-    canDownloadLater: Ember.computed('isDownloadable', 'downloadLater.trackIds.[]', 'id', function() {
+    connection: connection,
+    canDownloadLater: Ember.computed('connection.isWifi', 'isDownloadable', 'downloadLater.trackIds.[]', 'id', function() {
         let downloadLater = this.get('downloadLater');
 
-        return this.get('isDownloadable') && !downloadLater.get('trackIds').includes(this.get('id'));
+        return !this.get('connection.isWifi') && this.get('isDownloadable') && !downloadLater.get('trackIds').includes(this.get('id'));
     }),
     isDisabled: false,
     isReferenced: function() {
