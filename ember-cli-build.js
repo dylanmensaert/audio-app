@@ -53,6 +53,8 @@ module.exports = function(defaults) {
         exports: 'domain-data'
     });
 
+    app.import('vendor/network/connection-mixin.js');
+
     app.import({
         development: 'vendor/network/connection.js',
         production: 'vendor/network/connection.prod.js'

@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
             this.peek('track');
             this.peek('playlist');
 
-            if (connection.isOnline() && suggestions.get('length') < maxSuggestions) {
+            if (connection.getIsOnline() && suggestions.get('length') < maxSuggestions) {
                 let url = domainData.suggestName + '/complete/search?client=firefox&ds=yt&q=' + value;
 
                 Ember.$.getJSON(url).then(function(response) {

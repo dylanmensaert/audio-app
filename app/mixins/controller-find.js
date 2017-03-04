@@ -62,7 +62,7 @@ export default Ember.Mixin.create(searchMixin, {
         let models = this.get('models'),
             result = -1;
 
-        if (!connection.isOnline()) {
+        if (!connection.getIsOnline()) {
             result = logic.sortByName(model, other);
         } else if (models.indexOf(model) > models.indexOf(other)) {
             result = 1;

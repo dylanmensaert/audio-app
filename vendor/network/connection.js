@@ -18,12 +18,6 @@
             onReady: Ember.RSVP.resolve()
         });
 
-        if (connection.get('isOnline')) {
-            connection.setOnline();
-        } else {
-            connection.setOffline();
-        }
-
         window.connection = connection;
 
         return {
