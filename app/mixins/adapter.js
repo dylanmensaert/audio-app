@@ -57,36 +57,28 @@ export default Ember.Mixin.create({
         let fileSystem = this.get('fileSystem'),
             snippetIds = fileSystem.get(type.modelName + 'Ids');
 
-        if (!snippetIds.includes(snapshot.id)) {
-            snippetIds.pushObject(snapshot.id);
-        }
+        snippetIds.addObject(snapshot.id);
+        fileSystem.save();
 
-        return fileSystem.save().then(function() {
-            return {
-                deserializeSingleRecord: true,
-                items: [{
-                    id: snapshot.id
-                }]
-            };
-        });
+        return {
+            deserializeSingleRecord: true,
+            items: [{
+                id: snapshot.id
+            }]
+        };
     },
     // TODO: remove deleteRecord since not really used, maybe except for track.setDisabled?
     deleteRecord: function(store, type, snapshot) {
         let fileSystem = this.get('fileSystem');
 
         fileSystem.get(type.modelName + 'Ids').removeObject(snapshot.id);
+        fileSystem.save();
 
-        return new Ember.RSVP.Promise(function(resolve) {
-            fileSystem.save().then(function() {
-                let response = {
-                    deserializeSingleRecord: true,
-                    items: [{
-                        id: snapshot.id
-                    }]
-                };
-
-                resolve(response);
-            });
-        });
+        return {
+            deserializeSingleRecord: true,
+            items: [{
+                id: snapshot.id
+            }]
+        };
     }
 });
