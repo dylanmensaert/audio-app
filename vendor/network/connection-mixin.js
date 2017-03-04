@@ -59,18 +59,17 @@
                 },
                 resolve: function(doOnline, doOffline) {
                     return new Ember.RSVP.Promise(function(resolve, reject) {
-                        let setOffline = function() {
-                            doOffline().then(resolve, reject);
-                        };
+                        var setOffline = function() {
+                                doOffline().then(resolve, reject);
+                            },
+                            wasOffline = false,
+                            onceOffline = this.once('offline', function() {
+                                wasOffline = true;
+
+                                setOffline();
+                            });
 
                         if (this.getIsOnline()) {
-                            let wasOffline = false,
-                                onceOffline = this.once('offline', function() {
-                                    wasOffline = true;
-
-                                    setOffline();
-                                });
-
                             doOnline().then(function(response) {
                                 connection.off('offline', onceOffline);
 

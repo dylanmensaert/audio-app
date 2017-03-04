@@ -7,7 +7,7 @@
       {{c-spinner class='my-spinner'}}
     {{else}}
       {{#if lastHistoryTracks}}
-        {{c-tracks models=sortedLastHistoryTracks}}
+        {{c-tracks models=lastHistoryTracks}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
             <i class="material-icons">chevron_right</i>

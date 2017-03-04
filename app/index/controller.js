@@ -2,19 +2,18 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
-import connection from 'connection';
 
 const relatedTracksLimit = 4;
 
 export default Ember.Controller.extend(searchMixin, {
     lastHistoryTracks: null,
-    relatedByTracks: Ember.computed('sortedLastHistoryTracks.[]', function() {
-        let sortedLastHistoryTracks = this.get('sortedLastHistoryTracks'),
+    relatedByTracks: Ember.computed('lastHistoryTracks.[]', function() {
+        let lastHistoryTracks = this.get('lastHistoryTracks'),
             shownTrackIds = [],
             promises,
             promise;
 
-        promises = sortedLastHistoryTracks.map(function(historyTrack) {
+        promises = lastHistoryTracks.map(function(historyTrack) {
             let options = {
                 relatedVideoId: historyTrack.get('id'),
                 maxResults: logic.maxResults
@@ -22,16 +21,16 @@ export default Ember.Controller.extend(searchMixin, {
 
             shownTrackIds.pushObject(historyTrack.get('id'));
 
-            return this.find('track', options, !connection.isMobile()).then(function(relatedTracks) {
-                return logic.findDetails(relatedTracks).then(function() {
-                    return Ember.Object.extend({
-                        // TODO: Youtube API, viewCount not working in combination with relatedVideoId
-                        trackSorting: ['viewCount:desc'],
-                        sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting')
-                    }).create({
-                        track: historyTrack,
-                        relatedTracks: relatedTracks
-                    });
+            return this.find('track', options).then(function(relatedTracks) {
+                return logic.findDetails(relatedTracks);
+            }).then(function(relatedTracks) {
+                return Ember.Object.extend({
+                    // TODO: Youtube API, viewCount not working in combination with relatedVideoId
+                    trackSorting: ['viewCount:desc'],
+                    sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting')
+                }).create({
+                    track: historyTrack,
+                    relatedTracks: relatedTracks
                 });
             });
         }.bind(this));
@@ -62,16 +61,6 @@ export default Ember.Controller.extend(searchMixin, {
         return DS.PromiseArray.create({
             promise: promise
         });
-    }),
-    sortedLastHistoryTracks: Ember.computed.sort('lastHistoryTracks', function(track, other) {
-        let models = this.get('lastHistoryTracks'),
-            result = -1;
-
-        if (!connection.isMobile()) {
-            result = logic.sortByName(track, other);
-        } else if (models.indexOf(track) > models.indexOf(other)) {
-            result = 1;
-        }
     }),
     selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', function() {
         let selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),

@@ -3,6 +3,7 @@
 import Ember from 'ember';
 import domainData from 'domain-data';
 import apiKey from 'api-key';
+import connection from 'connection';
 
 export default {
     maxResults: 50,
@@ -43,22 +44,28 @@ export default {
         return domainData.searchName + '/youtube/v3/' + endpoint + '?key=' + apiKey;
     },
     findDetails: function(tracks) {
-        let url = this.getUrl('videos') + '&part=statistics',
-            trackByIds = new Map();
+        return connection.resolve(function() {
+            let url = this.getUrl('videos') + '&part=statistics',
+                trackByIds = new Map();
 
-        tracks.forEach(function(track) {
-            trackByIds.set(track.get('id'), track);
+            tracks.forEach(function(track) {
+                trackByIds.set(track.get('id'), track);
+            });
+
+            url += '&id=' + Array.from(trackByIds.keys()).join(',');
+
+            return Ember.$.getJSON(url).then(function(response) {
+                response.items.forEach(function(item) {
+                    let record = trackByIds.get(item.id);
+
+                    record.set('viewCount', parseInt(item.statistics.viewCount));
+                });
+
+                return tracks;
+            });
+        }.bind(this), function() {
+            return Ember.RSVP.resolve(tracks);
         });
-
-        url += '&id=' + Array.from(trackByIds.keys()).join(',');
-
-        return Ember.$.getJSON(url).then(function(response) {
-            response.items.forEach(function(item) {
-                let record = trackByIds.get(item.id);
-
-                record.set('viewCount', parseInt(item.statistics.viewCount));
-            }.bind(this));
-        }.bind(this));
     },
     ObjectPromiseProxy: Ember.ObjectProxy.extend(Ember.PromiseProxyMixin)
 };
