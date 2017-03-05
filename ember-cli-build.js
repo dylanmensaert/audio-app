@@ -62,12 +62,7 @@ module.exports = function(defaults) {
         exports: 'connection'
     });
 
-    app.import({
-        development: 'vendor/phonegap.js',
-        production: 'vendor/phonegap.prod.js'
-    }, {
-        exports: 'phonegap'
-    });
+    app.import('vendor/phonegap.js');
 
     return app.toTree(extraAssets);
 };

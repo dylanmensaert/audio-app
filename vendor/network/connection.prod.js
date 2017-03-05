@@ -30,7 +30,7 @@
                     connection.execute('online');
                 }
 
-                if (connection.getIsWifi() !== connection.get('isWifi')) {
+                if (!connection.get('isWifi') && connection.getIsWifi()) {
                     connection.execute('wifi');
                 }
             });

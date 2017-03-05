@@ -1,4 +1,4 @@
-/* global window, Blob, FileReader, PERSISTENT, Number, requestFileSystem */
+/* global window, Blob, FileReader, PERSISTENT, Number */
 
 import Ember from 'ember';
 
@@ -65,7 +65,7 @@ export default Ember.Service.extend({
     },
     create: function(bytes) {
         return new Ember.RSVP.Promise(function(resolve) {
-            requestFileSystem(PERSISTENT, bytes, function(fileSystem) {
+            window.requestFileSystem(PERSISTENT, bytes, function(fileSystem) {
                 this.set('instance', fileSystem);
 
                 resolve(fileSystem);
