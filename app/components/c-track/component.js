@@ -18,11 +18,13 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     taphold: null,
     didInsertElement: function() {
         let track = this.get('model'),
-            taphold = function() {
-                if (!track.get('isDisabled')) {
-                    this.changeSelect();
-                }
-            }.bind(this);
+            taphold;
+
+        taphold = function() {
+            if (!track.get('isDisabled')) {
+                this.changeSelect();
+            }
+        }.bind(this);
 
         this.set('thumbnail', track.get('thumbnail'));
 
