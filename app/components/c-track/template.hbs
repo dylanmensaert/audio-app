@@ -1,5 +1,5 @@
 <div class="my-track-draggable {{if model.isSelected 'my-active'}}">
-    {{#link-to 'track.related' model.id tagName='div' class='my-track-middle'}}
+    {{#link-to 'track.related' model.id tagName='div' class='my-track-left'}}
         <div class="my-static-image">
             {{c-image src=thumbnail}}
         </div>
@@ -28,16 +28,6 @@
             {{/if}}
         </div>
     </div>
-
-    {{#if model.isDisabled}}
-      <div class="my-track-middle">
-        <i class="material-icons">more_vert</i>
-      </div>
-    {{else}}
-      <div {{action 'changeSelect' bubbles=false}} class="my-track-middle">
-          <i class="material-icons">more_vert</i>
-      </div>
-    {{/if}}
 </div>
 
 <div class="my-separator {{if model.isDownloading 'my-loading'}}">

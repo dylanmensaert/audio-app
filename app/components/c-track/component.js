@@ -15,8 +15,26 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
         return style;
     }),
     thumbnail: null,
+    taphold: null,
     didInsertElement: function() {
-        this.set('thumbnail', this.get('model.thumbnail'));
+        let track = this.get('model'),
+            taphold = function() {
+                if (!track.get('isDisabled')) {
+                    this.changeSelect();
+                }
+            }.bind(this);
+
+        this.set('thumbnail', track.get('thumbnail'));
+
+        this.$().on('taphold', taphold);
+        this.set('taphold', taphold);
+    },
+    willDestroyElement: function() {
+        let taphold = this.get('taphold');
+
+        if (taphold) {
+            this.$().off('taphold', taphold);
+        }
     },
     actions: {
         play: function() {

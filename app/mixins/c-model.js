@@ -11,13 +11,16 @@ export default Ember.Mixin.create({
 
         Materialize.fadeInImage(element);
     },
+    changeSelect: function() {
+        let model = this.get('model');
+
+        model.toggleProperty('isSelected');
+
+        this.sendAction('changeSelect', model);
+    },
     actions: {
         changeSelect: function() {
-            let model = this.get('model');
-
-            model.toggleProperty('isSelected');
-
-            this.sendAction('changeSelect', model);
+            this.changeSelect();
         }
     }
 });

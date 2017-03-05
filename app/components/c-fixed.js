@@ -88,6 +88,8 @@ export default Ember.Component.extend(scrollMixin, {
             height: element.outerHeight()
         });
 
+        placeholder.css('background-color', element.css('background-color'));
+
         element.before(placeholder);
         this.set('placeholder', placeholder);
 

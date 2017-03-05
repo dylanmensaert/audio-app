@@ -208,13 +208,22 @@
     
     .my-track-body {
         display: table-cell;
-        padding: 0 8px;
         width: 100%;
     }
     
     .my-track-middle {
         display: table-cell;
         vertical-align: middle;
+    }
+    
+    .my-track-left {
+        @extend .my-track-middle;
+        padding-right: 8px;
+    }
+    
+    .my-track-right {
+        @extend .my-track-middle;
+        padding-left: 8px;
     }
     
     .my-static-image {
