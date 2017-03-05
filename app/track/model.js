@@ -169,6 +169,7 @@ export default DS.Model.extend(modelMixin, {
 
             this.remove();
 
+            this.set('isSelected', false);
             this.set('isDisabled', true);
             this.get('utils').showMessage('Track not available');
         }
