@@ -43,6 +43,8 @@ module.exports = function(defaults) {
     // TODO: dont export moment.js as global
     app.import('bower_components/moment/moment.js');
 
+    app.import('bower_components/jquery-mobile-bower/js/jquery.mobile-1.4.5.js');
+
     // TODO: check to move from /vendor to /app?
     // TODO: implement
     app.import('vendor/assets/api-key.js');
