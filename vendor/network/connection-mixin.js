@@ -75,13 +75,13 @@
 
                         if (this.getIsOnline()) {
                             doOnline().then(function(response) {
-                                connection.off('offline', onceOffline);
+                                this.off('offline', onceOffline);
 
                                 if (!wasOffline) {
                                     resolve(response);
                                 }
-                            }, function(error) {
-                                connection.off('offline', onceOffline);
+                            }.bind(this), function(error) {
+                                this.off('offline', onceOffline);
 
                                 if (!wasOffline) {
                                     if (!error || error.readyState === 0) {
@@ -90,7 +90,7 @@
                                         reject(error);
                                     }
                                 }
-                            });
+                            }.bind(this));
                         } else {
                             setOffline();
                         }
