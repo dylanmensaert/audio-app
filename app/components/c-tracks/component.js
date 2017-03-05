@@ -4,6 +4,7 @@ import modelsMixin from 'audio-app/mixins/c-models';
 export default Ember.Component.extend(modelsMixin, {
     utils: Ember.inject.service(),
     store: Ember.inject.service(),
+    audioRemote: Ember.inject.service(),
     playlist: null,
     isPending: null,
     downloadableTracks: Ember.computed('selectedModels.@each.isDownloadable', function() {
@@ -16,6 +17,13 @@ export default Ember.Component.extend(modelsMixin, {
         return this.get('selectedModels').filterBy('isDownloaded');
     }),
     actions: {
+        play: function(track) {
+            if (this.get('selectedModels.length')) {
+                track.toggleProperty('isSelected');
+            } else if (!track.get('isDisabled')) {
+                this.get('audioRemote').play(track);
+            }
+        },
         removeFromPlaylist: function() {
             let playlist = this.get('playlist');
 

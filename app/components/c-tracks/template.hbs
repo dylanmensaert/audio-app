@@ -48,7 +48,7 @@
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
     {{#each models as |track|}}
-        {{c-track model=track}}
+        {{c-track model=track play='play'}}
     {{/each}}
 
     {{#if isPending}}

@@ -4,7 +4,6 @@ import safeStyleMixin from 'audio-app/mixins/safe-style';
 
 export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     classNameBindings: ['model.isActive:my-track--active', 'model.isDisabled:my-track--disabled'],
-    audioRemote: Ember.inject.service(),
     style: Ember.computed('model.isDisabled', function() {
         let style;
 
@@ -15,36 +14,30 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
         return style;
     }),
     thumbnail: null,
-    taphold: null,
-    didInsertElement: function() {
-        let track = this.get('model'),
-            taphold;
+    isTouchHold: null,
+    touchStart: function() {
+        if (!this.get('model.isDisabled')) {
+            this.set('isTouchHold', true);
 
-        taphold = function() {
-            if (!track.get('isDisabled')) {
-                this.changeSelect();
-            }
-        }.bind(this);
-
-        this.set('thumbnail', track.get('thumbnail'));
-
-        this.$().on('taphold', taphold);
-        this.set('taphold', taphold);
-    },
-    willDestroyElement: function() {
-        let taphold = this.get('taphold');
-
-        if (taphold) {
-            this.$().off('taphold', taphold);
+            Ember.run.later(this, function() {
+                if (this.get('isTouchHold')) {
+                    this.send('changeSelect');
+                }
+            }, 500);
         }
+    },
+    touchMove: function() {
+        this.set('isTouchHold', false);
+    },
+    touchEnd: function() {
+        this.set('isTouchHold', false);
+    },
+    didInsertElement: function() {
+        this.set('thumbnail', this.get('model.thumbnail'));
     },
     actions: {
         play: function() {
-            let track = this.get('model');
-
-            if (!track.get('isDisabled')) {
-                this.get('audioRemote').play(track);
-            }
+            this.sendAction('play', this.get('model'));
         }
     }
 });
