@@ -59,7 +59,7 @@
                 },
                 resolve: function(doOnline, doOffline) {
                     return new Ember.RSVP.Promise(function(resolve, reject) {
-                        var wasOffline = false,
+                        var isOffline = false,
                             setOffline,
                             onceOffline;
 
@@ -68,7 +68,7 @@
                         };
 
                         onceOffline = this.once('offline', function() {
-                            wasOffline = true;
+                            isOffline = true;
 
                             setOffline();
                         });
@@ -77,13 +77,13 @@
                             doOnline().then(function(response) {
                                 this.off('offline', onceOffline);
 
-                                if (!wasOffline) {
+                                if (!isOffline) {
                                     resolve(response);
                                 }
                             }.bind(this), function(error) {
                                 this.off('offline', onceOffline);
 
-                                if (!wasOffline) {
+                                if (!isOffline) {
                                     if (!error || error.readyState === 0) {
                                         setOffline();
                                     } else {

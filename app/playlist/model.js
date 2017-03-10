@@ -24,10 +24,10 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return store.peekRecord('track', trackId);
         });
     }),
-    numberOfTracks: Ember.computed('trackIds.length', 'hasNextPageToken', 'totalTracks', function() {
+    numberOfTracks: Ember.computed('trackIds.length', 'isComplete', 'totalTracks', function() {
         let numberOfTracks = this.get('totalTracks');
 
-        if (!numberOfTracks || !this.get('hasNextPageToken')) {
+        if (!numberOfTracks || this.get('isComplete')) {
             numberOfTracks = this.get('trackIds.length');
         }
 
@@ -75,8 +75,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return downloading;
     },
-    hasNextPageToken: Ember.computed('isLocalOnly', 'nextPageToken', function() {
-        return !this.get('isLocalOnly') && this.get('nextPageToken') !== null;
+    isComplete: Ember.computed('isLocalOnly', 'hasNextPageToken', function() {
+        return this.get('isLocalOnly') || !this.get('hasNextPageToken');
     }),
     saveTracks: function() {
         let loadTracks,
@@ -85,7 +85,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         loadTracks = function() {
             let promise = Ember.RSVP.resolve();
 
-            if (this.get('hasNextPageToken')) {
+            if (this.get('isIncomplete')) {
                 promise = this.loadNextTracks().then(function() {
                     return loadTracks();
                 });

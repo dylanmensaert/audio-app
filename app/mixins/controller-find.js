@@ -4,9 +4,12 @@ import connection from 'connection';
 import searchMixin from 'audio-app/mixins/search';
 
 export default Ember.Mixin.create(searchMixin, {
-    isPending: false,
+    has: false,
     isLocked: false,
-    nextPageToken: null,
+    connection: connection,
+    isPending: Ember.computed('connection.isOnline', 'hasNextPageToken', function() {
+        return this.get('connection.isOnline') && this.get('hasNextPageToken');
+    }),
     models: null,
     afterModels: function() {
         return Ember.RSVP.resolve();
@@ -31,10 +34,6 @@ export default Ember.Mixin.create(searchMixin, {
                     this.get('models').pushObjects(models);
 
                     this.set('isLocked', false);
-
-                    if (!this.get('nextPageToken')) {
-                        this.set('isPending', false);
-                    }
                 }.bind(this));
             }
 
@@ -43,15 +42,12 @@ export default Ember.Mixin.create(searchMixin, {
     },
     reset: function() {
         this.setProperties({
-            nextPageToken: null,
-            isPending: false,
+            nextPageToken: undefined,
             isLocked: false,
             models: []
         });
     },
     start: function() {
-        this.set('isPending', true);
-
         return new Ember.RSVP.Promise(function(resolve, reject) {
             logic.later(function() {
                 this.updateModels().then(resolve, reject);
@@ -72,7 +68,7 @@ export default Ember.Mixin.create(searchMixin, {
     }),
     actions: {
         didScrollToBottom: function() {
-            if (!this.set('isLocked') && this.get('nextPageToken')) {
+            if (!this.set('isLocked') && this.get('isPending')) {
                 this.set('isLocked', true);
 
                 this.updateModels();

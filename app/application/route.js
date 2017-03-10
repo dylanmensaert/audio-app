@@ -1,4 +1,3 @@
-/*global history*/
 import Ember from 'ember';
 import connection from 'connection';
 
@@ -12,9 +11,7 @@ export default Ember.Route.extend({
         }.bind(this));
     },
     afterModel: function() {
-        let utils = this.get('utils');
-
-        utils.set('transitionToRoute', this.transitionTo.bind(this));
+        this.set('utils.transitionToRoute', this.transitionTo.bind(this));
 
         this.get('audioRemote').connect();
 
@@ -32,10 +29,5 @@ export default Ember.Route.extend({
         }.bind(this));
 
         Ember.$('.my-splash-spinner').remove();
-    },
-    actions: {
-        back: function() {
-            history.back();
-        }
     }
 });

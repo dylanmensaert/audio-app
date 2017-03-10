@@ -44,7 +44,7 @@ export default Ember.Service.extend({
     forge: function() {
         return new Ember.RSVP.Promise(function(resolve) {
             navigator.webkitPersistentStorage.queryUsageAndQuota(function(usage, quota) {
-                if (quota > usage) {
+                if (quota === 0 || quota > usage) {
                     this.create(quota).then(function(instance) {
                         this.createFiles(instance).then(resolve);
                     }.bind(this));

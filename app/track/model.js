@@ -8,17 +8,12 @@ import ytMp3 from 'audio-app/utils/yt-mp3';
 import Inflector from 'ember-inflector';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
+import sanitizeFilename from 'npm:sanitize-filename';
 
 function signateUrl(url) {
     let host = 'http://www.youtube-mp3.org';
 
     return domainData.downloadName + url + '&s=' + ytMp3.createSignature(host + url);
-}
-
-function buildFilePath(name, type) {
-    let directory = Inflector.inflector.pluralize(type);
-
-    return directory + '/' + name + '.' + extension[type];
 }
 
 let extension = {
@@ -31,7 +26,7 @@ export default DS.Model.extend(modelMixin, {
         this._super();
 
         if (this.get('isSaved')) {
-            this.get('fileSystem.instance').root.getFile(this.createFilePath('audio'), {}, function() {
+            this.get('fileSystem.instance').root.getFile(this.buildFilePath('audio'), {}, function() {
                 this.set('isDownloaded', true);
             }.bind(this), function() {
                 this.set('isDownloaded', false);
@@ -50,7 +45,7 @@ export default DS.Model.extend(modelMixin, {
         let thumbnail;
 
         if (this.get('isSaved')) {
-            thumbnail = domainData.fileSystemName + '/' + this.getFilePath('thumbnail');
+            thumbnail = domainData.fileSystemName + '/' + this.buildFilePath('thumbnail');
         } else {
             thumbnail = this.get('onlineThumbnail');
         }
@@ -61,7 +56,7 @@ export default DS.Model.extend(modelMixin, {
         let audio;
 
         if (this.get('isDownloaded')) {
-            audio = domainData.fileSystemName + '/' + this.getFilePath('audio');
+            audio = domainData.fileSystemName + '/' + this.buildFilePath('audio');
         } else {
             audio = this.get('onlineAudio');
         }
@@ -102,18 +97,10 @@ export default DS.Model.extend(modelMixin, {
             return playlist.get('trackIds').includes(id);
         });
     },
-    getFileName: function() {
-        return encodeURIComponent(this.get('name'));
-    },
-    getFilePath: function(type) {
-        let name = encodeURIComponent(this.getFileName());
+    buildFilePath: function(type) {
+        let directory = Inflector.inflector.pluralize(type);
 
-        return buildFilePath(name, type);
-    },
-    createFilePath: function(type) {
-        let name = this.getFileName();
-
-        return buildFilePath(name, type);
+        return directory + '/' + sanitizeFilename(this.get('name')) + '.' + extension[type];
     },
     findAudioSource: function() {
         let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),
@@ -231,7 +218,7 @@ export default DS.Model.extend(modelMixin, {
     },
     downloadSource: function(type) {
         let url = this.get('online' + Ember.String.capitalize(type)),
-            source = this.createFilePath(type),
+            source = this.buildFilePath(type),
             fileSystem = this.get('fileSystem');
 
         return new Ember.RSVP.Promise(function(resolve) {

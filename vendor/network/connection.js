@@ -9,6 +9,7 @@
 
         var connection = Ember.Object.extend(connectionMixin).create({
             isOnline: true,
+            isMobile: true,
             getIsOnline: function() {
                 return this.get('isOnline');
             },

@@ -8,7 +8,7 @@
                 suggestName: 'http://suggestqueries.google.com',
                 searchName: 'https://www.googleapis.com',
                 imageName: 'https://i.ytimg.com',
-                fileSystemName: 'filesystem:http://localhost:4200/persistent'
+                fileSystemName: 'cdvfile://localhost/persistent'
             }
         };
     });

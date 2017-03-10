@@ -9,9 +9,12 @@ export default Ember.Controller.extend({
     isEditMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
     }),
+    isPending: Ember.computed('connection.isOnline', 'model.isComplete', function() {
+        return this.get('connection.isOnline') && !this.get('model.isComplete');
+    }),
     actions: {
         didScrollToBottom: function() {
-            if (!this.get('isLocked') && this.get('model.hasNextPageToken')) {
+            if (!this.get('isLocked') && !this.get('model.isComplete')) {
                 this.set('isLocked', true);
 
                 this.get('model').loadNextTracks().finally(function() {

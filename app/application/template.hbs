@@ -1,45 +1,45 @@
 {{outlet}}
 
 {{#if audioPlayer.track}}
-  {{#c-fixed class='my-audio-player' alignment='bottom' offset=10}}
-      {{c-audio-slider slider=utils.audioSlider}}
+    {{#c-fixed class='my-audio-player' alignment='bottom' offset=10}}
+        {{c-audio-slider slider=utils.audioSlider}}
 
-      <div class="row my-audio-timer">
-        <div class="col s6">
-          <small>
-            {{time utils.audioSlider.value}}
-          </small>
+        <div class="row my-audio-timer">
+            <div class="col s6">
+                <small>
+                    {{time utils.audioSlider.value}}
+                </small>
+            </div>
+
+            <div class="col s6 my-right">
+                <small>
+                    {{time utils.audioSlider.max}}
+                </small>
+            </div>
         </div>
 
-        <div class="col s6 my-right">
-          <small>
-            {{time utils.audioSlider.max}}
-          </small>
+        <div class="row my-audio-row">
+            {{#link-to (if audioRemote.isTrack 'track.related' 'playlist') audioRemote.playable tagName='div' class='col s10' }}
+                <h5 class="truncate" style="margin: 0;">
+                    {{audioPlayer.track.name}}
+                </h5>
+            {{/link-to}}
+
+            {{#if audioPlayer.isLoading}}
+                <div class="col s2 my-audio-btn">
+                    {{c-spinner type='my-audio-spinner'}}
+                </div>
+                {{else if audioPlayer.isPlaying}}
+                <div class="col s2 my-audio-btn" {{action 'pause'}}>
+                    <i class="material-icons my-audio-icon">pause</i>
+                </div>
+                {{else if audioPlayer.isIdle}}
+                <div class="col s2 my-audio-btn" {{action 'play'}}>
+                    <i class="material-icons my-audio-icon">play_arrow</i>
+                </div>
+            {{/if}}
         </div>
-      </div>
-
-      <div class="row my-audio-row">
-        {{#link-to (if audioRemote.isTrack 'track.related' 'playlist') audioRemote.playable tagName='div' class='col s10'}}
-          <h5 class="truncate" style="margin: 0;">
-              {{audioPlayer.track.name}}
-          </h5>
-        {{/link-to}}
-
-        {{#if audioPlayer.isLoading}}
-          <div class="col s2 my-audio-btn">
-            {{c-spinner type='my-audio-spinner'}}
-          </div>
-        {{else if audioPlayer.isPlaying}}
-          <div class="col s2 my-audio-btn" {{action 'pause'}}>
-            <i class="material-icons my-audio-icon">pause</i>
-          </div>
-        {{else if audioPlayer.isIdle}}
-          <div class="col s2 my-audio-btn" {{action 'play'}}>
-             <i class="material-icons my-audio-icon">play_arrow</i>
-          </div>
-        {{/if}}
-      </div>
-  {{/c-fixed}}
+    {{/c-fixed}}
 {{/if}}
 
 {{c-audio}}

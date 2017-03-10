@@ -4,6 +4,9 @@ import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 
 export default Ember.Mixin.create({
+    hasNextPageToken: Ember.computed('nextPageToken', function() {
+        return this.get('nextPageToken') !== null;
+    }),
     find: function(modelName, options) {
         let findOnline,
             findOffline;
