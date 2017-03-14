@@ -23,7 +23,7 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
 
             Ember.run.later(this, function() {
                 if (this.get('isTouchHold')) {
-                    navigator.vibrate(100);
+                    navigator.vibrate(50);
 
                     this.send('changeSelect');
                 }
