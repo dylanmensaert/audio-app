@@ -1,3 +1,5 @@
+/*global navigator*/
+
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
 import safeStyleMixin from 'audio-app/mixins/safe-style';
@@ -21,6 +23,8 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
 
             Ember.run.later(this, function() {
                 if (this.get('isTouchHold')) {
+                    navigator.vibrate(100);
+
                     this.send('changeSelect');
                 }
             }, 500);

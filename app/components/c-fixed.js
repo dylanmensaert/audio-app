@@ -22,14 +22,14 @@ export default Ember.Component.extend(scrollMixin, {
     transitionClassName: Ember.computed('alignment', function() {
         return 'my-transition-' + this.getAlignment();
     }),
-    updatePosition: function(didScrollDown) {
+    updatePosition: function(dohide) {
         let placeholder = this.get('placeholder'),
             offset,
             position;
 
         placeholder.show();
 
-        if (didScrollDown) {
+        if (dohide) {
             offset = placeholder.outerHeight();
         } else {
             offset = 0 - this.get('alignmentWithValue').value;
@@ -45,32 +45,30 @@ export default Ember.Component.extend(scrollMixin, {
 
         this.$().css('position', position);
     },
-    transitionTo: function(doShow) {
+    transitionTo: function(doHide) {
         let alignment = this.get('alignmentWithValue'),
             element = this.$(),
             value = alignment.value;
 
-        if (doShow) {
+        if (!doHide) {
             value = this.get('offset') - element.outerHeight();
         }
 
         element.css(alignment.name, value);
     },
-    updateTransition: function(didScrollDown) {
+    updateTransition: function(doHide) {
         let alignment = this.get('alignmentWithValue'),
             placeholder = this.get('placeholder'),
             element = this.$(),
             isHidden = parseInt(element.css(alignment.name)) < 0,
             display = Ember.$(window);
 
-        if (alignment.name === 'bottom' && placeholder.offset().top <= display.scrollTop() + display.height() && isHidden) {
-            this.transitionTo();
-        } else if (didScrollDown) {
+        if (doHide) {
             if (!isHidden) {
-                this.transitionTo(true);
+                this.transitionTo();
             }
         } else if (isHidden) {
-            this.transitionTo();
+            this.transitionTo(true);
         }
     },
     didInsertElement: function() {
@@ -96,9 +94,9 @@ export default Ember.Component.extend(scrollMixin, {
         if (this.get('alignmentAtStart')) {
             onscroll = this.updateTransition;
         } else {
-            onscroll = function(didScrollDown) {
-                this.updatePosition(didScrollDown);
-                this.updateTransition(didScrollDown);
+            onscroll = function(doHide) {
+                this.updatePosition(doHide);
+                this.updateTransition(doHide);
             };
 
             element.css('position', 'static');

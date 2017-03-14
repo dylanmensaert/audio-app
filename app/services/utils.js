@@ -10,11 +10,16 @@ export default Ember.Service.extend({
 
         display.scroll(function() {
             let scrollTop = display.scrollTop(),
-                didScrollDown = lastScrollTop < scrollTop;
+                didScrollToBottom = Math.ceil(scrollTop + display.height()) === Ember.$(document).height();
 
-            scrolls.forEach(function(scroll) {
-                scroll(didScrollDown);
-            });
+            if (didScrollToBottom || Math.abs(lastScrollTop - scrollTop) > 5) {
+                let didScrollDown = lastScrollTop < scrollTop,
+                    doHide = didScrollDown && !didScrollToBottom;
+
+                scrolls.forEach(function(scroll) {
+                    scroll(doHide);
+                });
+            }
 
             lastScrollTop = scrollTop;
         }.bind(this));

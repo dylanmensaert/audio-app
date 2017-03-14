@@ -5,6 +5,13 @@
         }
     }
     
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
     @media only screen and (max-width: 992px) {
         main {
             margin-left: 0;
@@ -15,7 +22,7 @@
     }
     
     nav .brand-logo {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
     
     nav {
@@ -209,21 +216,12 @@
     .my-track-body {
         display: table-cell;
         width: 100%;
-    }
-    
-    .my-track-middle {
-        display: table-cell;
-        vertical-align: middle;
+        padding: 0 8px;
     }
     
     .my-track-left {
-        @extend .my-track-middle;
-        padding-right: 8px;
-    }
-    
-    .my-track-right {
-        @extend .my-track-middle;
-        padding-left: 8px;
+        display: table-cell;
+        vertical-align: middle;
     }
     
     .my-static-image {
@@ -519,9 +517,6 @@
     .my-track--disabled {
         background: #e8e8e8;
         opacity: 0.4;
-        .my-track-middle:last-child {
-            visibility: hidden;
-        }
     }
     
     .card-content.my-track-content {

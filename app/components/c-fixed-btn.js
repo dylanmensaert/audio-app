@@ -21,7 +21,7 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
         btn.remove();
         element.prepend(btn);
     },
-    updateStaticPosition: function(didScrollDown) {
+    updateStaticPosition: function(doHide) {
         let scrollTop = Ember.$(window).scrollTop(),
             element = this.$(),
             className = 'my-fixed',
@@ -31,7 +31,7 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
         element.removeClass(className);
 
         if (scrollTop + this.get('utils.menuHeight') > btn.offset().top) {
-            if (didScrollDown) {
+            if (doHide) {
                 if (wasFixed) {
                     this.redraw(btn);
                 }
@@ -46,11 +46,11 @@ export default Ember.Component.extend(safeStyleMixin, scrollMixin, {
             this.redraw(btn);
         }
     },
-    updateFixedPosition: function(didScrollDown) {
+    updateFixedPosition: function(doHide) {
         let element = this.$(),
             isHidden = element.css('display') === 'none';
 
-        if (didScrollDown) {
+        if (doHide) {
             if (!isHidden) {
                 element.hide();
             }
