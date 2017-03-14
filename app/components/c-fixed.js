@@ -58,10 +58,8 @@ export default Ember.Component.extend(scrollMixin, {
     },
     updateTransition: function(doHide) {
         let alignment = this.get('alignmentWithValue'),
-            placeholder = this.get('placeholder'),
             element = this.$(),
-            isHidden = parseInt(element.css(alignment.name)) < 0,
-            display = Ember.$(window);
+            isHidden = parseInt(element.css(alignment.name)) < 0;
 
         if (doHide) {
             if (!isHidden) {
