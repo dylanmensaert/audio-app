@@ -45,29 +45,16 @@ export default Ember.Component.extend(scrollMixin, {
 
         this.$().css('position', position);
     },
-    transitionTo: function(doHide) {
+    updateTransition: function(doHide) {
         let alignment = this.get('alignmentWithValue'),
             element = this.$(),
             value = alignment.value;
 
-        if (!doHide) {
+        if (doHide) {
             value = this.get('offset') - element.outerHeight();
         }
 
         element.css(alignment.name, value);
-    },
-    updateTransition: function(doHide) {
-        let alignment = this.get('alignmentWithValue'),
-            element = this.$(),
-            isHidden = parseInt(element.css(alignment.name)) < 0;
-
-        if (doHide) {
-            if (!isHidden) {
-                this.transitionTo();
-            }
-        } else if (isHidden) {
-            this.transitionTo(true);
-        }
     },
     didInsertElement: function() {
         let alignment = this.getAlignment(),

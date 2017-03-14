@@ -9,6 +9,9 @@ const maxSuggestions = 10;
 export default Ember.Controller.extend({
     application: Ember.inject.controller(),
     query: null,
+    hasQuery: Ember.computed('query', function() {
+        return this.get('query') !== null;
+    }),
     value: '',
     suggestions: [],
     updateSuggestions: Ember.observer('value', function() {

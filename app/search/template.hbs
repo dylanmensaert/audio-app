@@ -4,7 +4,7 @@
 
 {{#c-tabs class='z-depth-1 my-tabs-darken'}}
     <li class="tab col s6">
-        {{#link-to 'search.tracks' replace=true}}
+        {{#link-to 'search.tracks' class='active' replace=true}}
             Tracks
         {{/link-to}}
     </li>
@@ -16,4 +16,6 @@
     </li>
 {{/c-tabs}}
 
-{{outlet}}
+{{#if hasQuery}}
+  {{outlet}}
+{{/if}}
