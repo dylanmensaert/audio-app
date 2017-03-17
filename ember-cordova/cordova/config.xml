@@ -6,6 +6,7 @@
     <plugin name="cordova-plugin-network-information" version="1.3.0" />
     <plugin name="cordova-plugin-whitelist" version="1.3.0" />
     <plugin name="cordova-plugin-vibration" version="2.1.4" />
+    <plugin name="cordova-music-controls-plugin" version="1.4.0" />
     <access origin="*" />
     <access origin="cdvfile://*" />
     <allow-intent href="*" />

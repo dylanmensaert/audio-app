@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import musicControls from 'music-controls';
 
 const errors = [
     'Fetching process aborted by user',
@@ -8,6 +9,17 @@ const errors = [
 ];
 
 export default Ember.Service.extend({
+    init: function() {
+        this._super();
+
+        musicControls.init(this, {
+            'music-controls-previous': this.previous,
+            'music-controls-next': this.next,
+            'music-controls-pause': this.pause,
+            'music-controls-play': this.play,
+            'music-controls-destroy': this.pause
+        });
+    },
     element: null,
     track: null,
     currentTime: null,
@@ -35,15 +47,20 @@ export default Ember.Service.extend({
         if (track) {
             promise = this.load(track).then(function() {
                 element.play();
+
+                musicControls.load(track);
+                musicControls.play();
             });
         } else {
             element.play();
+            musicControls.play();
         }
 
         return Ember.RSVP.resolve(promise);
     },
     pause: function() {
         this.get('element').pause();
+        musicControls.pause();
     },
     load: function(track) {
         let audio = track.get('audio'),

@@ -15,8 +15,7 @@
             },
             getIsMobile: function() {
                 return this.get('isMobile');
-            },
-            onReady: Ember.RSVP.resolve()
+            }
         });
 
         window.connection = connection;

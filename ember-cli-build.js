@@ -53,16 +53,28 @@ module.exports = function(defaults) {
         exports: 'domain-data'
     });
 
-    app.import('vendor/network/connection-mixin.js');
+    app.import('vendor/cordova/network-information/mixin.js');
 
     app.import({
-        development: 'vendor/network/connection.js',
-        production: 'vendor/network/connection.prod.js'
+        development: 'vendor/cordova/network-information/object.js',
+        production: 'vendor/cordova/network-information/object.prod.js'
     }, {
         exports: 'connection'
     });
 
-    app.import('vendor/phonegap.js');
+    app.import({
+        development: 'vendor/cordova/music-controls/object.js',
+        production: 'vendor/cordova/music-controls/object.prod.js'
+    }, {
+        exports: 'music-controls'
+    });
+
+    app.import({
+        development: 'vendor/cordova/object.js',
+        production: 'vendor/cordova/object.prod.js'
+    }, {
+        exports: 'cordova'
+    });
 
     return app.toTree(extraAssets);
 };

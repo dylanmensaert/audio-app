@@ -1,28 +1,27 @@
 /* global document, navigator, Connection */
 
 (function() {
-    define('connection', ['ember', 'phonegap', 'connection-mixin'], function(Ember, phonegap, connectionMixin) {
+    define('connection', ['ember', 'cordova', 'connection-mixin'], function(Ember, cordova, connectionMixin) {
         'use strict';
 
         Ember = Ember.default;
-        phonegap = phonegap.default;
+        cordova = cordova.default;
         connectionMixin = connectionMixin.default;
 
         var connection = Ember.Object.extend(connectionMixin).create({
-                getIsOnline: function() {
-                    var type = navigator.connection.type;
+            getIsOnline: function() {
+                var type = navigator.connection.type;
 
-                    return type !== Connection.NONE && type !== Connection.UNKNOWN;
-                },
-                getIsWifi: function() {
-                    var type = navigator.connection.type;
+                return type !== Connection.NONE && type !== Connection.UNKNOWN;
+            },
+            getIsWifi: function() {
+                var type = navigator.connection.type;
 
-                    return type === Connection.WIFI;
-                }
-            }),
-            onReady;
+                return type === Connection.WIFI;
+            }
+        });
 
-        onReady = phonegap.onDeviceReady.then(function() {
+        cordova.onDeviceReady.then(function() {
             connection.set('isOnline', connection.getIsOnline());
 
             document.addEventListener('online', function() {
@@ -40,8 +39,6 @@
                 }
             });
         });
-
-        connection.set('onReady', onReady);
 
         return {
             'default': connection

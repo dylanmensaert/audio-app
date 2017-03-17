@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resolver from './resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
-import phonegap from 'phonegap';
+import cordova from 'cordova';
 
 let App;
 
@@ -13,7 +13,7 @@ App = Ember.Application.extend({
     podModulePrefix: config.podModulePrefix,
     Resolver,
     ready: function() {
-        phonegap.setDeviceReady();
+        cordova.setDeviceReady();
     }
 });
 

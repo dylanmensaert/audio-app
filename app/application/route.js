@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import cordova from 'cordova';
 import connection from 'connection';
 
 export default Ember.Route.extend({
@@ -6,7 +7,7 @@ export default Ember.Route.extend({
     audioRemote: Ember.inject.service(),
     utils: Ember.inject.service(),
     beforeModel: function() {
-        return connection.get('onReady').then(function() {
+        return cordova.onDeviceReady.then(function() {
             return this.get('fileSystem').forge();
         }.bind(this));
     },

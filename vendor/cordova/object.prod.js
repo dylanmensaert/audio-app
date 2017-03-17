@@ -1,6 +1,6 @@
 /* global document */
 (function() {
-    define('phonegap', ['ember'], function(Ember) {
+    define('cordova', ['ember'], function(Ember) {
         'use strict';
 
         Ember = Ember.default;
