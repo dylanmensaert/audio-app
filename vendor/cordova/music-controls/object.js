@@ -11,7 +11,7 @@
                 pause: function() {},
                 load: function() {},
                 destroy: function() {}
-            };
+            }
         };
     });
 })();

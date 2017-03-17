@@ -23,8 +23,6 @@ export default Ember.Route.extend({
             trackIds.toArray().forEach(function(trackId) {
                 let track = this.store.peekRecord('track', trackId);
 
-                trackIds.removeObject(trackId);
-
                 track.download();
             }.bind(this));
         }.bind(this));
