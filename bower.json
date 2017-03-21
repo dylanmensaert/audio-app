@@ -2,7 +2,7 @@
     "name": "audio-app",
     "dependencies": {
         "moment": "2.15.1",
-        "materialize": "git://github.com/Dogfalo/materialize.git#5dab6f021e22456d55753f6d9b6aabbafd6d6383",
+        "materialize": "git://github.com/dylanmensaert/materialize.git#6233ffb9a0cc1bf4b039fec85d36fa6ab940a9c5",
         "material-design-icons": "3.0.1",
         "nouislider": "8.5.1"
     },
