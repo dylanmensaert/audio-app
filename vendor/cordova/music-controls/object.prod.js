@@ -29,7 +29,7 @@
             musicControls.load = function(track) {
                 MusicControls.create({
                     track: track.get('name'),
-                    cover: track.get('thumbnail'),
+                    cover: track.get('onlineThumbnail'),
                     ticker: 'Now playing "' + track.get('name') + '"'
                 });
             };
