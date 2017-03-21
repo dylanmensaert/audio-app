@@ -19,7 +19,8 @@ export default Ember.Component.extend(scrollMixin, {
         }
     },
     didInsertElement: function() {
-        this.scroll(this.scrollBackGround);
+        // TODO: mobile rendering to slow for this to work.
+        /*this.scroll(this.scrollBackGround);*/
 
         this.set('source', this.get('src'));
     }

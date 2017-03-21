@@ -17,8 +17,12 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     }),
     thumbnail: null,
     isTouchHold: null,
-    touchStart: function() {
+    startCoordinates: null,
+    touchStart: function(event) {
         if (!this.get('model.isDisabled')) {
+            let startCoordinates = event.originalEvent.touches[0];
+
+            this.set('startCoordinates', startCoordinates);
             this.set('isTouchHold', true);
 
             Ember.run.later(this, function() {
@@ -30,8 +34,16 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
             }, 500);
         }
     },
-    touchMove: function() {
-        this.set('isTouchHold', false);
+    touchMove: function(event) {
+        let startCoordinates = this.get('startCoordinates'),
+            coordinates = event.originalEvent.touches[0],
+            pageX = startCoordinates.pageX - coordinates.pageX,
+            pageY = startCoordinates.pageY - coordinates.pageY,
+            distance = Math.sqrt(Math.abs(pageX * pageX) + Math.abs(pageY * pageY));
+
+        if (distance > 10) {
+            this.set('isTouchHold', false);
+        }
     },
     touchEnd: function() {
         this.set('isTouchHold', false);
