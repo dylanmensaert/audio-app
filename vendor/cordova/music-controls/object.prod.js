@@ -18,15 +18,15 @@
                 MusicControls.listen();
             };
 
-            musicControls.play: function() {
+            musicControls.play = function() {
                 MusicControls.updateIsPlaying(true);
             };
 
-            musicControls.pause: function() {
+            musicControls.pause = function() {
                 MusicControls.updateIsPlaying(false);
             };
 
-            musicControls.load: function(track) {
+            musicControls.load = function(track) {
                 MusicControls.create({
                     track: track.get('name'),
                     cover: track.get('thumbnail'),
@@ -34,7 +34,7 @@
                 });
             };
 
-            musicControls.destroy: function() {
+            musicControls.destroy = function() {
                 MusicControls.destroy();
             };
         });

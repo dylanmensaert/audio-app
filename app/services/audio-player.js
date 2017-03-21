@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import cordova from 'cordova';
 import musicControls from 'music-controls';
 
 const errors = [
@@ -12,13 +13,15 @@ export default Ember.Service.extend({
     init: function() {
         this._super();
 
-        musicControls.init(this, {
-            'music-controls-previous': this.previous,
-            'music-controls-next': this.next,
-            'music-controls-pause': this.pause,
-            'music-controls-play': this.play,
-            'music-controls-destroy': this.pause
-        });
+        cordova.onDeviceReady.then(function() {
+            musicControls.init(this, {
+                'music-controls-previous': this.previous,
+                'music-controls-next': this.next,
+                'music-controls-pause': this.pause,
+                'music-controls-play': this.play,
+                'music-controls-destroy': this.pause
+            });
+        }.bind(this));
     },
     element: null,
     track: null,
