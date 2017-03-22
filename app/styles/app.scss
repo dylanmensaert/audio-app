@@ -182,14 +182,6 @@
         right: 15px;
     }
     
-    .my-track-draggable {
-        /* TODO: implement for swiping */
-        /* position: absolute;
-    top: 0;
-    background-color: white; */
-        padding: 8px 0;
-    }
-    
     .my-track-placeholder {
         height: 92.89px;
         margin-bottom: 0;
@@ -216,7 +208,7 @@
     .my-track-body {
         display: table-cell;
         width: 100%;
-        padding: 0 8px;
+        padding: 8px;
     }
     
     .my-track-left {
