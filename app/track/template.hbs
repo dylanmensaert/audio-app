@@ -13,20 +13,20 @@
 
             <ul>
                 <li>
-                    <a href="javascript:void(0)" class="btn-floating green" {{action 'transitionToPlaylists'}}>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light green" {{action 'transitionToPlaylists'}}>
                         <i class="material-icons">loyalty</i>
                     </a>
                 </li>
 
                 {{#if model.isDownloaded}}
                     <li>
-                        <a href="javascript:void(0)" class="btn-floating orange" {{action 'delete'}}>
+                        <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
                             <i class="material-icons">delete</i>
                         </a>
                     </li>
                 {{else if model.isDownloadable}}
                     <li>
-                        <a href="javascript:void(0)" class="btn-floating blue" {{action 'download'}}>
+                        <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
                             <i class="material-icons">file_download</i>
                         </a>
                     </li>

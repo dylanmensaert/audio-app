@@ -1,8 +1,8 @@
-{{#link-to 'playlist' model tagName='div' class='card-image'}}
+{{#link-to 'playlist' model tagName='div' class='card-image waves-effect waves-light'}}
     {{c-image src=model.playlistThumbnail}}
 {{/link-to}}
 
-<div class="card-content" {{action 'changeSelect'}}>
+<div class="card-content waves-effect" {{action 'changeSelect'}}>
   <div class="truncate">
     {{model.name}}
   </div>

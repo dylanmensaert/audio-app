@@ -79,7 +79,7 @@
     .my-audio-icon {
         font-size: 48px;
         position: absolute;
-        top: -9px;
+        top: 0;
         left: calc(50% - 24px);
     }
     
@@ -91,7 +91,7 @@
     
     .my-audio-btn {
         position: relative;
-        height: 25px;
+        height: 49px;
     }
     
     .my-audio-timer {
@@ -457,7 +457,8 @@
     .my-audio-row {
         margin-bottom: 0;
         .col {
-            margin: 12px 0;
+            padding: 12px 0;
+            padding-left: 0.75rem;
         }
     }
     
@@ -507,7 +508,7 @@
     }
     
     .my-track--active {
-        background: rgb(240, 248, 255);
+        background: #e0e0e0;
         i {
             color: rgba(0, 0, 0, 0.7);
         }
@@ -528,5 +529,12 @@
         width: 15px;
         .circle-clipper .circle {
             border-width: 2px;
+        }
+    }
+    
+    .waves-effect {
+        &.card-image,
+        &.card-content {
+            display: block;
         }
     }

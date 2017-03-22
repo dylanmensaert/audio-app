@@ -24,7 +24,7 @@
       <ul>
         {{#if model.isEditable}}
           <li>
-            <a href="javascript:void(0)" class="btn-floating green" {{action 'setupEdit'}}>
+            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light green" {{action 'setupEdit'}}>
               <i class="material-icons">mode_edit</i>
             </a>
           </li>
@@ -32,13 +32,13 @@
 
         {{#if model.isSaved}}
           <li>
-            <a href="javascript:void(0)" class="btn-floating orange" {{action 'delete'}}>
+            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
                 <i class="material-icons">delete</i>
             </a>
           </li>
         {{else}}
           <li>
-            <a href="javascript:void(0)" class="btn-floating purple" {{action 'save'}}>
+            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light purple" {{action 'save'}}>
                 <i class="material-icons">attachment</i>
             </a>
           </li>
@@ -46,7 +46,7 @@
 
         {{#unless model.isDownloaded}}
           <li>
-            <a href="javascript:void(0)" class="btn-floating blue" {{action 'download'}}>
+            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
                 <i class="material-icons">file_download</i>
             </a>
           </li>
