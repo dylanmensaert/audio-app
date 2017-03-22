@@ -85,7 +85,9 @@ export default Ember.Service.extend({
                 }
 
                 playing.catch(function() {
-                    this.next();
+                    if (this.get('playable.tracks').isAny('isDisabled', false)) {
+                        this.next();
+                    }
                 }.bind(this));
             }
         } else {
