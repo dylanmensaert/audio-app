@@ -7,11 +7,11 @@
 <div class="card my-card-cover">
   {{#if model.models.length}}
     <div class="card-image waves-effect waves-block waves-light" {{action 'play'}}>
-      {{c-parallax src=model.thumbnail}}
+      {{c-parallax src=model.playlistThumbnail}}
     </div>
   {{else}}
     <div class="card-image">
-      {{c-parallax src=model.thumbnail}}
+      {{c-parallax src=model.playlistThumbnail}}
     </div>
   {{/if}}
 

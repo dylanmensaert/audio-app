@@ -42,7 +42,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
         return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
     }),
-    thumbnail: Ember.computed('tracks.firstObject.thumbnail', 'onlineThumbnail', function() {
+    playlistThumbnail: Ember.computed('tracks.firstObject.thumbnail', 'thumbnail', function() {
         let tracks = this.get('tracks'),
             thumbnail;
 
@@ -51,7 +51,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
             thumbnail = track.get('thumbnail');
         } else {
-            thumbnail = this.get('onlineThumbnail');
+            thumbnail = this.get('thumbnail');
         }
 
         return thumbnail;

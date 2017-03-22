@@ -41,17 +41,6 @@ export default DS.Model.extend(modelMixin, {
     utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     onlineAudio: null,
-    thumbnail: Ember.computed('onlineThumbnail', 'isSaved', function() {
-        let thumbnail;
-
-        if (this.get('isSaved')) {
-            thumbnail = domainData.fileSystemName + '/' + this.buildFilePath('thumbnail');
-        } else {
-            thumbnail = this.get('onlineThumbnail');
-        }
-
-        return thumbnail;
-    }),
     audio: Ember.computed('onlineAudio', 'isDownloaded', function() {
         let audio;
 
@@ -200,7 +189,9 @@ export default DS.Model.extend(modelMixin, {
 
         if (!this.get('isSaved')) {
             saving = saving.then(function() {
-                return this.downloadSource('thumbnail');
+                return this.downloadSource('thumbnail', this.get('thumbnail')).then(function(thumbnail) {
+                    this.set('thumbnail', thumbnail);
+                }.bind(this));
             }.bind(this));
         }
 
@@ -208,7 +199,7 @@ export default DS.Model.extend(modelMixin, {
     },
     downloadAudio: function() {
         // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-        return this.downloadSource('audio').then(function() {
+        return this.downloadSource('audio', this.get('onlineAudio')).then(function() {
             this.get('downloadLater.trackIds').removeObject(this.get('id'));
 
             this.set('isDownloaded', true);
@@ -216,9 +207,8 @@ export default DS.Model.extend(modelMixin, {
             return reason.message;
         });
     },
-    downloadSource: function(type) {
-        let url = this.get('online' + Ember.String.capitalize(type)),
-            source = this.buildFilePath(type),
+    downloadSource: function(type, url) {
+        let source = this.buildFilePath(type),
             fileSystem = this.get('fileSystem');
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
