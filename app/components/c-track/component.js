@@ -5,7 +5,7 @@ import modelMixin from 'audio-app/mixins/c-model';
 import safeStyleMixin from 'audio-app/mixins/safe-style';
 
 export default Ember.Component.extend(modelMixin, safeStyleMixin, {
-    classNames: ['waves-effect'],
+    classNames: ['waves-effect', 'waves-block'],
     classNameBindings: ['model.isActive:my-track--active', 'model.isDisabled:my-track--disabled'],
     style: Ember.computed('model.isDisabled', function() {
         let style;
