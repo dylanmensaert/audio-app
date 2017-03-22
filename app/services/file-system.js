@@ -93,7 +93,7 @@ export default Ember.Service.extend({
                 create: true
             });
 
-            instance.root.getDirectory('audio', {
+            instance.root.getDirectory('audios', {
                 create: true
             });
 

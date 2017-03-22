@@ -221,7 +221,7 @@ export default DS.Model.extend(modelMixin, {
             source = this.buildFilePath(type),
             fileSystem = this.get('fileSystem');
 
-        return new Ember.RSVP.Promise(function(resolve) {
+        return new Ember.RSVP.Promise(function(resolve, reject) {
             let xhr = new XMLHttpRequest();
 
             xhr.open('GET', url, true);
@@ -240,7 +240,7 @@ export default DS.Model.extend(modelMixin, {
 
                         fileWriter.write(new Blob([response]));
                     });
-                });
+                }, reject);
             };
 
             xhr.send();
