@@ -1,4 +1,4 @@
-/*global window, parseInt*/
+/*global window, parseInt, Waves*/
 
 import Ember from 'ember';
 import scrollMixin from 'audio-app/mixins/c-scroll';
@@ -89,6 +89,9 @@ export default Ember.Component.extend(scrollMixin, {
         }
 
         this.scroll(onscroll);
+
+        // TODO: place Waves somewhere more logical
+        Waves.init();
     },
     willDestroyElement: function() {
         let placeholder = this.get('placeholder');

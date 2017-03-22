@@ -82,10 +82,6 @@ export default Ember.Service.extend({
             }.bind(this));
         }
 
-        promise.catch(function() {
-            track.setDisabled();
-        });
-
         return promise;
     },
     loadSource: function(source) {

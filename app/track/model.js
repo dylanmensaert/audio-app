@@ -107,30 +107,30 @@ export default DS.Model.extend(modelMixin, {
             url += '&r=' + new Date().getTime();
 
             return Ember.$.ajax(signateUrl(url)).then(function(info) {
-                info = info.substring(7, info.length - 1);
-                info = JSON.parse(info);
+                if (info === 'pushItemYTError();') {
+                    this.setDisabled();
 
-                url = '/get?';
-                url += 'video_id=' + videoId;
-                url += '&ts_create=' + info.ts_create;
-                url += '&r=' + info.r;
-                url += '&h2=' + info.h2;
+                    url = null;
+                } else {
+                    info = info.substring(7, info.length - 1);
+                    info = JSON.parse(info);
 
-                url = signateUrl(url);
+                    url = '/get?';
+                    url += 'video_id=' + videoId;
+                    url += '&ts_create=' + info.ts_create;
+                    url += '&r=' + info.r;
+                    url += '&h2=' + info.h2;
 
-                this.set('onlineAudio', url);
+                    url = signateUrl(url);
+
+                    this.set('onlineAudio', url);
+                }
 
                 return url;
             }.bind(this));
         }.bind(this));
 
-        promise = Ember.RSVP.resolve(promise);
-
-        promise.catch(function() {
-            this.setDisabled();
-        }.bind(this));
-
-        return promise;
+        return Ember.RSVP.resolve(promise);
     },
     setDisabled: function() {
         if (!this.get('isDisabled')) {
@@ -169,10 +169,6 @@ export default DS.Model.extend(modelMixin, {
                 return this.save();
             }.bind(this)).then(function() {
                 return this.downloadAudio();
-            }.bind(this));
-
-            promise.catch(function() {
-                this.setDisabled();
             }.bind(this));
 
             downloading = logic.ObjectPromiseProxy.create({
