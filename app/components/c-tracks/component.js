@@ -7,6 +7,7 @@ export default Ember.Component.extend(modelsMixin, {
     audioRemote: Ember.inject.service(),
     playlist: null,
     isPending: null,
+    hideDownloaded: false,
     downloadableTracks: Ember.computed('selectedModels.@each.isDownloadable', function() {
         return this.get('selectedModels').filterBy('isDownloadable');
     }),

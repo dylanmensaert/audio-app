@@ -19,6 +19,10 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     thumbnail: null,
     isTouchHold: null,
     startCoordinates: null,
+    hideDownloaded: false,
+    showDownloaded: Ember.computed('model.isDownloaded', 'hideDownloaded', function() {
+        return this.get('model.isDownloaded') && !this.get('hideDownloaded');
+    }),
     touchStart: function(event) {
         if (!this.get('model.isDisabled')) {
             let startCoordinates = event.originalEvent.touches[0];

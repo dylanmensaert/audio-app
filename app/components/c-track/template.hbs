@@ -23,7 +23,7 @@
 
             {{#if model.isDownloading}}
                 {{c-spinner type='small'}}
-            {{else if model.isDownloaded}}
+            {{else if showDownloaded}}
                 <div class="my-track-icon">
                     <i class="material-icons">file_download</i>
                 </div>
