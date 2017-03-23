@@ -28,7 +28,7 @@
           </a>
         </li>
 
-        {{#if model.permission}}
+        {{#unless model.permission}}
           <li class={{unless model.isSaved 'my-hidden'}}>
             <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'delete'}}>
                 <i class="mdi mdi-tag-remove"></i>
@@ -40,13 +40,13 @@
                 <i class="mdi mdi-tag-heart"></i>
             </a>
           </li>
+        {{/unless}}
 
-          <li class={{unless model.isDownloadable 'my-hidden'}}>
-            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'download'}}>
-                <i class="mdi mdi-download"></i>
-            </a>
-          </li>
-        {{/if}}
+        <li class={{unless model.isDownloadable 'my-hidden'}}>
+          <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'download'}}>
+              <i class="mdi mdi-download"></i>
+          </a>
+        </li>
       </ul>
     {{/c-fixed-btn}}
 
@@ -60,14 +60,12 @@
         </div>
 
         <div class="col s6 my-right">
-          {{#if model.isDownloaded}}
+          {{#if model.isBusy}}
+            {{c-spinner type='small'}}
+          {{else if model.isDownloaded}}
             <i class="mdi mdi-download"></i>
           {{else if model.isSaved}}
             <i class="mdi mdi-tag-heart"></i>
-          {{/if}}
-
-          {{#if model.isBusy}}
-            {{c-spinner type='small'}}
           {{/if}}
         </div>
       </div>

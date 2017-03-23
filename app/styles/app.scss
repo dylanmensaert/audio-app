@@ -427,7 +427,7 @@
         .col {
             padding: 0;
             .mdi {
-                font-size: 16px;
+                font-size: 18px;
                 padding-left: 15px;
             }
         }
@@ -542,7 +542,10 @@
     }
     
     .fixed-action-btn li a {
-        background: #64b5f6;
+        &,
+        &:hover {
+            background: #64b5f6;
+        }
     }
     
     .side-nav i {
