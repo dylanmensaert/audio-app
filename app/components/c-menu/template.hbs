@@ -1,8 +1,8 @@
 <ul id="slide-out" class="side-nav fixed">
-    {{c-menu-item value='Recommended' route='index' icon='whatshot'}}
-    {{c-menu-item value='Playlists' route='playlists' icon='loyalty'}}
-    {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='shop_two'}}
-    {{c-menu-item value='History' route='playlist' model='history' icon='library_books'}}
+    {{c-menu-item value='Recommended' route='index' icon='heart-pulse'}}
+    {{c-menu-item value='Playlists' route='playlists' icon='tag-heart'}}
+    {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='briefcase-download'}}
+    {{c-menu-item value='History' route='playlist' model='history' icon='library-books'}}
 
     <li>
         <div class="divider"></div>
@@ -14,7 +14,7 @@
 {{#c-fixed tagName='nav'}}
     <div class="nav-wrapper">
         <a href="javascript:void(0)" data-activates="slide-out" class="button-collapse">
-            <i class="material-icons">menu</i>
+            <i class="mdi mdi-menu"></i>
         </a>
 
         <div class="brand-logo truncate">
@@ -24,7 +24,7 @@
         <ul class="right">
             <li>
                 {{#link-to 'search.tracks' (query-params query=null)}}
-                    <i class="material-icons">search</i>
+                    <i class="mdi mdi-magnify"></i>
                 {{/link-to}}
             </li>
         </ul>

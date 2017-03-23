@@ -4,9 +4,9 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app'),
     Funnel = require('broccoli-funnel'),
     extraAssets = [];
 
-extraAssets.push(new Funnel('bower_components/material-design-icons/iconfont', {
+extraAssets.push(new Funnel('bower_components/mdi/fonts', {
     srcDir: '/',
-    destDir: '/assets'
+    destDir: '/fonts'
 }));
 
 extraAssets.push(new Funnel('bower_components/materialize/fonts/roboto', {
@@ -35,7 +35,7 @@ module.exports = function(defaults) {
     app.import('bower_components/materialize/dist/css/materialize.css');
     app.import('bower_components/materialize/dist/js/materialize.js');
 
-    app.import('bower_components/material-design-icons/iconfont/material-icons.css');
+    app.import('bower_components/mdi/css/materialdesignicons.css');
 
     app.import('bower_components/materialize/extras/noUiSlider/nouislider.css');
     app.import('bower_components/nouislider/distribute/nouislider.js');

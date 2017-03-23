@@ -7,14 +7,20 @@
 
             <ul class="right">
                 <li>
-                  <a href="javascript:void(0)" {{action 'delete'}}>
-                      <i class="material-icons {{unless savedPlaylists.length 'my-icon-disabled'}}">delete</i>
-                  </a>
+                    {{#if savablePlaylists.length}}
+                      <a href="javascript:void(0)" {{action 'save'}}>
+                          <i class="mdi mdi-tag-heart"></i>
+                      </a>
+                    {{else}}
+                      <a href="javascript:void(0)" {{action 'delete'}}>
+                          <i class="mdi mdi-tag-remove {{unless savedPlaylists.length 'my-icon-disabled'}}"></i>
+                      </a>
+                    {{/if}}
                 </li>
 
                 <li>
                     <a href="javascript:void(0)" {{action 'deselect'}}>
-                        <i class="material-icons">cancel</i>
+                        <i class="mdi mdi-close-circle"></i>
                     </a>
                 </li>
             </ul>

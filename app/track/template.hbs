@@ -8,25 +8,25 @@
     <div class="card-content my-track-content">
         {{#c-fixed-btn class='fixed-action-btn horizontal click-to-toggle my-card-content'}}
             <a class="btn-floating btn-large waves-effect waves-light red my-model-btn">
-                <i class="material-icons">menu</i>
+                <i class="mdi mdi-menu"></i>
             </a>
 
             <ul>
                 <li>
-                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light green" {{action 'transitionToPlaylists'}}>
-                        <i class="material-icons">loyalty</i>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'transitionToPlaylists'}}>
+                        <i class="mdi mdi-playlist-plus"></i>
                     </a>
                 </li>
 
                 <li class={{unless model.isDownloaded 'my-hidden'}}>
-                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
-                        <i class="material-icons">delete</i>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'delete'}}>
+                        <i class="mdi mdi-delete"></i>
                     </a>
                 </li>
 
                 <li class={{unless model.isDownloadable 'my-hidden'}}>
-                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
-                        <i class="material-icons">file_download</i>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'download'}}>
+                        <i class="mdi mdi-download"></i>
                     </a>
                 </li>
             </ul>
@@ -43,7 +43,7 @@
 
           <div class="col s6 my-right">
             {{#if model.isDownloaded}}
-              <i class="material-icons">file_download</i>
+              <i class="mdi mdi-download"></i>
             {{/if}}
 
             {{#if model.isDownloading}}

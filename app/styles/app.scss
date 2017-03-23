@@ -79,7 +79,7 @@
     .my-audio-icon {
         font-size: 48px;
         position: absolute;
-        top: 0;
+        top: -10px;
         left: calc(50% - 24px);
     }
     
@@ -384,13 +384,18 @@
     }
     
     .my-linear-blue {
-        background: rgba(147, 206, 222, 1);
-        background: -moz-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(147, 206, 222, 1)), color-stop(41%, rgba(117, 189, 209, 1)), color-stop(100%, rgba(73, 165, 191, 1)));
-        background: -webkit-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-        background: -o-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-        background: -ms-linear-gradient(left, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
-        background: linear-gradient(to right, rgba(147, 206, 222, 1) 0%, rgba(117, 189, 209, 1) 41%, rgba(73, 165, 191, 1) 100%);
+        /* IE10+ */
+        background-image: -ms-linear-gradient(left, #69BDFF 0%, #41759E 100%);
+        /* Mozilla Firefox */
+        background-image: -moz-linear-gradient(left, #69BDFF 0%, #41759E 100%);
+        /* Opera */
+        background-image: -o-linear-gradient(left, #69BDFF 0%, #41759E 100%);
+        /* Webkit (Safari/Chrome 10) */
+        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #69BDFF), color-stop(100, #41759E));
+        /* Webkit (Chrome 11+) */
+        background-image: -webkit-linear-gradient(left, #69BDFF 0%, #41759E 100%);
+        /* W3C Markup */
+        background-image: linear-gradient(to right, #69BDFF 0%, #41759E 100%);
     }
     
     .my-active {
@@ -421,7 +426,8 @@
         margin-bottom: 0;
         .col {
             padding: 0;
-            .material-icons {
+            .mdi {
+                font-size: 16px;
                 padding-left: 15px;
             }
         }
@@ -533,4 +539,12 @@
     
     .my-hidden {
         display: none !important;
+    }
+    
+    .fixed-action-btn li a {
+        background: #64b5f6;
+    }
+    
+    .side-nav i {
+        font-size: 20px;
     }

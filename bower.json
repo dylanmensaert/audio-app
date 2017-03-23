@@ -3,8 +3,8 @@
     "dependencies": {
         "moment": "2.15.1",
         "materialize": "git://github.com/dylanmensaert/materialize.git#8e74a6d3517ecb866b51983a7c56d14786ceefbd",
-        "material-design-icons": "3.0.1",
-        "nouislider": "8.5.1"
+        "nouislider": "8.5.1",
+        "mdi": "1.8.36"
     },
     "resolutions": {
         "jquery": ">=2.1.1"

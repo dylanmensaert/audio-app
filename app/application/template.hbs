@@ -31,11 +31,11 @@
               </div>
             {{else if audioPlayer.isPlaying}}
               <div class="col s2 my-audio-btn" {{action 'pause'}}>
-                  <i class="material-icons my-audio-icon">pause</i>
+                  <i class="mdi mdi-pause my-audio-icon"></i>
               </div>
             {{else if audioPlayer.isIdle}}
               <div class="col s2 my-audio-btn" {{action 'play'}}>
-                  <i class="material-icons my-audio-icon">play_arrow</i>
+                  <i class="mdi mdi-play my-audio-icon"></i>
               </div>
             {{/if}}
         </div>

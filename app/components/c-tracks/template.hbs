@@ -8,37 +8,37 @@
             <ul class="right">
                 <li>
                   <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
-                      <i class="material-icons">loyalty</i>
+                      <i class="mdi mdi-playlist-plus"></i>
                   </a>
                 </li>
 
                 <li>
                   <a href="javascript:void(0)" {{action 'downloadLater'}}>
-                      <i class="material-icons {{unless downloadLaterTracks.length 'my-icon-disabled'}}">shop_two</i>
+                      <i class="mdi mdi-briefcase-downloads {{unless downloadLaterTracks.length 'my-icon-disabled'}}"></i>
                   </a>
                 </li>
 
                 <li>
                   {{#if downloadableTracks.length}}
                     <a href="javascript:void(0)" {{action 'download'}}>
-                        <i class="material-icons">file_download</i>
+                        <i class="mdi mdi-download}"></i>
                     </a>
                   {{else}}
                     <a href="javascript:void(0)" {{action 'delete'}}>
-                        <i class="material-icons {{unless downloadedTracks.length 'my-icon-disabled'}}">delete</i>
+                        <i class="mdi mdi-delete {{unless downloadedTracks.length 'my-icon-disabled'}}"></i>
                     </a>
                   {{/if}}
                 </li>
 
                 <li>
                   <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
-                      <i class="material-icons {{unless playlist.canModify 'my-icon-disabled'}}">delete_sweep</i>
+                      <i class="mdi mdi-playlist-remove {{unless playlist.canModify 'my-icon-disabled'}}"></i>
                   </a>
                 </li>
 
                 <li>
                     <a href="javascript:void(0)" {{action 'deselect'}}>
-                        <i class="material-icons">cancel</i>
+                        <i class="mdi mdi-close-circle"></i>
                     </a>
                 </li>
             </ul>

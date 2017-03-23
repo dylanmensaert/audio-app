@@ -1,11 +1,11 @@
 <div class="button-collapse" {{action 'clear'}}>
-    <i class="material-icons">arrow_back</i>
+    <i class="mdi mdi-left"></i>
 </div>
 
 {{c-input value=value placeholder=placeholder action='done'}}
 
 {{#if value}}
     <div class="my-clear" {{action 'done'}}>
-        <i class="material-icons">done</i>
+        <i class="mdi mdi-check"></i>
     </div>
 {{/if}}

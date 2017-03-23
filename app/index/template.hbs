@@ -10,7 +10,7 @@
         {{c-tracks models=lastHistoryTracks}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
-            <i class="material-icons">chevron_right</i>
+            <i class="mdi mdi-chevron-right"></i>
         {{/link-to}}
       {{/if}}
 
@@ -18,7 +18,7 @@
         {{c-tracks models=relatedByTrack.relatedTracks}}
 
         {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next'}}
-            <i class="material-icons">chevron_right</i>
+            <i class="mdi mdi-chevron-right"></i>
         {{/link-to}}
       {{/each}}
     {{/if}}

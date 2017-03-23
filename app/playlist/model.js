@@ -39,8 +39,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     canModify: Ember.computed('isSaved', 'permission', function() {
         return this.get('isSaved') && this.get('permission') !== 'read-only';
     }),
-    isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
-        return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
+    isDownloaded: Ember.computed('tracks.length', 'isSaved', 'tracks.@each.isDownloaded', function() {
+        return this.get('tracks.length') && this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isBusy', function() {
         return !this.get('isDownloaded') && !this.get('isBusy');
