@@ -252,10 +252,10 @@
     }
     
     .my-next {
-        line-height: 0;
+        line-height: 33px;
+        height: 33px;
         margin-top: 3px;
         text-align: right;
-        padding: 4px 8px;
         background-color: #f0eeee;
         i {
             font-size: 29px;
@@ -427,7 +427,7 @@
         .col {
             padding: 0;
             .mdi {
-                font-size: 18px;
+                font-size: 20px;
                 padding-left: 15px;
             }
         }
@@ -543,7 +543,8 @@
     
     .fixed-action-btn li a {
         &,
-        &:hover {
+        &:hover,
+        &:focus {
             background: #64b5f6;
         }
     }

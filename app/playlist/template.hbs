@@ -64,7 +64,7 @@
             {{c-spinner type='small'}}
           {{else if model.isDownloaded}}
             <i class="mdi mdi-download"></i>
-          {{else if model.isSaved}}
+          {{else if (is-and model.isSaved (is-not model.permission))}}
             <i class="mdi mdi-tag-heart"></i>
           {{/if}}
         </div>
