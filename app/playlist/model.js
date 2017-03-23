@@ -42,6 +42,9 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     isDownloaded: Ember.computed('isSaved', 'tracks.@each.isDownloaded', function() {
         return this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
     }),
+    isDownloadable: Ember.computed('isDownloaded', 'isBusy', function() {
+        return !this.get('isDownloaded') && !this.get('isBusy');
+    }),
     playlistThumbnail: Ember.computed('tracks.firstObject.thumbnail', 'thumbnail', function() {
         let tracks = this.get('tracks'),
             thumbnail;

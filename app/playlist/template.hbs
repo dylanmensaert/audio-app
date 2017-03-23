@@ -22,35 +22,29 @@
       </a>
 
       <ul>
-        {{#if model.isEditable}}
-          <li>
-            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light green" {{action 'setupEdit'}}>
-              <i class="material-icons">mode_edit</i>
-            </a>
-          </li>
-        {{/if}}
+        <li class={{unless model.isEditable 'my-hidden'}}>
+          <a href="javascript:void(0)" class="btn-floating waves-effect waves-light green" {{action 'setupEdit'}}>
+            <i class="material-icons">mode_edit</i>
+          </a>
+        </li>
 
-        {{#if model.isSaved}}
-          <li>
-            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
-                <i class="material-icons">delete</i>
-            </a>
-          </li>
-        {{else}}
-          <li>
-            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light purple" {{action 'save'}}>
-                <i class="material-icons">attachment</i>
-            </a>
-          </li>
-        {{/if}}
+        <li class={{unless model.isSaved 'my-hidden'}}>
+          <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
+              <i class="material-icons">delete</i>
+          </a>
+        </li>
 
-        {{#unless model.isDownloaded}}
-          <li>
-            <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
-                <i class="material-icons">file_download</i>
-            </a>
-          </li>
-        {{/unless}}
+        <li class={{if model.isSaved 'my-hidden'}}>
+          <a href="javascript:void(0)" class="btn-floating waves-effect waves-light purple" {{action 'save'}}>
+              <i class="material-icons">attachment</i>
+          </a>
+        </li>
+
+        <li class={{unless model.isDownloadable 'my-hidden'}}>
+          <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
+              <i class="material-icons">file_download</i>
+          </a>
+        </li>
       </ul>
     {{/c-fixed-btn}}
 

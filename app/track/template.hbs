@@ -18,19 +18,17 @@
                     </a>
                 </li>
 
-                {{#if model.isDownloaded}}
-                    <li>
-                        <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
-                            <i class="material-icons">delete</i>
-                        </a>
-                    </li>
-                {{else if model.isDownloadable}}
-                    <li>
-                        <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
-                            <i class="material-icons">file_download</i>
-                        </a>
-                    </li>
-                {{/if}}
+                <li class={{unless model.isDownloaded 'my-hidden'}}>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light orange" {{action 'delete'}}>
+                        <i class="material-icons">delete</i>
+                    </a>
+                </li>
+
+                <li class={{unless model.isDownloadable 'my-hidden'}}>
+                    <a href="javascript:void(0)" class="btn-floating waves-effect waves-light blue" {{action 'download'}}>
+                        <i class="material-icons">file_download</i>
+                    </a>
+                </li>
             </ul>
         {{/c-fixed-btn}}
 
