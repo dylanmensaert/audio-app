@@ -552,3 +552,18 @@
     .side-nav i {
         font-size: 22px;
     }
+    
+    .my-playlist-content {
+        padding-right: 10px;
+        .row {
+            margin: 0;
+        }
+        .truncate {
+            width: calc(100% - 35px);
+            float: left;
+            margin-right: 10px;
+        }
+        i {
+            font-size: 20px;
+        }
+    }
