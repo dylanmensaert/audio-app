@@ -78,7 +78,9 @@ export default Ember.Service.extend({
             promise = this.loadSource(audio);
         } else {
             promise = track.findAudioSource().then(function(url) {
-                return this.loadSource(url);
+                if (url) {
+                    return this.loadSource(url);
+                }
             }.bind(this));
         }
 

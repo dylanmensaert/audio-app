@@ -25,34 +25,35 @@ export default DS.Model.extend(modelMixin, {
     init: function() {
         this._super();
 
-        if (this.get('isSaved')) {
-            this.get('fileSystem.instance').root.getFile(this.buildFilePath('audio'), {}, function() {
-                this.set('isDownloaded', true);
-            }.bind(this), function() {
-                this.set('isDownloaded', false);
-            }.bind(this));
-        }
-
         this.set('tracks', [
             this
         ]);
     },
+    offlineThumbnail: null,
+    thumbnail: Ember.computed('offlineThumbnail', 'onlineThumbnail', function() {
+        let thumbnail = this.get('offlineThumbnail');
+
+        if (!thumbnail) {
+            thumbnail = this.get('onlineThumbnail');
+        }
+
+        return thumbnail;
+    }),
+    propertyNames: ['offlineThumbnail', 'offlineAudio', 'onlineAudio'],
     tracks: null,
     utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     onlineAudio: null,
-    audio: Ember.computed('onlineAudio', 'isDownloaded', function() {
-        let audio;
+    audio: Ember.computed('offlineAudio', 'onlineAudio', function() {
+        let audio = this.get('offlineAudio');
 
-        if (this.get('isDownloaded')) {
-            audio = domainData.fileSystemName + '/' + this.buildFilePath('audio');
-        } else {
+        if (!audio) {
             audio = this.get('onlineAudio');
         }
 
         return audio;
     }),
-    isDownloaded: false,
+    isDownloaded: Ember.computed.bool('offlineAudio'),
     viewCount: null,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
         return this.get('fileSystem.trackIds').includes(this.get('id'));
@@ -185,9 +186,7 @@ export default DS.Model.extend(modelMixin, {
 
         if (!this.get('isSaved')) {
             saving = saving.then(function() {
-                return this.downloadSource('thumbnail', this.get('thumbnail')).then(function(thumbnail) {
-                    this.set('thumbnail', thumbnail);
-                }.bind(this));
+                return this.downloadSource('thumbnail');
             }.bind(this));
         }
 
@@ -195,17 +194,18 @@ export default DS.Model.extend(modelMixin, {
     },
     downloadAudio: function() {
         // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-        return this.downloadSource('audio', this.get('onlineAudio')).then(function() {
+        return this.downloadSource('audio').then(function() {
             this.get('downloadLater.trackIds').removeObject(this.get('id'));
-
-            this.set('isDownloaded', true);
         }.bind(this), function(reason) {
             return reason.message;
         });
     },
-    downloadSource: function(type, url) {
+    downloadSource: function(type) {
         let source = this.buildFilePath(type),
-            fileSystem = this.get('fileSystem');
+            name = Ember.String.camelize(type),
+            url = this.get('online' + name),
+            fileSystem = this.get('fileSystem'),
+            track = this;
 
         return new Ember.RSVP.Promise(function(resolve, reject) {
             let xhr = new XMLHttpRequest();
@@ -221,7 +221,9 @@ export default DS.Model.extend(modelMixin, {
                 }, function(fileEntry) {
                     fileEntry.createWriter(function(fileWriter) {
                         fileWriter.onwriteend = function() {
-                            resolve(fileEntry.toURL());
+                            track.set('offline' + name, fileEntry.toURL());
+
+                            resolve();
                         };
 
                         fileWriter.write(new Blob([response]));
@@ -232,18 +234,22 @@ export default DS.Model.extend(modelMixin, {
             xhr.send();
         });
     },
+    removeSource: function(type) {
+        let name = 'offline' + Ember.String.camelize(type);
+
+        return this.get('fileSystem').remove(this.get(name)).then(function() {
+            this.set(name, null);
+        }.bind(this));
+    },
     didRemove: function() {
         let promise;
 
         if (this.isReferenced()) {
             promise = Ember.RSVP.resolve();
         } else {
-            let fileSystem = this.get('fileSystem'),
-                promises;
-
-            promises = [
-                fileSystem.remove(this.get('audio')),
-                fileSystem.remove(this.get('thumbnail'))
+            let promises = [
+                this.removeSource('audio'),
+                this.removeSource('thumbnail')
             ];
 
             promise = Ember.RSVP.all(promises).then(function() {
@@ -257,7 +263,7 @@ export default DS.Model.extend(modelMixin, {
         let promise;
 
         if (this.isReferenced()) {
-            promise = this.get('fileSystem').remove(this.get('audio'));
+            promise = this.removeSource('audio');
         } else {
             promise = this.didRemove();
         }
