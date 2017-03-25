@@ -36,7 +36,7 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
 
                     this.send('changeSelect');
                 }
-            }, 500);
+            }, 1000);
         }
     },
     touchMove: function(event) {
