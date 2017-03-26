@@ -554,16 +554,11 @@
     }
     
     .my-playlist-content {
-        padding-right: 10px;
-        .row {
-            margin: 0;
-        }
-        .truncate {
-            width: calc(100% - 35px);
-            float: left;
-            margin-right: 10px;
-        }
         i {
             font-size: 20px;
+            position: absolute;
+            top: 0;
+            right: 7px;
+            opacity: 0.7;
         }
     }

@@ -22,6 +22,6 @@
 
 <div class="container">
   {{#each sortedPlaylists as |playlist|}}
-      {{c-playlist model=playlist changeSelect='changeSelect' isSubscribe=true}}
+      {{c-playlist model=playlist hideSaved=true changeSelect='changeSelect' isSubscribe=true}}
   {{/each}}
 </div>

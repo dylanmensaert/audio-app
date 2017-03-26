@@ -3,6 +3,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
     classNames: ['slider', 'my-slider'],
+    attributeBindings: ['disabled'],
+    // TODO: enable
+    disabled: true,
     slider: null,
     didInsertElement: function() {
         let slider = this.get('slider'),

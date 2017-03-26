@@ -31,7 +31,7 @@
 <div class="container">
     {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
         {{#each models as |playlist|}}
-            {{c-playlist model=playlist}}
+            {{c-playlist model=playlist hideSaved=hideSaved}}
         {{/each}}
 
         {{#if isPending}}

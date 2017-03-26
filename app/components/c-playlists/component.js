@@ -8,6 +8,7 @@ export default Ember.Component.extend(modelsMixin, {
     savedPlaylists: Ember.computed('selectedModels.@each.isSaved', function() {
         return this.get('selectedModels').filterBy('isSaved');
     }),
+    hideSaved: false,
     actions: {
         save: function() {
             let savablePlaylists = this.get('savablePlaylists'),

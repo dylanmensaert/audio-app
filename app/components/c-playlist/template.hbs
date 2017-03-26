@@ -3,13 +3,11 @@
 {{/link-to}}
 
 <div class="card-content my-playlist-content waves-effect" {{action 'changeSelect'}}>
-  <div class="row">
-      <div class="truncate">
-        {{model.name}}
-      </div>
+    <div class="truncate">
+      {{model.name}}
+    </div>
 
-      {{#if model.isSaved}}
-          <i class="mdi mdi-tag-heart"></i>
-      {{/if}}
-  </div>
+    {{#if showSaved}}
+        <i class="mdi mdi-tag-heart"></i>
+    {{/if}}
 </div>
