@@ -1,4 +1,4 @@
-/*global navigator*/
+/*global navigator, Hammer*/
 
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
@@ -23,38 +23,14 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     showDownloaded: Ember.computed('model.isDownloaded', 'hideDownloaded', function() {
         return this.get('model.isDownloaded') && !this.get('hideDownloaded');
     }),
-    touchStart: function(event) {
-        if (!this.get('model.isDisabled')) {
-            let startCoordinates = event.originalEvent.touches[0];
-
-            this.set('startCoordinates', startCoordinates);
-            this.set('isTouchHold', true);
-
-            Ember.run.later(this, function() {
-                if (this.get('isTouchHold')) {
-                    navigator.vibrate(50);
-
-                    this.send('changeSelect');
-                }
-            }, 1000);
-        }
-    },
-    touchMove: function(event) {
-        let startCoordinates = this.get('startCoordinates'),
-            coordinates = event.originalEvent.touches[0],
-            pageX = startCoordinates.pageX - coordinates.pageX,
-            pageY = startCoordinates.pageY - coordinates.pageY,
-            distance = Math.sqrt(Math.abs(pageX * pageX) + Math.abs(pageY * pageY));
-
-        if (distance > 10) {
-            this.set('isTouchHold', false);
-        }
-    },
-    touchEnd: function() {
-        this.set('isTouchHold', false);
-    },
     didInsertElement: function() {
         this.set('thumbnail', this.get('model.thumbnail'));
+
+        new Hammer(this.$()[0]).on('press', function() {
+            navigator.vibrate(50);
+
+            this.send('changeSelect');
+        }.bind(this));
     },
     actions: {
         play: function() {
