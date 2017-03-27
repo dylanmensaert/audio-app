@@ -152,7 +152,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
             promise = promise.finally(function() {
                 return this.downloadNextTrack(index + 1);
-            }.bind(this))
+            }.bind(this));
         }
 
         return promise;
