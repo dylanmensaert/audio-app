@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
+import cordova from 'cordova';
 import musicControls from 'music-controls';
 
 export default Ember.Service.extend({

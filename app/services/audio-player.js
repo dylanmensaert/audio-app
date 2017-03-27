@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import cordova from 'cordova';
 import musicControls from 'music-controls';
 
 const errors = [
