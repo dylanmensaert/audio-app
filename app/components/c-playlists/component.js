@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+    utils: Ember.inject.service(),
     savablePlaylists: Ember.computed('selectedModels.@each.isSaved', function() {
         return this.get('selectedModels').filterBy('isSaved', false);
     }),
@@ -12,6 +13,12 @@ export default Ember.Component.extend({
     selectedModels: Ember.computed('models.@each.isSelected', function() {
         return this.get('models').filterBy('isSelected');
     }),
+    deselect: function() {
+        this.get('selectedModels').setEach('isSelected', false);
+    },
+    willDestroyElement: function() {
+        this.deselect();
+    },
     actions: {
         save: function() {
             let savablePlaylists = this.get('savablePlaylists'),
@@ -38,7 +45,7 @@ export default Ember.Component.extend({
             }
         },
         deselect: function() {
-            this.get('selectedModels').setEach('isSelected', false);
+            this.deselect();
         }
     }
 });

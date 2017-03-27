@@ -14,16 +14,22 @@ export default Ember.Component.extend({
     downloadedTracks: Ember.computed('models.@each.isDownloaded', function() {
         return this.get('models').filterBy('isDownloaded');
     }),
+    deselect: function() {
+        this.get('models').setEach('isSelected', false);
+    },
+    willDestroyElement: function() {
+        this.deselect();
+    },
     actions: {
         removeFromPlaylist: function() {
             let playlist = this.get('playlist');
 
             if (playlist && playlist.get('canModify')) {
-                let selectedTracks = this.get('models'),
-                    length = selectedTracks.get('length');
+                let tracks = this.get('models'),
+                    length = tracks.get('length');
 
                 if (length) {
-                    selectedTracks.toArray().forEach(function(track) {
+                    tracks.toArray().forEach(function(track) {
                         playlist.removeTrack(track);
                     });
 
@@ -88,7 +94,7 @@ export default Ember.Component.extend({
             utils.transitionToRoute('subscribe');
         },
         deselect: function() {
-            this.get('models').setEach('isSelected', false);
+            this.deselect();
         }
     }
 });

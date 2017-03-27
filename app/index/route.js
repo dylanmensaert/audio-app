@@ -18,9 +18,6 @@ export default Ember.Route.extend({
             });
 
             this.controller.set('lastHistoryTracks', lastHistoryTracks);
-        },
-        willTransition: function() {
-            this.controller.get('selectedTracks').setEach('isSelected', false);
         }
     }
 });

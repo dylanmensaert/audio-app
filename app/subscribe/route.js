@@ -4,9 +4,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
     utils: Ember.inject.service(),
     actions: {
-        willTransition: function() {
-            this.controller.get('playlists').setEach('isSelected', false);
-        },
         didTransition: function() {
             let tracks = this.controller.get('tracks');
 

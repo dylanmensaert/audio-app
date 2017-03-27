@@ -40,18 +40,18 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return this.get('isSaved') && this.get('permission') !== 'read-only';
     }),
     isDownloaded: Ember.computed('tracks.length', 'isSaved', 'tracks.@each.isDownloaded', function() {
-        return this.get('tracks.length') && this.get('isSaved') && this.get('tracks').isEvery('isDownloaded');
+        let tracks = this.get('tracks');
+
+        return tracks.get('length') && this.get('isSaved') && tracks.isEvery('isDownloaded');
     }),
     isDownloadable: Ember.computed('isDownloaded', 'isBusy', function() {
         return !this.get('isDownloaded') && !this.get('isBusy');
     }),
     thumbnail: Ember.computed('tracks.firstObject.thumbnail', 'onlineThumbnail', function() {
-        let tracks = this.get('tracks'),
+        let track = this.get('tracks.firstObject'),
             thumbnail;
 
-        if (tracks.get('length')) {
-            let track = tracks.get('firstObject');
-
+        if (track) {
             thumbnail = track.get('thumbnail');
         } else {
             thumbnail = this.get('onlineThumbnail');

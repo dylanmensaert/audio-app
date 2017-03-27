@@ -11,8 +11,5 @@ export default Ember.Route.extend(modelRouteMixin, {
         }
 
         return promise;
-    },
-    willTransition: function() {
-        this.controller.get('selectedTracks').setEach('isSelected', false);
     }
 });
