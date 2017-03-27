@@ -1,7 +1,7 @@
 {{c-track-actions models=selectedTracks playlist=playlist}}
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
-    {{#each model.tracks as |track|}}
+    {{#each models as |track|}}
         {{c-track model=track hideDownloaded=model.isDownloaded play='playTrack'}}
     {{/each}}
 
