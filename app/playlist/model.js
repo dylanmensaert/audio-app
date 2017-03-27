@@ -141,19 +141,21 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     downloadNextTrack: function(index) {
         let trackId = this.get('trackIds').objectAt(index),
-            promise;
+            promise = Ember.RSVP.resolve();
 
         if (trackId) {
             let track = this.get('store').peekRecord('track', trackId);
 
             if (track.get('isDownloadable')) {
-                promise = track.download().finally(function() {
-                    return this.downloadNextTrack(index + 1);
-                }.bind(this));
+                promise = track.download();
             }
+
+            promise = promise.finally(function() {
+                return this.downloadNextTrack(index + 1);
+            }.bind(this))
         }
 
-        return Ember.RSVP.resolve(promise);
+        return promise;
     },
     pushTrack: function(track) {
         this.get('trackIds').pushObject(track.get('id'));

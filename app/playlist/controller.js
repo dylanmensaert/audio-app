@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
         download: function() {
             let playlist = this.get('model');
 
-            playlist.download(this.get('nextPageToken'));
+            playlist.download();
             this.get('utils').showMessage('Downloading playlist');
         },
         save: function() {
