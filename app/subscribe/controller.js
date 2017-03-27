@@ -9,8 +9,7 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
             let utils = this.get('utils'),
                 tracks = this.get('tracks'),
                 length = tracks.get('length'),
-                playlistTrackIds = playlist.get('trackIds'),
-                store = this.get('store');
+                playlistTrackIds = playlist.get('trackIds');
 
             if (playlist.get('isSelected')) {
                 tracks.forEach(function(track) {
