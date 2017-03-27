@@ -34,8 +34,7 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     },
     actions: {
         play: function() {
-            //this.sendAction('play', this.get('model'));
-            this.send('changeSelect');
+            this.sendAction('play', this.get('model'));
         }
     }
 });
