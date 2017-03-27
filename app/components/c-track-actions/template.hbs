@@ -1,0 +1,47 @@
+{{#if models.length}}
+  <nav class="my-fixed-row my-action-row">
+      <div class="nav-wrapper">
+          <div class="my-badge">
+              {{models.length}}
+          </div>
+
+          <ul class="right">
+              <li>
+                <a href="javascript:void(0)" {{action 'transitionToPlaylists'}}>
+                    <i class="mdi mdi-playlist-plus"></i>
+                </a>
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" {{action 'downloadLater'}}>
+                    <i class="mdi mdi-briefcase-download {{unless downloadLaterTracks.length 'my-icon-disabled'}}"></i>
+                </a>
+              </li>
+
+              <li>
+                {{#if downloadableTracks.length}}
+                  <a href="javascript:void(0)" {{action 'download'}}>
+                      <i class="mdi mdi-download"></i>
+                  </a>
+                {{else}}
+                  <a href="javascript:void(0)" {{action 'delete'}}>
+                      <i class="mdi mdi-delete {{unless downloadedTracks.length 'my-icon-disabled'}}"></i>
+                  </a>
+                {{/if}}
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" {{action 'removeFromPlaylist'}}>
+                    <i class="mdi mdi-playlist-remove {{unless playlist.canModify 'my-icon-disabled'}}"></i>
+                </a>
+              </li>
+
+              <li>
+                  <a href="javascript:void(0)" {{action 'deselect'}}>
+                      <i class="mdi mdi-close-circle"></i>
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </nav>
+{{/if}}

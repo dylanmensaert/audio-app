@@ -2,11 +2,13 @@ import Ember from 'ember';
 import DS from 'ember-data';
 import searchMixin from 'audio-app/mixins/search';
 import logic from 'audio-app/utils/logic';
+import trackActionsMixin from 'audio-app/mixins/actions-track';
 
 const relatedTracksLimit = 4;
 
-export default Ember.Controller.extend(searchMixin, {
+export default Ember.Controller.extend(searchMixin, trackActionsMixin, {
     lastHistoryTracks: null,
+    relatedTracks: null,
     relatedByTracks: Ember.computed('lastHistoryTracks.[]', function() {
         let lastHistoryTracks = this.get('lastHistoryTracks'),
             shownTrackIds = [],
@@ -27,7 +29,11 @@ export default Ember.Controller.extend(searchMixin, {
                 return Ember.Object.extend({
                     // TODO: Youtube API, viewCount not working in combination with relatedVideoId
                     trackSorting: ['viewCount:desc'],
-                    sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting')
+                    sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting'),
+                    selectedRelatedTracks: Ember.computed.filterBy('relatedTracks', 'isSelected', true),
+                    numberOfSelections: Ember.computed('selectedRelatedTracks.length', function() {
+                        return this.get('selectedRelatedTracks.length');
+                    })
                 }).create({
                     track: historyTrack,
                     relatedTracks: relatedTracks
@@ -62,21 +68,19 @@ export default Ember.Controller.extend(searchMixin, {
             promise: promise
         });
     }),
-    selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', function() {
+    selectedTracks: Ember.computed('lastHistoryTracks.@each.isSelected', 'relatedByTracks.@each.numberOfSelections', function() {
         let selectedLastHistoryTracks = this.get('lastHistoryTracks').filterBy('isSelected'),
             selectedTracks = [];
 
         selectedTracks.pushObjects(selectedLastHistoryTracks);
 
         this.get('relatedByTracks').forEach(function(relatedByTrack) {
-            selectedTracks.pushObjects(relatedByTrack.get('relatedTracks').filterBy('isSelected'));
+            // TODO: workaround to trigger numberOfSelections
+            relatedByTrack.get('numberOfSelections');
+
+            selectedTracks.pushObjects(relatedByTrack.get('selectedRelatedTracks'));
         });
 
         return selectedTracks;
-    }),
-    actions: {
-        changeSelect: function() {
-            this.notifyPropertyChange('selectedTracks');
-        }
-    }
+    })
 });

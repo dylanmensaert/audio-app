@@ -3,11 +3,15 @@
 {{/c-menu}}
 
 <main>
+    {{c-track-actions models=selectedTracks}}
+
     {{#if relatedByTracks.isPending}}
       {{c-spinner class='my-spinner'}}
     {{else}}
       {{#if lastHistoryTracks}}
-        {{c-tracks models=lastHistoryTracks}}
+        {{#each lastHistoryTracks as |track|}}
+            {{c-track model=track play='playTrack'}}
+        {{/each}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
             <i class="mdi mdi-chevron-right"></i>
@@ -15,7 +19,9 @@
       {{/if}}
 
       {{#each relatedByTracks as |relatedByTrack|}}
-        {{c-tracks models=relatedByTrack.relatedTracks}}
+        {{#each relatedByTrack.relatedTracks as |track|}}
+            {{c-track model=track play='playTrack'}}
+        {{/each}}
 
         {{#link-to 'track.related' relatedByTrack.track tagName='div' class='my-next'}}
             <i class="mdi mdi-chevron-right"></i>

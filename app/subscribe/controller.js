@@ -3,19 +3,18 @@ import playlistsControllerMixin from 'audio-app/mixins/controller-playlists';
 
 export default Ember.Controller.extend(playlistsControllerMixin, {
     utils: Ember.inject.service(),
+    tracks: null,
     actions: {
         changeSelect: function(playlist) {
             let utils = this.get('utils'),
-                selectedTrackIds = utils.get('selectedTrackIds'),
-                length = selectedTrackIds.get('length'),
-                trackIds = playlist.get('trackIds'),
+                tracks = this.get('tracks'),
+                length = tracks.get('length'),
+                playlistTrackIds = playlist.get('trackIds'),
                 store = this.get('store');
 
             if (playlist.get('isSelected')) {
-                selectedTrackIds.forEach(function(trackId) {
-                    if (!trackIds.includes(trackId)) {
-                        let track = store.peekRecord('track', trackId);
-
+                tracks.forEach(function(track) {
+                    if (!playlistTrackIds.includes(track.get('id'))) {
                         playlist.pushTrack(track);
                     }
                 });
@@ -24,10 +23,8 @@ export default Ember.Controller.extend(playlistsControllerMixin, {
 
                 utils.showMessage('Added to playlist (' + length + ')');
             } else {
-                selectedTrackIds.forEach(function(trackId) {
-                    if (trackIds.includes(trackId)) {
-                        let track = store.peekRecord('track', trackId);
-
+                tracks.forEach(function(track) {
+                    if (playlistTrackIds.includes(track.get('id'))) {
                         playlist.removeTrack(track);
                     }
                 });

@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import modelsMixin from 'audio-app/mixins/c-models';
 
-export default Ember.Component.extend(modelsMixin, {
+export default Ember.Component.extend({
     savablePlaylists: Ember.computed('selectedModels.@each.isSaved', function() {
         return this.get('selectedModels').filterBy('isSaved', false);
     }),
@@ -9,6 +8,10 @@ export default Ember.Component.extend(modelsMixin, {
         return this.get('selectedModels').filterBy('isSaved');
     }),
     hideSaved: false,
+    models: [],
+    selectedModels: Ember.computed('models.@each.isSelected', function() {
+        return this.get('models').filterBy('isSelected');
+    }),
     actions: {
         save: function() {
             let savablePlaylists = this.get('savablePlaylists'),
@@ -33,6 +36,9 @@ export default Ember.Component.extend(modelsMixin, {
 
                 this.get('utils').showMessage('Removed locally (' + length + ')');
             }
+        },
+        deselect: function() {
+            this.get('selectedModels').setEach('isSelected', false);
         }
     }
 });

@@ -24,8 +24,7 @@ export default Ember.Controller.extend({
         transitionToPlaylists: function() {
             let utils = this.get('utils');
 
-            utils.set('selectedTrackIds', [this.get('model.id')]);
-
+            utils.controllerFor('subscribe').set('tracks', [this.get('model')]);
             utils.transitionToRoute('subscribe');
         }
     }

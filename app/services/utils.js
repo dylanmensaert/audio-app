@@ -25,7 +25,6 @@ export default Ember.Service.extend({
         }.bind(this));
     },
     fileSystem: null,
-    selectedTrackIds: [],
     showMessage: function(message) {
         Materialize.toast(message, 3000);
     },

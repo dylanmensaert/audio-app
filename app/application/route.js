@@ -13,6 +13,7 @@ export default Ember.Route.extend({
     },
     afterModel: function() {
         this.set('utils.transitionToRoute', this.transitionTo.bind(this));
+        this.set('utils.controllerFor', this.controllerFor.bind(this));
 
         this.get('audioRemote').connect();
 

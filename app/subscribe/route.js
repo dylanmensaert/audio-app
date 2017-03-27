@@ -8,12 +8,12 @@ export default Ember.Route.extend({
             this.controller.get('playlists').setEach('isSelected', false);
         },
         didTransition: function() {
-            let selectedTrackIds = this.get('utils.selectedTrackIds');
+            let tracks = this.controller.get('tracks');
 
-            if (selectedTrackIds.get('length')) {
+            if (tracks.get('length')) {
                 this.controller.get('playlists').forEach(function(playlist) {
-                    let isSelected = selectedTrackIds.every(function(selectedTrackId) {
-                        return playlist.get('trackIds').includes(selectedTrackId);
+                    let isSelected = tracks.every(function(track) {
+                        return playlist.get('trackIds').includes(track.get('id'));
                     });
 
                     playlist.set('isSelected', isSelected);
