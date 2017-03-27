@@ -202,7 +202,7 @@ export default DS.Model.extend(modelMixin, {
     },
     downloadSource: function(type) {
         let source = this.buildFilePath(type),
-            name = Ember.String.camelize(type),
+            name = Ember.String.capitalize(type),
             url = this.get('online' + name),
             fileSystem = this.get('fileSystem'),
             track = this;
@@ -235,7 +235,7 @@ export default DS.Model.extend(modelMixin, {
         });
     },
     removeSource: function(type) {
-        let name = 'offline' + Ember.String.camelize(type);
+        let name = 'offline' + Ember.String.capitalize(type);
 
         return this.get('fileSystem').remove(this.get(name)).then(function() {
             this.set(name, null);
