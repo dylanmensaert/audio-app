@@ -1,7 +1,21 @@
 import Ember from 'ember';
 import AudioSlider from 'audio-app/components/c-audio-slider/object';
+import musicControls from 'music-controls';
 
 export default Ember.Service.extend({
+    init: function() {
+        this._super();
+
+        cordova.onDeviceReady.then(function() {
+            musicControls.init(this, {
+                'music-controls-previous': this.previous,
+                'music-controls-next': this.next,
+                'music-controls-pause': this.pause,
+                'music-controls-play': this.play,
+                'music-controls-destroy': this.pause
+            });
+        }.bind(this));
+    },
     audioPlayer: Ember.inject.service(),
     fileSystem: Ember.inject.service(),
     utils: Ember.inject.service(),
