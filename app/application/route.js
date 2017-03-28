@@ -18,14 +18,16 @@ export default Ember.Route.extend({
         this.get('audioRemote').connect();
 
         connection.on('wifi', function() {
-            let downloadLater = this.store.peekRecord('playlist', 'download-later'),
-                trackIds = downloadLater.get('trackIds');
+            if (this.get('fileSystem.downloadLater')) {
+                let downloadLater = this.store.peekRecord('playlist', 'download-later'),
+                    trackIds = downloadLater.get('trackIds');
 
-            trackIds.toArray().forEach(function(trackId) {
-                let track = this.store.peekRecord('track', trackId);
+                trackIds.toArray().forEach(function(trackId) {
+                    let track = this.store.peekRecord('track', trackId);
 
-                track.download();
-            }.bind(this));
+                    track.download();
+                }.bind(this));
+            }
         }.bind(this));
 
         Ember.$('.my-splash-spinner').remove();
