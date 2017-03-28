@@ -7,20 +7,12 @@ export default Ember.Component.extend(scrollMixin, {
     classNames: ['my-fixed-row'],
     classNameBindings: ['transitionClassName'],
     placeholder: null,
-    alignmentAtStart: 'top',
-    alignmentWithValue: null,
+    isFixed: true,
     offset: 0,
-    getAlignment: function() {
-        let alignment = this.get('alignment');
-
-        if (!alignment) {
-            alignment = 'top';
-        }
-
-        return alignment;
-    },
+    alignment: 'top',
+    value: null,
     transitionClassName: Ember.computed('alignment', function() {
-        return 'my-transition-' + this.getAlignment();
+        return 'my-transition-' + this.get('alignment');
     }),
     updatePosition: function(dohide) {
         let placeholder = this.get('placeholder'),
@@ -30,9 +22,9 @@ export default Ember.Component.extend(scrollMixin, {
         placeholder.show();
 
         if (dohide) {
-            offset = placeholder.outerHeight();
+            offset = placeholder.outerHeight(true);
         } else {
-            offset = 0 - this.get('alignmentWithValue').value;
+            offset = 0 - this.get('value');
         }
 
         if (placeholder.offset().top + offset < Ember.$(window).scrollTop()) {
@@ -46,29 +38,24 @@ export default Ember.Component.extend(scrollMixin, {
         this.$().css('position', position);
     },
     updateTransition: function(doHide) {
-        let alignment = this.get('alignmentWithValue'),
-            element = this.$(),
-            value = alignment.value;
+        let element = this.$(),
+            value = this.get('value');
 
         if (doHide) {
-            value = this.get('offset') - element.outerHeight();
+            value = this.get('offset') - element.outerHeight(true);
         }
 
-        element.css(alignment.name, value);
+        element.css(this.get('alignment'), value);
     },
     didInsertElement: function() {
-        let alignment = this.getAlignment(),
-            element = this.$(),
+        let element = this.$(),
             placeholder,
             onscroll;
 
-        this.set('alignmentWithValue', {
-            name: alignment,
-            value: parseInt(element.css(alignment))
-        });
+        this.set('value', parseInt(element.css(this.get('alignment'))));
 
         placeholder = Ember.$('<div>', {
-            height: element.outerHeight()
+            height: element.outerHeight(true)
         });
 
         placeholder.css('background-color', element.css('background-color'));
@@ -76,7 +63,7 @@ export default Ember.Component.extend(scrollMixin, {
         element.before(placeholder);
         this.set('placeholder', placeholder);
 
-        if (this.get('alignmentAtStart')) {
+        if (this.get('isFixed')) {
             onscroll = this.updateTransition;
         } else {
             onscroll = function(doHide) {
