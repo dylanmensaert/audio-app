@@ -15,10 +15,12 @@ export default Ember.Component.extend(scrollMixin, {
         return 'my-transition-' + this.get('alignment');
     }),
     updatePosition: function(dohide) {
-        let placeholder = this.get('placeholder'),
+        let element = this.$(),
+            placeholder = this.get('placeholder'),
             offset,
             position;
 
+        element.css('position', 'fixed');
         placeholder.show();
 
         if (dohide) {
@@ -35,7 +37,7 @@ export default Ember.Component.extend(scrollMixin, {
             position = 'static';
         }
 
-        this.$().css('position', position);
+        element.css('position', position);
     },
     updateTransition: function(doHide) {
         let element = this.$(),
