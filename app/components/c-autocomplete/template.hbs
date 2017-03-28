@@ -1,9 +1,11 @@
 {{c-input value=value placeholder='Search' action='searchSelected' didFocusOut='didFocusOut'}}
 
-{{#if value}}
-    <div class="my-clear" {{action 'clear'}}>
-        <i class="mdi mdi-close"></i>
-    </div>
+{{#if isPending}}
+  {{c-spinner}}
+{{else if value}}
+  <div class="my-clear" {{action 'clear'}}>
+      <i class="mdi mdi-close"></i>
+  </div>
 {{/if}}
 
 {{#if showAutoComplete}}

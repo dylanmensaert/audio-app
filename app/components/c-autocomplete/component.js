@@ -8,6 +8,7 @@ let timer;
 
 export default Ember.Component.extend({
     classNames: ['my-autocomplete'],
+    isPending: false,
     value: null,
     suggestions: null,
     showSuggestions: false,

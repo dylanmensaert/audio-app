@@ -14,18 +14,19 @@ export default Ember.Controller.extend({
     }),
     value: '',
     suggestions: [],
+    searching: null,
     updateSuggestions: Ember.observer('value', function() {
-        let value = this.get('value'),
-            suggestions = [];
+        let value = this.get('value');
 
         if (value) {
-            this.peek('track');
-            this.peek('playlist');
+            let url = domainData.suggestName + '/complete/search?client=firefox&ds=yt&q=' + value,
+                promise = Ember.$.getJSON(url),
+                searching;
 
-            if (connection.getIsOnline() && suggestions.get('length') < maxSuggestions) {
-                let url = domainData.suggestName + '/complete/search?client=firefox&ds=yt&q=' + value;
+            promise = connection.resolve(function() {
+                return Ember.$.getJSON(url).then(function(response) {
+                    let suggestions = [];
 
-                Ember.$.getJSON(url).then(function(response) {
                     response[1].any(function(suggestion) {
                         suggestions.pushObject(Suggestion.create({
                             value: suggestion
@@ -34,14 +35,28 @@ export default Ember.Controller.extend({
                         return suggestions.get('length') >= maxSuggestions;
                     });
 
-                    this.set('suggestions', suggestions);
-                }.bind(this));
-            }
+                    return suggestions;
+                });
+            }, function() {
+                let suggestions = [];
+
+                this.peek('track', suggestions);
+                this.peek('playlist', suggestions);
+
+                return suggestions;
+            }.bind(this)).then(function(suggestions) {
+                this.set('suggestions', suggestions);
+            }.bind(this));
+
+            searching = logic.ObjectPromiseProxy.create({
+                promise: promise
+            });
+
+            this.set('searching', searching);
         }
     }),
-    peek: function(modelName) {
-        let value = this.get('value'),
-            suggestions = this.get('suggestions');
+    peek: function(modelName, suggestions) {
+        let value = this.get('value');
 
         this.store.peekAll(modelName).any(function(snippet) {
             let suggestion = snippet.get('name');

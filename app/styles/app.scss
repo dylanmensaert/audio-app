@@ -168,6 +168,16 @@
                 }
             }
         }
+        .preloader-wrapper {
+            position: absolute;
+            top: 16px;
+            right: 19px;
+            height: 22px;
+            width: 22px;
+            .spinner-layer {
+                border-color: white;
+            }
+        }
     }
     
     .my-clear {
