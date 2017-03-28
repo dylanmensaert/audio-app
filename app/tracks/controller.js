@@ -2,24 +2,23 @@ import Ember from 'ember';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Controller.extend({
+    fileSystem: Ember.inject.service(),
     tracks: Ember.computed('fileSystem.trackIds.[]', function() {
         let trackIds = this.get('fileSystem.trackIds'),
-            store = this.store,
-            tracks = [];
+            tracks;
 
         if (trackIds) {
-            trackIds.forEach(function(trackId) {
-                let track = store.peekRecord('track', trackId);
+            let store = this.store;
 
-                if (track.get('isDownloaded')) {
-                    tracks.pushObject(track);
-                }
+            tracks = trackIds.map(function(trackId) {
+                return store.peekRecord('track', trackId);
             });
         }
 
         return tracks;
     }),
-    sortedTracks: Ember.computed.sort('tracks', function(track, other) {
+    downloadedTracks: Ember.computed.filterBy('tracks', 'isDownloaded', true),
+    sortedTracks: Ember.computed.sort('downloadedTracks', function(track, other) {
         return logic.sortByName(track, other);
     })
 });
