@@ -77,16 +77,6 @@ export default DS.Model.extend(modelMixin, {
         return !this.get('connection.isWifi') && this.get('isDownloadable') && !downloadLater.get('trackIds').includes(this.get('id'));
     }),
     isDisabled: false,
-    isReferenced: function() {
-        let store = this.store,
-            id = this.get('id');
-
-        return this.get('fileSystem.playlistIds').any(function(playlistId) {
-            let playlist = store.peekRecord('playlist', playlistId);
-
-            return playlist.get('trackIds').includes(id);
-        });
-    },
     buildFilePath: function(type) {
         let directory = Inflector.inflector.pluralize(type);
 
@@ -109,7 +99,10 @@ export default DS.Model.extend(modelMixin, {
 
             return Ember.$.ajax(signateUrl(url)).then(function(info) {
                 if (info === 'pushItemYTError();') {
-                    this.setDisabled();
+                    this.set('isSelected', false);
+                    this.set('isDisabled', true);
+
+                    this.get('utils').showMessage('Track not available');
 
                     url = null;
                 } else {
@@ -133,23 +126,15 @@ export default DS.Model.extend(modelMixin, {
 
         return Ember.RSVP.resolve(promise);
     },
-    setDisabled: function() {
-        if (!this.get('isDisabled')) {
-            let store = this.get('store'),
-                id = this.get('id');
+    isReferenced: function() {
+        let store = this.store,
+            id = this.get('id');
 
-            this.get('fileSystem.playlistIds').forEach(function(playlistId) {
-                let playlist = store.peekRecord('playlist', playlistId);
+        return this.get('fileSystem.playlistIds').any(function(playlistId) {
+            let playlist = store.peekRecord('playlist', playlistId);
 
-                playlist.get('trackIds').removeObject(id);
-            });
-
-            this.remove();
-
-            this.set('isSelected', false);
-            this.set('isDisabled', true);
-            this.get('utils').showMessage('Track not available');
-        }
+            return playlist.get('trackIds').includes(id);
+        });
     },
     isDownloading: Ember.computed('downloading.isPending', function() {
         return this.get('downloading.isPending');
@@ -241,33 +226,30 @@ export default DS.Model.extend(modelMixin, {
             this.set(name, null);
         }.bind(this));
     },
-    didRemove: function() {
+    didRemoveFromPlaylist: function() {
         let promise;
 
-        if (this.isReferenced()) {
-            promise = Ember.RSVP.resolve();
+        if (!this.get('isDownloaded') && !this.isReferenced()) {
+            promise = this.remove(true);
         } else {
-            let promises = [
-                this.removeSource('audio'),
-                this.removeSource('thumbnail')
-            ];
-
-            promise = Ember.RSVP.all(promises).then(function() {
-                return this.removeRecord('track');
-            }.bind(this));
+            promise = Ember.RSVP.resolve();
         }
 
         return promise;
     },
-    remove: function() {
-        let promise;
+    remove: function(isForced) {
+        let promises = [
+            this.removeSource('audio')
+        ];
 
-        if (this.isReferenced()) {
-            promise = this.removeSource('audio');
-        } else {
-            promise = this.didRemove();
+        if (isForced || !this.isReferenced()) {
+            let promise = this.removeSource('thumbnail').then(function() {
+                this.removeRecord('track');
+            }.bind(this));
+
+            promises.pushObject(promise);
         }
 
-        return promise;
+        return Ember.RSVP.all(promises);
     }
 });

@@ -44,8 +44,8 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return tracks.get('length') && this.get('isSaved') && tracks.isEvery('isDownloaded');
     }),
-    isDownloadable: Ember.computed('isDownloaded', 'isBusy', function() {
-        return !this.get('isDownloaded') && !this.get('isBusy');
+    isDownloadable: Ember.computed('isDownloaded', 'isBusy', 'tracks.length', function() {
+        return !this.get('isDownloaded') && !this.get('isBusy') && this.get('tracks.length');
     }),
     thumbnail: Ember.computed('tracks.firstObject.thumbnail', 'onlineThumbnail', function() {
         let track = this.get('tracks.firstObject'),
@@ -170,19 +170,20 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     removeTrack: function(track) {
         this.get('trackIds').removeObject(track.get('id'));
 
-        return track.didRemove();
+        return track.didRemoveFromPlaylist();
     },
     remove: function() {
-        let store = this.get('store');
+        let store = this.get('store'),
+            promises;
 
-        return this.removeRecord('playlist').then(function() {
-            let promises = this.get('trackIds').map(function(trackId) {
-                let track = store.peekRecord('track', trackId);
+        promises = this.get('trackIds').map(function(trackId) {
+            let track = store.peekRecord('track', trackId);
 
-                return track.didRemove();
-            }.bind(this));
+            return this.removeTrack(track);
+        }.bind(this));
 
-            return Ember.RSVP.all(promises);
+        return Ember.RSVP.all(promises).then(function() {
+            this.removeRecord('playlist');
         }.bind(this));
     }
 });

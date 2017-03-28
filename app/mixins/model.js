@@ -14,15 +14,13 @@ export default Ember.Mixin.create({
     removeRecord: function(type) {
         let fileSystem = this.get('fileSystem'),
             id = this.get('id'),
-            records = fileSystem.get(type + 'Ids'),
-            promise;
+            records = fileSystem.get(type + 'Ids');
 
         if (records.includes(id)) {
             records.removeObject(id);
+            this.set('isSelected', false);
 
-            promise = fileSystem.save();
+            fileSystem.save();
         }
-
-        return Ember.RSVP.resolve(promise);
     }
 });

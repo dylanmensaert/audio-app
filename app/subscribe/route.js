@@ -18,6 +18,9 @@ export default Ember.Route.extend({
             } else {
                 history.back();
             }
+        },
+        willTransition: function() {
+            this.controller.get('playlists').setEach('isSelected', false);
         }
     }
 });

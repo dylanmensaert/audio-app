@@ -23,19 +23,14 @@ export default Ember.Controller.extend({
             }
         },
         removeFromPlaylist: function() {
-            let trackIds = this.get('selectedTracks').mapBy('id'),
-                store = this.get('store'),
-                playlist = this.get('model'),
-                tracks = this.get('models');
+            let playlist = this.get('model');
 
-            trackIds.forEach(function(trackId) {
-                let track = store.peekRecord('track', trackId);
-
-                playlist.removeTrack(track).then(function() {
-                    track.set('isSelected', false);
-
-                    tracks.removeObject(track);
-                });
+            playlist.get('tracks').forEach(function(track) {
+                if (track.get('isSelected')) {
+                    playlist.removeTrack(track).then(function() {
+                        track.set('isSelected', false);
+                    });
+                }
             });
         },
         play: function() {

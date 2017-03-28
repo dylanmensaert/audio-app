@@ -25,6 +25,7 @@ Router.map(function() {
     });
 
     this.route('playlists');
+    this.route('tracks');
     this.route('settings');
 });
 
