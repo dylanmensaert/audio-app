@@ -5,13 +5,7 @@ import connection from 'connection';
 import logic from 'audio-app/utils/logic';
 
 export default Ember.Mixin.create(loadNextControllerMixin, searchMixin, {
-    init: function() {
-        this._super();
-
-        this.resetController();
-    },
     search: Ember.inject.controller(),
-    application: Ember.inject.controller(),
     models: null,
     canLoadNext: Ember.computed.alias('hasNextPageToken'),
     loadNext: function() {
@@ -23,16 +17,14 @@ export default Ember.Mixin.create(loadNextControllerMixin, searchMixin, {
             this.get('models').pushObjects(models);
         }.bind(this));
     },
-    reset: function() {
-        this.setProperties({
-            nextPageToken: undefined,
-            isLocked: false,
-            models: []
-        });
-    },
-    resetController: Ember.observer('search.query', 'application.currentRouteName', 'target.currentRouteName', function() {
+    application: Ember.inject.controller(),
+    reset: Ember.observer('search.query', function() {
         if (this.get('application.currentRouteName') === this.get('target.currentRouteName')) {
-            this.reset();
+            this.setProperties({
+                nextPageToken: undefined,
+                isLocked: false,
+                models: []
+            });
 
             if (!Ember.isNone(this.get('search.query'))) {
                 this.loadNext();

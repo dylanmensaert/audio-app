@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     },
     actions: {
         search: function() {
-            this.controllerFor(this.controller.get('application.currentRouteName')).resetController();
+            this.controllerFor(this.controller.get('application.currentRouteName')).reset();
         }
     }
 });
