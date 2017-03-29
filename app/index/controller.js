@@ -8,14 +8,13 @@ export default Ember.Controller.extend(trackActionsMixin, {
         return this.get('latestHistoryTracks').isAny('hasNextPageToken');
     }),
     hashes: Ember.computed('latestHistoryTracks.@each.relatedTracksLength', function() {
-        let shownTrackIds = this.get('shownTrackIds');
+        let latestHistoryTracks = this.get('latestHistoryTracks'),
+            shownTrackIds = latestHistoryTracks.mapBy('id');
 
-        shownTrackIds.clear();
+        this.set('shownTrackIds', shownTrackIds);
 
-        return this.get('latestHistoryTracks').map(function(track) {
+        return latestHistoryTracks.map(function(track) {
             let topRelatedTracks = [];
-
-            shownTrackIds.pushObject(track.get('id'));
 
             track.get('sortedRelatedTracks').every(function(relatedTrack) {
                 let id = relatedTrack.get('id');
