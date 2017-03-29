@@ -31,13 +31,14 @@ export default Ember.Route.extend({
             }
         }.bind(this));
 
-        mRefresh({
-            onBegin: function() {
-                this.refresh().then(function() {
-                    mRefresh.resolve();
-                });
-            }.bind(this)
-        });
+        // TODO: let cordova support this
+        /* mRefresh({
+             onBegin: function() {
+                 this.refresh().then(function() {
+                     mRefresh.resolve();
+                 });
+             }.bind(this)
+         });*/
 
         Ember.$('.my-splash-spinner').remove();
     }

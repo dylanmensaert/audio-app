@@ -9,7 +9,7 @@ export default Ember.Mixin.create({
     }),
     actions: {
         didScrollToBottom: function() {
-            if (!this.set('isLocked') && this.get('canLoadNext')) {
+            if (!this.get('isLocked') && this.get('canLoadNext')) {
                 this.set('isLocked', true);
 
                 this.loadNext().finally(function() {
