@@ -58,6 +58,15 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return playableTracks;
     }),
+    loadFirstRelatedTracks: function() {
+        let promise;
+
+        if (this.get('nextPageToken') === undefined) {
+            promise = this.loadNextRelatedTracks();
+        }
+
+        return promise;
+    },
     loadNextRelatedTracks: function() {
         let options = {
             relatedVideoId: this.get('id')

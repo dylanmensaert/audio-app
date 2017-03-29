@@ -63,7 +63,7 @@ export default Ember.Controller.extend(loadNextControllerMixin, {
             let playlist = this.get('model');
 
             playlist.remove();
-            this.get('utils').showMessage('Removing locally');
+            this.get('utils').transitionToRoute('index');
         }
     }
 });

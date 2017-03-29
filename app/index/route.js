@@ -13,9 +13,7 @@ export default Ember.Route.extend({
             });
 
             latestHistoryTracks.forEach(function(track) {
-                if (track.get('hasNextPageToken')) {
-                    track.loadNextRelatedTracks();
-                }
+                track.loadFirstRelatedTracks();
             });
 
             this.controller.set('latestHistoryTracks', latestHistoryTracks);
