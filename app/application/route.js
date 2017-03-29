@@ -1,4 +1,3 @@
-/*global mRefresh*/
 import Ember from 'ember';
 import cordova from 'cordova';
 import connection from 'connection';
@@ -31,7 +30,7 @@ export default Ember.Route.extend({
             }
         }.bind(this));
 
-        // TODO: let cordova support this
+        // TODO: check so cordova support this
         /* mRefresh({
              onBegin: function() {
                  this.refresh().then(function() {
