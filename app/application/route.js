@@ -1,3 +1,4 @@
+/*global mRefresh*/
 import Ember from 'ember';
 import cordova from 'cordova';
 import connection from 'connection';
@@ -29,6 +30,14 @@ export default Ember.Route.extend({
                 }.bind(this));
             }
         }.bind(this));
+
+        mRefresh({
+            onBegin: function() {
+                this.refresh().then(function() {
+                    mRefresh.resolve();
+                });
+            }.bind(this)
+        });
 
         Ember.$('.my-splash-spinner').remove();
     }

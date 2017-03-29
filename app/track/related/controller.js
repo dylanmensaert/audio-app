@@ -1,20 +1,9 @@
 import Ember from 'ember';
-import findControllerMixin from 'audio-app/mixins/controller-find';
-import logic from 'audio-app/utils/logic';
+import loadNextControllerMixin from 'audio-app/mixins/controller-load-next';
 
-export default Ember.Controller.extend(findControllerMixin, {
-    audioRemote: Ember.inject.service(),
-    type: 'track',
-    setOptions: function(options) {
-        options.relatedVideoId = this.get('model.id');
-    },
-    // TODO: Youtube API, viewCount not working in combination with relatedVideoId
-    trackSorting: ['viewCount:desc'],
-    sortedModels: Ember.computed.sort('models', 'trackSorting'),
-    afterUpdate: function(models) {
-        // TODO: client sorting causes issues with pagination, this fixes it.
-        this.set('nextPageToken', null);
-
-        return logic.findDetails(models);
+export default Ember.Controller.extend(loadNextControllerMixin, {
+    canLoadNext: Ember.computed.alias('model.hasNextPageToken'),
+    loadNext: function() {
+        return this.get('model').loadNextRelatedTracks();
     }
 });

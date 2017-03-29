@@ -32,6 +32,9 @@ module.exports = function(defaults) {
     // please specify an object with the list of modules as keys
     // along with the exports of each module as its value.
 
+    app.import('bower_components/material-refresh/build/css/material-refresh.css');
+    app.import('bower_components/material-refresh/build/js/material-refresh.js');
+
     app.import('bower_components/hammerjs/hammer.js');
 
     app.import('bower_components/materialize/dist/css/materialize.css');

@@ -46,6 +46,9 @@ export default Ember.Component.extend({
         },
         deselect: function() {
             this.deselect();
+        },
+        didScrollToBottom: function() {
+            this.sendAction('didScrollToBottom');
         }
     }
 });

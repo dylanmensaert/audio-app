@@ -19,7 +19,7 @@
         </div>
 
         <div class="row my-audio-row">
-            {{#link-to (if audioRemote.isTrack 'track.related' 'playlist') audioRemote.playable tagName='div' class='col s10 waves-effect' }}
+            {{#link-to (if audioRemote.isTrack 'track.related' 'playlist') audioRemote.model tagName='div' class='col s10 waves-effect' }}
                 <h5 class="truncate" style="margin: 0;">
                     {{audioPlayer.track.name}}
                 </h5>

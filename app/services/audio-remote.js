@@ -43,9 +43,9 @@ export default Ember.Service.extend({
 
         audioPlayer.set('didEnd', this.next.bind(this));
     },
-    playable: null,
-    trackIds: Ember.computed('playable.tracks.@each.id', function() {
-        let tracks = this.get('playable.tracks'),
+    model: null,
+    trackIds: Ember.computed('model.playableTracks.@each.id', function() {
+        let tracks = this.get('model.playableTracks'),
             trackIds = [];
 
         if (tracks) {
@@ -58,12 +58,12 @@ export default Ember.Service.extend({
     isTrack: Ember.computed('type', function() {
         return this.get('type') === 'track';
     }),
-    start: function(type, playable) {
-        let tracks = playable.get('tracks'),
+    start: function(type, model) {
+        let tracks = model.get('playableTracks'),
             track = tracks.get('firstObject');
 
         this.set('type', type);
-        this.set('playable', playable);
+        this.set('model', model);
 
         this.play(track);
     },
@@ -100,7 +100,7 @@ export default Ember.Service.extend({
                 }
 
                 playing.catch(function() {
-                    if (this.get('playable.tracks').isAny('isDisabled', false)) {
+                    if (this.get('model.playableTracks').isAny('isDisabled', false)) {
                         this.next();
                     }
                 }.bind(this));

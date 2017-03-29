@@ -24,10 +24,11 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             return store.peekRecord('track', trackId);
         });
     }),
-    numberOfTracks: Ember.computed('trackIds.length', 'isComplete', 'totalTracks', function() {
+    playableTracks: Ember.computed.alias('tracks'),
+    numberOfTracks: Ember.computed('trackIds.length', 'didLoadTracks', 'totalTracks', function() {
         let numberOfTracks = this.get('totalTracks');
 
-        if (!numberOfTracks || this.get('isComplete')) {
+        if (!numberOfTracks || this.get('didLoadTracks')) {
             numberOfTracks = this.get('trackIds.length');
         }
 
@@ -78,7 +79,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return downloading;
     },
-    isComplete: Ember.computed('isLocalOnly', 'hasNextPageToken', function() {
+    didLoadTracks: Ember.computed('isLocalOnly', 'hasNextPageToken', function() {
         return this.get('isLocalOnly') || !this.get('hasNextPageToken');
     }),
     saveTracks: function() {
@@ -118,12 +119,10 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         let trackIds = this.get('trackIds'),
             isSaved = this.get('isSaved'),
             options = {
-                playlistId: this.get('id'),
-                maxResults: logic.maxResults,
-                nextPageToken: this.get('nextPageToken')
+                playlistId: this.get('id')
             };
 
-        return this.find('track', options, true).then(function(tracks) {
+        return this.find('track', options).then(function(tracks) {
             let promises = tracks.map(function(track) {
                 let promise;
 

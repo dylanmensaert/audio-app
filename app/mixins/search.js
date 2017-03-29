@@ -7,25 +7,31 @@ export default Ember.Mixin.create({
     hasNextPageToken: Ember.computed('nextPageToken', function() {
         return this.get('nextPageToken') !== null;
     }),
-    find: function(modelName, options) {
+    find: function(modelName, givenOptions) {
         let findOnline,
             findOffline;
 
         findOnline = function() {
-            options.setNextPageToken = function(nextPageToken) {
-                if (!nextPageToken) {
-                    nextPageToken = null;
-                }
+            let options = {
+                maxResults: logic.maxResults,
+                nextPageToken: this.get('nextPageToken'),
+                setNextPageToken: function(nextPageToken) {
+                    if (!nextPageToken) {
+                        nextPageToken = null;
+                    }
 
-                this.set('nextPageToken', nextPageToken);
-            }.bind(this);
+                    this.set('nextPageToken', nextPageToken);
+                }.bind(this)
+            };
 
-            return this.store.query(modelName, options);
+            return this.store.query(modelName, Object.assign(options, givenOptions)).then(function(promiseArray) {
+                return promiseArray.toArray();
+            });
         }.bind(this);
 
         findOffline = function() {
             let snippets = this.store.peekAll(modelName).filter(function(snippet) {
-                return !snippet.get('permission') && logic.isMatch(snippet.get('name'), options.query);
+                return !snippet.get('permission') && logic.isMatch(snippet.get('name'), givenOptions.query);
             });
 
             return Ember.RSVP.resolve(snippets);

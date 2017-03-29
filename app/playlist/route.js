@@ -7,7 +7,7 @@ export default Ember.Route.extend(modelRouteMixin, {
         let promise;
 
         if (!model.get('isLocalOnly') && model.get('nextPageToken') === undefined) {
-            promise = model.loadNextTracks();
+            promise = model.loadNext();
         }
 
         return promise;

@@ -9,6 +9,7 @@ import Inflector from 'ember-inflector';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 import sanitizeFilename from 'npm:sanitize-filename';
+import searchMixin from 'audio-app/mixins/search';
 
 function signateUrl(url) {
     let host = 'http://www.youtube-mp3.org';
@@ -21,13 +22,11 @@ let extension = {
     thumbnail: 'jpg'
 };
 
-export default DS.Model.extend(modelMixin, {
+export default DS.Model.extend(modelMixin, searchMixin, {
     init: function() {
         this._super();
 
-        this.set('tracks', [
-            this
-        ]);
+        this.set('relatedTrackIds', []);
     },
     offlineThumbnail: null,
     thumbnail: Ember.computed('offlineThumbnail', 'onlineThumbnail', function() {
@@ -40,7 +39,43 @@ export default DS.Model.extend(modelMixin, {
         return thumbnail;
     }),
     propertyNames: ['offlineThumbnail', 'offlineAudio', 'onlineAudio'],
-    tracks: null,
+    relatedTrackIds: null,
+    relatedTracks: Ember.computed('relatedTrackIds.[]', function() {
+        let store = this.store;
+
+        return this.get('relatedTrackIds').map(function(trackId) {
+            return store.peekRecord('track', trackId);
+        });
+    }),
+    trackSorting: ['viewCount:desc'],
+    sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting'),
+    // TODO: workaround for index\controller.js
+    relatedTracksLength: Ember.computed.alias('relatedTrackIds.length'),
+    playableTracks: Ember.computed('sortedRelatedTracks.[]', function() {
+        let playableTracks = this.get('sortedRelatedTracks').toArray();
+
+        playableTracks.unshiftObject(this);
+
+        return playableTracks;
+    }),
+    loadNextRelatedTracks: function() {
+        let options = {
+            relatedVideoId: this.get('id')
+        };
+
+        this.find('track', options).then(function(relatedTracks) {
+            return logic.findDetails(relatedTracks);
+        }).then(function(relatedTracks) {
+            let relatedTrackIds = this.get('relatedTrackIds');
+
+            // TODO: Youtube API, viewCount not working in combination with relatedVideoId, this fixes it
+            this.set('nextPageToken', null);
+
+            relatedTracks.forEach(function(track) {
+                relatedTrackIds.pushObject(track.get('id'));
+            });
+        }.bind(this));
+    },
     utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
     onlineAudio: null,

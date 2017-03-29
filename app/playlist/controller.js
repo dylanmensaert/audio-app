@@ -1,27 +1,19 @@
 import Ember from 'ember';
+import loadNextControllerMixin from 'audio-app/mixins/controller-load-next';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(loadNextControllerMixin, {
     utils: Ember.inject.service(),
     audioRemote: Ember.inject.service(),
     model: null,
-    /*TODO: Implement another way?*/
     name: null,
     isEditMode: Ember.computed('name', function() {
         return !Ember.isNone(this.get('name'));
     }),
-    isPending: Ember.computed('connection.isOnline', 'model.isComplete', function() {
-        return this.get('connection.isOnline') && !this.get('model.isComplete');
-    }),
+    canLoadNext: Ember.computed.not('model.didLoadTracks'),
+    loadNext: function() {
+        return this.get('model').loadNextTracks();
+    },
     actions: {
-        didScrollToBottom: function() {
-            if (!this.get('isLocked') && !this.get('model.isComplete')) {
-                this.set('isLocked', true);
-
-                this.get('model').loadNextTracks().finally(function() {
-                    this.set('isLocked', false);
-                }.bind(this));
-            }
-        },
         removeFromPlaylist: function() {
             let playlist = this.get('model');
 
