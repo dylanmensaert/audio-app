@@ -11,7 +11,7 @@ export default Ember.Mixin.create(searchMixin, {
         return this.get('connection.isOnline') && this.get('hasNextPageToken');
     }),
     models: null,
-    afterModels: function() {
+    afterUpdate: function() {
         return Ember.RSVP.resolve();
     },
     updateModels: function() {
@@ -30,7 +30,7 @@ export default Ember.Mixin.create(searchMixin, {
             if (this.get('latestOptions') === options) {
                 let models = promiseArray.toArray();
 
-                promise = this.afterModels(models).then(function() {
+                promise = this.afterUpdate(models).then(function() {
                     this.get('models').pushObjects(models);
 
                     this.set('isLocked', false);

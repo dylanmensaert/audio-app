@@ -2,8 +2,8 @@ import Ember from 'ember';
 import scrollMixin from 'audio-app/mixins/c-scroll';
 
 export default Ember.Component.extend(scrollMixin, {
+    model: null,
     src: null,
-    source: null,
     scrollBackGround: function() {
         let element = this.$(),
             topDifference = Ember.$(window).scrollTop() - element.offset().top,
@@ -18,10 +18,13 @@ export default Ember.Component.extend(scrollMixin, {
             image.css('background-position-y', 50 + '%');
         }
     },
+    updateImage: Ember.observer('model', function() {
+        this.set('src', this.get('model.thumbnail'));
+    }),
     didInsertElement: function() {
         // TODO: mobile rendering to slow for this to work.
         /*this.scroll(this.scrollBackGround);*/
 
-        this.set('source', this.get('src'));
+        this.updateImage();
     }
 });

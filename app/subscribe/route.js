@@ -1,7 +1,8 @@
 /*global history*/
 import Ember from 'ember';
+import resetScrollMixin from 'audio-app/mixins/reset-scroll';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(resetScrollMixin, {
     utils: Ember.inject.service(),
     actions: {
         didTransition: function() {

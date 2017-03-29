@@ -1,4 +1,4 @@
-/*global navigator, Hammer*/
+/*global Hammer*/
 
 import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/c-model';
@@ -27,8 +27,6 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
         this.set('thumbnail', this.get('model.thumbnail'));
 
         new Hammer(this.$()[0]).on('press', function() {
-            navigator.vibrate(50);
-
             this.send('changeSelect');
         }.bind(this));
     },

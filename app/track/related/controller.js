@@ -11,7 +11,7 @@ export default Ember.Controller.extend(findControllerMixin, {
     // TODO: Youtube API, viewCount not working in combination with relatedVideoId
     trackSorting: ['viewCount:desc'],
     sortedModels: Ember.computed.sort('models', 'trackSorting'),
-    afterModels: function(models) {
+    afterUpdate: function(models) {
         // TODO: client sorting causes issues with pagination, this fixes it.
         this.set('nextPageToken', null);
 

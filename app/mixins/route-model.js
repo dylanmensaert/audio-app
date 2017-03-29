@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import resetScrollMixin from 'audio-app/mixins/reset-scroll';
 
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(resetScrollMixin, {
     type: null,
     model: function(parameters) {
         let modelId = parameters[this.get('type') + '_id'],

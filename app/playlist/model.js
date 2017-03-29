@@ -176,7 +176,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         let store = this.get('store'),
             promises;
 
-        promises = this.get('trackIds').map(function(trackId) {
+        promises = this.get('trackIds').toArray().map(function(trackId) {
             let track = store.peekRecord('track', trackId);
 
             return this.removeTrack(track);
