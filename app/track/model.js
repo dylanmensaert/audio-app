@@ -72,7 +72,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
             relatedVideoId: this.get('id')
         };
 
-        this.find('track', options).then(function(relatedTracks) {
+        return this.find('track', options).then(function(relatedTracks) {
             return logic.findDetails(relatedTracks);
         }).then(function(relatedTracks) {
             let relatedTrackIds = this.get('relatedTrackIds');

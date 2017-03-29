@@ -5,12 +5,12 @@
 <main>
     {{c-track-actions models=selectedTracks}}
 
-    {{#if isPending}}
+    {{#if loading.isPending}}
       {{c-spinner class='my-spinner'}}
     {{else}}
-      {{#if latestHistoryTracks}}
-        {{#each latestHistoryTracks as |track|}}
-            {{c-track model=track play='playTrack'}}
+      {{#if latestHistoryHash}}
+        {{#each latestHistoryHash as |hash|}}
+            {{c-track model=hash.track play='playTrack'}}
         {{/each}}
 
         {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
@@ -18,7 +18,7 @@
         {{/link-to}}
       {{/if}}
 
-      {{#each hashes as |hash|}}
+      {{#each latestHistoryHash as |hash|}}
         {{#each hash.topRelatedTracks as |relatedTrack|}}
             {{c-track model=relatedTrack play='playTrack'}}
         {{/each}}
