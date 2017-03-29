@@ -115,6 +115,15 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return savingTracks;
     },
+    loadFirstTracks: function() {
+        let promise;
+
+        if (!this.get('isLocalOnly') && this.get('nextPageToken') === undefined) {
+            promise = this.loadNextTracks();
+        }
+
+        return promise;
+    },
     loadNextTracks: function() {
         let trackIds = this.get('trackIds'),
             isSaved = this.get('isSaved'),

@@ -3,13 +3,7 @@ import modelRouteMixin from 'audio-app/mixins/route-model';
 
 export default Ember.Route.extend(modelRouteMixin, {
     type: 'playlist',
-    afterModel: function(model) {
-        let promise;
-
-        if (!model.get('isLocalOnly') && model.get('nextPageToken') === undefined) {
-            promise = model.loadNext();
-        }
-
-        return promise;
+    afterModel: function(playlist) {
+        return playlist.loadFirstTracks();
     }
 });
