@@ -2,14 +2,31 @@ import Ember from 'ember';
 import trackActionsMixin from 'audio-app/mixins/actions-track';
 
 export default Ember.Controller.extend(trackActionsMixin, {
-    latestHistoryTracks: null,
+    history: Ember.computed(function() {
+        return this.store.peekRecord('playlist', 'history');
+    }),
+    latestHistoryTracks: Ember.computed('history.tracks.[]', function() {
+        let latestHistoryTracks = [];
+
+        this.get('history.tracks').every(function(track, index) {
+            latestHistoryTracks.pushObject(track);
+
+            return 8 > index + 1;
+        });
+
+        latestHistoryTracks.forEach(function(track) {
+            track.loadFirstRelatedTracks();
+        });
+
+        return latestHistoryTracks;
+    }),
     // TODO: rework hasNextPageToken to isLoadingRelated
     isPending: Ember.computed('latestHistoryTracks.@each.hasNextPageToken', function() {
         return this.get('latestHistoryTracks').isAny('hasNextPageToken');
     }),
     hashes: Ember.computed('latestHistoryTracks.@each.relatedTracksLength', function() {
         let latestHistoryTracks = this.get('latestHistoryTracks'),
-            shownTrackIds = latestHistoryTracks.mapBy('id');
+            shownTrackIds = [];
 
         this.set('shownTrackIds', shownTrackIds);
 
