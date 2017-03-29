@@ -27,7 +27,7 @@ export default Ember.Mixin.create(loadNextControllerMixin, searchMixin, {
             });
 
             if (!Ember.isNone(this.get('search.query'))) {
-                this.loadNext();
+                this.tryLoadNext();
             }
         }
     }),
