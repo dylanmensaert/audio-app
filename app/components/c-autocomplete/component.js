@@ -12,6 +12,7 @@ export default Ember.Component.extend({
     value: null,
     suggestions: null,
     showSuggestions: false,
+    isFocused: true,
     showAutoComplete: Ember.computed('showSuggestions', 'suggestions.length', function() {
         return this.get('showSuggestions') && this.get('suggestions.length');
     }),

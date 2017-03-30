@@ -15,6 +15,9 @@ export default Ember.Controller.extend({
     value: '',
     suggestions: [],
     searching: null,
+    isFocused: Ember.computed('query', function() {
+        return Ember.isNone(this.get('query'));
+    }),
     updateSuggestions: Ember.observer('value', function() {
         let value = this.get('value');
 

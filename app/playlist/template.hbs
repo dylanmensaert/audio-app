@@ -22,7 +22,7 @@
       </a>
 
       <ul>
-        <li class={{unless model.isEditable 'my-hidden'}}>
+        <li class={{unless model.canModify 'my-hidden'}}>
           <a href="javascript:void(0)" class="btn-floating waves-effect waves-light" {{action 'setupEdit'}}>
             <i class="mdi mdi-pencil"></i>
           </a>

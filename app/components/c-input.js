@@ -15,7 +15,10 @@ export default Ember.TextField.extend(safeStyleMixin, {
     focusOut: function() {
         this.sendAction('didFocusOut');
     },
+    isFocused: true,
     didInsertElement: function() {
-        Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
+        if (this.get('isFocused')) {
+            Ember.run.scheduleOnce('afterRender', this.$(), this.focus);
+        }
     }
 });

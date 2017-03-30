@@ -1,4 +1,4 @@
-/*global parseInt*/
+/*global parseInt, Map*/
 
 import Ember from 'ember';
 import domainData from 'domain-data';

@@ -1,4 +1,4 @@
-/* jshint ignore:start */
+/* eslint-disable */
 
 var b0I = {
     'V': function(I, B, P) {
@@ -165,4 +165,4 @@ export default {
     }
 };
 
-/* jshint ignore:end */
+/* eslint-enable */

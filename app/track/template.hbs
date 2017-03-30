@@ -42,12 +42,22 @@
           </div>
 
           <div class="col s6 my-right">
-            {{#if model.isDownloaded}}
-              <i class="mdi mdi-download"></i>
+            {{#if model.isPlaying}}
+                <div class="my-track-icon">
+                    <div class="eq">
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                        <div class="eq-bar"></div>
+                    </div>
+                </div>
             {{/if}}
 
             {{#if model.isDownloading}}
-              {{c-spinner type='small'}}
+                {{c-spinner type='small'}}
+            {{else if model.isDownloaded}}
+                <div class="my-track-icon">
+                    <i class="mdi mdi-download"></i>
+                </div>
             {{/if}}
           </div>
         </div>

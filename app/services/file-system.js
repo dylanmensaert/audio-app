@@ -2,8 +2,6 @@
 
 import Ember from 'ember';
 
-let lastWriter,
-    queue = [];
 // TODO: implement correctly
 /*import Playlist from 'audio-app/playlist/model';
 import Track from 'audio-app/track/model';*/
@@ -21,10 +19,6 @@ function write() {
                         type: 'application/json'
                     }));
                 }
-
-                queue.forEach(function(resolve) {
-                    resolve();
-                });
             };
 
             fileWriter.truncate(0);
@@ -128,19 +122,15 @@ export default Ember.Service.extend({
                         }]
                     }));
 
-                    this.save().then(resolve);
+                    this.save();
+
+                    resolve();
                 }.bind(this));
             }.bind(this));
         }.bind(this));
     },
     save: function() {
-        Ember.run.cancel(lastWriter);
-
-        return new Ember.RSVP.Promise(function(resolve) {
-            queue.pushObject(resolve);
-
-            lastWriter = Ember.run.later(this, write, 100);
-        }.bind(this));
+        Ember.run.debounce(this, write, 100);
     },
     deserialize: function(json) {
         let store = this.get('store'),
