@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
             this.set('error', null);
         },
         play: function() {
-            this.get('audioRemote').play();
+            this.get('audioRemote').playTrack();
         },
         pause: function() {
             this.get('audioRemote').pause();

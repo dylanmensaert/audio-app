@@ -58,16 +58,17 @@ export default Ember.Service.extend({
     isTrack: Ember.computed('type', function() {
         return this.get('type') === 'track';
     }),
-    start: function(type, model) {
-        let tracks = model.get('playableTracks'),
-            track = tracks.get('firstObject');
-
+    play: function(type, model, track) {
         this.set('type', type);
         this.set('model', model);
 
-        this.play(track);
+        if (!track) {
+            track = model.get('playableTracks.firstObject');
+        }
+
+        this.playTrack(track);
     },
-    play: function(track) {
+    playTrack: function(track) {
         let audioPlayer = this.get('audioPlayer');
 
         if (track) {

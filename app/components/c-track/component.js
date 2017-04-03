@@ -7,6 +7,7 @@ import safeStyleMixin from 'audio-app/mixins/safe-style';
 export default Ember.Component.extend(modelMixin, safeStyleMixin, {
     classNames: ['waves-effect', 'waves-block'],
     classNameBindings: ['model.isActive:my-track--active', 'model.isDisabled:my-track--disabled'],
+    audioRemote: Ember.inject.service(),
     style: Ember.computed('model.isDisabled', function() {
         let style;
 
@@ -30,9 +31,16 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
             this.send('changeSelect');
         }.bind(this));
     },
+    isPlaying: Ember.computed('model.isPlaying', 'playlist', 'audioRemote.model.id', function() {
+        return this.get('model.isPlaying') && this.get('playlist.id') === this.get('audioRemote.model.id');
+    }),
     actions: {
         play: function() {
-            this.sendAction('play', this.get('model'));
+            let track = this.get('model');
+
+            if (!track.get('isDisabled')) {
+                this.sendAction('play', track);
+            }
         }
     }
 });
