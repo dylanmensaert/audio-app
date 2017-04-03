@@ -1,4 +1,4 @@
-/* global encodeURIComponent, Blob */
+/* global encodeURIComponent */
 
 import DS from 'ember-data';
 import Ember from 'ember';
@@ -10,6 +10,7 @@ import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 import sanitizeFilename from 'npm:sanitize-filename';
 import searchMixin from 'audio-app/mixins/search';
+import fileTransfer from 'file-transfer';
 
 function signateUrl(url) {
     let host = 'http://www.youtube-mp3.org';
@@ -215,7 +216,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         if (!this.get('isSaved')) {
             saving = saving.then(function() {
-                return this.downloadSource('thumbnail');
+                return fileTransfer.download(this, 'thumbnail');
             }.bind(this));
         }
 
@@ -223,44 +224,10 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     downloadAudio: function() {
         // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
-        return this.downloadSource('audio').then(function() {
+        return fileTransfer.download(this, 'audio').then(function() {
             this.get('downloadLater.trackIds').removeObject(this.get('id'));
         }.bind(this), function(reason) {
             return reason.message;
-        });
-    },
-    downloadSource: function(type) {
-        let source = this.buildFilePath(type),
-            name = Ember.String.capitalize(type),
-            url = this.get('online' + name),
-            fileSystem = this.get('fileSystem'),
-            track = this;
-
-        return new Ember.RSVP.Promise(function(resolve, reject) {
-            let xhr = new XMLHttpRequest();
-
-            xhr.open('GET', url, true);
-            xhr.responseType = 'arraybuffer';
-
-            xhr.onload = function() {
-                let response = this.response;
-
-                fileSystem.get('instance').root.getFile(source, {
-                    create: true
-                }, function(fileEntry) {
-                    fileEntry.createWriter(function(fileWriter) {
-                        fileWriter.onwriteend = function() {
-                            track.set('offline' + name, fileEntry.toURL());
-
-                            resolve();
-                        };
-
-                        fileWriter.write(new Blob([response]));
-                    });
-                }, reject);
-            };
-
-            xhr.send();
         });
     },
     removeSource: function(type) {

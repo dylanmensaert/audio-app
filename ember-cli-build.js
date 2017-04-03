@@ -81,5 +81,12 @@ module.exports = function(defaults) {
         exports: 'cordova'
     });
 
+    app.import({
+        development: 'vendor/cordova/file-transfer/object.js',
+        production: 'vendor/cordova/file-transfer/object.prod.js'
+    }, {
+        exports: 'file-transfer'
+    });
+
     return app.toTree(extraAssets);
 };
