@@ -69,7 +69,7 @@
         .s10 {
             padding-right: 0;
         }
-        &.collapsed {
+        &:not(.collapsed) {
             .noUi-base {
                 height: 30px;
                 top: -15px;
@@ -77,8 +77,6 @@
                     top: 15px;
                 }
             }
-        }
-        &:not(.collapsed) {
             i {
                 font-size: 35px;
             }
