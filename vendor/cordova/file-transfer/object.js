@@ -12,9 +12,7 @@
                 download: function(track, type) {
                     let source = track.buildFilePath(type),
                         name = Ember.String.capitalize(type),
-                        url = track.get('online' + name),
-                        fileSystem = track.get('fileSystem'),
-                        track = track;
+                        url = track.get('online' + name);
 
                     return new Ember.RSVP.Promise(function(resolve, reject) {
                         let xhr = new XMLHttpRequest();
@@ -25,7 +23,7 @@
                         xhr.onload = function() {
                             let response = this.response;
 
-                            fileSystem.get('instance').root.getFile(source, {
+                            track.get('fileSystem.instance').root.getFile(source, {
                                 create: true
                             }, function(fileEntry) {
                                 fileEntry.createWriter(function(fileWriter) {
