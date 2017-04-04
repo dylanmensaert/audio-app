@@ -115,17 +115,18 @@ export default Ember.Service.extend({
     },
     previous: function() {
         let store = this.get('store'),
-            trackIds = this.get('trackIds'),
+            history = store.peekRecord('playlist', 'history'),
+            trackIds = history.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            previousIndex = trackIds.indexOf(currentTrackId) - 1,
-            trackId;
+            previousIndex = trackIds.indexOf(currentTrackId) - 1;
 
-        if (previousIndex === -1) {
-            previousIndex = trackIds.get('length') - 1;
+        if (previousIndex !== -1) {
+            let trackId = trackIds.objectAt(previousIndex);
+
+            this.play(store.peekRecord('track', trackId));
+        } else {
+            // TODO: no going back
         }
-
-        trackId = trackIds.objectAt(previousIndex);
-        this.play(store.peekRecord('track', trackId));
     },
     next: function() {
         let store = this.get('store'),

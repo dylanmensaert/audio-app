@@ -6,6 +6,7 @@
 
         Ember = Ember.default;
 
+        // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
         return {
             'default': {
                 download: function(track, type) {

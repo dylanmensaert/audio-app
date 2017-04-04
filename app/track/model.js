@@ -29,7 +29,10 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         this.set('relatedTrackIds', []);
     },
-    offlineThumbnail: null,
+    offlineThumbnail: DS.attr('string'),
+    offlineAudio: DS.attr('string'),
+    onlineAudio: DS.attr('string'),
+    propertyNames: ['offlineThumbnail', 'offlineAudio', 'onlineAudio'],
     thumbnail: Ember.computed('offlineThumbnail', 'onlineThumbnail', function() {
         let thumbnail = this.get('offlineThumbnail');
 
@@ -39,7 +42,15 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return thumbnail;
     }),
-    propertyNames: ['offlineThumbnail', 'offlineAudio', 'onlineAudio'],
+    audio: Ember.computed('offlineAudio', 'onlineAudio', function() {
+        let audio = this.get('offlineAudio');
+
+        if (!audio) {
+            audio = this.get('onlineAudio');
+        }
+
+        return audio;
+    }),
     relatedTrackIds: null,
     relatedTracks: Ember.computed('relatedTrackIds.[]', function() {
         let store = this.store;
@@ -88,16 +99,6 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     utils: Ember.inject.service(),
     audioPlayer: Ember.inject.service(),
-    onlineAudio: null,
-    audio: Ember.computed('offlineAudio', 'onlineAudio', function() {
-        let audio = this.get('offlineAudio');
-
-        if (!audio) {
-            audio = this.get('onlineAudio');
-        }
-
-        return audio;
-    }),
     isDownloaded: Ember.computed.bool('offlineAudio'),
     viewCount: null,
     isSaved: Ember.computed('id', 'fileSystem.trackIds.[]', function() {
@@ -223,7 +224,6 @@ export default DS.Model.extend(modelMixin, searchMixin, {
         return saving;
     },
     downloadAudio: function() {
-        // TODO: No 'Access-Control-Allow-Origin' header because the requested URL redirects to another domain
         return fileTransfer.download(this, 'audio').then(function() {
             this.get('downloadLater.trackIds').removeObject(this.get('id'));
         }.bind(this), function(reason) {
