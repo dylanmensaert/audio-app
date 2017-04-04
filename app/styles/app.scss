@@ -71,12 +71,26 @@
         }
         &.collapsed {
             .noUi-base {
-                height: 24px;
-                top: -21px;
+                height: 30px;
+                top: -15px;
                 .noUi-background {
-                    top: 21px;
+                    top: 15px;
                 }
             }
+        }
+        &:not(.collapsed) {
+            i {
+                font-size: 35px;
+            }
+        }
+        .truncate {
+            margin: 0;
+        }
+        .my-subtitle {
+            font-size: 60%;
+        }
+        .my-title {
+            font-size: 19px;
         }
     }
     

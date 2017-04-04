@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
     linkToProperties: {
         classNameBindings: ['active:mdl-color--blue-grey-800']
     },
-    isCollapsed: false,
+    isCollapsed: true,
     actions: {
         dismissAlert: function() {
             this.set('error', null);

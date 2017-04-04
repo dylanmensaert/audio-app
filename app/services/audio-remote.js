@@ -44,17 +44,22 @@ export default Ember.Service.extend({
         audioPlayer.set('didEnd', this.next.bind(this));
     },
     model: null,
-    title: Ember.computed('model.name', 'type', function() {
-        let type = this.get('type'),
+    // TODO: current model not stored in history so back tracking not sufficient
+    title: Ember.computed('audioPlayer.track.name', 'model.name', 'type', function() {
+        let name = this.get('model.name'),
             title;
 
-        if (type === 'playlist') {
-            title = 'Playlist';
-        } else if (type === 'track.related') {
-            title = 'Related';
-        }
+        if (this.get('audioPlayer.track.name') !== name) {
+            let type = this.get('type');
 
-        title += ': ' + this.get('model.name');
+            if (type === 'playlist') {
+                title = 'Playlist';
+            } else if (type === 'track.related') {
+                title = 'Related to';
+            }
+
+            title += ': ' + name;
+        }
 
         return title;
     }),
@@ -86,12 +91,12 @@ export default Ember.Service.extend({
     },
     playTrack: function(track, addToHistory) {
         let audioPlayer = this.get('audioPlayer'),
-            id = track.get('id'),
             playing;
 
         if (addToHistory) {
             let history = this.get('store').peekRecord('playlist', 'history'),
-                historyTrackIds = history.get('trackIds');
+                historyTrackIds = history.get('trackIds'),
+                id = track.get('id');
 
             if (historyTrackIds.includes(id)) {
                 historyTrackIds.removeObject(id);
@@ -138,13 +143,11 @@ export default Ember.Service.extend({
     next: function() {
         let history = this.get('store').peekRecord('playlist', 'history'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            trackIds,
+            trackIds = history.get('trackIds'),
             currentIndex,
             trackId;
 
-        if (history.get('firstObject.id') !== currentTrackId) {
-            trackIds = history.get('trackIds');
-
+        if (trackIds.get('firstObject') !== currentTrackId) {
             currentIndex = trackIds.indexOf(currentTrackId);
             trackId = trackIds.objectAt(currentIndex - 1);
         } else {
