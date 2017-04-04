@@ -12,8 +12,8 @@ export default Ember.Controller.extend({
         dismissAlert: function() {
             this.set('error', null);
         },
-        play: function() {
-            this.get('audioRemote').playTrack();
+        resume: function() {
+            this.get('audioRemote').resume();
         },
         pause: function() {
             this.get('audioRemote').pause();

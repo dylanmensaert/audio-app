@@ -55,9 +55,6 @@ export default Ember.Service.extend({
         return trackIds;
     }),
     type: null,
-    isTrack: Ember.computed('type', function() {
-        return this.get('type') === 'track';
-    }),
     play: function(type, model, track) {
         this.set('type', type);
         this.set('model', model);
@@ -66,56 +63,60 @@ export default Ember.Service.extend({
             track = model.get('playableTracks.firstObject');
         }
 
-        this.playTrack(track);
+        this.playTrack(track, model.get('id') !== 'history');
     },
-    playTrack: function(track) {
-        let audioPlayer = this.get('audioPlayer');
+    playTrackById: function(trackId, addToHistory) {
+        let track = this.get('store').peekRecord('track', trackId);
 
-        if (track) {
-            let trackIds = this.get('trackIds'),
-                id = track.get('id');
+        this.playTrack(track, addToHistory);
+    },
+    playTrack: function(track, addToHistory) {
+        let trackIds = this.get('trackIds'),
+            id = track.get('id');
 
-            if (!trackIds.includes(id)) {
-                this.start('track', track);
-            } else {
-                let store = this.get('store'),
-                    fileSystem = this.get('fileSystem'),
-                    history = store.peekRecord('playlist', 'history'),
-                    historyTrackIds = history.get('trackIds'),
-                    playing;
+        if (!trackIds.includes(id)) {
+            this.start('track', track);
+        } else {
+            let store = this.get('store'),
+                audioPlayer = this.get('audioPlayer'),
+                fileSystem = this.get('fileSystem'),
+                playing;
+
+            if (addToHistory) {
+                let history = store.peekRecord('playlist', 'history'),
+                    historyTrackIds = history.get('trackIds');
 
                 if (historyTrackIds.includes(id)) {
                     historyTrackIds.removeObject(id);
                 }
 
                 history.unshiftTrack(track);
-
                 history.save();
-
-                if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
-                    playing = track.download().then(function() {
-                        return audioPlayer.play(track);
-                    });
-                } else {
-                    playing = audioPlayer.play(track);
-                }
-
-                playing.catch(function() {
-                    if (this.get('model.playableTracks').isAny('isDisabled', false)) {
-                        this.next();
-                    }
-                }.bind(this));
             }
-        } else {
-            audioPlayer.play();
+
+            if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
+                playing = track.download().then(function() {
+                    return audioPlayer.play(track);
+                });
+            } else {
+                playing = audioPlayer.play(track);
+            }
+
+            playing.catch(function() {
+                if (this.get('model.playableTracks').isAny('isDisabled', false)) {
+                    this.next();
+                }
+            }.bind(this));
         }
+    },
+    resume: function() {
+        this.get('audioPlayer').play();
     },
     pause: function() {
         this.get('audioPlayer').pause();
     },
     previous: function() {
-        let store = this.get('store'),
-            history = store.peekRecord('playlist', 'history'),
+        let history = this.get('store').peekRecord('playlist', 'history'),
             trackIds = history.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
             previousIndex = trackIds.indexOf(currentTrackId) - 1;
@@ -123,14 +124,13 @@ export default Ember.Service.extend({
         if (previousIndex !== -1) {
             let trackId = trackIds.objectAt(previousIndex);
 
-            this.play(store.peekRecord('track', trackId));
+            this.playTrackById(trackId, false);
         } else {
             this.get('utils').showMessage('No previous tracks');
         }
     },
     next: function() {
-        let store = this.get('store'),
-            trackIds = this.get('trackIds'),
+        let trackIds = this.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
             nextIndex = trackIds.indexOf(currentTrackId) + 1,
             trackId;
@@ -140,6 +140,6 @@ export default Ember.Service.extend({
         }
 
         trackId = trackIds.objectAt(nextIndex);
-        this.play(store.peekRecord('track', trackId));
+        this.playTrackById(trackId, true);
     }
 });

@@ -2,7 +2,7 @@
 
 {{#c-endless-scroll didScrollToBottom='didScrollToBottom' }}
     {{#each models as |track|}}
-        {{c-track model=track hideDownloaded=hideDownloaded playlist=playlist play='playTrack'}}
+        {{c-track model=track hideDownloaded=hideDownloaded playlist=playlist isActive=isActive play='play'}}
     {{/each}}
 
     {{#if isPending}}
