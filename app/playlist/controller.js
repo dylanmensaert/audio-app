@@ -1,3 +1,5 @@
+/*global confirm*/
+
 import Ember from 'ember';
 import loadNextControllerMixin from 'audio-app/mixins/controller-load-next';
 
@@ -60,10 +62,12 @@ export default Ember.Controller.extend(loadNextControllerMixin, {
             this.get('utils').showMessage('Saving locally');
         },
         delete: function() {
-            let playlist = this.get('model');
+            if (confirm('Delete this playlist?')) {
+                let playlist = this.get('model');
 
-            playlist.remove();
-            this.get('utils').transitionToRoute('index');
+                playlist.remove();
+                this.get('utils').transitionToRoute('index');
+            }
         }
     }
 });

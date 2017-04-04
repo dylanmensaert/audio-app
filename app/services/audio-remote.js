@@ -125,7 +125,7 @@ export default Ember.Service.extend({
 
             this.play(store.peekRecord('track', trackId));
         } else {
-            // TODO: no going back
+            this.get('utils').showMessage('No previous tracks');
         }
     },
     next: function() {

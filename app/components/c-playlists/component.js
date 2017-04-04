@@ -1,3 +1,4 @@
+/*global confirm*/
 import Ember from 'ember';
 
 export default Ember.Component.extend({
@@ -36,7 +37,7 @@ export default Ember.Component.extend({
             let savedPlaylists = this.get('savedPlaylists'),
                 length = savedPlaylists.get('length');
 
-            if (length) {
+            if (length && confirm('Delete these playlists?')) {
                 savedPlaylists.forEach(function(playlist) {
                     playlist.remove();
                 });
