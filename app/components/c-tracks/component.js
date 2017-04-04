@@ -1,35 +1,18 @@
 import Ember from 'ember';
-import trackActionsMixin from 'audio-app/mixins/actions-track';
+import playTrackMixin from 'audio-app/mixins/track-play';
 
-export default Ember.Component.extend(trackActionsMixin, {
+export default Ember.Component.extend(playTrackMixin, {
     hideDownloaded: false,
     selectedTracks: Ember.computed.filterBy('models', 'isSelected', true),
     audioRemote: Ember.inject.service(),
+    isActive: Ember.computed('audioRemote.model.id', 'playlist.id', 'relatedTrack.id', function() {
+        let id = this.get('audioRemote.model.id');
+
+        return this.get('playlist.id') === id || this.get('relatedTrack.id') === id;
+    }),
     actions: {
         didScrollToBottom: function() {
             this.sendAction('didScrollToBottom');
-        },
-        play: function(track) {
-            if (this.get('selectedTracks.length')) {
-                track.toggleProperty('isSelected');
-            } else {
-                let playlist = this.get('playlist'),
-                    audioRemote = this.get('audioRemote');
-
-                if (playlist) {
-                    // TODO:support other types too
-                    audioRemote.play('playlist', playlist, track);
-                } else {
-                    audioRemote.play('relatedTracks', track);
-                }
-
-                audioRemote.play('playlist', playlist);
-                audioRemote.play('playlist', playlist, track);
-                audioRemote.play('track.related', track);
-                audioRemote.play('track.related', track, track);
-
-                audioRemote.play();
-            }
         }
     }
 });

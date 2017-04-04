@@ -30,6 +30,7 @@ export default Ember.Component.extend(modelMixin, safeStyleMixin, {
             this.send('changeSelect');
         }.bind(this));
     },
+    isActive: null,
     isPlaying: Ember.computed('model.isPlaying', 'isActive', function() {
         return this.get('model.isPlaying') && this.get('isActive');
     }),

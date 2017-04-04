@@ -44,6 +44,20 @@ export default Ember.Service.extend({
         audioPlayer.set('didEnd', this.next.bind(this));
     },
     model: null,
+    title: Ember.computed('model.name', 'type', function() {
+        let type = this.get('type'),
+            title;
+
+        if (type === 'playlist') {
+            title = 'Playlist';
+        } else if (type === 'track.related') {
+            title = 'Related';
+        }
+
+        title += ': ' + this.get('model.name');
+
+        return title;
+    }),
     trackIds: Ember.computed('model.playableTracks.@each.id', function() {
         let tracks = this.get('model.playableTracks'),
             trackIds = [];
@@ -71,43 +85,35 @@ export default Ember.Service.extend({
         this.playTrack(track, addToHistory);
     },
     playTrack: function(track, addToHistory) {
-        let trackIds = this.get('trackIds'),
-            id = track.get('id');
+        let audioPlayer = this.get('audioPlayer'),
+            id = track.get('id'),
+            playing;
 
-        if (!trackIds.includes(id)) {
-            this.start('track', track);
-        } else {
-            let store = this.get('store'),
-                audioPlayer = this.get('audioPlayer'),
-                fileSystem = this.get('fileSystem'),
-                playing;
+        if (addToHistory) {
+            let history = this.get('store').peekRecord('playlist', 'history'),
+                historyTrackIds = history.get('trackIds');
 
-            if (addToHistory) {
-                let history = store.peekRecord('playlist', 'history'),
-                    historyTrackIds = history.get('trackIds');
-
-                if (historyTrackIds.includes(id)) {
-                    historyTrackIds.removeObject(id);
-                }
-
-                history.unshiftTrack(track);
-                history.save();
+            if (historyTrackIds.includes(id)) {
+                historyTrackIds.removeObject(id);
             }
 
-            if (fileSystem.get('downloadBeforePlaying') && !track.get('isDownloaded')) {
-                playing = track.download().then(function() {
-                    return audioPlayer.play(track);
-                });
-            } else {
-                playing = audioPlayer.play(track);
-            }
-
-            playing.catch(function() {
-                if (this.get('model.playableTracks').isAny('isDisabled', false)) {
-                    this.next();
-                }
-            }.bind(this));
+            history.unshiftTrack(track);
+            history.save();
         }
+
+        if (this.get('fileSystem.downloadBeforePlaying') && !track.get('isDownloaded')) {
+            playing = track.download().then(function() {
+                return audioPlayer.play(track);
+            });
+        } else {
+            playing = audioPlayer.play(track);
+        }
+
+        playing.catch(function() {
+            if (this.get('model.playableTracks').isAny('isDisabled', false)) {
+                this.next();
+            }
+        }.bind(this));
     },
     resume: function() {
         this.get('audioPlayer').play();
@@ -119,9 +125,9 @@ export default Ember.Service.extend({
         let history = this.get('store').peekRecord('playlist', 'history'),
             trackIds = history.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            previousIndex = trackIds.indexOf(currentTrackId) - 1;
+            previousIndex = trackIds.indexOf(currentTrackId) + 1;
 
-        if (previousIndex !== -1) {
+        if (previousIndex !== trackIds.get('length') - 1) {
             let trackId = trackIds.objectAt(previousIndex);
 
             this.playTrackById(trackId, false);
@@ -130,16 +136,31 @@ export default Ember.Service.extend({
         }
     },
     next: function() {
-        let trackIds = this.get('trackIds'),
+        let history = this.get('store').peekRecord('playlist', 'history'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            nextIndex = trackIds.indexOf(currentTrackId) + 1,
+            trackIds,
+            currentIndex,
             trackId;
 
-        if (nextIndex === trackIds.get('length')) {
-            nextIndex = 0;
+        if (history.get('firstObject.id') !== currentTrackId) {
+            trackIds = history.get('trackIds');
+
+            currentIndex = trackIds.indexOf(currentTrackId);
+            trackId = trackIds.objectAt(currentIndex - 1);
+        } else {
+            let nextIndex;
+
+            trackIds = this.get('trackIds');
+            currentIndex = trackIds.indexOf(currentTrackId);
+            nextIndex = currentIndex + 1;
+
+            if (nextIndex === trackIds.get('length')) {
+                nextIndex = 0;
+            }
+
+            trackId = trackIds.objectAt(nextIndex);
         }
 
-        trackId = trackIds.objectAt(nextIndex);
         this.playTrackById(trackId, true);
     }
 });

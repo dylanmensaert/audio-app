@@ -69,6 +69,15 @@
         .s10 {
             padding-right: 0;
         }
+        &.collapsed {
+            .noUi-base {
+                height: 24px;
+                top: -21px;
+                .noUi-background {
+                    top: 21px;
+                }
+            }
+        }
     }
     
     .my-slider {
@@ -456,14 +465,6 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
-    /* TODO: Implement when slider enabled */
-    /* .noUi-base {
-        height: 24px;
-        top: -21px;
-        .noUi-background {
-            top: 21px;
-        }
-    } */
     
     .my-audio-row {
         margin-bottom: 0;

@@ -1,8 +1,8 @@
 {{outlet}}
 
 {{#if audioPlayer.track}}
-    {{#c-fixed class='my-audio-player' alignment='bottom' offset=10}}
-        {{c-audio-slider slider=utils.audioSlider}}
+    {{#c-fixed class=(concat 'my-audio-player' (if isCollapsed ' collapsed')) alignment='bottom' offset=10}}
+        {{c-audio-slider slider=utils.audioSlider disabled=(is-not isCollapsed)}}
 
         <div class="row my-audio-timer">
             <div class="col s6">
@@ -18,12 +18,30 @@
             </div>
         </div>
 
+        {{#link-to audioRemote.type audioRemote.model tagName='div' class='col s10 waves-effect' }}
+          <i class="mdi mdi-link-variant"></i>
+        {{/link-to}}
+
+        <div class="row">
+           <div class="col s6" {{action 'previous'}}>
+             <i class="mdi mdi-skip-previous"></i>
+           </div>
+
+           <div class="col s6" {{action 'next'}}>
+             <i class="mdi mdi-skip-next"></i>
+           </div>
+        </div>
+
         <div class="row my-audio-row">
-            {{#link-to audioRemote.type audioRemote.model tagName='div' class='col s10 waves-effect' }}
+            <div class="col s10 waves-effect" {{action 'toggleCollapse'}}>
                 <h5 class="truncate" style="margin: 0;">
                     {{audioPlayer.track.name}}
+
+                    <small>
+                      {{audioRemote.title}}
+                    </small>
                 </h5>
-            {{/link-to}}
+            </div>
 
             {{#if audioPlayer.isLoading}}
               <div class="col s2 my-audio-btn">

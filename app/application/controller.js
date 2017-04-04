@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
     linkToProperties: {
         classNameBindings: ['active:mdl-color--blue-grey-800']
     },
+    isCollapsed: false,
     actions: {
         dismissAlert: function() {
             this.set('error', null);
@@ -17,6 +18,15 @@ export default Ember.Controller.extend({
         },
         pause: function() {
             this.get('audioRemote').pause();
+        },
+        previous: function() {
+            this.get('audioRemote').previous();
+        },
+        next: function() {
+            this.get('audioRemote').next();
+        },
+        toggleCollapse: function() {
+            this.toggleProperty('isCollapsed');
         }
     }
 });

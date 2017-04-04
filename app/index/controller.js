@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import trackActionsMixin from 'audio-app/mixins/actions-track';
+import playTrackMixin from 'audio-app/mixins/track-play';
 
-export default Ember.Controller.extend(trackActionsMixin, {
+export default Ember.Controller.extend(playTrackMixin, {
     loading: null,
     latestHistoryHash: null,
     tracks: null,

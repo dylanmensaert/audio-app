@@ -6,7 +6,7 @@ export default Ember.Mixin.create({
     relatedTrack: null,
     type: null,
     actions: {
-        playTrack: function(track) {
+        play: function(track) {
             if (this.get('selectedTracks.length')) {
                 track.toggleProperty('isSelected');
             } else {
@@ -15,10 +15,11 @@ export default Ember.Mixin.create({
                     audioRemote = this.get('audioRemote');
 
                 if (playlist) {
-                    // TODO:support other types too
-                    audioRemote.playFromPlaylist('playlist', playlist, track);
+                    audioRemote.play('playlist', playlist, track);
                 } else if (relatedTrack) {
-                    audioRemote.playFromRelatedTrack(track);
+                    audioRemote.play('track.related', relatedTrack, track);
+                } else {
+                    audioRemote.play('track.related', track)
                 }
             }
         }

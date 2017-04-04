@@ -30,7 +30,7 @@ export default Ember.Controller.extend(loadNextControllerMixin, {
         play: function() {
             let playlist = this.get('model');
 
-            this.get('audioRemote').start('playlist', playlist);
+            this.get('audioRemote').play('playlist', playlist);
         },
         setupEdit: function() {
             let name = this.get('model.name');

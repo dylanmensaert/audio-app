@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
         play: function() {
             let track = this.get('model');
 
-            this.get('audioRemote').start('track', track);
+            this.get('audioRemote').play('track.related', track);
         },
         download: function() {
             this.get('model').download();

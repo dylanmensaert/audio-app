@@ -10,18 +10,18 @@
         return {
             'default': {
                 download: function(track, type) {
-                    let source = track.buildFilePath(type),
+                    var source = track.buildFilePath(type),
                         name = Ember.String.capitalize(type),
                         url = track.get('online' + name);
 
                     return new Ember.RSVP.Promise(function(resolve, reject) {
-                        let xhr = new XMLHttpRequest();
+                        var xhr = new XMLHttpRequest();
 
                         xhr.open('GET', url, true);
                         xhr.responseType = 'arraybuffer';
 
                         xhr.onload = function() {
-                            let response = this.response;
+                            var response = this.response;
 
                             track.get('fileSystem.instance').root.getFile(source, {
                                 create: true
