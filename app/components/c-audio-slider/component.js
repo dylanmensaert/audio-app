@@ -41,6 +41,6 @@ export default Ember.Component.extend({
         slider.set('element', element);
     },
     willDestroyElement: function() {
-        this.$().destroy();
+        this.get('element').noUiSlider.destroy();
     }
 });
