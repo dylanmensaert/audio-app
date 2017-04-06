@@ -58,7 +58,9 @@ export default {
                 response.items.forEach(function(item) {
                     let record = trackByIds.get(item.id);
 
-                    record.set('viewCount', parseInt(item.statistics.viewCount));
+                    if (item.statistics) {
+                        record.set('viewCount', parseInt(item.statistics.viewCount));
+                    }
                 });
 
                 return tracks;

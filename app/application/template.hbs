@@ -50,9 +50,9 @@
 
       <div class="my-fixed-row my-audio-player">
          <div class="my-player-header">
-            {{#link-to audioRemote.type audioRemote.model tagName='div' class='my-player-image'}}
+            <div class='my-player-image' {{action 'transitionTo'}}>
               {{c-parallax model=audioPlayer.track}}
-            {{/link-to}}
+            </div>
 
             <h5 class="truncate">
               {{audioPlayer.track.name}}

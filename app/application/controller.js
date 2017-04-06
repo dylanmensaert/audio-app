@@ -27,6 +27,12 @@ export default Ember.Controller.extend({
         },
         toggleCollapse: function() {
             this.toggleProperty('isCollapsed');
+        },
+        transitionTo: function() {
+            let audioRemote = this.get('audioRemote');
+
+            this.set('isCollapsed', true);
+            this.transitionToRoute(audioRemote.get('routeName'), audioRemote.get('model'));
         }
     }
 });
