@@ -12,7 +12,7 @@ export default Ember.Service.extend({
                 'music-controls-previous': this.previous,
                 'music-controls-next': this.next,
                 'music-controls-pause': this.pause,
-                'music-controls-play': this.play,
+                'music-controls-resume': this.resume,
                 'music-controls-destroy': this.pause
             });
         }.bind(this));

@@ -7,7 +7,7 @@
         return {
             'default': {
                 init: function() {},
-                play: function() {},
+                resume: function() {},
                 pause: function() {},
                 load: function() {},
                 destroy: function() {}

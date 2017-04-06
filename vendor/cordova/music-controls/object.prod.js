@@ -18,7 +18,7 @@
                 MusicControls.listen();
             };
 
-            musicControls.play = function() {
+            musicControls.resume = function() {
                 MusicControls.updateIsPlaying(true);
             };
 
