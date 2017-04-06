@@ -31,8 +31,7 @@ export default Ember.Service.extend({
     instance: null,
     playlistIds: null,
     trackIds: null,
-    downloadLater: false,
-    // TODO: downloadBeforePlaying to true
+    downloadLater: true,
     downloadBeforePlaying: false,
     // TODO: http://stackoverflow.com/questions/30109066/html-5-file-system-how-to-increase-persistent-storage
     forge: function() {

@@ -15,7 +15,7 @@ export default Ember.Route.extend({
         this.set('utils.transitionToRoute', this.transitionTo.bind(this));
         this.set('utils.controllerFor', this.controllerFor.bind(this));
 
-        this.get('audioRemote').connect();
+        this.get('audioRemote').forge();
 
         connection.on('wifi', function() {
             if (this.get('fileSystem.downloadLater')) {
