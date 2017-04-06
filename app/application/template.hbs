@@ -1,51 +1,51 @@
 {{outlet}}
 
 {{#if audioPlayer.track}}
-    {{#if isCollapsed}}
-      {{#c-fixed class='my-audio-player collapsed' alignment='bottom' offset=10}}
-        <div class="row my-audio-timer">
-            <div class="col s6">
-                <small>
-                    {{time utils.audioSlider.value}}
-                </small>
-            </div>
-
-            <div class="col s6 my-right">
-                <small>
-                    {{time utils.audioSlider.max}}
-                </small>
-            </div>
-        </div>
-
-        {{c-audio-slider slider=utils.audioSlider disabled=true}}
-
-        <div class="row my-audio-row">
-          <div class="col s10 waves-effect" {{action 'toggleCollapse'}}>
-            <h5 class="truncate">
-              {{audioPlayer.track.name}}
-
-              <div>
-                {{audioRemote.playlist.name}}
-              </div>
-            </h5>
+    {{#c-fixed class=(concat 'my-audio-player collapsed' (unless isCollapsed 'my-hidden')) alignment='bottom' offset=10}}
+      <div class="row my-audio-timer">
+          <div class="col s6">
+              <small>
+                  {{time utils.audioSlider.value}}
+              </small>
           </div>
 
-          {{#if audioPlayer.isLoading}}
-            <div class="col s2">
-                {{c-spinner type='my-audio-spinner'}}
+          <div class="col s6 my-right">
+              <small>
+                  {{time utils.audioSlider.max}}
+              </small>
+          </div>
+      </div>
+
+      {{c-audio-slider slider=utils.audioSlider disabled=true}}
+
+      <div class="row my-audio-row">
+        <div class="col s10 waves-effect" {{action 'toggleCollapse'}}>
+          <h5 class="truncate {{if audioRemote.playlist.name 'my-subtitle' 'my-title'}}">
+            {{audioPlayer.track.name}}
+
+            <div>
+              {{audioRemote.playlist.name}}
             </div>
-          {{else if audioPlayer.isPlaying}}
-            <div class="col s2" {{action 'pause'}}>
-                <i class="mdi mdi-pause"></i>
-            </div>
-          {{else if audioPlayer.isIdle}}
-            <div class="col s2" {{action 'resume'}}>
-                <i class="mdi mdi-play"></i>
-            </div>
-          {{/if}}
+          </h5>
         </div>
-      {{/c-fixed}}
-    {{else}}
+
+        {{#if audioPlayer.isLoading}}
+          <div class="col s2">
+              {{c-spinner type='my-audio-spinner' class='my-player-spinner'}}
+          </div>
+        {{else if audioPlayer.isPlaying}}
+          <div class="col s2 my-center" {{action 'pause'}}>
+              <i class="mdi mdi-pause"></i>
+          </div>
+        {{else if audioPlayer.isIdle}}
+          <div class="col s2 my-center" {{action 'resume'}}>
+              <i class="mdi mdi-play"></i>
+          </div>
+        {{/if}}
+      </div>
+    {{/c-fixed}}
+
+    <div class={{if isCollapsed 'my-hidden'}}>
       <div class="my-backdrop" {{action 'toggleCollapse'}} />
 
       <div class="my-fixed-row my-audio-player">
@@ -87,11 +87,23 @@
                <i class="mdi mdi-skip-previous my-player-icon"></i>
              </div>
 
-             <div class="col s4 my-center" {{action 'previous'}}>
-               <div class="btn-floating waves-effect waves-light red">
-                 <i class="mdi mdi-play"></i>
-               </div>
-             </div>
+            {{#if audioPlayer.isLoading}}
+              <div class="col s4 my-center">
+                  {{c-spinner type='my-audio-spinner' class='my-player-spinner'}}
+              </div>
+            {{else if audioPlayer.isPlaying}}
+              <div class="col s4 my-center" {{action 'pause'}}>
+                <div class="btn-floating red">
+                  <i class="mdi mdi-pause"></i>
+                </div>
+              </div>
+            {{else if audioPlayer.isIdle}}
+              <div class="col s4 my-center" {{action 'resume'}}>
+                <div class="btn-floating red">
+                  <i class="mdi mdi-play"></i>
+                </div>
+              </div>
+            {{/if}}
 
              <div class="col s4" {{action 'next'}}>
                <i class="mdi mdi-skip-next my-player-icon"></i>
@@ -99,7 +111,7 @@
           </div>
         </div>
       </div>
-  {{/if}}
+  </div>
 {{/if}}
 
 {{c-audio}}

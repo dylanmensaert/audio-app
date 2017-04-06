@@ -38,11 +38,11 @@ export default Ember.Service.extend({
                 element.play();
 
                 musicControls.load(track);
-                musicControls.play();
+                musicControls.resume();
             });
         } else {
             element.play();
-            musicControls.play();
+            musicControls.resume();
         }
 
         return Ember.RSVP.resolve(promise);

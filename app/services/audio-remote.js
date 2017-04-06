@@ -101,7 +101,7 @@ export default Ember.Service.extend({
         }
 
         playing.catch(function() {
-            if (this.get('model.playableTracks').isAny('isDisabled', false)) {
+            if (track.get('isDisabled')) {
                 this.next();
             }
         }.bind(this));
@@ -119,7 +119,7 @@ export default Ember.Service.extend({
             currentTrackId = this.get('audioPlayer.track.id'),
             previousIndex = trackIds.indexOf(currentTrackId) + 1;
 
-        if (previousIndex !== trackIds.get('length') - 1) {
+        if (previousIndex !== trackIds.get('length')) {
             let trackId = trackIds.objectAt(previousIndex),
                 track = store.peekRecord('track', trackId);
 

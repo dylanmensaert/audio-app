@@ -147,7 +147,12 @@
     .my-audio-spinner {
         width: 30px;
         height: 30px;
-        left: calc(50% - 15px);
+    }
+    
+    .collapsed {
+        .my-audio-spinner {
+            left: calc(50% - 15px);
+        }
     }
     
     .my-audio-timer {
@@ -517,8 +522,13 @@
     .my-audio-row {
         margin-bottom: 0;
         .truncate {
-            line-height: 56px;
-            padding-left: 0.75rem;
+            &.my-subtitle {
+                padding: 0.75rem 0 0.75rem 0.75rem;
+            }
+            &.my-title {
+                line-height: 56px;
+                padding-left: 0.75rem;
+            }
         }
         .col {
             padding: 0;
@@ -527,6 +537,9 @@
             }
             &.s2 {
                 width: 21%;
+                .my-player-spinner {
+                    padding: 0.75rem 0;
+                }
             }
         }
     }
