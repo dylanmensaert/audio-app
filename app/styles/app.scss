@@ -139,7 +139,7 @@
     .my-backdrop {
         height: 100%;
         width: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.8);
         position: fixed;
         top: 0;
         z-index: 2;
@@ -524,7 +524,7 @@
         margin-bottom: 0;
         .truncate {
             &.my-subtitle {
-                padding: 0.75rem 0 0.75rem 0.75rem;
+                padding: 10px 0 6px 0.75rem;
             }
             &.my-title {
                 line-height: 56px;
@@ -626,11 +626,14 @@
         display: none !important;
     }
     
-    .fixed-action-btn li a {
-        &,
-        &:hover,
-        &:focus {
-            background: #64b5f6;
+    .fixed-action-btn {
+        z-index: 2;
+        li a {
+            &,
+            &:hover,
+            &:focus {
+                background: #64b5f6;
+            }
         }
     }
     
