@@ -1,16 +1,17 @@
 <div class="my-track-draggable {{if model.isSelected 'my-active'}}">
-    {{#link-to 'track.related' model.id tagName='div' class='my-track-left'}}
+    <div class="my-track-left">
         <div class="my-static-image">
             {{c-image src=thumbnail}}
         </div>
-    {{/link-to}}
+    </div>
 
     <div {{action 'play'}} class="my-track-body">
         <div class="my-track-text">
             {{model.name}}
         </div>
 
-        <div class="my-track-status grey-text">
+        <div class="my-track-status row">
+          <div class="col s8">
             {{#if isPlaying}}
                 <div class="my-track-icon">
                     <div class="eq">
@@ -28,6 +29,11 @@
                     <i class="mdi mdi-download"></i>
                 </div>
             {{/if}}
+          </div>
+
+          {{#link-to 'track.related' model class='col s4 my-right'}}
+              <i class="mdi mdi-chevron-right" />
+          {{/link-to}}
         </div>
     </div>
 </div>

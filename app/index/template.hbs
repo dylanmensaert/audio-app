@@ -13,9 +13,11 @@
             {{c-track model=hash.track play='play'}}
         {{/each}}
 
-        {{#link-to 'playlist' 'history' tagName='div' class='my-next'}}
-            <i class="mdi mdi-chevron-right"></i>
-        {{/link-to}}
+        <div class="my-next">
+          {{#link-to 'playlist' 'history' class='btn grey lighten-1 waves-effect waves-light'}}
+              More
+          {{/link-to}}
+        </div>
       {{/if}}
 
       {{#each latestHistoryHash as |hash|}}
@@ -23,9 +25,11 @@
             {{c-track model=relatedTrack play='play'}}
         {{/each}}
 
-        {{#link-to 'track.related' hash.track tagName='div' class='my-next'}}
-            <i class="mdi mdi-chevron-right"></i>
-        {{/link-to}}
+        <div class="my-next">
+          {{#link-to 'track.related' hash.track class='btn grey lighten-1 waves-effect waves-light'}}
+              More
+          {{/link-to}}
+        </div>
       {{/each}}
     {{/if}}
 </main>
