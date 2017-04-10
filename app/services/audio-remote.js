@@ -88,7 +88,7 @@ export default Ember.Service.extend({
                 historyTrackIds.removeObject(id);
             }
 
-            history.unshiftTrack(track);
+            history.pushTrack(track);
             history.save();
         }
 
@@ -112,7 +112,6 @@ export default Ember.Service.extend({
     pause: function() {
         this.get('audioPlayer').pause();
     },
-    // TODO: Implement support for history track also..
     previous: function() {
         let store = this.get('store'),
             history = store.peekRecord('playlist', 'history'),
@@ -135,9 +134,9 @@ export default Ember.Service.extend({
             history = store.peekRecord('playlist', 'history'),
             historyTrackIds = history.get('trackIds');
 
-        if (historyTrackIds.get('firstObject') !== currentTrackId) {
+        if (historyTrackIds.get('lastObject') !== currentTrackId) {
             let currentIndex = historyTrackIds.indexOf(currentTrackId),
-                trackId = historyTrackIds.objectAt(currentIndex - 1),
+                trackId = historyTrackIds.objectAt(currentIndex + 1),
                 track = store.peekRecord('track', trackId);
 
             this.play('playlist', history, track);

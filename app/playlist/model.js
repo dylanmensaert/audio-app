@@ -18,11 +18,21 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     totalTracks: DS.attr('number'),
     propertyNames: ['isLocalOnly', 'trackIds', 'permission', 'nextPageToken'],
     tracks: Ember.computed('trackIds.[]', function() {
-        let store = this.store;
+        let store = this.store,
+            id = this.get('id'),
+            tracks = [];
 
-        return this.get('trackIds').map(function(trackId) {
-            return store.peekRecord('track', trackId);
+        this.get('trackIds').forEach(function(trackId) {
+            let track = store.peekRecord('track', trackId);
+
+            if (id === 'history') {
+                tracks.unshiftObject(track);
+            } else {
+                tracks.pushObject(track);
+            }
         });
+
+        return tracks;
     }),
     playableTracks: Ember.computed.alias('tracks'),
     numberOfTracks: Ember.computed('trackIds.length', 'didLoadTracks', 'totalTracks', function() {
@@ -167,11 +177,6 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     },
     pushTrack: function(track) {
         this.get('trackIds').pushObject(track.get('id'));
-
-        return track.save();
-    },
-    unshiftTrack: function(track) {
-        this.get('trackIds').unshiftObject(track.get('id'));
 
         return track.save();
     },
