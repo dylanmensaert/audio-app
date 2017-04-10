@@ -53,8 +53,12 @@
          <div class="my-player-header">
             <div class="my-backcover" />
 
-            <div class='my-player-image' {{action 'transitionTo'}}>
-              {{c-parallax model=audioPlayer.track class='waves-effect waves-block waves-light'}}
+            <div class="my-player-image">
+              <div class="card">
+                <div class="card-image" {{action 'transitionTo'}}>
+                  {{c-parallax model=audioPlayer.track class='waves-effect waves-block waves-light'}}
+                </div>
+              </div>
             </div>
 
             <h5 class="truncate my-center">
