@@ -117,7 +117,7 @@ export default Ember.Service.extend({
             history = store.peekRecord('playlist', 'history'),
             trackIds = history.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            previousIndex = trackIds.indexOf(currentTrackId) + 1;
+            previousIndex = trackIds.indexOf(currentTrackId) - 1;
 
         if (previousIndex !== trackIds.get('length')) {
             let trackId = trackIds.objectAt(previousIndex),
