@@ -18,18 +18,24 @@
               More
           {{/link-to}}
         </div>
-      {{/if}}
 
-      {{#each latestHistoryHash as |hash|}}
-        {{#each hash.topRelatedTracks as |relatedTrack|}}
-            {{c-track model=relatedTrack play='play'}}
+        {{#each latestHistoryHash as |hash|}}
+          {{#each hash.topRelatedTracks as |relatedTrack|}}
+              {{c-track model=relatedTrack play='play'}}
+          {{/each}}
+
+          <div class="my-next">
+            {{#link-to 'track.related' hash.track class='btn grey lighten-1 waves-effect waves-light'}}
+                More
+            {{/link-to}}
+          </div>
         {{/each}}
-
-        <div class="my-next">
-          {{#link-to 'track.related' hash.track class='btn grey lighten-1 waves-effect waves-light'}}
-              More
-          {{/link-to}}
+      {{else}}
+        <div class="container">
+          <p class="caption">
+            Nothing here.. yet! <br /> Search for tracks first and start playing some.
+          </p>
         </div>
-      {{/each}}
+      {{/if}}
     {{/if}}
 </main>
