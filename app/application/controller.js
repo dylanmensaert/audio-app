@@ -8,7 +8,6 @@ export default Ember.Controller.extend({
     linkToProperties: {
         classNameBindings: ['active:mdl-color--blue-grey-800']
     },
-    isCollapsed: true,
     actions: {
         dismissAlert: function() {
             this.set('error', null);
@@ -25,14 +24,14 @@ export default Ember.Controller.extend({
         next: function() {
             this.get('audioRemote').next();
         },
-        toggleCollapse: function() {
-            this.toggleProperty('isCollapsed');
-        },
         transitionTo: function() {
             let audioRemote = this.get('audioRemote');
 
-            this.set('isCollapsed', true);
+            Ember.$('#audio-player').modal('close');
             this.transitionToRoute(audioRemote.get('routeName'), audioRemote.get('model'));
+        },
+        didInsertModal: function() {
+            Ember.$('#audio-player').modal();
         }
     }
 });

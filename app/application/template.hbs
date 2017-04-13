@@ -2,7 +2,8 @@
 
 <!-- TODO: refactor template/css code -->
 {{#if audioPlayer.track}}
-    {{#c-fixed class=(concat 'my-audio-player collapsed' (unless isCollapsed ' my-hidden')) alignment='bottom' offset=10}}
+  {{#c-div didInsert='didInsertModal'}}
+    {{#c-fixed class='my-audio-player collapsed' alignment='bottom' offset=10}}
       <div class="row my-audio-timer">
           <div class="col s6">
               <small>
@@ -20,7 +21,7 @@
       {{c-audio-slider slider=utils.audioSlider disabled=true}}
 
       <div class="row my-audio-row">
-        <div class="col s10 waves-effect" {{action 'toggleCollapse'}}>
+        <a href="#audio-player" class="col s10 waves-effect modal-trigger">
           <h5 class="truncate {{if audioRemote.playlist.name 'my-subtitle' 'my-title'}}">
             {{audioPlayer.track.name}}
 
@@ -28,7 +29,7 @@
               {{audioRemote.playlist.name}}
             </div>
           </h5>
-        </div>
+        </a>
 
         {{#if audioPlayer.isLoading}}
           <div class="col s2">
@@ -46,10 +47,7 @@
       </div>
     {{/c-fixed}}
 
-    <div class={{if isCollapsed 'my-hidden'}}>
-      <div class="my-backdrop" {{action 'toggleCollapse'}} />
-
-      <div class="my-fixed-row my-audio-player">
+      <div id="audio-player" class="modal bottom-sheet my-audio-player my-audio-modal">
          <div class="my-player-header">
             <div class="my-backcover" />
 
@@ -117,10 +115,10 @@
              <div class="col s4" {{action 'next'}}>
                <i class="mdi mdi-skip-next my-player-icon"></i>
              </div>
-          </div>
         </div>
       </div>
   </div>
+  {{/c-div}}
 {{/if}}
 
 {{c-audio}}

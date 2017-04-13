@@ -62,6 +62,12 @@
         z-index: 3;
     }
     
+    .modal.bottom-sheet.my-audio-modal {
+        max-height: initial;
+        overflow-y: initial;
+        background-color: initial;
+    }
+    
     .my-audio-player {
         bottom: 0;
         top: initial;
@@ -92,6 +98,9 @@
             }
         }
         &.collapsed {
+            a {
+                color: initial;
+            }
             .truncate {
                 margin: 0;
                 div {
