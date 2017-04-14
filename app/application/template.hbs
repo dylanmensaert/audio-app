@@ -2,7 +2,7 @@
 
 <!-- TODO: refactor template/css code -->
 {{#if audioPlayer.track}}
-  {{#c-div didInsert='didInsertModal'}}
+  {{#c-element didInsert='didInsertModal'}}
     {{#c-fixed class='my-audio-player collapsed' alignment='bottom' offset=10}}
       <div class="row my-audio-timer">
           <div class="col s6">
@@ -118,7 +118,7 @@
         </div>
       </div>
   </div>
-  {{/c-div}}
+  {{/c-element}}
 {{/if}}
 
 {{c-audio}}

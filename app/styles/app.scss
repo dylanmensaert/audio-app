@@ -684,3 +684,10 @@
         border-right: 2px solid #4285f4;
         border-bottom: 2px solid #4285f4;
     }
+    
+    .my-fixed-overlay {
+        display: block;
+        opacity: 0.5;
+        z-index: -1;
+        top: calc(56px + 16px);
+    }
