@@ -38,7 +38,7 @@ export default Ember.Component.extend({
             slider.set('isDragged', false);
         });
 
-        slider.set('element', element);
+        slider.get('elements').pushObject(element);
     },
     willDestroyElement: function() {
         this.get('element').noUiSlider.destroy();
