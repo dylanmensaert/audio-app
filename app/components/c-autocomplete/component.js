@@ -14,7 +14,16 @@ export default Ember.Component.extend({
     showSuggestions: false,
     isFocused: true,
     showAutoComplete: Ember.computed('showSuggestions', 'suggestions.length', function() {
-        return this.get('showSuggestions') && this.get('suggestions.length');
+        let showAutoComplete = this.get('showSuggestions') && this.get('suggestions.length'),
+            body = Ember.$('body');
+
+        if (showAutoComplete) {
+            body.css('overflow', 'hidden');
+        } else {
+            body.css('overflow', '');
+        }
+
+        return showAutoComplete;
     }),
     updateShowSuggestions: Ember.observer('value', function() {
         this.set('showSuggestions', !!this.get('value'));
