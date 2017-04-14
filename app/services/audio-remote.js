@@ -123,22 +123,22 @@ export default Ember.Service.extend({
     },
     previous: function() {
         this._switch(function(currentIndex) {
-            let previousIndex = currentIndex - 1,
+            let previousIndex = currentIndex - 1;
 
-                if (previousIndex === 0) {
-                    previousIndex = trackIds.get('length');
-                }
+            if (previousIndex === 0) {
+                previousIndex = trackIds.get('length');
+            }
 
             return previousIndex;
         });
     },
     next: function() {
         this._switch(function(currentIndex) {
-            let nextIndex = currentIndex + 1,
+            let nextIndex = currentIndex + 1;
 
-                if (nextIndex === trackIds.get('length')) {
-                    nextIndex = 0;
-                }
+            if (nextIndex === trackIds.get('length')) {
+                nextIndex = 0;
+            }
 
             return previousIndex;
         });
