@@ -65,7 +65,7 @@ export default Ember.Service.extend({
         return trackIds;
     }),
     routeName: null,
-    play: function(routeName, model, track) {
+    play: function(routeName, model, track, addToHistory) {
         this.set('routeName', routeName);
         this.set('model', model);
 
@@ -73,7 +73,7 @@ export default Ember.Service.extend({
             track = model.get('playableTracks.firstObject');
         }
 
-        this.playTrack(track, model.get('id') !== 'history');
+        this.playTrack(track, addToHistory || model.get('id') !== 'history');
     },
     playTrack: function(track, addToHistory) {
         let audioPlayer = this.get('audioPlayer'),
@@ -112,49 +112,35 @@ export default Ember.Service.extend({
     pause: function() {
         this.get('audioPlayer').pause();
     },
-    previous: function() {
-        let store = this.get('store'),
-            history = store.peekRecord('playlist', 'history'),
-            trackIds = history.get('trackIds'),
+    _switch: function(getIndex) {
+        let trackIds = this.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
-            previousIndex = trackIds.indexOf(currentTrackId) - 1;
+            currentIndex = trackIds.indexOf(currentTrackId),
+            trackId = trackIds.objectAt(getIndex(currentIndex)),
+            track = this.get('store').peekRecord('track', trackId);
 
-        if (previousIndex !== trackIds.get('length')) {
-            let trackId = trackIds.objectAt(previousIndex),
-                track = store.peekRecord('track', trackId);
+        this.playTrack(track, true);
+    },
+    previous: function() {
+        this._switch(function(currentIndex) {
+            let previousIndex = currentIndex - 1,
 
-            this.playTrack(track, false);
-        } else {
-            this.get('utils').showMessage('No previous tracks');
-        }
+                if (previousIndex === 0) {
+                    previousIndex = trackIds.get('length');
+                }
+
+            return previousIndex;
+        });
     },
     next: function() {
-        let store = this.get('store'),
-            currentTrackId = this.get('audioPlayer.track.id'),
-            history = store.peekRecord('playlist', 'history'),
-            historyTrackIds = history.get('trackIds');
+        this._switch(function(currentIndex) {
+            let nextIndex = currentIndex + 1,
 
-        if (historyTrackIds.get('lastObject') !== currentTrackId) {
-            let currentIndex = historyTrackIds.indexOf(currentTrackId),
-                trackId = historyTrackIds.objectAt(currentIndex + 1),
-                track = store.peekRecord('track', trackId);
+                if (nextIndex === trackIds.get('length')) {
+                    nextIndex = 0;
+                }
 
-            this.play('playlist', history, track);
-        } else {
-            let trackIds = this.get('trackIds'),
-                currentIndex = trackIds.indexOf(currentTrackId),
-                nextIndex = currentIndex + 1,
-                trackId,
-                track;
-
-            if (nextIndex === trackIds.get('length')) {
-                nextIndex = 0;
-            }
-
-            trackId = trackIds.objectAt(nextIndex);
-            track = store.peekRecord('track', trackId);
-
-            this.playTrack(track, true);
-        }
+            return previousIndex;
+        });
     }
 });
