@@ -112,35 +112,36 @@ export default Ember.Service.extend({
     pause: function() {
         this.get('audioPlayer').pause();
     },
-    _switch: function(getIndex) {
+    _switch: function(getOtherIndex) {
         let trackIds = this.get('trackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
             currentIndex = trackIds.indexOf(currentTrackId),
-            trackId = trackIds.objectAt(getIndex(currentIndex)),
+            otherIndex = getOtherIndex(currentIndex, trackIds.get('length')),
+            trackId = trackIds.objectAt(otherIndex),
             track = this.get('store').peekRecord('track', trackId);
 
-        this.playTrack(track, true);
+        this.playTrack(track, this.get('model.id') !== 'history');
     },
     previous: function() {
-        this._switch(function(currentIndex) {
+        this._switch(function(currentIndex, length) {
             let previousIndex = currentIndex - 1;
 
-            if (previousIndex === 0) {
-                previousIndex = trackIds.get('length');
+            if (previousIndex === -1) {
+                previousIndex = length - 1;
             }
 
             return previousIndex;
         });
     },
     next: function() {
-        this._switch(function(currentIndex) {
+        this._switch(function(currentIndex, length) {
             let nextIndex = currentIndex + 1;
 
-            if (nextIndex === trackIds.get('length')) {
+            if (nextIndex === length) {
                 nextIndex = 0;
             }
 
-            return previousIndex;
+            return nextIndex;
         });
     }
 });

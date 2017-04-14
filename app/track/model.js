@@ -5,7 +5,6 @@ import Ember from 'ember';
 import modelMixin from 'audio-app/mixins/model';
 import domainData from 'domain-data';
 import ytMp3 from 'audio-app/utils/yt-mp3';
-import Inflector from 'ember-inflector';
 import logic from 'audio-app/utils/logic';
 import connection from 'connection';
 import sanitizeFilename from 'npm:sanitize-filename';
@@ -124,9 +123,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     }),
     isDisabled: false,
     buildFilePath: function(type) {
-        let directory = Inflector.inflector.pluralize(type);
-
-        return directory + '/' + sanitizeFilename(this.get('name')) + '.' + extension[type];
+        return type + '/' + sanitizeFilename(this.get('name')) + '.' + extension[type];
     },
     findAudioSource: function() {
         let videoUrl = 'http://www.youtube.com/watch?v=' + this.get('id'),

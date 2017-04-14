@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
                 } else if (relatedTrack) {
                     audioRemote.play('track.related', relatedTrack, track);
                 } else {
-                    let history = this.get('store').findRecord('playlist', 'history');
+                    let history = this.get('store').peekRecord('playlist', 'history');
 
                     audioRemote.play('playlist', history, track, true);
                 }
