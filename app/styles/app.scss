@@ -292,9 +292,6 @@
     .my-track-status {
         height: 30px;
         margin: 0;
-        .col {
-            padding: 0;
-        }
         i {
             font-size: 20px;
             color: #9e9e9e;
@@ -690,4 +687,19 @@
         opacity: 0.5;
         z-index: -1;
         top: calc(56px + 16px);
+    }
+    
+    .my-track-transition {
+        text-align: right;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 15%;
+        padding-right: 8px;
+        padding-top: 16%;
+        height: 100%;
+        i {
+            font-size: 20px;
+            color: #9e9e9e;
+        }
     }
