@@ -82,11 +82,11 @@ export default Ember.Service.extend({
         let deserialize = this.deserialize.bind(this);
 
         return new Ember.RSVP.Promise(function(resolve) {
-            instance.root.getDirectory('thumbnails', {
+            instance.root.getDirectory('thumbnail', {
                 create: true
             });
 
-            instance.root.getDirectory('audios', {
+            instance.root.getDirectory('audio', {
                 create: true
             });
 
