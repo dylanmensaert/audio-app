@@ -36,6 +36,7 @@ export default Ember.Component.extend({
                     playlist.save();
 
                     this.get('utils').showMessage('Removed from playlist (' + length + ')');
+                    this.deselect();
                 }
             }
         },
@@ -54,6 +55,7 @@ export default Ember.Component.extend({
                 downloadLater.save();
 
                 this.get('utils').showMessage('Added to Download later (' + length + ')');
+                this.deselect();
             }
         },
         download: function() {
@@ -73,6 +75,7 @@ export default Ember.Component.extend({
                 downloadLater.save();
 
                 this.get('utils').showMessage('Downloading (' + length + ')');
+                this.deselect();
             }
         },
         delete: function() {
@@ -85,6 +88,7 @@ export default Ember.Component.extend({
                 });
 
                 this.get('utils').showMessage('Removed locally (' + length + ')');
+                this.deselect();
             }
         },
         transitionToPlaylists: function() {

@@ -31,6 +31,7 @@ export default Ember.Component.extend({
                 });
 
                 this.get('utils').showMessage('Added locally (' + length + ')');
+                this.deselect();
             }
         },
         delete: function() {
@@ -43,6 +44,7 @@ export default Ember.Component.extend({
                 });
 
                 this.get('utils').showMessage('Removed locally (' + length + ')');
+                this.deselect();
             }
         },
         deselect: function() {
