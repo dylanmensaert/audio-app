@@ -8,41 +8,45 @@
 
         return {
             'default': {
-                setCurrentTime: function(givenTime) {
-                    this.instance.seekTo(givenTime);
+                setCurrentTime: function(seconds) {
+                    this.instance.seekTo(seconds * 1000);
                 },
                 play: function() {
-                    this.instance.play();
-                    this.audioPlayer.set('status', 'playing');
-
                     this.startInterval();
+                    this.instance.play();
+
+                    this.audioPlayer.set('status', 'playing');
                 },
                 pause: function() {
                     this.instance.pause();
-                    this.audioPlayer.set('status', 'idle');
-
                     clearInterval(this.interval);
+
+                    this.audioPlayer.set('status', 'idle');
                 },
                 load: function(src) {
                     if (this.instance) {
                         this.instance.release();
                     }
 
-                    this.audioPlayer.set('status', 'loading');
                     this.audioPlayer.set('currentTime', 0);
 
-                    this.instance = new Media(src, function() {
-                        var duration = this.instance.getDuration();
-
-                        this.audioPlayer.set('duration', duration);
-                        this.startInterval();
-                    }.bind(this));
+                    this.instance = new Media(src);
+                    // TODO: Implemented 'mediaStatus' (zie docs)
+                    this.play();
                 },
                 startInterval: function() {
                     this.interval = setInterval(function() {
-                        var currentPosition = this.instance.getCurrentPosition();
+                        var duration = this.instance.getDuration();
 
-                        this.audioPlayer.set('currentTime', currentPosition);
+                        if (duration !== -1) {
+                            this.audioPlayer.set('duration', duration);
+                        }
+
+                        this.instance.getCurrentPosition(function(position) {
+                            if (position !== -1) {
+                                this.audioPlayer.set('currentTime', position);
+                            }
+                        }.bind(this));
                     }.bind(this), 1000);
                 },
                 instance: null,
