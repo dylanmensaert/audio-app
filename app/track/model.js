@@ -62,12 +62,12 @@ export default DS.Model.extend(modelMixin, searchMixin, {
     sortedRelatedTracks: Ember.computed.sort('relatedTracks', 'trackSorting'),
     // TODO: workaround for index\controller.js
     relatedTracksLength: Ember.computed.alias('relatedTrackIds.length'),
-    playableTracks: Ember.computed('sortedRelatedTracks.[]', function() {
-        let playableTracks = this.get('sortedRelatedTracks').toArray();
+    playableTrackIds: Ember.computed('sortedRelatedTracks.[]', function() {
+        let playableTrackIds = this.get('sortedRelatedTracks').mapBy('id');
 
-        playableTracks.unshiftObject(this);
+        playableTrackIds.unshiftObject(this.get('id'));
 
-        return playableTracks;
+        return playableTrackIds;
     }),
     loadFirstRelatedTracks: function() {
         let promise;

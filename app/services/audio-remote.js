@@ -44,7 +44,6 @@ export default Ember.Service.extend({
         audioPlayer.set('didEnd', this.next.bind(this));
     },
     model: null,
-    // TODO: current model not stored in history so back tracking not sufficient
     playlist: Ember.computed('model', 'routeName', function() {
         let playlist;
 
@@ -54,23 +53,15 @@ export default Ember.Service.extend({
 
         return playlist;
     }),
-    trackIds: Ember.computed('model.playableTracks.@each.id', function() {
-        let tracks = this.get('model.playableTracks'),
-            trackIds = [];
-
-        if (tracks) {
-            trackIds = tracks.mapBy('id');
-        }
-
-        return trackIds;
-    }),
     routeName: null,
     play: function(routeName, model, track, addToHistory) {
         this.set('routeName', routeName);
         this.set('model', model);
 
         if (!track) {
-            track = model.get('playableTracks.firstObject');
+            let trackId = model.get('playableTrackIds.firstObject');
+
+            track = this.get('store').peekRecord('track', trackId);
         }
 
         this.playTrack(track, addToHistory || model.get('id') !== 'history');
@@ -113,7 +104,7 @@ export default Ember.Service.extend({
         this.get('audioPlayer').pause();
     },
     _switch: function(getOtherIndex) {
-        let trackIds = this.get('trackIds'),
+        let trackIds = this.get('model.playableTrackIds'),
             currentTrackId = this.get('audioPlayer.track.id'),
             currentIndex = trackIds.indexOf(currentTrackId),
             otherIndex = getOtherIndex(currentIndex, trackIds.get('length')),

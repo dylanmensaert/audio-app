@@ -34,7 +34,7 @@ export default DS.Model.extend(modelMixin, searchMixin, {
 
         return tracks;
     }),
-    playableTracks: Ember.computed.alias('tracks'),
+    playableTrackIds: Ember.computed.alias('trackIds'),
     numberOfTracks: Ember.computed('trackIds.length', 'didLoadTracks', 'totalTracks', function() {
         let numberOfTracks = this.get('totalTracks');
 

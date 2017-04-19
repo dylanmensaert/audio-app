@@ -61,32 +61,34 @@ module.exports = function(defaults) {
     app.import('vendor/cordova/network-information/mixin.js');
 
     app.import({
-        development: 'vendor/cordova/network-information/object.js',
-        production: 'vendor/cordova/network-information/object.prod.js'
+        development: 'vendor/cordova/network-information/network-information.js',
+        production: 'vendor/cordova/network-information/network-information.prod.js'
     }, {
         exports: 'connection'
     });
 
     app.import({
-        development: 'vendor/cordova/music-controls/object.js',
-        production: 'vendor/cordova/music-controls/object.prod.js'
+        development: 'vendor/cordova/music-controls/music-controls.js',
+        production: 'vendor/cordova/music-controls/music-controls.prod.js'
     }, {
         exports: 'music-controls'
     });
 
     app.import({
-        development: 'vendor/cordova/object.js',
-        production: 'vendor/cordova/object.prod.js'
+        development: 'vendor/cordova/cordova.js',
+        production: 'vendor/cordova/cordova.prod.js'
     }, {
         exports: 'cordova'
     });
 
     app.import({
-        development: 'vendor/cordova/file-transfer/object.js',
-        production: 'vendor/cordova/file-transfer/object.prod.js'
+        development: 'vendor/cordova/file-transfer/file-transfer.js',
+        production: 'vendor/cordova/file-transfer/file-transfer.prod.js'
     }, {
         exports: 'file-transfer'
     });
+
+    app.import('vendor/cordova/media/media.prod.js');
 
     return app.toTree(extraAssets);
 };

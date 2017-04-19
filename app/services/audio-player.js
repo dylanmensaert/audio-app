@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import musicControls from 'music-controls';
+import media from 'media';
 
 const errors = [
     'Fetching process aborted by user',
@@ -9,7 +10,13 @@ const errors = [
 ];
 
 export default Ember.Service.extend({
-    element: null,
+    init: function() {
+        this._super();
+
+        media.audioPlayer = this;
+    },
+    // TODO: remove?
+    /*element: null,*/
     track: null,
     currentTime: null,
     duration: null,
@@ -27,28 +34,32 @@ export default Ember.Service.extend({
         return this.get('status') === 'idle';
     }),
     setCurrentTime: function(currentTime) {
-        this.get('element').currentTime = currentTime;
+        media.setCurrentTime(currentTime);
+        // TODO: remove? this.get('element').currentTime = currentTime;
     },
     play: function(track) {
-        let element = this.get('element'),
-            promise;
+        let promise;
+        //element = this.get('element'),
 
         if (track) {
             promise = this.load(track).then(function() {
-                element.play();
+                //element.play();
+                media.play();
 
                 musicControls.load(track);
                 musicControls.resume();
             });
         } else {
-            element.play();
+            // element.play();
+            media.play();
             musicControls.resume();
         }
 
         return Ember.RSVP.resolve(promise);
     },
     pause: function() {
-        this.get('element').pause();
+        // this.get('element').pause();
+        media.pause();
         musicControls.pause();
     },
     load: function(track) {
@@ -74,15 +85,16 @@ export default Ember.Service.extend({
     },
     loadSource: function(source) {
         let promise = new Ember.RSVP.Promise(function(resolve, reject) {
-            let element = this.get('element');
+            //let element = this.get('element');
 
             this.setProperties({
                 resolve,
                 reject
             });
 
-            element.src = source;
-            element.load();
+            //element.src = source;
+            //element.load();
+            media.load(source);
         }.bind(this));
 
         promise.finally(function() {
