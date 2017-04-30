@@ -22,7 +22,7 @@
     }
     
     nav .brand-logo {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
     }
     
     nav {
@@ -205,8 +205,8 @@
         input[type=text] {
             width: calc(100% - 53px);
             height: 54px;
-            margin-bottom: 2px;
             font-size: 16px;
+            margin-bottom: 2;
             &,
             &:focus {
                 border-bottom: none;
@@ -227,14 +227,18 @@
     .my-autocomplete {
         z-index: 1;
         padding-left: 23px;
-        input::-webkit-input-placeholder {
-            color: #f7cfcf;
+        input[type=text] {
+            margin-bottom: 0;
+            &::-webkit-input-placeholder {
+                color: #f7cfcf;
+            }
         }
         ul {
             color: rgba(0, 0, 0, 0.87);
             margin: 14px 0;
             position: absolute;
             left: 0;
+            width: 100%;
             li {
                 line-height: initial;
                 width: 100%;

@@ -1,0 +1,13 @@
+{{#c-menu}}
+  <div class="brand-logo truncate">
+      {{yield}}
+  </div>
+
+  <ul class="right">
+      <li>
+          {{#link-to 'search.tracks' (query-params query=null)}}
+              <i class="mdi mdi-magnify"></i>
+          {{/link-to}}
+      </li>
+  </ul>
+{{/c-menu}}

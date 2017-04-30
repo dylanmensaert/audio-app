@@ -1,15 +1,15 @@
 <ul id="slide-out" class="side-nav fixed">
-    {{c-menu-item value='Recommended' route='index' icon='fire'}}
-    {{c-menu-item value='Tracks' route='tracks' icon='download'}}
-    {{c-menu-item value='Playlists' route='playlists' icon='tag-heart'}}
+    {{!-- {{c-menu-item value='Recommended' route='index' icon='fire'}} --}}
+    {{c-menu-item value='My Tracks' route='tracks' icon='download'}}
+    {{c-menu-item value='My Playlists' route='playlists' icon='tag-heart'}}
     {{c-menu-item value='Download Later' route='playlist' model='download-later' icon='briefcase-download'}}
     {{c-menu-item value='History' route='playlist' model='history' icon='library-books'}}
 
-    <li>
+    {{!-- <li>
         <div class="divider"></div>
-    </li>
+    </li> --}}
 
-    {{c-menu-item value='Settings' route='settings' icon='settings'}}
+    {{!-- {{c-menu-item value='Settings' route='settings' icon='settings'}} --}}
 </ul>
 
 {{#c-fixed tagName='nav'}}
@@ -18,16 +18,6 @@
             <i class="mdi mdi-menu"></i>
         </a>
 
-        <div class="brand-logo truncate">
-            {{yield}}
-        </div>
-
-        <ul class="right">
-            <li>
-                {{#link-to 'search.tracks' (query-params query=null)}}
-                    <i class="mdi mdi-magnify"></i>
-                {{/link-to}}
-            </li>
-        </ul>
+        {{yield}}
     </div>
 {{/c-fixed}}
