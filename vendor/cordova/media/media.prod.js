@@ -45,6 +45,10 @@
                         this.instance.getCurrentPosition(function(position) {
                             if (position !== -1) {
                                 this.audioPlayer.set('currentTime', position);
+
+                                if (position === duration) {
+                                    this.audioPlayer.didEnd();
+                                }
                             }
                         }.bind(this));
                     }.bind(this), 1000);
