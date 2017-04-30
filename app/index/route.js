@@ -4,7 +4,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
     actions: {
         redirect: function() {
-                this.transitionTo('tracks');
+                this.transitionTo('playlists');
             }
             /*didTransition: function() {
                 let history = this.store.peekRecord('playlist', 'history'),
