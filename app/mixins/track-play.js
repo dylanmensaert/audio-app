@@ -17,8 +17,8 @@ export default Ember.Mixin.create({
 
                 if (playlist) {
                     audioRemote.play('playlist', playlist, track);
-                } else if (relatedTrack) {
-                    audioRemote.play('track.related', relatedTrack, track);
+                    /*} else if (relatedTrack) {
+                        audioRemote.play('track.related', relatedTrack, track);*/
                 } else {
                     let history = this.get('store').peekRecord('playlist', 'history');
 
