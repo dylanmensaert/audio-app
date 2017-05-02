@@ -12,7 +12,7 @@ export default Ember.Mixin.create({
                 track.toggleProperty('isSelected');
             } else {
                 let playlist = this.get('playlist'),
-                    relatedTrack = this.get('relatedTrack'),
+                    /* relatedTrack = this.get('relatedTrack'),*/
                     audioRemote = this.get('audioRemote');
 
                 if (playlist) {
